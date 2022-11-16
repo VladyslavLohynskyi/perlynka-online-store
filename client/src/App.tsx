@@ -1,8 +1,13 @@
 import { FC } from 'react';
-import './App.css';
+import './App.scss';
+import { Main } from './modules/main/pages/Main';
 
 const App: FC = () => {
-   return <div className='app'>Perlynka App</div>;
+   return (
+      <div>
+         <Main />
+      </div>
+   );
 };
 
 export default App;
