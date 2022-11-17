@@ -1,0 +1,12 @@
+.nav-item {
+   padding: 10px;
+   font-size: 14px;
+   border-radius: 20px;
+   cursor: pointer;
+   text-align: center;
+   border: 1px solid transparent;
+
+   &:hover {
+      border: 1px solid gray;
+   }
+}

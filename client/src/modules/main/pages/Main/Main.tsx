@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { getRoot } from '../../../../http';
+import React from 'react';
+import { Header } from '../../../ui/Header';
 import './Main.scss';
 
 export const Main: React.FC = () => {
-   const [initialData, setInitialData] = useState('');
-   useEffect(() => {
-      getRoot().then((data) => setInitialData(data));
-   }, []);
-   return <div className='main'>{initialData}</div>;
+   return (
+      <div className='main'>
+         <Header />
+      </div>
+   );
 };
