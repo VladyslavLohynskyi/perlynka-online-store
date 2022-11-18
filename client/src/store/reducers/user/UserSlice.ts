@@ -41,11 +41,47 @@ export const userSlice = createSlice({
          state.error = '';
          state.user = action.payload.user;
          state.isAuth = true;
-         localStorage.setItem('token', action.payload.token);
+         document.cookie = `token=${action.payload.token}`;
       },
       userRegistrationError(state, action: PayloadAction<string>) {
          state.isLoading = false;
          state.error = action.payload;
+      },
+
+      userLogin(state) {
+         state.isLoading = true;
+      },
+      userLoginSuccess(state, action: PayloadAction<IAuthUser>) {
+         state.isLoading = false;
+         state.user = action.payload.user;
+         state.isAuth = true;
+         document.cookie = `token=${action.payload.token}`;
+      },
+      userLoginError(state, action: PayloadAction<string>) {
+         state.isLoading = false;
+         state.error = action.payload;
+      },
+
+      userAuth(state) {
+         state.isLoading = true;
+      },
+      userAuthSuccess(state, action: PayloadAction<IAuthUser>) {
+         state.error = '';
+         state.user = action.payload.user;
+         state.isAuth = true;
+         document.cookie = `token=${action.payload.token}`;
+      },
+      userAuthError(state, action: PayloadAction<string>) {
+         state.isLoading = false;
+         state.user = null;
+         state.isAuth = false;
+         state.error = action.payload;
+      },
+
+      userLogOut(state) {
+         state.user = null;
+         state.isAuth = false;
+         document.cookie = 'token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
       },
    },
 });
