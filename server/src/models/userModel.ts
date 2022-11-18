@@ -1,10 +1,16 @@
 import { sequelize } from '../db';
 import { DataTypes, Model, Optional } from 'sequelize';
+
+export enum Role {
+   ADMIN = 'ADMIN',
+   USER = 'USER',
+}
+
 interface userAttributes {
    id: number;
    email: string;
    password: string;
-   role: string;
+   role: Role;
 }
 
 interface userCreationAttributes extends Optional<userAttributes, 'id'> {}

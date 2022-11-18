@@ -1,18 +1,11 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
-import User from '../models/userModel';
+import User, { Role } from '../models/userModel';
 import Basket from '../models/basketModel';
+import { authRequest } from '../middleware/authMiddleware';
 
-interface userRegistrationRequest extends Request {
-   body: {
-      email: string;
-      password: string;
-      role: string;
-   };
-}
-
-interface userLoginRequest extends Request {
+interface userRegistrationLoginRequest extends Request {
    body: {
       email: string;
       password: string;
@@ -26,9 +19,8 @@ const generateJwt = (id: number, email: string, role: string) => {
 };
 
 class userController {
-   async registration(req: userRegistrationRequest, res: Response) {
-      console.log('FIESTA');
-      const { email, password, role } = req.body;
+   async registration(req: userRegistrationLoginRequest, res: Response) {
+      const { email, password } = req.body;
       if (!email || !password) {
          return res.json('Uncorect email or password');
       }
@@ -39,7 +31,7 @@ class userController {
       const hashPassword = await bcrypt.hash(password, 5);
       const user = await User.create({
          email,
-         role,
+         role: Role.USER,
          password: hashPassword,
       });
       const basket = await Basket.create({ userId: user.id });
@@ -47,7 +39,7 @@ class userController {
       return res.json({ token });
    }
 
-   async login(req: userLoginRequest, res: Response) {
+   async login(req: userRegistrationLoginRequest, res: Response) {
       const { email, password } = req.body;
       const user = await User.findOne({ where: { email } });
       if (!user) {
@@ -58,6 +50,11 @@ class userController {
          return res.json('Incorrect Password');
       }
       const token = generateJwt(user.id, user.email, user.role);
+      return res.json({ token });
+   }
+
+   async check(req: authRequest, res: Response) {
+      const token = generateJwt(req.user.id, req.user.email, req.user.role);
       return res.json({ token });
    }
 }
