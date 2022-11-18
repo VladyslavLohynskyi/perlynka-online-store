@@ -1,5 +1,5 @@
 import { $host, $authHost } from '../../../http';
-import jwt_decode, { JwtPayload } from 'jwt-decode';
+import jwt_decode from 'jwt-decode';
 import { AppDispatch } from '../../store';
 import { IUser, userSlice } from './UserSlice';
 
