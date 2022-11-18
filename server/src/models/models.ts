@@ -1,16 +1,7 @@
 import { sequelize } from '../db';
 import { DataTypes } from 'sequelize';
-
-const User = sequelize.define('user', {
-   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-   email: { type: DataTypes.STRING, unique: true },
-   password: { type: DataTypes.STRING },
-   role: { type: DataTypes.STRING, defaultValue: 'USER' },
-});
-
-const Basket = sequelize.define('basket', {
-   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-});
+import User from './userModel';
+import Basket from './basketModel';
 
 const BasketShoes = sequelize.define('basket_shoes', {
    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
@@ -50,7 +41,7 @@ const Rating = sequelize.define('rating', {
    rate: { type: DataTypes.INTEGER, allowNull: false },
 });
 
-const ShoesSize = sequelize.define('basket_size', {
+const ShoesSize = sequelize.define('shoes_size', {
    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
    count: { type: DataTypes.INTEGER, defaultValue: 1 },
 });

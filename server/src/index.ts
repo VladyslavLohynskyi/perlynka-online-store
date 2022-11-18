@@ -4,15 +4,14 @@ import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import { sequelize } from './db';
 const models = require('./models/models');
+import { router } from './routes/index';
 
 const app: Application = express();
 const port: number = Number(process.env.PORT) || 8888;
 
 app.use(cors());
 app.use(express.json());
-app.get('/', (req: Request, res: Response) => {
-   res.send('Hello Perlynka');
-});
+app.use('/api', router);
 
 const start = async () => {
    try {
