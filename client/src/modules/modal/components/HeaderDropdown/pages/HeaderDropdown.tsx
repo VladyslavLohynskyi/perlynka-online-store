@@ -18,21 +18,21 @@ export const HeaderDropdown: React.FC<HeaderDropdownType> = ({ onClose }) => {
    return (
       <div className='header-dropdown__container'>
          <DropdownItem
-            text='Profile'
+            text='Профіль'
             onClick={() =>
                handleClickDropDownItem(() => navigate(RoutesEnum.PROFILE))
             }
          />
          {user?.role === 'ADMIN' && (
             <DropdownItem
-               text='Admin panel'
+               text='Адмін панель'
                onClick={() =>
                   handleClickDropDownItem(() => navigate(RoutesEnum.ADMIN))
                }
             />
          )}
          <DropdownItem
-            text='Log out'
+            text='Вихід'
             onClick={() =>
                handleClickDropDownItem(() => dispatch(logOutUser()))
             }
