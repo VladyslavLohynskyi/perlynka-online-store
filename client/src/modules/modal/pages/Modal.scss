@@ -1,0 +1,29 @@
+.modal {
+   position: fixed;
+   z-index: 3;
+   top: 0;
+   left: 0;
+   width: 100vw;
+   height: 100vh;
+   overflow: hidden;
+
+   &__content {
+      position: absolute;
+      outline: none;
+   }
+}
+
+.onBlur {
+   position: fixed;
+   top: 0;
+   bottom: 0;
+   left: 0;
+   right: 0;
+   background-color: #0009;
+   z-index: 2;
+}
+
+.header-dropdown-position {
+   right: 20px;
+   top: 45px;
+}

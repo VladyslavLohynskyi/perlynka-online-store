@@ -54,7 +54,7 @@ const Auth = () => {
                </button>
             </form>
             <button className='button--link' onClick={handleClickChangeAuth}>
-               {isLogin ? 'Немає акауту?' : 'Є акаунт?'}
+               {isLogin ? 'Немає акаута?' : 'Є акаунт?'}
             </button>
          </div>
       </div>
