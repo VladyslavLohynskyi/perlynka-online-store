@@ -6,13 +6,13 @@ const AppRouter = () => {
    const { isAuth, user } = useAppSelector((state) => state.userReducer);
    return (
       <Routes>
-         {isAuth &&
-            authRoutes.map(({ path, Component }) => (
-               <Route key={path} path={path} element={<Component />} />
-            ))}
-         {publicRoutes.map(({ path, Component }) => (
-            <Route key={path} path={path} element={<Component />} />
-         ))}
+         {isAuth
+            ? authRoutes.map(({ path, Component }) => (
+                 <Route key={path} path={path} element={<Component />} />
+              ))
+            : publicRoutes.map(({ path, Component }) => (
+                 <Route key={path} path={path} element={<Component />} />
+              ))}
          {user?.role === 'ADMIN' &&
             adminRoutes.map(({ path, Component }) => (
                <Route key={path} path={path} element={<Component />} />

@@ -1,7 +1,7 @@
-export const baseURL = 'http://localhost:8888/api/';
+export const baseURL = 'http://localhost:8881/api/';
 
 export enum RoutesEnum {
-   SHOP = '/',
+   SHOP = '/shop',
    LOGIN = '/login',
    REGISTRATION = '/registration',
    BASKET = '/basket',

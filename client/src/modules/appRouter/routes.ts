@@ -1,5 +1,6 @@
 import { RoutesEnum } from '../../utils/constants';
-import { Main } from '../main/pages/Main';
+import Auth from '../auth/Auth';
+import { Shop } from '../shop/pages';
 interface IRoutes {
    path: string;
    Component: React.FC;
@@ -7,32 +8,40 @@ interface IRoutes {
 export const authRoutes: IRoutes[] = [
    {
       path: RoutesEnum.PROFILE,
-      Component: Main,
+      Component: Shop,
+   },
+   {
+      path: RoutesEnum.SHOP,
+      Component: Shop,
+   },
+   {
+      path: RoutesEnum.BASKET,
+      Component: Shop,
    },
 ];
 
 export const publicRoutes: IRoutes[] = [
    {
       path: RoutesEnum.SHOP,
-      Component: Main,
+      Component: Shop,
    },
    {
       path: RoutesEnum.LOGIN,
-      Component: Main,
+      Component: Auth,
    },
    {
       path: RoutesEnum.REGISTRATION,
-      Component: Main,
+      Component: Auth,
    },
    {
       path: RoutesEnum.BASKET,
-      Component: Main,
+      Component: Shop,
    },
 ];
 
 export const adminRoutes: IRoutes[] = [
    {
       path: RoutesEnum.ADMIN,
-      Component: Main,
+      Component: Shop,
    },
 ];

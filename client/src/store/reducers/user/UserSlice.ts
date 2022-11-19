@@ -25,7 +25,7 @@ export interface IUser {
 const initialState: IUserState = {
    isAuth: false,
    user: null,
-   isLoading: false,
+   isLoading: true,
    error: '',
 };
 
@@ -70,6 +70,7 @@ export const userSlice = createSlice({
          state.user = action.payload.user;
          state.isAuth = true;
          document.cookie = `token=${action.payload.token}`;
+         state.isLoading = false;
       },
       userAuthError(state, action: PayloadAction<string>) {
          state.isLoading = false;
