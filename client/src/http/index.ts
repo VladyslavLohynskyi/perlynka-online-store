@@ -22,9 +22,4 @@ const authInterceptor = (config: AxiosRequestConfig) => {
 
 $authHost.interceptors.request.use(authInterceptor);
 
-export const getRoot = async () => {
-   const { data } = await $host.get('/');
-   return data;
-};
-
 export { $host, $authHost };

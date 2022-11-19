@@ -2,10 +2,12 @@
    display: flex;
    justify-content: space-between;
    width: 100vw;
+   height: 60px;
    align-items: center;
    border-bottom: 1px solid gray;
    padding: 10px 20px;
    &__logo-container h1 {
+      cursor: pointer;
       font-size: 33px;
       font-weight: 300;
       color: black;
