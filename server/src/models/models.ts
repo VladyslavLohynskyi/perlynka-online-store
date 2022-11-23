@@ -3,6 +3,7 @@ import { DataTypes } from 'sequelize';
 import User from './userModel';
 import Basket from './basketModel';
 import Type from './typeModel';
+import Color from './colorModel';
 
 const BasketShoes = sequelize.define('basket_shoes', {
    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
@@ -18,11 +19,6 @@ const Shoes = sequelize.define('shoes', {
 });
 
 const Brand = sequelize.define('brand', {
-   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-   name: { type: DataTypes.STRING, unique: true, allowNull: false },
-});
-
-const Color = sequelize.define('color', {
    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
    name: { type: DataTypes.STRING, unique: true, allowNull: false },
 });
