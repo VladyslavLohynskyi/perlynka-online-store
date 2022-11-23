@@ -22,7 +22,7 @@ class userController {
    async registration(req: userRegistrationLoginRequest, res: Response) {
       const { email, password } = req.body;
       if (!email || !password) {
-         return res.json('Uncorect email or password');
+         return res.json('Incorrect email or password');
       }
       const candidate = await User.findOne({ where: { email } });
       if (candidate) {
@@ -54,7 +54,7 @@ class userController {
    }
 
    async check(req: authRequest, res: Response) {
-      const token = generateJwt(req.user.id, req.user.email, req.user.role);
+      const token = generateJwt(req.user!.id, req.user!.email, req.user!.role);
       return res.json({ token });
    }
 }

@@ -9,7 +9,7 @@ interface IDecodedJwt {
 }
 
 export interface authRequest extends Request {
-   user: IDecodedJwt;
+   user?: IDecodedJwt;
 }
 
 export default function (req: authRequest, res: Response, next: NextFunction) {
