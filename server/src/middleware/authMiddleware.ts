@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import { Role } from '../models/userModel';
 
-interface IDecodedJwt {
+export interface IDecodedJwt {
    id: number;
    email: string;
    role: Role;
