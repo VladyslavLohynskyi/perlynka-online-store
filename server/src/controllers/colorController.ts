@@ -13,7 +13,7 @@ interface colorUpdateRequest extends Request {
       name: string;
    };
 }
-class TypeController {
+class colorController {
    async create(req: colorCreateRequest, res: Response) {
       const { name } = req.body;
       const color = await Color.create({ name });
@@ -43,4 +43,4 @@ class TypeController {
    }
 }
 
-export default new TypeController();
+export default new colorController();

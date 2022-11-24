@@ -7,13 +7,13 @@ interface brandCreateRequest extends Request {
    };
 }
 
-interface colorUpdateRequest extends Request {
+interface brandUpdateRequest extends Request {
    body: {
       id: string;
       name: string;
    };
 }
-class TypeController {
+class brandController {
    async create(req: brandCreateRequest, res: Response) {
       const { name } = req.body;
       const brand = await Brand.create({ name });
@@ -32,7 +32,7 @@ class TypeController {
       }
       return res.json({ message: 'Brand with this id is not exist' });
    }
-   async update(req: colorUpdateRequest, res: Response) {
+   async update(req: brandUpdateRequest, res: Response) {
       const { id, name } = req.body;
       const brand = await Brand.findOne({ where: { id } });
       if (brand) {
@@ -43,4 +43,4 @@ class TypeController {
    }
 }
 
-export default new TypeController();
+export default new brandController();
