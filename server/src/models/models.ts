@@ -8,18 +8,11 @@ import Brand from './brandModel';
 import Season from './seasonModel';
 import Size from './sizeModel';
 import ShoesSize from './shoesSizeModel';
+import Shoes from './shoesModel';
 
 const BasketShoes = sequelize.define('basket_shoes', {
    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
    count: { type: DataTypes.INTEGER, defaultValue: 1 },
-});
-
-const Shoes = sequelize.define('shoes', {
-   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-   model: { type: DataTypes.STRING, unique: true, allowNull: false },
-   price: { type: DataTypes.INTEGER, allowNull: false },
-   rating: { type: DataTypes.INTEGER, defaultValue: 0 },
-   img: { type: DataTypes.STRING, allowNull: false },
 });
 
 const Rating = sequelize.define('rating', {

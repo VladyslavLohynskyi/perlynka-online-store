@@ -3,14 +3,18 @@ dotenv.config();
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import { sequelize } from './db';
+import fileUpload from 'express-fileupload';
 const models = require('./models/models');
 import { router } from './routes/index';
+import path from 'path';
 
 const app: Application = express();
 const port: number = Number(process.env.PORT) || 8888;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.resolve(__dirname, 'static')));
+app.use(fileUpload({}));
 app.use('/api', router);
 
 const start = async () => {
