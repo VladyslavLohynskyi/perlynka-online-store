@@ -11,6 +11,11 @@ shoesRouter.post(
    shoesController.create,
 );
 shoesRouter.get('/', shoesController.getAll);
-// shoesRouter.get('/:id', DeviceController.getOne);
-// shoesRouter.delete('/:id',authMiddleware, checkRoleMiddleware(Role.ADMIN), DeviceController.deleteOne);
+shoesRouter.get('/:id', shoesController.getOne);
+shoesRouter.delete(
+   '/:id',
+   authMiddleware,
+   checkRoleMiddleware(Role.ADMIN),
+   shoesController.deleteOne,
+);
 // shoesRouter.put('/', authMiddleware, checkRoleMiddleware(Role.ADMIN), DeviceController.update);

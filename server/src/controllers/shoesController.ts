@@ -1,6 +1,7 @@
 import Shoes from '../models/shoesModel';
 import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
+import { promises } from 'fs';
 import { Request, Response } from 'express';
 import ShoesSize from '../models/shoesSizeModel';
 
@@ -63,6 +64,43 @@ class shoesController {
          return res.json(shoes);
       } catch (error) {
          res.json('Shoes get all Error');
+      }
+   }
+
+   async deleteOne(req: Request, res: Response) {
+      try {
+         const { id } = req.params;
+
+         const shoes = await Shoes.findOne({ where: { id } });
+         if (shoes) {
+            await Shoes.destroy({ where: { id } });
+            await promises.unlink(
+               path.resolve(__dirname, '..', 'static', shoes.img),
+            );
+            return res.json({ message: 'Shoes deleted', shoes });
+         } else {
+            return res.json({ message: "This Shoes doesn't exist" });
+         }
+      } catch (error) {
+         res.json('Delete shoes error');
+      }
+   }
+
+   async getOne(req: Request, res: Response) {
+      try {
+         const { id } = req.params;
+
+         const shoes = await Shoes.findOne({
+            where: { id },
+         });
+         if (!shoes) {
+            return res.json({
+               message: `Shoes with this id=${id} doesn't exist`,
+            });
+         }
+         return res.json(shoes);
+      } catch (error) {
+         res.json('Getting One Error');
       }
    }
 }
