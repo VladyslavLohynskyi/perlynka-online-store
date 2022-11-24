@@ -36,8 +36,8 @@ class seasonController {
       const { id, name } = req.body;
       const season = await Season.findOne({ where: { id } });
       if (season) {
-         const updatedColor = await Season.update({ name }, { where: { id } });
-         return res.json({ updatedColor });
+         const updatedSeason = await Season.update({ name }, { where: { id } });
+         return res.json({ updatedSeason });
       }
       return res.json({ message: 'Season with this id is not exist' });
    }

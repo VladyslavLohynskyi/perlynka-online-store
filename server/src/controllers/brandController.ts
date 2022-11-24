@@ -36,8 +36,8 @@ class brandController {
       const { id, name } = req.body;
       const brand = await Brand.findOne({ where: { id } });
       if (brand) {
-         const updatedColor = await Brand.update({ name }, { where: { id } });
-         return res.json({ updatedColor });
+         const updatedBrand = await Brand.update({ name }, { where: { id } });
+         return res.json({ updatedBrand });
       }
       return res.json({ message: 'Brand with this id is not exist' });
    }

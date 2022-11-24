@@ -4,6 +4,10 @@ import User from './userModel';
 import Basket from './basketModel';
 import Type from './typeModel';
 import Color from './colorModel';
+import Brand from './brandModel';
+import Season from './seasonModel';
+import Size from './sizeModel';
+import ShoesSize from './shoesSizeModel';
 
 const BasketShoes = sequelize.define('basket_shoes', {
    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
@@ -18,29 +22,9 @@ const Shoes = sequelize.define('shoes', {
    img: { type: DataTypes.STRING, allowNull: false },
 });
 
-const Brand = sequelize.define('brand', {
-   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-   name: { type: DataTypes.STRING, unique: true, allowNull: false },
-});
-
-const Season = sequelize.define('season', {
-   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-   name: { type: DataTypes.STRING, unique: true, allowNull: false },
-});
-
 const Rating = sequelize.define('rating', {
    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
    rate: { type: DataTypes.INTEGER, allowNull: false },
-});
-
-const ShoesSize = sequelize.define('shoes_size', {
-   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-   count: { type: DataTypes.INTEGER, defaultValue: 1 },
-});
-
-const Size = sequelize.define('size', {
-   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-   size: { type: DataTypes.INTEGER, allowNull: false, unique: true },
 });
 
 User.hasOne(Basket);
