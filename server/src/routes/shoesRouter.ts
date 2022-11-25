@@ -18,4 +18,9 @@ shoesRouter.delete(
    checkRoleMiddleware(Role.ADMIN),
    shoesController.deleteOne,
 );
-// shoesRouter.put('/', authMiddleware, checkRoleMiddleware(Role.ADMIN), DeviceController.update);
+shoesRouter.put(
+   '/',
+   authMiddleware,
+   checkRoleMiddleware(Role.ADMIN),
+   shoesController.update,
+);

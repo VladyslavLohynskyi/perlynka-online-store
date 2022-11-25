@@ -4,6 +4,7 @@ import path from 'path';
 import { promises } from 'fs';
 import { Request, Response } from 'express';
 import ShoesSize from '../models/shoesSizeModel';
+import { where } from 'sequelize';
 
 interface IParseSizes {
    sizeId: number;
@@ -22,6 +23,19 @@ interface shoesCreateRequest extends Request {
    };
 }
 
+interface shoesUpdateRequest extends Request {
+   body: {
+      id: number;
+      model?: string;
+      price?: number;
+      typeId?: number;
+      colorId?: number;
+      seasonId?: number;
+      brandId?: number;
+      sizes?: string;
+   };
+}
+
 class shoesController {
    async create(req: shoesCreateRequest, res: Response) {
       try {
@@ -37,7 +51,6 @@ class shoesController {
          } else {
             res.json('Error: Upload only one file');
          }
-
          const shoes = await Shoes.create({
             model,
             price,
@@ -49,9 +62,11 @@ class shoesController {
             img: fileName,
          });
          const parseSizes: IParseSizes[] = JSON.parse(sizes);
-         parseSizes.map(({ sizeId, count }) =>
-            ShoesSize.create({ sizeId, count, shoId: shoes.id }),
-         );
+         if (Array.isArray(parseSizes)) {
+            parseSizes.map(({ sizeId, count }) =>
+               ShoesSize.create({ sizeId, count, shoId: shoes.id }),
+            );
+         }
          return res.json(shoes);
       } catch (error) {
          res.json('Shoes creating Error ');
@@ -71,9 +86,10 @@ class shoesController {
       try {
          const { id } = req.params;
 
-         const shoes = await Shoes.findOne({ where: { id } });
+         const shoes = await Shoes.findOne({ where: { id: id } });
          if (shoes) {
-            await Shoes.destroy({ where: { id } });
+            await ShoesSize.destroy({ where: { shoId: id } });
+            await Shoes.destroy({ where: { id: id } });
             await promises.unlink(
                path.resolve(__dirname, '..', 'static', shoes.img),
             );
@@ -101,6 +117,65 @@ class shoesController {
          return res.json(shoes);
       } catch (error) {
          res.json('Getting One Error');
+      }
+   }
+
+   async update(req: shoesUpdateRequest, res: Response) {
+      try {
+         const { id, model, price, brandId, typeId, colorId, seasonId, sizes } =
+            req.body;
+         const shoes = await Shoes.findOne({ where: { id } });
+         if (!shoes) {
+            return res.json(`Error: Shoes with id=${id} is not exist`);
+         }
+
+         const img = req.files?.file;
+         const fileName = uuidv4() + '.jpg';
+         if (!Array.isArray(img) && img) {
+            img.mv(path.resolve(__dirname, '..', 'static', fileName));
+            await promises.unlink(
+               path.resolve(__dirname, '..', 'static', shoes.img),
+            );
+         }
+
+         await Shoes.update(
+            {
+               model: model ? model : shoes.model,
+               price: price ? price : shoes.price,
+               brandId: brandId ? brandId : shoes.brandId,
+               typeId: typeId ? typeId : shoes.typeId,
+               colorId: colorId ? colorId : shoes.colorId,
+               seasonId: seasonId ? seasonId : shoes.seasonId,
+               img: fileName ? fileName : shoes.img,
+            },
+            { where: { id } },
+         );
+         if (sizes) {
+            const parseSizes: IParseSizes[] = JSON.parse(sizes);
+            if (Array.isArray(parseSizes)) {
+               parseSizes.forEach(async ({ sizeId, count }) => {
+                  const shoesSize = await ShoesSize.findOne({
+                     where: { sizeId, shoId: shoes.id },
+                  });
+                  if (shoesSize) {
+                     await ShoesSize.update(
+                        { count },
+                        { where: { sizeId, shoId: shoes.id } },
+                     );
+                  } else {
+                     await ShoesSize.create({
+                        shoId: shoes.id,
+                        count,
+                        sizeId: sizeId,
+                     });
+                  }
+               });
+            }
+         }
+
+         return res.json({ message: 'Device is updated' });
+      } catch (error) {
+         return res.json('Device updating Error ');
       }
    }
 }
