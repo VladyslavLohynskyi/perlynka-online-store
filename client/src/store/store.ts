@@ -1,8 +1,10 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import userReducer from './reducers/user/UserSlice';
+import shoesReducer from './reducers/shoes/ShoesSlice';
 
 const rootReducer = combineReducers({
    userReducer,
+   shoesReducer,
 });
 
 export const setupStore = () => {

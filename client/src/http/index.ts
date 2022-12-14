@@ -2,11 +2,11 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { baseURL } from '../utils/constants';
 
 const $host = axios.create({
-   baseURL,
+   baseURL: baseURL + 'api/',
 });
 
 const $authHost = axios.create({
-   baseURL,
+   baseURL: baseURL + 'api/',
 });
 
 const authInterceptor = (config: AxiosRequestConfig) => {

@@ -1,4 +1,4 @@
-export const baseURL = 'http://localhost:8881/api/';
+export const baseURL = 'http://localhost:8881/';
 
 export enum RoutesEnum {
    SHOP = '/shop',

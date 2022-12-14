@@ -35,6 +35,7 @@ export const userSlice = createSlice({
    reducers: {
       userRegistration(state) {
          state.isLoading = true;
+         state.error = '';
       },
       userRegistrationSuccess(state, action: PayloadAction<IAuthUser>) {
          state.isLoading = false;

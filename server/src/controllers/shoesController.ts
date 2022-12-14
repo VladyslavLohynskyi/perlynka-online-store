@@ -5,6 +5,7 @@ import { promises } from 'fs';
 import { Request, Response } from 'express';
 import ShoesSize from '../models/shoesSizeModel';
 import { where } from 'sequelize';
+import Brand from '../models/brandModel';
 
 interface IParseSizes {
    sizeId: number;
@@ -75,7 +76,10 @@ class shoesController {
 
    async getAll(req: Request, res: Response) {
       try {
-         const shoes = await Shoes.findAll();
+         const shoes = await Shoes.findAll({
+            attributes: { exclude: ['brandId'] },
+            include: [{ model: Brand, as: 'brand' }],
+         });
          return res.json(shoes);
       } catch (error) {
          res.json('Shoes get all Error');
@@ -128,14 +132,12 @@ class shoesController {
          if (!shoes) {
             return res.json(`Error: Shoes with id=${id} is not exist`);
          }
-
          const img = req.files?.file;
-         const fileName = uuidv4() + '.jpg';
          if (!Array.isArray(img) && img) {
-            img.mv(path.resolve(__dirname, '..', 'static', fileName));
             await promises.unlink(
                path.resolve(__dirname, '..', 'static', shoes.img),
             );
+            img.mv(path.resolve(__dirname, '..', 'static', shoes.img));
          }
 
          await Shoes.update(
@@ -146,7 +148,6 @@ class shoesController {
                typeId: typeId ? typeId : shoes.typeId,
                colorId: colorId ? colorId : shoes.colorId,
                seasonId: seasonId ? seasonId : shoes.seasonId,
-               img: fileName ? fileName : shoes.img,
             },
             { where: { id } },
          );
