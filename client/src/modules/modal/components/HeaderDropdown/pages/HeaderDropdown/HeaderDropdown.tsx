@@ -1,10 +1,10 @@
 import React from 'react';
-import { DropdownItem } from '../components/DropdownItem';
+import { DropdownItem } from '../../components/DropdownItem';
 import './HeaderDropdown.scss';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../../../../hooks/redux';
-import { RoutesEnum } from '../../../../../utils/constants';
-import { logOutUser } from '../../../../../store/reducers/user/UserActionCreatores';
+import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
+import { RoutesEnum } from '../../../../../../utils/constants';
+import { logOutUser } from '../../../../../../store/reducers/user/UserActionCreatores';
 import { HeaderDropdownType } from './HeaderDropdownType';
 
 export const HeaderDropdown: React.FC<HeaderDropdownType> = ({ onClose }) => {

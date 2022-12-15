@@ -1,6 +1,6 @@
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
-export interface IconMenuItemType {
+export interface IconButtonType {
    icon: IconDefinition;
    onClick?: () => void;
 }
