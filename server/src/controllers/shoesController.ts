@@ -68,6 +68,7 @@ class shoesController {
                ShoesSize.create({ sizeId, count, shoId: shoes.id }),
             );
          }
+         console.log(shoes);
          return res.json(shoes);
       } catch (error) {
          res.json('Shoes creating Error ');

@@ -57,6 +57,16 @@
          border-color: #ff5500;
       }
    }
+   &--disable {
+      color: lightgray;
+      border-color: lightgray;
+
+      &:hover {
+         color: #fff;
+         background-color: lightgray;
+         border-color: lightgray;
+      }
+   }
 
    &--profile {
       color: #fff;

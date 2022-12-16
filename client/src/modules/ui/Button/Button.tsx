@@ -9,12 +9,16 @@ export const Button: React.FC<ButtonPropsType> = ({
    additionalClass,
    children,
    width,
+   disabled,
 }) => {
    return (
       <button
-         className={`button button--${buttonClass} ${additionalClass}`}
+         className={`button button--${buttonClass} ${additionalClass} ${
+            disabled && 'button--disable'
+         }`}
          onClick={buttonClick}
          style={{ width }}
+         disabled={disabled}
       >
          <span>{buttonText}</span>
          <div className='button__icon'>{children}</div>

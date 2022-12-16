@@ -28,7 +28,7 @@ export const Shop: React.FC = () => {
             <div className='shop__container'>
                <aside className='shop__aside-filters'>Фільтри</aside>
                <section className='shop__shoes-list'>
-                  {shoes &&
+                  {shoes.length &&
                      shoes.map((shoes) => (
                         <ShoesItem key={shoes.id} shoes={shoes} />
                      ))}

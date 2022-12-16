@@ -7,4 +7,5 @@ export interface ButtonPropsType {
    additionalClass?: string;
    children?: ReactNode;
    width?: string;
+   disabled?: boolean;
 }

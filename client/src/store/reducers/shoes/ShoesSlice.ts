@@ -5,8 +5,13 @@ export interface IBasicCategory {
    name: string;
 }
 
+export interface ISizeCategory {
+   id: string;
+   size: string;
+}
+
 export interface IShoes {
-   id: number;
+   id?: number;
    model: string;
    price: number;
    rating: number;
@@ -21,7 +26,8 @@ export interface IShoesState {
    brands: IBasicCategory[] | null;
    colors: IBasicCategory[] | null;
    seasons: IBasicCategory[] | null;
-   shoes: IShoes[] | null;
+   sizes: ISizeCategory[] | null;
+   shoes: IShoes[];
    isLoading: boolean;
    error: string;
 }
@@ -32,6 +38,7 @@ interface IPreloadList {
    colors: IBasicCategory[];
    seasons: IBasicCategory[];
    shoes: IShoes[];
+   sizes: ISizeCategory[];
 }
 
 const initialState: IShoesState = {
@@ -39,7 +46,8 @@ const initialState: IShoesState = {
    brands: null,
    seasons: null,
    colors: null,
-   shoes: null,
+   shoes: [],
+   sizes: null,
    isLoading: true,
    error: '',
 };
@@ -58,9 +66,25 @@ export const shoesSlice = createSlice({
          state.shoes = action.payload.shoes;
          state.types = action.payload.types;
          state.seasons = action.payload.seasons;
+         state.colors = action.payload.colors;
          state.brands = action.payload.brands;
+         state.sizes = action.payload.sizes;
       },
       shoesPreloadListError(state, action: PayloadAction<string>) {
+         state.isLoading = false;
+         state.error = action.payload;
+      },
+      shoesCreate(state) {
+         state.isLoading = true;
+         state.error = '';
+      },
+      shoesCreateSuccess(state, action: PayloadAction<IShoes[]>) {
+         state.isLoading = false;
+         state.error = '';
+         state.shoes = action.payload;
+      },
+
+      shoesCreateError(state, action: PayloadAction<string>) {
          state.isLoading = false;
          state.error = action.payload;
       },

@@ -1,7 +1,12 @@
 import { $host, $authHost } from '../../../http';
 import jwt_decode from 'jwt-decode';
 import { AppDispatch } from '../../store';
-import { IBasicCategory, IShoes, shoesSlice } from './ShoesSlice';
+import {
+   IBasicCategory,
+   IShoes,
+   ISizeCategory,
+   shoesSlice,
+} from './ShoesSlice';
 
 export const preloadList = () => async (dispatch: AppDispatch) => {
    try {
@@ -16,6 +21,8 @@ export const preloadList = () => async (dispatch: AppDispatch) => {
       const colors = colorsResponse.data;
       const seasonsResponse = await $host.get<IBasicCategory[]>('/season');
       const seasons = seasonsResponse.data;
+      const sizesResponse = await $host.get<ISizeCategory[]>('/size');
+      const sizes = sizesResponse.data;
 
       dispatch(
          shoesSlice.actions.shoesPreloadListSuccess({
@@ -24,9 +31,24 @@ export const preloadList = () => async (dispatch: AppDispatch) => {
             types,
             colors,
             seasons,
+            sizes,
          }),
       );
    } catch (error) {
       dispatch(shoesSlice.actions.shoesPreloadListError('registration Error'));
    }
 };
+
+export const createShoes =
+   (shoesData: FormData) => async (dispatch: AppDispatch) => {
+      try {
+         dispatch(shoesSlice.actions.shoesCreate());
+         await $authHost.post('/shoes', shoesData);
+         const shoesResponse = await $host.get<IShoes[]>('/shoes');
+         const shoes = shoesResponse.data;
+
+         dispatch(shoesSlice.actions.shoesCreateSuccess([...shoes]));
+      } catch (error) {
+         dispatch(shoesSlice.actions.shoesCreateError('creating Shoes Error'));
+      }
+   };

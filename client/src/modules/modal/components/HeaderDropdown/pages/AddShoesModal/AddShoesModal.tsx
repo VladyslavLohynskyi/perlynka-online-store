@@ -4,25 +4,90 @@ import './AddShoesModal.scss';
 import { AddShoesModalType } from './AddShoesModalType';
 import { BasicInput } from '../../../../../ui/BasicInput';
 import { IconButton } from '../../../../../ui/IconButton';
-import { useAppSelector } from '../../../../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
+import { SizeEditItem } from '../../components/SizeEditItem';
+import { Button } from '../../../../../ui/Button';
+import { createShoes } from '../../../../../../store/reducers/shoes/ShoesActionCreatores';
+
+interface IEditSize {
+   sizeId: number;
+   count: number;
+}
 
 export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
-   const { brands, types, colors, seasons } = useAppSelector(
+   const { brands, types, colors, seasons, sizes } = useAppSelector(
       (state) => state.shoesReducer,
    );
+   const dispatch = useAppDispatch();
    const [model, setModel] = useState('');
    const [price, setPrice] = useState(0);
-   const [brand, setBrand] = useState<number>(0);
-   const [type, setType] = useState<number>(0);
-   const [color, setColor] = useState<number>(0);
-   const [season, setSeason] = useState<number>(0);
+   const [brand, setBrand] = useState(0);
+   const [type, setType] = useState(0);
+   const [color, setColor] = useState(0);
+   const [season, setSeason] = useState(0);
+   const [file, setFile] = useState<null | Blob>(null);
+   const [addSizes, setAddSizes] = useState<IEditSize[]>([]);
+   const [error, setError] = useState('');
+
+   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      setError('');
+      if (!brand) {
+         setError('Виберіть бренд');
+         return;
+      }
+      if (!type) {
+         setError('Виберіть тип');
+         return;
+      }
+      if (!color) {
+         setError('Виберіть колір');
+         return;
+      }
+      if (!season) {
+         setError('Виберіть сезон');
+         return;
+      }
+      if (addSizes.length === 0) {
+         setError('Виберіть кількість пар');
+         return;
+      }
+      const formData = new FormData();
+      formData.append('model', model);
+      formData.append('price', String(price));
+      formData.append('brandId', String(brand));
+      formData.append('typeId', String(type));
+      formData.append('colorId', String(color));
+      formData.append('seasonId', String(season));
+      formData.append('sizes', JSON.stringify(addSizes));
+      formData.append('file', file!);
+      dispatch(createShoes(formData));
+   };
+   const handleChangeSize = (sizeId: number, count: number) => {
+      if (count > 0) {
+         if (addSizes.find((el) => el.sizeId === sizeId)) {
+            setAddSizes((prev) =>
+               prev.map((el) => (el.sizeId === sizeId ? { ...el, count } : el)),
+            );
+            return;
+         } else {
+            setAddSizes((prev) => [...prev, { sizeId, count }]);
+            return;
+         }
+      }
+      setAddSizes((prev) => prev.filter((el) => el.sizeId !== sizeId));
+   };
+
+   const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) setFile(e.target.files[0]);
+   };
    return (
       <div className='add-shoes-modal__container'>
          <div className='add-shoes-modal__header'>
             <h3>Додати нове взуття</h3>
             <IconButton icon={faClose} onClick={onClose} />
          </div>
-         <form className='add-shoes-modal__main'>
+         <form onSubmit={handleSubmit} className='add-shoes-modal__main'>
             <div className='add-shoes-modal__label-container'>
                <label className='add-shoes-modal__label'>Модель</label>
                <BasicInput
@@ -38,6 +103,7 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
                   value={price}
                   placeholder='Введіть ціну'
                   type='number'
+                  min={1}
                   onChange={(e) => setPrice(Number(e.target.value))}
                   required={true}
                />
@@ -53,7 +119,9 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
                      Вибрати бренд
                   </option>
                   {brands?.map((brand) => (
-                     <option value={brand.id}>{brand.name}</option>
+                     <option key={brand.id} value={brand.id}>
+                        {brand.name}
+                     </option>
                   ))}
                </select>
                <select
@@ -66,7 +134,9 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
                      Вибрати тип
                   </option>
                   {types?.map((type) => (
-                     <option value={type.id}>{type.name}</option>
+                     <option key={type.id} value={type.id}>
+                        {type.name}
+                     </option>
                   ))}
                </select>
             </div>
@@ -81,7 +151,9 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
                      Вибрати колір
                   </option>
                   {colors?.map((color) => (
-                     <option value={color.id}>{color.name}</option>
+                     <option key={color.id} value={color.id}>
+                        {color.name}
+                     </option>
                   ))}
                </select>
                <select
@@ -94,9 +166,33 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
                      Вибрати сезон
                   </option>
                   {seasons?.map((season) => (
-                     <option value={season.id}>{season.name}</option>
+                     <option key={season.id} value={season.id}>
+                        {season.name}
+                     </option>
                   ))}
                </select>
+            </div>
+            <div className='add-shoes-modal__label-container'>
+               <label className='add-shoes-modal__label'>Фото</label>
+               <BasicInput
+                  onChange={handleChangeFile}
+                  type='file'
+                  required={true}
+               />
+            </div>
+            <div className='add-shoes-modal__sizes-container'>
+               {sizes?.map((size) => (
+                  <SizeEditItem
+                     key={size.id}
+                     onChangeSize={handleChangeSize}
+                     size={size.size}
+                     id={size.id}
+                  />
+               ))}
+            </div>
+            {error && <p className='add-shoes-modal__error'>{error}</p>}
+            <div className='add-shoes-modaladd-shoes-modal'>
+               <Button buttonClass='primary' buttonText='Додати' />
             </div>
          </form>
       </div>
