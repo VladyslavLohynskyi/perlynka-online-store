@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import './AddShoesModal.scss';
 import { AddShoesModalType } from './AddShoesModalType';
@@ -29,6 +29,7 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
    const [addSizes, setAddSizes] = useState<IEditSize[]>([]);
    const [error, setError] = useState('');
 
+   useEffect(() => {}, []);
    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       setError('');

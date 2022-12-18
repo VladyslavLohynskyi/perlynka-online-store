@@ -1,0 +1,27 @@
+.admin {
+   &__main {
+      padding: 15px;
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+   }
+
+   &__container {
+      display: flex;
+      min-width: 300px;
+   }
+
+   &__shoes {
+      width: 100%;
+      border: 1.5px solid #ced4da;
+      border-radius: 5px;
+
+      padding: 10px;
+   }
+
+   &__shoes-title {
+      font-size: 18px;
+      font-weight: 500;
+   }
+}
