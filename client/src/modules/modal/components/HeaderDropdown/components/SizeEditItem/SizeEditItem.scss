@@ -1,0 +1,21 @@
+.size-edit-item {
+   &__container {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 1fr;
+      width: 45px;
+      height: 45px;
+      border: 1.5px solid #ced4da;
+
+      & input {
+         width: 100%;
+      }
+   }
+
+   &__size {
+      width: 100%;
+      padding-top: 2px;
+      text-align: center;
+      border-bottom: 1.5px solid #ced4da;
+   }
+}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { NavItem } from './components/NavItem';
 import { faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons';
 import './Header.scss';
-import { IconMenuItem } from './components/IconMenuItem';
+import { IconButton } from '../IconButton';
 import { useAppSelector } from '../../../hooks/redux';
 import { useNavigate } from 'react-router-dom';
 import { RoutesEnum } from '../../../utils/constants';
@@ -33,8 +33,8 @@ export const Header: React.FC = () => {
                <NavItem text='Доставка' />
             </nav>
             <div className='icon-menu'>
-               <IconMenuItem icon={faCartShopping} />
-               <IconMenuItem icon={faUser} onClick={handleClickUserIcon} />
+               <IconButton icon={faCartShopping} />
+               <IconButton icon={faUser} onClick={handleClickUserIcon} />
             </div>
          </header>
          <Modal

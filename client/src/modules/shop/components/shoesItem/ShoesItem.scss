@@ -31,7 +31,10 @@
       height: 25%;
    }
    &__model {
+      overflow: hidden;
+      text-overflow: ellipsis;
       white-space: nowrap;
+      line-height: 1.5;
       font-size: 18px;
       font-weight: 500;
    }

@@ -4,7 +4,6 @@ import path from 'path';
 import { promises } from 'fs';
 import { Request, Response } from 'express';
 import ShoesSize from '../models/shoesSizeModel';
-import { where } from 'sequelize';
 import Brand from '../models/brandModel';
 
 interface IParseSizes {
@@ -68,6 +67,7 @@ class shoesController {
                ShoesSize.create({ sizeId, count, shoId: shoes.id }),
             );
          }
+         console.log(shoes);
          return res.json(shoes);
       } catch (error) {
          res.json('Shoes creating Error ');
@@ -79,6 +79,10 @@ class shoesController {
          const shoes = await Shoes.findAll({
             attributes: { exclude: ['brandId'] },
             include: [{ model: Brand, as: 'brand' }],
+            order: [
+               ['id', 'DESC'],
+               ['model', 'ASC'],
+            ],
          });
          return res.json(shoes);
       } catch (error) {

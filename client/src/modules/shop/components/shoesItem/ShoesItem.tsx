@@ -5,7 +5,6 @@ import './ShoesItem.scss';
 import { ShoesItemType } from './ShoesItemType';
 
 export const ShoesItem: React.FC<ShoesItemType> = ({ shoes }) => {
-   console.log(shoes);
    return (
       <div className='shoes-item'>
          <div className='shoes-item__id'>#{shoes.id}</div>

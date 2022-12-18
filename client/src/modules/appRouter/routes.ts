@@ -1,4 +1,5 @@
 import { RoutesEnum } from '../../utils/constants';
+import { Admin } from '../admin';
 import Auth from '../auth/Auth';
 import { Shop } from '../shop/pages';
 interface IRoutes {
@@ -42,6 +43,6 @@ export const publicRoutes: IRoutes[] = [
 export const adminRoutes: IRoutes[] = [
    {
       path: RoutesEnum.ADMIN,
-      Component: Shop,
+      Component: Admin,
    },
 ];
