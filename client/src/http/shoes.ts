@@ -1,8 +1,17 @@
-import { $host } from "."
-import { IShoes } from "../store/reducers/shoes/ShoesSlice";
+import { $host, $authHost } from '.';
+import { IShoes } from '../store/reducers/shoes/ShoesSlice';
 
-export const getShoesById = async (id:number) => {
-        const response = await $host.get<IShoes>(`shoes/${id}`);
-        const data = response.data
-        return data  
-}
+export const getAllShoes = async () => {
+   const responseShoes = await $host.get<IShoes[]>('/shoes');
+   const shoes = responseShoes.data;
+   return shoes;
+};
+
+export const getShoesById = async (id: number) => {
+   const responseShoes = await $host.get<IShoes>(`shoes/${id}`);
+   const shoes = responseShoes.data;
+   return shoes;
+};
+
+export const createShoes = (shoesData: FormData) =>
+   $authHost.post('/shoes', shoesData);
