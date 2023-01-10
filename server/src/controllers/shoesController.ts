@@ -118,9 +118,7 @@ class shoesController {
             where: { id },
          });
          if (!shoes) {
-            return res.json({
-               message: `Shoes with this id=${id} doesn't exist`,
-            });
+            return res.status(403).json(`Shoes with this id = ${id} doesn't exist`);
          }
          return res.json(shoes);
       } catch (error) {

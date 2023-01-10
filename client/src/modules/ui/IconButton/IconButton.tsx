@@ -3,9 +3,9 @@ import React from 'react';
 import './IconButton.scss';
 import { IconButtonType } from './IconButtonType';
 
-export const IconButton: React.FC<IconButtonType> = ({ icon, onClick }) => {
+export const IconButton: React.FC<IconButtonType> = ({ icon, ...props}) => {
    return (
-      <div className='icon-button' onClick={onClick}>
+      <div className='icon-button' {...props}>
          <FontAwesomeIcon icon={icon} className='fa-lg' />
       </div>
    );

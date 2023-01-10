@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { faClose } from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from 'react';
 import './AddShoesModal.scss';
 import { AddShoesModalType } from './AddShoesModalType';
-import { BasicInput } from '../../../../../ui/BasicInput';
-import { IconButton } from '../../../../../ui/IconButton';
 import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
 import { SizeEditItem } from '../../components/SizeEditItem';
 import { Button } from '../../../../../ui/Button';
 import { createShoes } from '../../../../../../store/reducers/shoes/ShoesActionCreatores';
+import { ModalHeader } from '../../components/ModalHeader';
+import { ModalInput } from '../../components/ModalInput';
 
 interface IEditSize {
    sizeId: number;
@@ -28,8 +27,6 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
    const [file, setFile] = useState<null | Blob>(null);
    const [addSizes, setAddSizes] = useState<IEditSize[]>([]);
    const [error, setError] = useState('');
-
-   useEffect(() => {}, []);
    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       setError('');
@@ -84,31 +81,23 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
    };
    return (
       <div className='add-shoes-modal__container'>
-         <div className='add-shoes-modal__header'>
-            <h3>Додати нове взуття</h3>
-            <IconButton icon={faClose} onClick={onClose} />
-         </div>
+        <ModalHeader text='Додати нове взуття' onClose={onClose}/>
          <form onSubmit={handleSubmit} className='add-shoes-modal__main'>
-            <div className='add-shoes-modal__label-container'>
-               <label className='add-shoes-modal__label'>Модель</label>
-               <BasicInput
-                  value={model}
-                  placeholder='Введіть назву моделі'
-                  onChange={(e) => setModel(e.target.value)}
-                  required={true}
-               />
-            </div>
-            <div className='add-shoes-modal__label-container'>
-               <label className='add-shoes-modal__label'>Ціна</label>
-               <BasicInput
-                  value={price}
-                  placeholder='Введіть ціну'
-                  type='number'
-                  min={1}
-                  onChange={(e) => setPrice(Number(e.target.value))}
-                  required={true}
-               />
-            </div>
+            <ModalInput
+               text='Модель'
+               value={model}
+               placeholder="Введіть назву моделі"
+               onChange={(e)=>setModel(e.target.value)}
+               required={true}
+            />
+            <ModalInput
+               text='Ціна'
+               value={price}
+               placeholder="Введіть ціну"
+               type="number"
+               onChange={(e)=>setPrice(Number(e.target.value))}
+               required={true}
+            />
             <div className='add-shoes-modal__selects-container'>
                <select
                   className='add-shoes-modal__select'
@@ -173,14 +162,12 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
                   ))}
                </select>
             </div>
-            <div className='add-shoes-modal__label-container'>
-               <label className='add-shoes-modal__label'>Фото</label>
-               <BasicInput
-                  onChange={handleChangeFile}
-                  type='file'
-                  required={true}
-               />
-            </div>
+            <ModalInput
+               text='Фото'
+               onChange={handleChangeFile}
+               type='file'
+               required={true}
+            />
             <div className='add-shoes-modal__sizes-container'>
                {sizes?.map((size) => (
                   <SizeEditItem

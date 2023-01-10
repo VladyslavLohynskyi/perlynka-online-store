@@ -1,0 +1,14 @@
+.modal-input{
+    &__container{
+        width: 95%;
+        max-width: 500px;
+    }
+    &__label{
+        width: fit-content;
+        position: relative;
+        font-size: 16px;
+        top: 5px;
+        left: 10px;
+        background-color: #fff;
+    }
+}
