@@ -6,8 +6,10 @@ export const SizeEditItem: React.FC<SizeEditItemType> = ({
    size,
    id,
    onChangeSize,
+   value,
 }) => {
-   const [count, setCount] = useState(0);
+   const [count, setCount] = useState(value || 0);
+
    useEffect(() => {
       onChangeSize(Number(id), count);
    }, [count]);

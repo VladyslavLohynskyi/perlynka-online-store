@@ -8,7 +8,7 @@ import { createShoes } from '../../../../../../store/reducers/shoes/ShoesActionC
 import { ModalHeader } from '../../components/ModalHeader';
 import { ModalInput } from '../../components/ModalInput';
 
-interface IEditSize {
+export interface IEditSize {
    sizeId: number;
    count: number;
 }
@@ -50,6 +50,10 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
          setError('Виберіть кількість пар');
          return;
       }
+      if (!file) {
+         setError('Виберіть фотографію');
+         return;
+      }
       const formData = new FormData();
       formData.append('model', model);
       formData.append('price', String(price));
@@ -58,7 +62,7 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
       formData.append('colorId', String(color));
       formData.append('seasonId', String(season));
       formData.append('sizes', JSON.stringify(addSizes));
-      formData.append('file', file!);
+      formData.append('file', file);
       dispatch(createShoes(formData));
    };
    const handleChangeSize = (sizeId: number, count: number) => {
@@ -81,21 +85,21 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
    };
    return (
       <div className='add-shoes-modal__container'>
-        <ModalHeader text='Додати нове взуття' onClose={onClose}/>
+         <ModalHeader text='Додати нове взуття' onClose={onClose} />
          <form onSubmit={handleSubmit} className='add-shoes-modal__main'>
             <ModalInput
                text='Модель'
                value={model}
-               placeholder="Введіть назву моделі"
-               onChange={(e)=>setModel(e.target.value)}
+               placeholder='Введіть назву моделі'
+               onChange={(e) => setModel(e.target.value)}
                required={true}
             />
             <ModalInput
                text='Ціна'
                value={price}
-               placeholder="Введіть ціну"
-               type="number"
-               onChange={(e)=>setPrice(Number(e.target.value))}
+               placeholder='Введіть ціну'
+               type='number'
+               onChange={(e) => setPrice(Number(e.target.value))}
                required={true}
             />
             <div className='add-shoes-modal__selects-container'>

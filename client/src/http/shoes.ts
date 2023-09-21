@@ -13,5 +13,8 @@ export const getShoesById = async (id: number) => {
    return shoes;
 };
 
-export const createShoes = (shoesData: FormData) =>
+export const createShoesReq = (shoesData: FormData) =>
    $authHost.post('/shoes', shoesData);
+
+export const updateShoesReq = (shoesData: FormData) =>
+   $authHost.put('/shoes', shoesData);

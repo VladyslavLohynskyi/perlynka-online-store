@@ -1,6 +1,10 @@
 import { AppDispatch } from '../../store';
 import { shoesSlice } from './ShoesSlice';
-import { getAllShoes } from '../../../http/shoes';
+import {
+   createShoesReq,
+   getAllShoes,
+   updateShoesReq,
+} from '../../../http/shoes';
 import { getAllBrands } from '../../../http/brands';
 import { getAllTypes } from '../../../http/types';
 import { getAllColors } from '../../../http/colors';
@@ -36,10 +40,22 @@ export const createShoes =
    (shoesData: FormData) => async (dispatch: AppDispatch) => {
       try {
          dispatch(shoesSlice.actions.shoesCreate());
-         await createShoes(shoesData);
+         await createShoesReq(shoesData);
          const shoes = await getAllShoes();
          dispatch(shoesSlice.actions.shoesCreateSuccess([...shoes]));
       } catch (error) {
          dispatch(shoesSlice.actions.shoesCreateError('creating Shoes Error'));
+      }
+   };
+
+export const updateShoes =
+   (shoesData: FormData) => async (dispatch: AppDispatch) => {
+      try {
+         dispatch(shoesSlice.actions.shoesUpdate());
+         await updateShoesReq(shoesData);
+         const shoes = await getAllShoes();
+         dispatch(shoesSlice.actions.shoesUpdateSuccess([...shoes]));
+      } catch (error) {
+         dispatch(shoesSlice.actions.shoesUpdateError('updating Shoes Error'));
       }
    };
