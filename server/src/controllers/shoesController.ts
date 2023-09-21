@@ -5,6 +5,7 @@ import { promises } from 'fs';
 import { Request, Response } from 'express';
 import ShoesSize from '../models/shoesSizeModel';
 import Brand from '../models/brandModel';
+import Size from '../models/sizeModel';
 
 interface IParseSizes {
    sizeId: number;
@@ -67,7 +68,7 @@ class shoesController {
                ShoesSize.create({ sizeId, count, shoId: shoes.id }),
             );
          }
-         console.log(shoes);
+
          return res.json(shoes);
       } catch (error) {
          res.json('Shoes creating Error ');
@@ -76,14 +77,7 @@ class shoesController {
 
    async getAll(req: Request, res: Response) {
       try {
-         const shoes = await Shoes.findAll({
-            attributes: { exclude: ['brandId'] },
-            include: [{ model: Brand, as: 'brand' }],
-            order: [
-               ['id', 'DESC'],
-               ['model', 'ASC'],
-            ],
-         });
+         const shoes = await Shoes.findAll();
          return res.json(shoes);
       } catch (error) {
          res.json('Shoes get all Error');
@@ -117,12 +111,33 @@ class shoesController {
          const shoes = await Shoes.findOne({
             where: { id },
          });
+         const sizes = await ShoesSize.findAll({ where: { shoId: id } });
          if (!shoes) {
-            return res.json({
-               message: `Shoes with this id=${id} doesn't exist`,
-            });
+            return res
+               .status(403)
+               .json(`Shoes with this id = ${id} doesn't exist`);
          }
-         return res.json(shoes);
+         const {
+            brandId,
+            colorId,
+            img,
+            price,
+            model,
+            seasonId,
+            typeId,
+            rating,
+         } = shoes;
+         return res.json({
+            brandId,
+            colorId,
+            img,
+            price,
+            model,
+            seasonId,
+            typeId,
+            rating,
+            sizes: [...sizes],
+         });
       } catch (error) {
          res.json('Getting One Error');
       }
@@ -143,7 +158,6 @@ class shoesController {
             );
             img.mv(path.resolve(__dirname, '..', 'static', shoes.img));
          }
-
          await Shoes.update(
             {
                model: model ? model : shoes.model,
@@ -162,12 +176,13 @@ class shoesController {
                   const shoesSize = await ShoesSize.findOne({
                      where: { sizeId, shoId: shoes.id },
                   });
-                  if (shoesSize) {
+                  if (shoesSize && shoesSize.count !== count) {
                      await ShoesSize.update(
                         { count },
                         { where: { sizeId, shoId: shoes.id } },
                      );
-                  } else {
+                  }
+                  if (shoesSize?.count !== count) {
                      await ShoesSize.create({
                         shoId: shoes.id,
                         count,

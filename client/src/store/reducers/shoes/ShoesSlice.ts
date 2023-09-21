@@ -9,7 +9,11 @@ export interface ISizeCategory {
    id: string;
    size: string;
 }
-
+export interface ISize {
+   count: number;
+   shoId: number;
+   sizeId: number;
+}
 export interface IShoes {
    id?: number;
    model: string;
@@ -19,7 +23,8 @@ export interface IShoes {
    typeId: number;
    colorId: number;
    seasonId: number;
-   brand: IBasicCategory;
+   brandId: number;
+   sizes: ISize[];
 }
 export interface IShoesState {
    types: IBasicCategory[] | null;
@@ -85,6 +90,22 @@ export const shoesSlice = createSlice({
       },
 
       shoesCreateError(state, action: PayloadAction<string>) {
+         state.isLoading = false;
+         state.error = action.payload;
+      },
+
+      shoesUpdate(state) {
+         state.isLoading = true;
+         state.error = '';
+      },
+
+      shoesUpdateSuccess(state, action: PayloadAction<IShoes[]>) {
+         state.isLoading = false;
+         state.error = '';
+         state.shoes = action.payload;
+      },
+
+      shoesUpdateError(state, action: PayloadAction<string>) {
          state.isLoading = false;
          state.error = action.payload;
       },
