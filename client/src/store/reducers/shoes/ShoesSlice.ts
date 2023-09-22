@@ -15,7 +15,7 @@ export interface ISize {
    sizeId: number;
 }
 export interface IShoes {
-   id?: number;
+   id: number;
    model: string;
    price: number;
    rating: number;
@@ -106,6 +106,21 @@ export const shoesSlice = createSlice({
       },
 
       shoesUpdateError(state, action: PayloadAction<string>) {
+         state.isLoading = false;
+         state.error = action.payload;
+      },
+      shoesDelete(state) {
+         state.isLoading = true;
+         state.error = '';
+      },
+
+      shoesDeleteSuccess(state, action: PayloadAction<number>) {
+         state.isLoading = false;
+         state.error = '';
+         state.shoes = state.shoes.filter((el) => el.id !== action.payload);
+      },
+
+      shoesDeleteError(state, action: PayloadAction<string>) {
          state.isLoading = false;
          state.error = action.payload;
       },

@@ -86,6 +86,7 @@ class shoesController {
 
    async deleteOne(req: Request, res: Response) {
       try {
+         console.log('yeah');
          const { id } = req.params;
 
          const shoes = await Shoes.findOne({ where: { id: id } });

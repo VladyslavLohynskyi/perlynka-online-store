@@ -37,6 +37,17 @@
       margin-left: 5px;
    }
 
+   &--delete {
+      color: #b60505;
+      border-color: #b60505;
+
+      &:hover {
+         color: #fff;
+         background-color: #b60505;
+         border-color: #b60505;
+      }
+   }
+
    &--primary {
       color: #198754;
       border-color: #198754;
