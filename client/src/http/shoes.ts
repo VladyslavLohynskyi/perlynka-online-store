@@ -18,3 +18,7 @@ export const createShoesReq = (shoesData: FormData) =>
 
 export const updateShoesReq = (shoesData: FormData) =>
    $authHost.put('/shoes', shoesData);
+
+export const deleteShoesByIdReq = async (id: number) => {
+   await $authHost.delete<IShoes>(`shoes/${id}`);
+};

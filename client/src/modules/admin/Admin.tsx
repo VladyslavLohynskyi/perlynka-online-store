@@ -4,10 +4,13 @@ import { EditShoesModal } from '../modal/components/HeaderDropdown/pages/EditSho
 import { Modal } from '../modal/pages';
 import { Button } from '../ui/Button';
 import './Admin.scss';
+import { DeleteShoesModal } from '../modal/components/HeaderDropdown/pages/DeleteShoesModal';
 
 export const Admin: React.FC = () => {
    const [isAddShoesModalOpened, setIsAddShoesModalOpened] = useState(false);
    const [isEditShoesModalOpened, setIsEditShoesModalOpened] = useState(false);
+   const [isDeleteShoesModalOpened, setIsDeleteShoesModalOpened] =
+      useState(false);
    return (
       <>
          <main className='admin__main'>
@@ -24,6 +27,11 @@ export const Admin: React.FC = () => {
                      buttonClass='secondary'
                      buttonClick={() => setIsEditShoesModalOpened(true)}
                   />
+                  <Button
+                     buttonText='Видалити'
+                     buttonClass='delete'
+                     buttonClick={() => setIsDeleteShoesModalOpened(true)}
+                  />
                </div>
             </div>
          </main>
@@ -39,8 +47,19 @@ export const Admin: React.FC = () => {
             isModalOpen={isEditShoesModalOpened}
             onClose={() => setIsEditShoesModalOpened(false)}
             onBlur={true}
-            modalPosition='shoes-modal-position'>
-            <EditShoesModal onClose={() => setIsEditShoesModalOpened(false)}/>
+            modalPosition='shoes-modal-position'
+         >
+            <EditShoesModal onClose={() => setIsEditShoesModalOpened(false)} />
+         </Modal>
+         <Modal
+            isModalOpen={isDeleteShoesModalOpened}
+            onClose={() => setIsDeleteShoesModalOpened(false)}
+            onBlur={true}
+            modalPosition='shoes-modal-position'
+         >
+            <DeleteShoesModal
+               onClose={() => setIsDeleteShoesModalOpened(false)}
+            />
          </Modal>
       </>
    );
