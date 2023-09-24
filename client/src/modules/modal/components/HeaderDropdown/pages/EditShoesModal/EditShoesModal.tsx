@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
 import { Button } from '../../../../../ui/Button';
 import { SizeEditItem } from '../../components/SizeEditItem';
 import { updateShoes } from '../../../../../../store/reducers/shoes/ShoesActionCreatores';
+import { ModalSearch } from '../../components/ModalSearch';
 
 export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
    const { brands, types, colors, seasons, sizes } = useAppSelector(
@@ -115,28 +116,12 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
       <div className='edit-shoes-modal__container'>
          <ModalHeader text='Редагувати Взуття' onClose={onClose} />
          <div className='edit-shoes-modal__main'>
-            <form
-               onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSubmitId();
-               }}
-               className='edit-shoes-modal__search'
-            >
-               <ModalInput
-                  text='Індефікатор'
-                  placeholder='Введіть ID'
-                  type='number'
-                  required={true}
-                  value={id}
-                  onChange={(e) => setId(Number(e.target.value))}
-                  min={1}
-               />
-               <IconButton
-                  icon={faSearch}
-                  onClick={handleSubmitId}
-                  style={{ marginTop: '10px' }}
-               />
-            </form>
+            <ModalSearch
+               id={id}
+               setId={setId}
+               handleSubmitId={handleSubmitId}
+               text='Введіть ID'
+            />
             {error && <p className='edit-shoes-modal__error'>{error}</p>}
             {foundShoes && (
                <form

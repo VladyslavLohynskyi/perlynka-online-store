@@ -11,10 +11,11 @@ import { baseURL } from '../../../../../../utils/constants';
 import { Button } from '../../../../../ui/Button';
 import { deleteShoes } from '../../../../../../store/reducers/shoes/ShoesActionCreatores';
 import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
+import { ModalSearch } from '../../components/ModalSearch/';
 export const DeleteShoesModal: React.FC<DeleteShoesModalType> = ({
    onClose,
 }) => {
-   const { brands, types, colors, seasons, sizes } = useAppSelector(
+   const { brands, types, colors, seasons } = useAppSelector(
       (state) => state.shoesReducer,
    );
    const [id, setId] = useState<number>(0);
@@ -32,28 +33,12 @@ export const DeleteShoesModal: React.FC<DeleteShoesModalType> = ({
       <div className='delete-shoes-modal__container'>
          <ModalHeader text='Видалити нове взуття' onClose={onClose} />
          <div className='edit-shoes-modal__main'>
-            <form
-               onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSubmitId();
-               }}
-               className='delete-shoes-modal__search'
-            >
-               <ModalInput
-                  text='Індефікатор'
-                  placeholder='Введіть ID'
-                  type='number'
-                  required={true}
-                  value={id}
-                  onChange={(e) => setId(Number(e.target.value))}
-                  min={1}
-               />
-               <IconButton
-                  icon={faSearch}
-                  onClick={handleSubmitId}
-                  style={{ marginTop: '10px' }}
-               />
-            </form>
+            <ModalSearch
+               id={id}
+               setId={setId}
+               handleSubmitId={handleSubmitId}
+               text='Введіть ID'
+            />
             {error && <p className='delete-shoes-modal__error'>{error}</p>}
             {foundShoes && (
                <div className='delete-shoes-modal__shoes-view'>
