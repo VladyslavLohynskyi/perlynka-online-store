@@ -10,10 +10,13 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { baseURL } from '../../../../../../utils/constants';
 import { Button } from '../../../../../ui/Button';
 import { deleteShoes } from '../../../../../../store/reducers/shoes/ShoesActionCreatores';
-import { useAppDispatch } from '../../../../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
 export const DeleteShoesModal: React.FC<DeleteShoesModalType> = ({
    onClose,
 }) => {
+   const { brands, types, colors, seasons, sizes } = useAppSelector(
+      (state) => state.shoesReducer,
+   );
    const [id, setId] = useState<number>(0);
    const [error, setError] = useState('');
    const [foundShoes, setFoundShoes] = useState<null | IShoes>(null);
@@ -55,14 +58,48 @@ export const DeleteShoesModal: React.FC<DeleteShoesModalType> = ({
             {foundShoes && (
                <div className='delete-shoes-modal__shoes-view'>
                   <div className='delete-shoes-modal___shoes-view-container'>
-                     <img src={baseURL + foundShoes.img} />
-                     <div>
+                     <div className='delete-shoes-modal___shoes-view-img-container'>
+                        <img
+                           style={{ width: '100%' }}
+                           src={baseURL + foundShoes.img}
+                        />
+                     </div>
+
+                     <div className='delete-shoes-modal___shoes-view-info-container'>
                         <p>Модель: {foundShoes.model}</p>
                         <p>Ціна: {foundShoes.price}</p>
-                        <p>Бренд: {foundShoes.brandId}</p>
-                        <p>Тип: {foundShoes.typeId}</p>
-                        <p>Сезон: {foundShoes.seasonId}</p>
-                        <p>Колір: {foundShoes.colorId}</p>
+                        <p>
+                           Бренд:{' '}
+                           {
+                              brands?.find(
+                                 (brand) => foundShoes.brandId === +brand.id,
+                              )?.name
+                           }
+                        </p>
+                        <p>
+                           Тип:{' '}
+                           {
+                              types?.find(
+                                 (type) => foundShoes.typeId === +type.id,
+                              )?.name
+                           }
+                        </p>
+                        <p>
+                           Сезон:{' '}
+                           {
+                              seasons?.find(
+                                 (season) => foundShoes.seasonId === +season.id,
+                              )?.name
+                           }
+                        </p>
+                        <p>
+                           Колір:{' '}
+                           {
+                              colors?.find(
+                                 (color) => foundShoes.colorId === +color.id,
+                              )?.name
+                           }
+                        </p>
                      </div>
                   </div>
                   <div>
