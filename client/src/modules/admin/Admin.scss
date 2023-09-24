@@ -12,15 +12,15 @@
       min-width: 300px;
    }
 
-   &__shoes {
+   &__panel {
       width: 100%;
       border: 1.5px solid #ced4da;
       border-radius: 5px;
-
       padding: 10px;
+      margin: 10px;
    }
 
-   &__shoes-title {
+   &__panel-title {
       font-size: 18px;
       font-weight: 500;
    }

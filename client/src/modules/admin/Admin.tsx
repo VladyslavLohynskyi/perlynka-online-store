@@ -11,12 +11,17 @@ export const Admin: React.FC = () => {
    const [isEditShoesModalOpened, setIsEditShoesModalOpened] = useState(false);
    const [isDeleteShoesModalOpened, setIsDeleteShoesModalOpened] =
       useState(false);
+
+   const [isAddBrandModalOpened, setIsAddBrandModalOpened] = useState(false);
+   const [isEditBrandModalOpened, setIsEditBrandModalOpened] = useState(false);
+   const [isDeleteBrandModalOpened, setIsDeleteBrandModalOpened] =
+      useState(false);
    return (
       <>
          <main className='admin__main'>
             <div className='admin__container'>
-               <div className='admin__shoes'>
-                  <p className='admin__shoes-title'>Взуття</p>
+               <div className='admin__panel'>
+                  <p className='admin__panel-title'>Взуття</p>
                   <Button
                      buttonText='Додати'
                      buttonClass='primary'
@@ -31,6 +36,24 @@ export const Admin: React.FC = () => {
                      buttonText='Видалити'
                      buttonClass='delete'
                      buttonClick={() => setIsDeleteShoesModalOpened(true)}
+                  />
+               </div>
+               <div className='admin__panel'>
+                  <p className='admin__panel-title'>Бренд</p>
+                  <Button
+                     buttonText='Додати'
+                     buttonClass='primary'
+                     buttonClick={() => setIsAddBrandModalOpened(true)}
+                  />
+                  <Button
+                     buttonText='Редагувати'
+                     buttonClass='secondary'
+                     buttonClick={() => setIsEditBrandModalOpened(true)}
+                  />
+                  <Button
+                     buttonText='Видалити'
+                     buttonClass='delete'
+                     buttonClick={() => setIsDeleteBrandModalOpened(true)}
                   />
                </div>
             </div>
