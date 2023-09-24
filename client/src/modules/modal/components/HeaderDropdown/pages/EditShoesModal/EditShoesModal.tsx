@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { EditShoesModalType } from './EditShoesModalType';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import './EditShoesModal.scss';
 import { ModalHeader } from '../../components/ModalHeader';
 import { ModalInput } from '../../components/ModalInput';
-import { IconButton } from '../../../../../ui/IconButton';
 import { getShoesById } from '../../../../../../http/shoes';
 import {
    IShoes,
@@ -132,7 +130,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                   className='edit-shoes-modal__edit-form'
                >
                   <div className='edit-shoes-modal___main-edit-container'>
-                     <img src={baseURL + foundShoes.img} />
+                     <img src={baseURL + foundShoes.img} alt='Взуття' />
                      <div>
                         <ModalInput
                            text='Фото'

@@ -2,11 +2,8 @@ import React, { useState } from 'react';
 import './DeleteShoesModal.scss';
 import { DeleteShoesModalType } from './DeleteShoesModalType';
 import { ModalHeader } from '../../components/ModalHeader';
-import { ModalInput } from '../../components/ModalInput';
-import { IconButton } from '../../../../../ui/IconButton';
 import { getShoesById } from '../../../../../../http/shoes';
 import { IShoes } from '../../../../../../store/reducers/shoes/ShoesSlice';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { baseURL } from '../../../../../../utils/constants';
 import { Button } from '../../../../../ui/Button';
 import { deleteShoes } from '../../../../../../store/reducers/shoes/ShoesActionCreatores';
@@ -47,6 +44,7 @@ export const DeleteShoesModal: React.FC<DeleteShoesModalType> = ({
                         <img
                            style={{ width: '100%' }}
                            src={baseURL + foundShoes.img}
+                           alt='Взуття'
                         />
                      </div>
 
