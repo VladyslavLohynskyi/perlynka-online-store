@@ -182,7 +182,7 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
                   />
                ))}
             </div>
-            {error && <p className='add-shoes-modal__error'>{error}</p>}
+            {error && <p className='modal__error'>{error}</p>}
             <div className='add-shoes-modaladd-shoes-modal'>
                <Button buttonClass='primary' buttonText='Додати' />
             </div>

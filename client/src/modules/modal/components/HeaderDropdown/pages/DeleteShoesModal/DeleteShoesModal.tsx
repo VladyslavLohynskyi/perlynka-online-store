@@ -36,7 +36,7 @@ export const DeleteShoesModal: React.FC<DeleteShoesModalType> = ({
                handleSubmitId={handleSubmitId}
                text='Введіть ID'
             />
-            {error && <p className='delete-shoes-modal__error'>{error}</p>}
+            {error && <p className='modal__error'>{error}</p>}
             {foundShoes && (
                <div className='delete-shoes-modal__shoes-view'>
                   <div className='delete-shoes-modal___shoes-view-container'>

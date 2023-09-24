@@ -10,6 +10,11 @@
       position: absolute;
       outline: none;
    }
+
+   &__error {
+      margin: 10px;
+      color: red;
+   }
 }
 
 .onBlur {
