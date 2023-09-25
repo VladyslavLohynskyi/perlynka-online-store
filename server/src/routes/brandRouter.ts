@@ -11,6 +11,7 @@ brandRouter.post(
    checkRoleMiddleware(Role.ADMIN),
    brandController.create,
 );
+
 brandRouter.get('/', brandController.getAll);
 brandRouter.delete(
    '/:id',

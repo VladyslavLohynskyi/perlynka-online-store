@@ -14,3 +14,9 @@ export const createBrandReq = async (name: string) => {
    const brand = brandsResponse.data;
    return brand;
 };
+
+export const getBrandByIdReq = async (id: number) => {
+   const brandResponse = await $host.get<IBasicCategory>('/brand/' + id);
+   const deletedId = brandResponse.data;
+   return deletedId;
+};

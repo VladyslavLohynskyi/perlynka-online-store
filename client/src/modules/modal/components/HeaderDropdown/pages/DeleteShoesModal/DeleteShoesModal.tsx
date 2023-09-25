@@ -26,14 +26,19 @@ export const DeleteShoesModal: React.FC<DeleteShoesModalType> = ({
          .then((data) => setFoundShoes(data))
          .catch((e) => setError(e.response.data));
    };
+
+   const handleChangeId = (newId: string) => {
+      setId(Number(newId));
+   };
    return (
       <div className='delete-shoes-modal__container'>
          <ModalHeader text='Видалити нове взуття' onClose={onClose} />
          <div className='edit-shoes-modal__main'>
             <ModalSearch
-               id={id}
-               setId={setId}
-               handleSubmitId={handleSubmitId}
+               value={id}
+               setValue={handleChangeId}
+               handleSubmitValue={handleSubmitId}
+               type={'number'}
                text='Введіть ID'
             />
             {error && <p className='modal__error'>{error}</p>}

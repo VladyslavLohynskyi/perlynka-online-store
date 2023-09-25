@@ -1,6 +1,9 @@
+import { Dispatch } from '@reduxjs/toolkit';
+
 export interface ModalSearchType {
-   handleSubmitId: () => void;
-   id: number;
-   setId: (id: number) => void;
+   handleSubmitValue: () => void;
+   value: number | string;
+   setValue: (value: string) => void;
    text: string;
+   type: 'string' | 'number';
 }
