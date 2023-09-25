@@ -45,7 +45,7 @@ export const createShoes =
          const shoes = await getAllShoes();
          dispatch(shoesSlice.actions.shoesCreateSuccess([...shoes]));
       } catch (error) {
-         dispatch(shoesSlice.actions.shoesCreateError('Creating Shoes Error'));
+         dispatch(shoesSlice.actions.error('Creating Shoes Error'));
       }
    };
 
@@ -57,7 +57,7 @@ export const updateShoes =
          const shoes = await getAllShoes();
          dispatch(shoesSlice.actions.shoesUpdateSuccess([...shoes]));
       } catch (error) {
-         dispatch(shoesSlice.actions.shoesUpdateError('Updating Shoes Error'));
+         dispatch(shoesSlice.actions.error('Updating Shoes Error'));
       }
    };
 
@@ -67,6 +67,6 @@ export const deleteShoes = (id: number) => async (dispatch: AppDispatch) => {
       await deleteShoesByIdReq(id);
       dispatch(shoesSlice.actions.shoesDeleteSuccess(id));
    } catch (error) {
-      dispatch(shoesSlice.actions.shoesUpdateError('Deleting Shoes Error'));
+      dispatch(shoesSlice.actions.error('Deleting Shoes Error'));
    }
 };

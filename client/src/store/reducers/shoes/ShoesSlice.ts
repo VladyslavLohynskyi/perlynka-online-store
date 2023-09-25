@@ -89,11 +89,6 @@ export const shoesSlice = createSlice({
          state.shoes = action.payload;
       },
 
-      shoesCreateError(state, action: PayloadAction<string>) {
-         state.isLoading = false;
-         state.error = action.payload;
-      },
-
       shoesUpdate(state) {
          state.isLoading = true;
          state.error = '';
@@ -105,10 +100,6 @@ export const shoesSlice = createSlice({
          state.shoes = action.payload;
       },
 
-      shoesUpdateError(state, action: PayloadAction<string>) {
-         state.isLoading = false;
-         state.error = action.payload;
-      },
       shoesDelete(state) {
          state.isLoading = true;
          state.error = '';
@@ -120,7 +111,19 @@ export const shoesSlice = createSlice({
          state.shoes = state.shoes.filter((el) => el.id !== action.payload);
       },
 
-      shoesDeleteError(state, action: PayloadAction<string>) {
+      brandCreate(state) {
+         state.isLoading = true;
+         state.error = '';
+      },
+
+      brandCreateSuccess(state, action: PayloadAction<IBasicCategory>) {
+         state.isLoading = false;
+         if (state.brands) {
+            state.brands = [...state.brands, action.payload];
+         }
+      },
+
+      error(state, action: PayloadAction<string>) {
          state.isLoading = false;
          state.error = action.payload;
       },

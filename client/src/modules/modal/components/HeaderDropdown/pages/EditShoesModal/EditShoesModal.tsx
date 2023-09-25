@@ -120,7 +120,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                handleSubmitId={handleSubmitId}
                text='Введіть ID'
             />
-            {error && <p className='edit-shoes-modal__error'>{error}</p>}
+            {error && <p className='modal__error'>{error}</p>}
             {foundShoes && (
                <form
                   onSubmit={(e) => {
