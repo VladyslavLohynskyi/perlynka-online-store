@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
 import { ModalHeader } from '../../components/ModalHeader';
 import { ModalInput } from '../../components/ModalInput';
 import { Button } from '../../../../../ui/Button';
+import { createBrand } from '../../../../../../store/reducers/shoes/BrandsActionCreatores';
 
 export const AddBrandModal: React.FC<AddBrandModalType> = ({ onClose }) => {
    const { brands } = useAppSelector((state) => state.shoesReducer);
@@ -12,12 +13,14 @@ export const AddBrandModal: React.FC<AddBrandModalType> = ({ onClose }) => {
 
    const [brand, setBrand] = useState('');
    const [error, setError] = useState('');
-   const handleSubmitName = () => {
+   const handleSubmitName = async () => {
       const existBrand = brands?.find(
          (existBrand) => existBrand.name === brand,
       );
       if (existBrand) {
          setError('Бренд з такою назвою вже існує');
+      } else {
+         await dispatch(createBrand(brand));
       }
    };
 
