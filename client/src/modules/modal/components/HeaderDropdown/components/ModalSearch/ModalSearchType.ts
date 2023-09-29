@@ -6,4 +6,5 @@ export interface ModalSearchType {
    setValue: (value: string) => void;
    text: string;
    type: 'string' | 'number';
+   label: string;
 }

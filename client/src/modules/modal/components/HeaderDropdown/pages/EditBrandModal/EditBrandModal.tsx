@@ -5,10 +5,9 @@ import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
 import { ModalHeader } from '../../components/ModalHeader';
 import { ModalInput } from '../../components/ModalInput';
 import { Button } from '../../../../../ui/Button';
-import { createBrand } from '../../../../../../store/reducers/shoes/BrandsActionCreatores';
+import { updateBrand } from '../../../../../../store/reducers/shoes/BrandsActionCreatores';
 import { ModalSearch } from '../../components/ModalSearch';
 import { IBasicCategory } from '../../../../../../store/reducers/shoes/ShoesSlice';
-import { getBrandByIdReq } from '../../../../../../http/brands';
 
 export const EditBrandModal: React.FC<EditBrandModalType> = ({ onClose }) => {
    const { brands } = useAppSelector((state) => state.shoesReducer);
@@ -52,6 +51,10 @@ export const EditBrandModal: React.FC<EditBrandModalType> = ({ onClose }) => {
       setName(newName);
    };
 
+   const handleUpdateName = () => {
+      dispatch(updateBrand(brand!));
+   };
+
    return (
       <div className='edit-brand-modal__container'>
          <ModalHeader text='Редагувати Бренд' onClose={onClose} />
@@ -60,6 +63,7 @@ export const EditBrandModal: React.FC<EditBrandModalType> = ({ onClose }) => {
                handleSubmitValue={() => handleSubmitName(name)}
                value={name}
                type='string'
+               label='Назва'
                setValue={handleChangeSearchName}
                text='Введіть назву бренду'
             />
@@ -76,6 +80,7 @@ export const EditBrandModal: React.FC<EditBrandModalType> = ({ onClose }) => {
                      buttonClass='secondary'
                      buttonText='Редагувати'
                      disabled={disable}
+                     buttonClick={handleUpdateName}
                   />
                </>
             )}

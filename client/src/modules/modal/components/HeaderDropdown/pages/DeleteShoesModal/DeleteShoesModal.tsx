@@ -35,6 +35,7 @@ export const DeleteShoesModal: React.FC<DeleteShoesModalType> = ({
          <ModalHeader text='Видалити нове взуття' onClose={onClose} />
          <div className='edit-shoes-modal__main'>
             <ModalSearch
+               label='Індефікатор'
                value={id}
                setValue={handleChangeId}
                handleSubmitValue={handleSubmitId}

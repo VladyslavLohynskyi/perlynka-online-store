@@ -11,6 +11,7 @@ export const ModalSearch: React.FC<ModalSearchType> = ({
    setValue,
    text,
    type,
+   label,
 }) => {
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setValue(e.target.value);
@@ -24,7 +25,7 @@ export const ModalSearch: React.FC<ModalSearchType> = ({
          className='search-modal__container'
       >
          <ModalInput
-            text='Індефікатор'
+            text={label}
             placeholder={text}
             type={type}
             required={true}

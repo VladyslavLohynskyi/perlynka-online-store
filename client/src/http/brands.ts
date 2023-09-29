@@ -20,3 +20,8 @@ export const getBrandByIdReq = async (id: number) => {
    const deletedId = brandResponse.data;
    return deletedId;
 };
+
+export const updateBrandReq = async (brand: IBasicCategory) => {
+   await $authHost.put('/brand', brand);
+   return brand;
+};
