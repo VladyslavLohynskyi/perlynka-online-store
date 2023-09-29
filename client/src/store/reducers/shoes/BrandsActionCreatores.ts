@@ -1,6 +1,6 @@
-import { createBrandReq } from '../../../http/brands';
+import { createBrandReq, updateBrandReq } from '../../../http/brands';
 import { AppDispatch } from '../../store';
-import { shoesSlice } from './ShoesSlice';
+import { IBasicCategory, shoesSlice } from './ShoesSlice';
 
 export const createBrand = (name: string) => async (dispatch: AppDispatch) => {
    try {
@@ -11,3 +11,15 @@ export const createBrand = (name: string) => async (dispatch: AppDispatch) => {
       dispatch(shoesSlice.actions.error('Creating Brand Error'));
    }
 };
+
+export const updateBrand =
+   (newBrand: IBasicCategory) => async (dispatch: AppDispatch) => {
+      try {
+         dispatch(shoesSlice.actions.brandUpdate());
+         const brand = await updateBrandReq(newBrand);
+
+         dispatch(shoesSlice.actions.brandUpdateSuccess(brand));
+      } catch (error) {
+         dispatch(shoesSlice.actions.error('Updating Brand Error'));
+      }
+   };

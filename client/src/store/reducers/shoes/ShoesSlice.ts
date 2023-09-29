@@ -123,6 +123,22 @@ export const shoesSlice = createSlice({
          }
       },
 
+      brandUpdate(state) {
+         state.isLoading = true;
+         state.error = '';
+      },
+
+      brandUpdateSuccess(state, action: PayloadAction<IBasicCategory>) {
+         state.isLoading = false;
+         if (state.brands) {
+            state.brands = state.brands.map((brand) => {
+               if (brand.id === action.payload.id) {
+                  return { ...brand, name: action.payload.name };
+               } else return brand;
+            });
+         }
+      },
+
       error(state, action: PayloadAction<string>) {
          state.isLoading = false;
          state.error = action.payload;

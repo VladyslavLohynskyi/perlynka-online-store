@@ -6,32 +6,36 @@ import { IconButton } from '../../../../../ui/IconButton';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 export const ModalSearch: React.FC<ModalSearchType> = ({
-   handleSubmitId,
-   id,
-   setId,
+   handleSubmitValue,
+   value,
+   setValue,
    text,
+   type,
+   label,
 }) => {
+   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setValue(e.target.value);
+   };
    return (
       <form
          onSubmit={(e) => {
             e.preventDefault();
-            handleSubmitId();
+            handleSubmitValue();
          }}
          className='search-modal__container'
       >
          <ModalInput
-            text='Індефікатор'
+            text={label}
             placeholder={text}
-            type='number'
+            type={type}
             required={true}
-            value={id}
-            onChange={(e) => setId(Number(e.target.value))}
-            min={1}
+            value={value}
+            onChange={handleChange}
          />
          <IconButton
             icon={faSearch}
-            onClick={handleSubmitId}
             style={{ marginTop: '10px' }}
+            onClick={handleSubmitValue}
          />
       </form>
    );
