@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
-import './EditBrandModal.scss';
-import { EditBrandModalType } from './EditBrandModalType';
+import './DeleteBrandModal.scss';
+import { DeleteBrandModalType } from './DeleteBrandModalType';
 import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
 import { ModalHeader } from '../../components/ModalHeader';
-import { ModalInput } from '../../components/ModalInput';
+
 import { Button } from '../../../../../ui/Button';
-import { updateBrand } from '../../../../../../store/reducers/shoes/BrandsActionCreatores';
+import { deleteBrand } from '../../../../../../store/reducers/shoes/BrandsActionCreatores';
 import { ModalSearch } from '../../components/ModalSearch';
 import { IBasicCategory } from '../../../../../../store/reducers/shoes/ShoesSlice';
 
-export const EditBrandModal: React.FC<EditBrandModalType> = ({ onClose }) => {
+export const DeleteBrandModal: React.FC<DeleteBrandModalType> = ({
+   onClose,
+}) => {
    const { brands } = useAppSelector((state) => state.shoesReducer);
    const dispatch = useAppDispatch();
    const [name, setName] = useState('');
    const [brand, setBrand] = useState<IBasicCategory | null>(null);
    const [error, setError] = useState('');
-   const [disable, setDisable] = useState(true);
 
    const handleSubmitName = (enteredName: string) => {
       setError('');
@@ -31,19 +32,6 @@ export const EditBrandModal: React.FC<EditBrandModalType> = ({ onClose }) => {
       }
    };
 
-   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-      let newName = e.target.value;
-      const firstLetterOfNewBrand = newName.charAt(0).toUpperCase();
-      newName = firstLetterOfNewBrand + newName.slice(1);
-      setBrand({ ...brand!, name: newName });
-      const existBrand = brands?.find(
-         (existBrand) => existBrand.name === newName,
-      );
-      if (existBrand) {
-         setDisable(true);
-      } else setDisable(false);
-   };
-
    const handleChangeSearchName = (value: string) => {
       let newName = value;
       const firstLetterOfNewBrand = newName.charAt(0).toUpperCase();
@@ -51,14 +39,14 @@ export const EditBrandModal: React.FC<EditBrandModalType> = ({ onClose }) => {
       setName(newName);
    };
 
-   const handleUpdateName = () => {
-      dispatch(updateBrand(brand!));
+   const handleDeleteBrand = () => {
+      dispatch(deleteBrand(+brand!.id));
    };
 
    return (
-      <div className='edit-brand-modal__container'>
-         <ModalHeader text='Редагувати Бренд' onClose={onClose} />
-         <div className='edit-brand-modal__main'>
+      <div className='delete-brand-modal__container'>
+         <ModalHeader text='Видалити Бренд' onClose={onClose} />
+         <div className='delete-brand-modal__main'>
             <ModalSearch
                handleSubmitValue={() => handleSubmitName(name)}
                value={name}
@@ -70,17 +58,15 @@ export const EditBrandModal: React.FC<EditBrandModalType> = ({ onClose }) => {
             {error && <p className='modal__error'>{error}</p>}
             {brand && (
                <>
-                  <ModalInput
-                     text='Введіть нову назву бренду'
-                     value={brand.name}
-                     onChange={handleChangeName}
-                  />
+                  <div className='delete-brand-modal__info'>
+                     <p>ID : {brand.id}</p>
+                     <p>Назва : {brand.name}</p>
+                  </div>
                   <Button
                      additionalClass='admin-modal-accept-btn'
-                     buttonClass='secondary'
-                     buttonText='Редагувати'
-                     disabled={disable}
-                     buttonClick={handleUpdateName}
+                     buttonClass='delete'
+                     buttonText='Видалити'
+                     buttonClick={handleDeleteBrand}
                   />
                </>
             )}

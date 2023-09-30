@@ -1,4 +1,8 @@
-import { createBrandReq, updateBrandReq } from '../../../http/brands';
+import {
+   createBrandReq,
+   deleteBrandByIdReq,
+   updateBrandReq,
+} from '../../../http/brands';
 import { AppDispatch } from '../../store';
 import { IBasicCategory, shoesSlice } from './ShoesSlice';
 
@@ -23,3 +27,14 @@ export const updateBrand =
          dispatch(shoesSlice.actions.error('Updating Brand Error'));
       }
    };
+
+export const deleteBrand = (id: number) => async (dispatch: AppDispatch) => {
+   try {
+      dispatch(shoesSlice.actions.brandDelete());
+      const brand = await deleteBrandByIdReq(id);
+
+      dispatch(shoesSlice.actions.brandDeleteSuccess(+brand.id));
+   } catch (error) {
+      dispatch(shoesSlice.actions.error('Updating Brand Error'));
+   }
+};

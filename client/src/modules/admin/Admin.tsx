@@ -7,6 +7,7 @@ import './Admin.scss';
 import { DeleteShoesModal } from '../modal/components/HeaderDropdown/pages/DeleteShoesModal';
 import { AddBrandModal } from '../modal/components/HeaderDropdown/pages/AddBrandModal';
 import { EditBrandModal } from '../modal/components/HeaderDropdown/pages/EditBrandModal';
+import { DeleteBrandModal } from '../modal/components/HeaderDropdown/pages/DeleteBrandModal';
 
 export const Admin: React.FC = () => {
    const [isAddShoesModalOpened, setIsAddShoesModalOpened] = useState(false);
@@ -101,6 +102,16 @@ export const Admin: React.FC = () => {
             modalPosition='shoes-modal-position'
          >
             <EditBrandModal onClose={() => setIsEditBrandModalOpened(false)} />
+         </Modal>
+         <Modal
+            isModalOpen={isDeleteBrandModalOpened}
+            onClose={() => setIsDeleteBrandModalOpened(false)}
+            onBlur={true}
+            modalPosition='shoes-modal-position'
+         >
+            <DeleteBrandModal
+               onClose={() => setIsDeleteBrandModalOpened(false)}
+            />
          </Modal>
       </>
    );

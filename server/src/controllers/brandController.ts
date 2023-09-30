@@ -1,5 +1,6 @@
 import Brand from '../models/brandModel';
 import { Request, Response } from 'express';
+import Shoes from '../models/shoesModel';
 
 interface brandCreateRequest extends Request {
    body: {
@@ -27,7 +28,9 @@ class brandController {
       const { id } = req.params;
       const brand = await Brand.findOne({ where: { id } });
       if (brand) {
+         await Shoes.destroy({ where: { brandId: id } });
          await Brand.destroy({ where: { id } });
+
          return res.json(brand);
       }
       return res.json({ message: 'Brand with this id is not exist' });
