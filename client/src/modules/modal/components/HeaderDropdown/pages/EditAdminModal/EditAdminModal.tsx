@@ -1,78 +1,81 @@
 import React, { useState } from 'react';
-import './EditBrandModal.scss';
-import { EditBrandModalType } from './EditBrandModalType';
-import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
+import './EditAdminModal.scss';
+import { EditAdminModalType } from './EditAdminModalType';
+import { useAppDispatch } from '../../../../../../hooks/redux';
 import { ModalHeader } from '../../components/ModalHeader';
 import { ModalInput } from '../../components/ModalInput';
 import { Button } from '../../../../../ui/Button';
-import { updateBrand } from '../../../../../../store/reducers/shoes/BrandsActionCreatores';
 import { ModalSearch } from '../../components/ModalSearch';
 import { IBasicCategory } from '../../../../../../store/reducers/shoes/ShoesSlice';
 
-export const EditBrandModal: React.FC<EditBrandModalType> = ({ onClose }) => {
-   const { brands } = useAppSelector((state) => state.shoesReducer);
+export const EditAdminModal: React.FC<EditAdminModalType> = ({
+   onClose,
+   nameValue,
+   listOfValues,
+   updateValue,
+}) => {
    const dispatch = useAppDispatch();
    const [name, setName] = useState('');
-   const [brand, setBrand] = useState<IBasicCategory | null>(null);
+   const [value, setValue] = useState<IBasicCategory | null>(null);
    const [error, setError] = useState('');
    const [disable, setDisable] = useState(true);
 
    const handleSubmitName = (enteredName: string) => {
       setError('');
-      const existBrand = brands?.find(
-         (existBrand) => existBrand.name === enteredName,
+      const existValue = listOfValues?.find(
+         (existValue) => existValue.name === enteredName,
       );
 
-      if (!existBrand) {
-         setError('Бренд з такою назвою не існує');
+      if (!existValue) {
+         setError(`${nameValue} з такою назвою не існує`);
       } else {
          setName('');
-         setBrand(existBrand);
+         setValue(existValue);
       }
    };
 
    const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
       let newName = e.target.value;
-      const firstLetterOfNewBrand = newName.charAt(0).toUpperCase();
-      newName = firstLetterOfNewBrand + newName.slice(1);
-      setBrand({ ...brand!, name: newName });
-      const existBrand = brands?.find(
-         (existBrand) => existBrand.name === newName,
+      const firstLetterOfNewValue = newName.charAt(0).toUpperCase();
+      newName = firstLetterOfNewValue + newName.slice(1);
+      setValue({ ...value!, name: newName });
+      const existValue = listOfValues?.find(
+         (existValue) => existValue.name === newName,
       );
-      if (existBrand) {
+      if (existValue) {
          setDisable(true);
       } else setDisable(false);
    };
 
-   const handleChangeSearchName = (value: string) => {
-      let newName = value;
-      const firstLetterOfNewBrand = newName.charAt(0).toUpperCase();
-      newName = firstLetterOfNewBrand + newName.slice(1);
+   const handleChangeSearchName = (text: string) => {
+      let newName = text;
+      const firstLetterOfNewValue = newName.charAt(0).toUpperCase();
+      newName = firstLetterOfNewValue + newName.slice(1);
       setName(newName);
    };
 
    const handleUpdateName = () => {
-      dispatch(updateBrand(brand!));
+      dispatch(updateValue(value!));
    };
 
    return (
-      <div className='edit-brand-modal__container'>
-         <ModalHeader text='Редагувати Бренд' onClose={onClose} />
-         <div className='edit-brand-modal__main'>
+      <div className='edit-admin-modal__container'>
+         <ModalHeader text={'Редагувати' + nameValue} onClose={onClose} />
+         <div className='edit-admin-modal__main'>
             <ModalSearch
                handleSubmitValue={() => handleSubmitName(name)}
                value={name}
                type='string'
                label='Назва'
                setValue={handleChangeSearchName}
-               text='Введіть назву бренду'
+               text={`Введіть назву ${nameValue}у`}
             />
             {error && <p className='modal__error'>{error}</p>}
-            {brand && (
+            {value && (
                <>
                   <ModalInput
-                     text='Введіть нову назву бренду'
-                     value={brand.name}
+                     text={`Введіть нову назву ${nameValue}у`}
+                     value={value.name}
                      onChange={handleChangeName}
                   />
                   <Button
