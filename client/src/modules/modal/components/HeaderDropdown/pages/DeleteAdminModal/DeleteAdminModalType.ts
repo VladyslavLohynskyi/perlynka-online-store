@@ -1,8 +1,8 @@
 import { IBasicCategory } from '../../../../../../store/reducers/shoes/ShoesSlice';
 
-export interface AddAdminModalType {
+export interface DeleteAdminModalType {
    onClose: () => void;
    nameValue: string;
    listOfValues: IBasicCategory[] | null;
-   createValue: (value: string) => any;
+   deleteValue: (id: number) => any;
 }

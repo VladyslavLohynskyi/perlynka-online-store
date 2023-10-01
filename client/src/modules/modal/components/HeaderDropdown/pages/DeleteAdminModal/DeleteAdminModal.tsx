@@ -1,72 +1,72 @@
 import React, { useState } from 'react';
-import './DeleteBrandModal.scss';
-import { DeleteBrandModalType } from './DeleteBrandModalType';
-import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
+import './DeleteAdminModal.scss';
+import { DeleteAdminModalType } from './DeleteAdminModalType';
+import { useAppDispatch } from '../../../../../../hooks/redux';
 import { ModalHeader } from '../../components/ModalHeader';
-
 import { Button } from '../../../../../ui/Button';
-import { deleteBrand } from '../../../../../../store/reducers/shoes/BrandsActionCreatores';
 import { ModalSearch } from '../../components/ModalSearch';
 import { IBasicCategory } from '../../../../../../store/reducers/shoes/ShoesSlice';
 
-export const DeleteBrandModal: React.FC<DeleteBrandModalType> = ({
+export const DeleteAdminModal: React.FC<DeleteAdminModalType> = ({
    onClose,
+   nameValue,
+   listOfValues,
+   deleteValue,
 }) => {
-   const { brands } = useAppSelector((state) => state.shoesReducer);
    const dispatch = useAppDispatch();
    const [name, setName] = useState('');
-   const [brand, setBrand] = useState<IBasicCategory | null>(null);
+   const [value, setValue] = useState<IBasicCategory | null>(null);
    const [error, setError] = useState('');
 
    const handleSubmitName = (enteredName: string) => {
       setError('');
-      const existBrand = brands?.find(
-         (existBrand) => existBrand.name === enteredName,
+      const existValue = listOfValues?.find(
+         (existValue) => existValue.name === enteredName,
       );
 
-      if (!existBrand) {
-         setError('Бренд з такою назвою не існує');
+      if (!existValue) {
+         setError(`${nameValue} з такою назвою не існує`);
       } else {
          setName('');
-         setBrand(existBrand);
+         setValue(existValue);
       }
    };
 
-   const handleChangeSearchName = (value: string) => {
-      let newName = value;
+   const handleChangeSearchName = (text: string) => {
+      let newName = text;
       const firstLetterOfNewBrand = newName.charAt(0).toUpperCase();
       newName = firstLetterOfNewBrand + newName.slice(1);
       setName(newName);
    };
 
-   const handleDeleteBrand = () => {
-      dispatch(deleteBrand(+brand!.id));
+   const handleDeleteValue = () => {
+      dispatch(deleteValue(+value!.id));
    };
 
    return (
-      <div className='delete-brand-modal__container'>
-         <ModalHeader text='Видалити Бренд' onClose={onClose} />
-         <div className='delete-brand-modal__main'>
+      <div className='delete-admin-modal__container'>
+         <ModalHeader text={'Видалити ' + nameValue} onClose={onClose} />
+         <div className='delete-admin-modal__main'>
             <ModalSearch
                handleSubmitValue={() => handleSubmitName(name)}
                value={name}
                type='string'
                label='Назва'
                setValue={handleChangeSearchName}
-               text='Введіть назву бренду'
+               text={`Введіть назву ${nameValue}у`}
             />
             {error && <p className='modal__error'>{error}</p>}
-            {brand && (
+            {value && (
                <>
-                  <div className='delete-brand-modal__info'>
-                     <p>ID : {brand.id}</p>
-                     <p>Назва : {brand.name}</p>
+                  <div className='delete-admin-modal__info'>
+                     <p>ID : {value.id}</p>
+                     <p>Назва : {value.name}</p>
                   </div>
                   <Button
                      additionalClass='admin-modal-accept-btn'
                      buttonClass='delete'
                      buttonText='Видалити'
-                     buttonClick={handleDeleteBrand}
+                     buttonClick={handleDeleteValue}
                   />
                </>
             )}
