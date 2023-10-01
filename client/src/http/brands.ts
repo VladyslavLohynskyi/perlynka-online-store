@@ -25,3 +25,9 @@ export const updateBrandReq = async (brand: IBasicCategory) => {
    await $authHost.put('/brand', brand);
    return brand;
 };
+
+export const deleteBrandByIdReq = async (id: number) => {
+   const brandResponse = await $authHost.delete<IBasicCategory>('/brand/' + id);
+   const deletedId = brandResponse.data;
+   return deletedId;
+};

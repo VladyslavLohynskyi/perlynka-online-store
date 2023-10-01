@@ -139,6 +139,23 @@ export const shoesSlice = createSlice({
          }
       },
 
+      brandDelete(state) {
+         state.isLoading = true;
+         state.error = '';
+      },
+
+      brandDeleteSuccess(state, action: PayloadAction<number>) {
+         state.isLoading = false;
+         state.shoes = state.shoes.filter(
+            (el) => el.brandId !== action.payload,
+         );
+         if (state.brands) {
+            state.brands = state.brands.filter(
+               (brand) => +brand.id !== action.payload,
+            );
+         }
+      },
+
       error(state, action: PayloadAction<string>) {
          state.isLoading = false;
          state.error = action.payload;
