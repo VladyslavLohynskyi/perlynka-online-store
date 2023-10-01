@@ -5,11 +5,15 @@ import { Modal } from '../modal/pages';
 import { Button } from '../ui/Button';
 import './Admin.scss';
 import { DeleteShoesModal } from '../modal/components/HeaderDropdown/pages/DeleteShoesModal';
-import { AddBrandModal } from '../modal/components/HeaderDropdown/pages/AddBrandModal';
+
 import { EditBrandModal } from '../modal/components/HeaderDropdown/pages/EditBrandModal';
 import { DeleteBrandModal } from '../modal/components/HeaderDropdown/pages/DeleteBrandModal';
+import { AddAdminModal } from '../modal/components/HeaderDropdown/pages/AddAdminModal';
+import { useAppSelector } from '../../hooks/redux';
+import { createBrand } from '../../store/reducers/shoes/BrandsActionCreatores';
 
 export const Admin: React.FC = () => {
+   const { brands } = useAppSelector((state) => state.shoesReducer);
    const [isAddShoesModalOpened, setIsAddShoesModalOpened] = useState(false);
    const [isEditShoesModalOpened, setIsEditShoesModalOpened] = useState(false);
    const [isDeleteShoesModalOpened, setIsDeleteShoesModalOpened] =
@@ -93,7 +97,12 @@ export const Admin: React.FC = () => {
             onBlur={true}
             modalPosition='shoes-modal-position'
          >
-            <AddBrandModal onClose={() => setIsAddBrandModalOpened(false)} />
+            <AddAdminModal
+               nameValue='Бренд'
+               onClose={() => setIsAddBrandModalOpened(false)}
+               listOfValues={brands}
+               createValue={createBrand}
+            />
          </Modal>
          <Modal
             isModalOpen={isEditBrandModalOpened}
