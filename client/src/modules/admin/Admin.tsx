@@ -19,9 +19,16 @@ import {
    deleteType,
    updateType,
 } from '../../store/reducers/shoes/TypesActionCreators';
+import {
+   createSeason,
+   deleteSeason,
+   updateSeason,
+} from '../../store/reducers/shoes/SeasonsActionCreatores';
 
 export const Admin: React.FC = () => {
-   const { brands, types } = useAppSelector((state) => state.shoesReducer);
+   const { brands, types, seasons } = useAppSelector(
+      (state) => state.shoesReducer,
+   );
    const [isAddShoesModalOpened, setIsAddShoesModalOpened] = useState(false);
    const [isEditShoesModalOpened, setIsEditShoesModalOpened] = useState(false);
    const [isDeleteShoesModalOpened, setIsDeleteShoesModalOpened] =
@@ -35,6 +42,12 @@ export const Admin: React.FC = () => {
    const [isAddTypeModalOpened, setIsAddTypeModalOpened] = useState(false);
    const [isEditTypeModalOpened, setIsEditTypeModalOpened] = useState(false);
    const [isDeleteTypeModalOpened, setIsDeleteTypeModalOpened] =
+      useState(false);
+
+   const [isAddSeasonModalOpened, setIsAddSeasonModalOpened] = useState(false);
+   const [isEditSeasonModalOpened, setIsEditSeasonModalOpened] =
+      useState(false);
+   const [isDeleteSeasonModalOpened, setIsDeleteSeasonModalOpened] =
       useState(false);
    return (
       <>
@@ -92,6 +105,24 @@ export const Admin: React.FC = () => {
                      buttonText='Видалити'
                      buttonClass='delete'
                      buttonClick={() => setIsDeleteTypeModalOpened(true)}
+                  />
+               </div>
+               <div className='admin__panel'>
+                  <p className='admin__panel-title'>Сезон</p>
+                  <Button
+                     buttonText='Додати'
+                     buttonClass='primary'
+                     buttonClick={() => setIsAddSeasonModalOpened(true)}
+                  />
+                  <Button
+                     buttonText='Редагувати'
+                     buttonClass='secondary'
+                     buttonClick={() => setIsEditSeasonModalOpened(true)}
+                  />
+                  <Button
+                     buttonText='Видалити'
+                     buttonClass='delete'
+                     buttonClick={() => setIsDeleteSeasonModalOpened(true)}
                   />
                </div>
             </div>
@@ -200,6 +231,47 @@ export const Admin: React.FC = () => {
                onClose={() => setIsDeleteTypeModalOpened(false)}
                listOfValues={types}
                deleteValue={deleteType}
+            />
+         </Modal>
+
+         <Modal
+            isModalOpen={isAddSeasonModalOpened}
+            onClose={() => setIsAddSeasonModalOpened(false)}
+            onBlur={true}
+            modalPosition='modal-position__admin'
+         >
+            <AddAdminModal
+               nameValue='Ceзон'
+               onClose={() => setIsAddSeasonModalOpened(false)}
+               listOfValues={seasons}
+               createValue={createSeason}
+            />
+         </Modal>
+         <Modal
+            isModalOpen={isEditSeasonModalOpened}
+            onClose={() => setIsEditSeasonModalOpened(false)}
+            onBlur={true}
+            modalPosition='modal-position__admin'
+         >
+            <EditAdminModal
+               nameValue='Сезон'
+               onClose={() => setIsEditSeasonModalOpened(false)}
+               listOfValues={seasons}
+               updateValue={updateSeason}
+            />
+         </Modal>
+
+         <Modal
+            isModalOpen={isDeleteSeasonModalOpened}
+            onClose={() => setIsDeleteSeasonModalOpened(false)}
+            onBlur={true}
+            modalPosition='modal-position__admin'
+         >
+            <DeleteAdminModal
+               nameValue='Тип'
+               onClose={() => setIsDeleteSeasonModalOpened(false)}
+               listOfValues={seasons}
+               deleteValue={deleteSeason}
             />
          </Modal>
       </>

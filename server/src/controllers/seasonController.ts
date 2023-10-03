@@ -1,5 +1,6 @@
 import Season from '../models/seasonModel';
 import { Request, Response } from 'express';
+import Shoes from '../models/shoesModel';
 
 interface seasonCreateRequest extends Request {
    body: {
@@ -27,6 +28,7 @@ class seasonController {
       const { id } = req.params;
       const season = await Season.findOne({ where: { id } });
       if (season) {
+         await Shoes.destroy({ where: { seasonId: id } });
          await Season.destroy({ where: { id } });
          return res.json(season);
       }
