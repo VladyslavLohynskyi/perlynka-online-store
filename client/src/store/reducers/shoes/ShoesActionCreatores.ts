@@ -14,7 +14,7 @@ import { getAllSizes } from '../../../http/sizes';
 
 export const preloadList = () => async (dispatch: AppDispatch) => {
    try {
-      dispatch(shoesSlice.actions.shoesPreloadList());
+      dispatch(shoesSlice.actions.start());
       const shoes = await getAllShoes();
       const brands = await getAllBrands();
       const types = await getAllTypes();
@@ -40,7 +40,7 @@ export const preloadList = () => async (dispatch: AppDispatch) => {
 export const createShoes =
    (shoesData: FormData) => async (dispatch: AppDispatch) => {
       try {
-         dispatch(shoesSlice.actions.shoesCreate());
+         dispatch(shoesSlice.actions.start());
          await createShoesReq(shoesData);
          const shoes = await getAllShoes();
          dispatch(shoesSlice.actions.shoesCreateSuccess([...shoes]));
@@ -52,7 +52,7 @@ export const createShoes =
 export const updateShoes =
    (shoesData: FormData) => async (dispatch: AppDispatch) => {
       try {
-         dispatch(shoesSlice.actions.shoesUpdate());
+         dispatch(shoesSlice.actions.start());
          await updateShoesReq(shoesData);
          const shoes = await getAllShoes();
          dispatch(shoesSlice.actions.shoesUpdateSuccess([...shoes]));
@@ -63,7 +63,7 @@ export const updateShoes =
 
 export const deleteShoes = (id: number) => async (dispatch: AppDispatch) => {
    try {
-      dispatch(shoesSlice.actions.shoesDelete());
+      dispatch(shoesSlice.actions.start());
       await deleteShoesByIdReq(id);
       dispatch(shoesSlice.actions.shoesDeleteSuccess(id));
    } catch (error) {
