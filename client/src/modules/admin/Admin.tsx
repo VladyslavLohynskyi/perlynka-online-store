@@ -14,9 +14,14 @@ import {
 } from '../../store/reducers/shoes/BrandsActionCreatores';
 import { EditAdminModal } from '../modal/components/HeaderDropdown/pages/EditAdminModal';
 import { DeleteAdminModal } from '../modal/components/HeaderDropdown/pages/DeleteAdminModal';
+import {
+   createType,
+   deleteType,
+   updateType,
+} from '../../store/reducers/shoes/TypesActionCreators';
 
 export const Admin: React.FC = () => {
-   const { brands } = useAppSelector((state) => state.shoesReducer);
+   const { brands, types } = useAppSelector((state) => state.shoesReducer);
    const [isAddShoesModalOpened, setIsAddShoesModalOpened] = useState(false);
    const [isEditShoesModalOpened, setIsEditShoesModalOpened] = useState(false);
    const [isDeleteShoesModalOpened, setIsDeleteShoesModalOpened] =
@@ -25,6 +30,11 @@ export const Admin: React.FC = () => {
    const [isAddBrandModalOpened, setIsAddBrandModalOpened] = useState(false);
    const [isEditBrandModalOpened, setIsEditBrandModalOpened] = useState(false);
    const [isDeleteBrandModalOpened, setIsDeleteBrandModalOpened] =
+      useState(false);
+
+   const [isAddTypeModalOpened, setIsAddTypeModalOpened] = useState(false);
+   const [isEditTypeModalOpened, setIsEditTypeModalOpened] = useState(false);
+   const [isDeleteTypeModalOpened, setIsDeleteTypeModalOpened] =
       useState(false);
    return (
       <>
@@ -66,13 +76,31 @@ export const Admin: React.FC = () => {
                      buttonClick={() => setIsDeleteBrandModalOpened(true)}
                   />
                </div>
+               <div className='admin__panel'>
+                  <p className='admin__panel-title'>Тип</p>
+                  <Button
+                     buttonText='Додати'
+                     buttonClass='primary'
+                     buttonClick={() => setIsAddTypeModalOpened(true)}
+                  />
+                  <Button
+                     buttonText='Редагувати'
+                     buttonClass='secondary'
+                     buttonClick={() => setIsEditTypeModalOpened(true)}
+                  />
+                  <Button
+                     buttonText='Видалити'
+                     buttonClass='delete'
+                     buttonClick={() => setIsDeleteTypeModalOpened(true)}
+                  />
+               </div>
             </div>
          </main>
          <Modal
             isModalOpen={isAddShoesModalOpened}
             onClose={() => setIsAddShoesModalOpened(false)}
             onBlur={true}
-            modalPosition='shoes-modal-position'
+            modalPosition='modal-position__admin'
          >
             <AddShoesModal onClose={() => setIsAddShoesModalOpened(false)} />
          </Modal>
@@ -80,7 +108,7 @@ export const Admin: React.FC = () => {
             isModalOpen={isEditShoesModalOpened}
             onClose={() => setIsEditShoesModalOpened(false)}
             onBlur={true}
-            modalPosition='shoes-modal-position'
+            modalPosition='modal-position__admin'
          >
             <EditShoesModal onClose={() => setIsEditShoesModalOpened(false)} />
          </Modal>
@@ -88,7 +116,7 @@ export const Admin: React.FC = () => {
             isModalOpen={isDeleteShoesModalOpened}
             onClose={() => setIsDeleteShoesModalOpened(false)}
             onBlur={true}
-            modalPosition='shoes-modal-position'
+            modalPosition='modal-position__admin'
          >
             <DeleteShoesModal
                onClose={() => setIsDeleteShoesModalOpened(false)}
@@ -98,7 +126,7 @@ export const Admin: React.FC = () => {
             isModalOpen={isAddBrandModalOpened}
             onClose={() => setIsAddBrandModalOpened(false)}
             onBlur={true}
-            modalPosition='shoes-modal-position'
+            modalPosition='modal-position__admin'
          >
             <AddAdminModal
                nameValue='Бренд'
@@ -111,7 +139,7 @@ export const Admin: React.FC = () => {
             isModalOpen={isEditBrandModalOpened}
             onClose={() => setIsEditBrandModalOpened(false)}
             onBlur={true}
-            modalPosition='shoes-modal-position'
+            modalPosition='modal-position__admin'
          >
             <EditAdminModal
                nameValue='Бренд'
@@ -124,13 +152,54 @@ export const Admin: React.FC = () => {
             isModalOpen={isDeleteBrandModalOpened}
             onClose={() => setIsDeleteBrandModalOpened(false)}
             onBlur={true}
-            modalPosition='shoes-modal-position'
+            modalPosition='modal-position__admin'
          >
             <DeleteAdminModal
                nameValue='Бренд'
-               onClose={() => setIsEditBrandModalOpened(false)}
+               onClose={() => setIsDeleteBrandModalOpened(false)}
                listOfValues={brands}
                deleteValue={deleteBrand}
+            />
+         </Modal>
+
+         <Modal
+            isModalOpen={isAddTypeModalOpened}
+            onClose={() => setIsAddTypeModalOpened(false)}
+            onBlur={true}
+            modalPosition='modal-position__admin'
+         >
+            <AddAdminModal
+               nameValue='Тип'
+               onClose={() => setIsAddTypeModalOpened(false)}
+               listOfValues={types}
+               createValue={createType}
+            />
+         </Modal>
+
+         <Modal
+            isModalOpen={isEditTypeModalOpened}
+            onClose={() => setIsEditTypeModalOpened(false)}
+            onBlur={true}
+            modalPosition='modal-position__admin'
+         >
+            <EditAdminModal
+               nameValue='Тип'
+               onClose={() => setIsEditTypeModalOpened(false)}
+               listOfValues={types}
+               updateValue={updateType}
+            />
+         </Modal>
+         <Modal
+            isModalOpen={isDeleteTypeModalOpened}
+            onClose={() => setIsDeleteTypeModalOpened(false)}
+            onBlur={true}
+            modalPosition='modal-position__admin'
+         >
+            <DeleteAdminModal
+               nameValue='Тип'
+               onClose={() => setIsDeleteTypeModalOpened(false)}
+               listOfValues={types}
+               deleteValue={deleteType}
             />
          </Modal>
       </>
