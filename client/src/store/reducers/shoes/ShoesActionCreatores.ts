@@ -6,20 +6,20 @@ import {
    getAllShoes,
    updateShoesReq,
 } from '../../../http/shoes';
-import { getAllBrands } from '../../../http/brands';
-import { getAllTypes } from '../../../http/types';
-import { getAllColors } from '../../../http/colors';
-import { getAllSeasons } from '../../../http/seasons';
+import BrandReq from '../../../http/brands';
+import TypeReq from '../../../http/types';
+import ColorReq from '../../../http/colors';
+import SeasonReq from '../../../http/seasons';
 import { getAllSizes } from '../../../http/sizes';
 
 export const preloadList = () => async (dispatch: AppDispatch) => {
    try {
       dispatch(shoesSlice.actions.start());
       const shoes = await getAllShoes();
-      const brands = await getAllBrands();
-      const types = await getAllTypes();
-      const colors = await getAllColors();
-      const seasons = await getAllSeasons();
+      const brands = await BrandReq.getAllElements();
+      const types = await TypeReq.getAllElements();
+      const colors = await ColorReq.getAllElements();
+      const seasons = await SeasonReq.getAllElements();
       const sizes = await getAllSizes();
 
       dispatch(

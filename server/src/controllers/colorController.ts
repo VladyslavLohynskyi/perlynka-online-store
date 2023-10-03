@@ -1,5 +1,6 @@
 import Color from '../models/colorModel';
 import { Request, Response } from 'express';
+import Shoes from '../models/shoesModel';
 
 interface colorCreateRequest extends Request {
    body: {
@@ -27,6 +28,7 @@ class colorController {
       const { id } = req.params;
       const color = await Color.findOne({ where: { id } });
       if (color) {
+         await Shoes.destroy({ where: { colorId: id } });
          await Color.destroy({ where: { id } });
          return res.json(color);
       }

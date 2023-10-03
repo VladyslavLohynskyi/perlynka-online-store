@@ -1,3 +1,4 @@
+import Shoes from '../models/shoesModel';
 import Type from '../models/typeModel';
 import { Request, Response } from 'express';
 
@@ -27,6 +28,7 @@ class TypeController {
       const { id } = req.params;
       const type = await Type.findOne({ where: { id } });
       if (type) {
+         await Shoes.destroy({ where: { typeId: id } });
          await Type.destroy({ where: { id } });
          return res.json(type);
       }

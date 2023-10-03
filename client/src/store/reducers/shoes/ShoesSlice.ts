@@ -157,6 +157,36 @@ export const shoesSlice = createSlice({
          }
       },
 
+      seasonDeleteSuccess(state, action: PayloadAction<number>) {
+         state.isLoading = false;
+         state.shoes = state.shoes.filter(
+            (el) => el.seasonId !== action.payload,
+         );
+         if (state.seasons) {
+            state.seasons = state.seasons.filter(
+               (season) => +season.id !== action.payload,
+            );
+         }
+      },
+
+      seasonCreateSuccess(state, action: PayloadAction<IBasicCategory>) {
+         state.isLoading = false;
+         if (state.seasons) {
+            state.seasons = [...state.seasons, action.payload];
+         }
+      },
+
+      seasonUpdateSuccess(state, action: PayloadAction<IBasicCategory>) {
+         state.isLoading = false;
+         if (state.seasons) {
+            state.seasons = state.seasons.map((season) => {
+               if (season.id === action.payload.id) {
+                  return { ...season, name: action.payload.name };
+               } else return season;
+            });
+         }
+      },
+
       error(state, action: PayloadAction<string>) {
          state.isLoading = false;
          state.error = action.payload;
