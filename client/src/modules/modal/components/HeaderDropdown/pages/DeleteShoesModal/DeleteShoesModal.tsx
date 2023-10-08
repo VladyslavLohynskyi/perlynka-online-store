@@ -6,7 +6,7 @@ import { getShoesById } from '../../../../../../http/shoes';
 import { IShoes } from '../../../../../../store/reducers/shoes/ShoesSlice';
 import { baseURL } from '../../../../../../utils/constants';
 import { Button } from '../../../../../ui/Button';
-import { deleteShoes } from '../../../../../../store/reducers/shoes/ShoesActionCreatores';
+import { deleteShoes } from '../../../../../../store/reducers/shoes/ShoesActionCreators';
 import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
 import { ModalSearch } from '../../components/ModalSearch/';
 export const DeleteShoesModal: React.FC<DeleteShoesModalType> = ({

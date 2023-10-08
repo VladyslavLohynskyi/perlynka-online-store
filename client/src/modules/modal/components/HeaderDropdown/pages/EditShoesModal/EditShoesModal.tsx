@@ -12,7 +12,7 @@ import { baseURL } from '../../../../../../utils/constants';
 import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
 import { Button } from '../../../../../ui/Button';
 import { SizeEditItem } from '../../components/SizeEditItem';
-import { updateShoes } from '../../../../../../store/reducers/shoes/ShoesActionCreatores';
+import { updateShoes } from '../../../../../../store/reducers/shoes/ShoesActionCreators';
 import { ModalSearch } from '../../components/ModalSearch';
 
 export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {

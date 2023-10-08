@@ -2,8 +2,8 @@ import { FC, useEffect } from 'react';
 import './App.scss';
 import { useAppDispatch, useAppSelector } from './hooks/redux';
 import { Main } from './modules/main/pages/Main';
-import { preloadList } from './store/reducers/shoes/ShoesActionCreatores';
-import { authUser } from './store/reducers/user/UserActionCreatores';
+import { preloadList } from './store/reducers/shoes/ShoesActionCreators';
+import { authUser } from './store/reducers/user/UserActionCreators';
 
 const App: FC = () => {
    const dispatch = useAppDispatch();
