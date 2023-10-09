@@ -29,9 +29,10 @@ class userController {
          return res.json('User with this email has already exist');
       }
       const hashPassword = await bcrypt.hash(password, 5);
+      const users = await User.findAll();
       const user = await User.create({
          email,
-         role: Role.USER,
+         role: users.length ? Role.USER : Role.ADMIN,
          password: hashPassword,
       });
       const basket = await Basket.create({ userId: user.id });
