@@ -11,7 +11,7 @@ import {
    createBrand,
    deleteBrand,
    updateBrand,
-} from '../../store/reducers/shoes/BrandsActionCreatores';
+} from '../../store/reducers/shoes/BrandsActionCreators';
 import { EditAdminModal } from '../modal/components/HeaderDropdown/pages/EditAdminModal';
 import { DeleteAdminModal } from '../modal/components/HeaderDropdown/pages/DeleteAdminModal';
 import {
@@ -23,10 +23,16 @@ import {
    createSeason,
    deleteSeason,
    updateSeason,
-} from '../../store/reducers/shoes/SeasonsActionCreatores';
+} from '../../store/reducers/shoes/SeasonsActionCreators';
+import {
+   createColor,
+   deleteColor,
+   updateColor,
+} from '../../store/reducers/shoes/ColorsActionCreators';
+import { HorizontalLine } from '../ui/HorizontalLine';
 
 export const Admin: React.FC = () => {
-   const { brands, types, seasons } = useAppSelector(
+   const { brands, types, seasons, colors } = useAppSelector(
       (state) => state.shoesReducer,
    );
    const [isAddShoesModalOpened, setIsAddShoesModalOpened] = useState(false);
@@ -49,9 +55,18 @@ export const Admin: React.FC = () => {
       useState(false);
    const [isDeleteSeasonModalOpened, setIsDeleteSeasonModalOpened] =
       useState(false);
+
+   const [isAddColorModalOpened, setIsAddColorModalOpened] = useState(false);
+   const [isEditColorModalOpened, setIsEditColorModalOpened] = useState(false);
+   const [isDeleteColorModalOpened, setIsDeleteColorModalOpened] =
+      useState(false);
    return (
       <>
          <main className='admin__main'>
+            <div className='admin__header-container'>
+               <h2> Сторінка Керування Сайтом </h2>
+               <HorizontalLine />
+            </div>
             <div className='admin__container'>
                <div className='admin__panel'>
                   <p className='admin__panel-title'>Взуття</p>
@@ -123,6 +138,24 @@ export const Admin: React.FC = () => {
                      buttonText='Видалити'
                      buttonClass='delete'
                      buttonClick={() => setIsDeleteSeasonModalOpened(true)}
+                  />
+               </div>
+               <div className='admin__panel'>
+                  <p className='admin__panel-title'>Колір</p>
+                  <Button
+                     buttonText='Додати'
+                     buttonClass='primary'
+                     buttonClick={() => setIsAddColorModalOpened(true)}
+                  />
+                  <Button
+                     buttonText='Редагувати'
+                     buttonClass='secondary'
+                     buttonClick={() => setIsEditColorModalOpened(true)}
+                  />
+                  <Button
+                     buttonText='Видалити'
+                     buttonClass='delete'
+                     buttonClick={() => setIsDeleteColorModalOpened(true)}
                   />
                </div>
             </div>
@@ -268,10 +301,51 @@ export const Admin: React.FC = () => {
             modalPosition='modal-position__admin'
          >
             <DeleteAdminModal
-               nameValue='Тип'
+               nameValue='Cезон'
                onClose={() => setIsDeleteSeasonModalOpened(false)}
                listOfValues={seasons}
                deleteValue={deleteSeason}
+            />
+         </Modal>
+
+         <Modal
+            isModalOpen={isAddColorModalOpened}
+            onClose={() => setIsAddColorModalOpened(false)}
+            onBlur={true}
+            modalPosition='modal-position__admin'
+         >
+            <AddAdminModal
+               nameValue='Колір'
+               onClose={() => setIsAddColorModalOpened(false)}
+               listOfValues={colors}
+               createValue={createColor}
+            />
+         </Modal>
+
+         <Modal
+            isModalOpen={isEditColorModalOpened}
+            onClose={() => setIsEditColorModalOpened(false)}
+            onBlur={true}
+            modalPosition='modal-position__admin'
+         >
+            <EditAdminModal
+               nameValue='Колір'
+               onClose={() => setIsEditColorModalOpened(false)}
+               listOfValues={colors}
+               updateValue={updateColor}
+            />
+         </Modal>
+         <Modal
+            isModalOpen={isDeleteColorModalOpened}
+            onClose={() => setIsDeleteColorModalOpened(false)}
+            onBlur={true}
+            modalPosition='modal-position__admin'
+         >
+            <DeleteAdminModal
+               nameValue='Колір'
+               onClose={() => setIsDeleteColorModalOpened(false)}
+               listOfValues={colors}
+               deleteValue={deleteColor}
             />
          </Modal>
       </>

@@ -2,6 +2,7 @@
    &__main {
       padding: 15px;
       display: flex;
+      flex-direction: column;
       width: 100%;
       align-items: center;
       justify-content: center;
@@ -9,11 +10,14 @@
 
    &__container {
       display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       min-width: 300px;
    }
 
    &__panel {
-      width: 100%;
+      min-width: 150px;
+      max-width: 300px;
       border: 1.5px solid #ced4da;
       border-radius: 5px;
       padding: 10px;
@@ -23,5 +27,17 @@
    &__panel-title {
       font-size: 18px;
       font-weight: 500;
+   }
+
+   &__header-container {
+      width: 100%;
+      display: flex;
+
+      flex-direction: column;
+      & h2 {
+         align-self: center;
+         font-size: 1.5em;
+         font-weight: 600;
+      }
    }
 }

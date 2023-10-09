@@ -4,7 +4,7 @@ import { AddShoesModalType } from './AddShoesModalType';
 import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
 import { SizeEditItem } from '../../components/SizeEditItem';
 import { Button } from '../../../../../ui/Button';
-import { createShoes } from '../../../../../../store/reducers/shoes/ShoesActionCreatores';
+import { createShoes } from '../../../../../../store/reducers/shoes/ShoesActionCreators';
 import { ModalHeader } from '../../components/ModalHeader';
 import { ModalInput } from '../../components/ModalInput';
 

@@ -4,7 +4,7 @@ import './HeaderDropdown.scss';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
 import { RoutesEnum } from '../../../../../../utils/constants';
-import { logOutUser } from '../../../../../../store/reducers/user/UserActionCreatores';
+import { logOutUser } from '../../../../../../store/reducers/user/UserActionCreators';
 import { HeaderDropdownType } from './HeaderDropdownType';
 
 export const HeaderDropdown: React.FC<HeaderDropdownType> = ({ onClose }) => {

@@ -187,6 +187,36 @@ export const shoesSlice = createSlice({
          }
       },
 
+      colorDeleteSuccess(state, action: PayloadAction<number>) {
+         state.isLoading = false;
+         state.shoes = state.shoes.filter(
+            (el) => el.colorId !== action.payload,
+         );
+         if (state.colors) {
+            state.colors = state.colors.filter(
+               (color) => +color.id !== action.payload,
+            );
+         }
+      },
+
+      colorCreateSuccess(state, action: PayloadAction<IBasicCategory>) {
+         state.isLoading = false;
+         if (state.colors) {
+            state.colors = [...state.colors, action.payload];
+         }
+      },
+
+      colorUpdateSuccess(state, action: PayloadAction<IBasicCategory>) {
+         state.isLoading = false;
+         if (state.colors) {
+            state.colors = state.colors.map((color) => {
+               if (color.id === action.payload.id) {
+                  return { ...color, name: action.payload.name };
+               } else return color;
+            });
+         }
+      },
+
       error(state, action: PayloadAction<string>) {
          state.isLoading = false;
          state.error = action.payload;

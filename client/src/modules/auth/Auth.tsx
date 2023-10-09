@@ -4,7 +4,7 @@ import { useAppDispatch } from '../../hooks/redux';
 import {
    loginUser,
    registrationUser,
-} from '../../store/reducers/user/UserActionCreatores';
+} from '../../store/reducers/user/UserActionCreators';
 import { RoutesEnum } from '../../utils/constants';
 import './Auth.scss';
 const Auth = () => {
