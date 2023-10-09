@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AddShoesModal } from '../modal/components/HeaderDropdown';
 import { EditShoesModal } from '../modal/components/HeaderDropdown/pages/EditShoesModal';
 import { Modal } from '../modal/pages';
@@ -6,7 +6,7 @@ import { Button } from '../ui/Button';
 import './Admin.scss';
 import { DeleteShoesModal } from '../modal/components/HeaderDropdown/pages/DeleteShoesModal';
 import { AddAdminModal } from '../modal/components/HeaderDropdown/pages/AddAdminModal';
-import { useAppSelector } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import {
    createBrand,
    deleteBrand,
@@ -30,11 +30,18 @@ import {
    updateColor,
 } from '../../store/reducers/shoes/ColorsActionCreators';
 import { HorizontalLine } from '../ui/HorizontalLine';
+import { getAllAdmins } from '../../store/reducers/admins/AdminsActionCreators';
+import { AdminInfoItem } from './components/AdminInfoItem';
 
 export const Admin: React.FC = () => {
    const { brands, types, seasons, colors } = useAppSelector(
       (state) => state.shoesReducer,
    );
+   const { admins, isLoading } = useAppSelector((state) => state.adminsReducer);
+   const dispatch = useAppDispatch();
+   useEffect(() => {
+      dispatch(getAllAdmins());
+   }, []);
    const [isAddShoesModalOpened, setIsAddShoesModalOpened] = useState(false);
    const [isEditShoesModalOpened, setIsEditShoesModalOpened] = useState(false);
    const [isDeleteShoesModalOpened, setIsDeleteShoesModalOpened] =
@@ -67,97 +74,111 @@ export const Admin: React.FC = () => {
                <h2> Сторінка Керування Сайтом </h2>
                <HorizontalLine />
             </div>
-            <div className='admin__container'>
-               <div className='admin__panel'>
-                  <p className='admin__panel-title'>Взуття</p>
-                  <Button
-                     buttonText='Додати'
-                     buttonClass='primary'
-                     buttonClick={() => setIsAddShoesModalOpened(true)}
-                  />
-                  <Button
-                     buttonText='Редагувати'
-                     buttonClass='secondary'
-                     buttonClick={() => setIsEditShoesModalOpened(true)}
-                  />
-                  <Button
-                     buttonText='Видалити'
-                     buttonClass='delete'
-                     buttonClick={() => setIsDeleteShoesModalOpened(true)}
-                  />
+            <div className='admin__manage-shoes-container'>
+               <div className='admin__manage-shoes'>
+                  <div className='admin__panel'>
+                     <p className='admin__panel-title'>Взуття</p>
+                     <Button
+                        buttonText='Додати'
+                        buttonClass='primary'
+                        buttonClick={() => setIsAddShoesModalOpened(true)}
+                     />
+                     <Button
+                        buttonText='Редагувати'
+                        buttonClass='secondary'
+                        buttonClick={() => setIsEditShoesModalOpened(true)}
+                     />
+                     <Button
+                        buttonText='Видалити'
+                        buttonClass='delete'
+                        buttonClick={() => setIsDeleteShoesModalOpened(true)}
+                     />
+                  </div>
+                  <div className='admin__panel'>
+                     <p className='admin__panel-title'>Бренд</p>
+                     <Button
+                        buttonText='Додати'
+                        buttonClass='primary'
+                        buttonClick={() => setIsAddBrandModalOpened(true)}
+                     />
+                     <Button
+                        buttonText='Редагувати'
+                        buttonClass='secondary'
+                        buttonClick={() => setIsEditBrandModalOpened(true)}
+                     />
+                     <Button
+                        buttonText='Видалити'
+                        buttonClass='delete'
+                        buttonClick={() => setIsDeleteBrandModalOpened(true)}
+                     />
+                  </div>
+                  <div className='admin__panel'>
+                     <p className='admin__panel-title'>Тип</p>
+                     <Button
+                        buttonText='Додати'
+                        buttonClass='primary'
+                        buttonClick={() => setIsAddTypeModalOpened(true)}
+                     />
+                     <Button
+                        buttonText='Редагувати'
+                        buttonClass='secondary'
+                        buttonClick={() => setIsEditTypeModalOpened(true)}
+                     />
+                     <Button
+                        buttonText='Видалити'
+                        buttonClass='delete'
+                        buttonClick={() => setIsDeleteTypeModalOpened(true)}
+                     />
+                  </div>
+                  <div className='admin__panel'>
+                     <p className='admin__panel-title'>Сезон</p>
+                     <Button
+                        buttonText='Додати'
+                        buttonClass='primary'
+                        buttonClick={() => setIsAddSeasonModalOpened(true)}
+                     />
+                     <Button
+                        buttonText='Редагувати'
+                        buttonClass='secondary'
+                        buttonClick={() => setIsEditSeasonModalOpened(true)}
+                     />
+                     <Button
+                        buttonText='Видалити'
+                        buttonClass='delete'
+                        buttonClick={() => setIsDeleteSeasonModalOpened(true)}
+                     />
+                  </div>
+                  <div className='admin__panel'>
+                     <p className='admin__panel-title'>Колір</p>
+                     <Button
+                        buttonText='Додати'
+                        buttonClass='primary'
+                        buttonClick={() => setIsAddColorModalOpened(true)}
+                     />
+                     <Button
+                        buttonText='Редагувати'
+                        buttonClass='secondary'
+                        buttonClick={() => setIsEditColorModalOpened(true)}
+                     />
+                     <Button
+                        buttonText='Видалити'
+                        buttonClass='delete'
+                        buttonClick={() => setIsDeleteColorModalOpened(true)}
+                     />
+                  </div>
                </div>
-               <div className='admin__panel'>
-                  <p className='admin__panel-title'>Бренд</p>
-                  <Button
-                     buttonText='Додати'
-                     buttonClass='primary'
-                     buttonClick={() => setIsAddBrandModalOpened(true)}
-                  />
-                  <Button
-                     buttonText='Редагувати'
-                     buttonClass='secondary'
-                     buttonClick={() => setIsEditBrandModalOpened(true)}
-                  />
-                  <Button
-                     buttonText='Видалити'
-                     buttonClass='delete'
-                     buttonClick={() => setIsDeleteBrandModalOpened(true)}
-                  />
+               <HorizontalLine />
+            </div>
+
+            <div className='admin__manage-user__container'>
+               <div className='admin__manage-user__admins-info'>
+                  <h3 className='admin__manage-user__header'>Продавці:</h3>
+                  {!isLoading &&
+                     admins.map((admin) => (
+                        <AdminInfoItem key={admin.id} admin={admin} />
+                     ))}
                </div>
-               <div className='admin__panel'>
-                  <p className='admin__panel-title'>Тип</p>
-                  <Button
-                     buttonText='Додати'
-                     buttonClass='primary'
-                     buttonClick={() => setIsAddTypeModalOpened(true)}
-                  />
-                  <Button
-                     buttonText='Редагувати'
-                     buttonClass='secondary'
-                     buttonClick={() => setIsEditTypeModalOpened(true)}
-                  />
-                  <Button
-                     buttonText='Видалити'
-                     buttonClass='delete'
-                     buttonClick={() => setIsDeleteTypeModalOpened(true)}
-                  />
-               </div>
-               <div className='admin__panel'>
-                  <p className='admin__panel-title'>Сезон</p>
-                  <Button
-                     buttonText='Додати'
-                     buttonClass='primary'
-                     buttonClick={() => setIsAddSeasonModalOpened(true)}
-                  />
-                  <Button
-                     buttonText='Редагувати'
-                     buttonClass='secondary'
-                     buttonClick={() => setIsEditSeasonModalOpened(true)}
-                  />
-                  <Button
-                     buttonText='Видалити'
-                     buttonClass='delete'
-                     buttonClick={() => setIsDeleteSeasonModalOpened(true)}
-                  />
-               </div>
-               <div className='admin__panel'>
-                  <p className='admin__panel-title'>Колір</p>
-                  <Button
-                     buttonText='Додати'
-                     buttonClass='primary'
-                     buttonClick={() => setIsAddColorModalOpened(true)}
-                  />
-                  <Button
-                     buttonText='Редагувати'
-                     buttonClass='secondary'
-                     buttonClick={() => setIsEditColorModalOpened(true)}
-                  />
-                  <Button
-                     buttonText='Видалити'
-                     buttonClass='delete'
-                     buttonClick={() => setIsDeleteColorModalOpened(true)}
-                  />
-               </div>
+               <div className='admin__manage-user__user-search'></div>
             </div>
          </main>
          <Modal

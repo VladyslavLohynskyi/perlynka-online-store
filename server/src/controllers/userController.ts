@@ -12,6 +12,9 @@ interface userRegistrationLoginRequest extends Request {
    };
 }
 
+interface IGetUsersByRole extends Request {
+   query: { role: Role };
+}
 const generateJwt = (id: number, email: string, role: string) => {
    return jwt.sign({ id, email, role }, process.env.SECRET_KEY, {
       expiresIn: '24h',
@@ -57,6 +60,12 @@ class userController {
    async check(req: authRequest, res: Response) {
       const token = generateJwt(req.user!.id, req.user!.email, req.user!.role);
       return res.json({ token });
+   }
+
+   async getUsersByRole(req: IGetUsersByRole, res: Response) {
+      const { role } = req.query;
+      const users = await User.findAll({ where: { role } });
+      return res.json(users);
    }
 }
 
