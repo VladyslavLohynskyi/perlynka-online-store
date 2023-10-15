@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+
 import { AddShoesModal } from '../modal/components/HeaderDropdown';
 import { EditShoesModal } from '../modal/components/HeaderDropdown/pages/EditShoesModal';
 import { Modal } from '../modal/pages';
@@ -32,16 +33,38 @@ import {
 import { HorizontalLine } from '../ui/HorizontalLine';
 import { getAllAdmins } from '../../store/reducers/admins/AdminsActionCreators';
 import { AdminInfoItem } from './components/AdminInfoItem';
+import { BasicInput } from '../ui/BasicInput';
+import { debounce } from 'lodash';
 
 export const Admin: React.FC = () => {
    const { brands, types, seasons, colors } = useAppSelector(
       (state) => state.shoesReducer,
    );
    const { admins, isLoading } = useAppSelector((state) => state.adminsReducer);
+   const [userInputValue, setUserInputValue] = useState('');
    const dispatch = useAppDispatch();
+   const changeUserInputValueHandler = (
+      e: React.ChangeEvent<HTMLInputElement>,
+   ) => {
+      if (e.target.value.length > 2) {
+         setUserInputValue(e.target.value);
+      }
+   };
+   const debounceChangeUserInputValueHandler = useMemo(
+      () => debounce(changeUserInputValueHandler, 1000),
+      [],
+   );
+
    useEffect(() => {
       dispatch(getAllAdmins());
    }, []);
+
+   useEffect(() => {
+      return () => {
+         debounceChangeUserInputValueHandler.cancel();
+      };
+   }, [debounceChangeUserInputValueHandler]);
+
    const [isAddShoesModalOpened, setIsAddShoesModalOpened] = useState(false);
    const [isEditShoesModalOpened, setIsEditShoesModalOpened] = useState(false);
    const [isDeleteShoesModalOpened, setIsDeleteShoesModalOpened] =
@@ -178,7 +201,9 @@ export const Admin: React.FC = () => {
                         <AdminInfoItem key={admin.id} admin={admin} />
                      ))}
                </div>
-               <div className='admin__manage-user__user-search'></div>
+               <div className='admin__manage-user__user-search'>
+                  <BasicInput onChange={debounceChangeUserInputValueHandler} />
+               </div>
             </div>
          </main>
          <Modal
