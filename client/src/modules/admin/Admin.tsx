@@ -37,13 +37,15 @@ import { BasicInput } from '../ui/BasicInput';
 import { debounce } from 'lodash';
 import UserReq from '../../http/users';
 import { Role } from '../../store/reducers/user/UserSlice';
+import { getAllUsersByEmail } from '../../store/reducers/findUsers/findUsersActionCreators';
 export const Admin: React.FC = () => {
    const { brands, types, seasons, colors } = useAppSelector(
       (state) => state.shoesReducer,
    );
    const { admins, isLoading } = useAppSelector((state) => state.adminsReducer);
+   const { foundUsers } = useAppSelector((state) => state.findUsersReducer);
    const [userInputValue, setUserInputValue] = useState('');
-   const [foundUsers, setFoundUsers] = useState([]);
+
    const dispatch = useAppDispatch();
    const changeUserInputValueHandler = (
       e: React.ChangeEvent<HTMLInputElement>,
@@ -68,9 +70,7 @@ export const Admin: React.FC = () => {
    }, [debounceChangeUserInputValueHandler]);
 
    useEffect(() => {
-      UserReq.getUserByEmailAndRole(Role.USER, userInputValue).then((users) =>
-         console.log(users),
-      );
+      dispatch(getAllUsersByEmail(userInputValue));
    }, [userInputValue]);
    const [isAddShoesModalOpened, setIsAddShoesModalOpened] = useState(false);
    const [isEditShoesModalOpened, setIsEditShoesModalOpened] = useState(false);
@@ -210,6 +210,10 @@ export const Admin: React.FC = () => {
                </div>
                <div className='admin__manage-user__user-search'>
                   <BasicInput onChange={debounceChangeUserInputValueHandler} />
+                  {foundUsers &&
+                     foundUsers.map((user) => (
+                        <AdminInfoItem key={user.id} admin={user} />
+                     ))}
                </div>
             </div>
          </main>

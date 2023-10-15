@@ -2,11 +2,13 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import userReducer from './reducers/user/UserSlice';
 import shoesReducer from './reducers/shoes/ShoesSlice';
 import adminsReducer from './reducers/admins/AdminsSlice';
+import findUsersReducer from './reducers/findUsers/findUsersSlice';
 
 const rootReducer = combineReducers({
    userReducer,
    shoesReducer,
    adminsReducer,
+   findUsersReducer,
 });
 
 export const setupStore = () => {
