@@ -35,6 +35,13 @@ class UserReq {
       });
       return data;
    };
+   getUserByEmailAndRole = async (role: Role, email: string) => {
+      const { data } = await $authHost.get<IUserRes[]>('/user/', {
+         params: { role, email },
+      });
+      console.log(data);
+      return data;
+   };
 }
 
 export default new UserReq();

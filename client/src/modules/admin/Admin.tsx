@@ -35,13 +35,15 @@ import { getAllAdmins } from '../../store/reducers/admins/AdminsActionCreators';
 import { AdminInfoItem } from './components/AdminInfoItem';
 import { BasicInput } from '../ui/BasicInput';
 import { debounce } from 'lodash';
-
+import UserReq from '../../http/users';
+import { Role } from '../../store/reducers/user/UserSlice';
 export const Admin: React.FC = () => {
    const { brands, types, seasons, colors } = useAppSelector(
       (state) => state.shoesReducer,
    );
    const { admins, isLoading } = useAppSelector((state) => state.adminsReducer);
    const [userInputValue, setUserInputValue] = useState('');
+   const [foundUsers, setFoundUsers] = useState([]);
    const dispatch = useAppDispatch();
    const changeUserInputValueHandler = (
       e: React.ChangeEvent<HTMLInputElement>,
@@ -65,6 +67,11 @@ export const Admin: React.FC = () => {
       };
    }, [debounceChangeUserInputValueHandler]);
 
+   useEffect(() => {
+      UserReq.getUserByEmailAndRole(Role.USER, userInputValue).then((users) =>
+         console.log(users),
+      );
+   }, [userInputValue]);
    const [isAddShoesModalOpened, setIsAddShoesModalOpened] = useState(false);
    const [isEditShoesModalOpened, setIsEditShoesModalOpened] = useState(false);
    const [isDeleteShoesModalOpened, setIsDeleteShoesModalOpened] =

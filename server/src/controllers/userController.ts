@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import User, { Role } from '../models/userModel';
 import Basket from '../models/basketModel';
 import { authRequest } from '../middleware/authMiddleware';
+import { Op } from 'sequelize';
 
 interface userRegistrationLoginRequest extends Request {
    body: {
@@ -14,6 +15,10 @@ interface userRegistrationLoginRequest extends Request {
 
 interface IGetUsersByRole extends Request {
    query: { role: Role };
+}
+
+interface IGetUserByEmail extends Request {
+   query: { role: Role; email: string };
 }
 const generateJwt = (id: number, email: string, role: string) => {
    return jwt.sign({ id, email, role }, process.env.SECRET_KEY, {
@@ -65,6 +70,14 @@ class userController {
    async getUsersByRole(req: IGetUsersByRole, res: Response) {
       const { role } = req.query;
       const users = await User.findAll({ where: { role } });
+      return res.json(users);
+   }
+
+   async getUserByEmail(req: IGetUserByEmail, res: Response) {
+      const { role, email } = req.query;
+      const users = await User.findAll({
+         where: { role, email: { [Op.startsWith]: email } },
+      });
       return res.json(users);
    }
 }
