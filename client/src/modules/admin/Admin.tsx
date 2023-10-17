@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faAdd } from '@fortawesome/free-solid-svg-icons';
 
 import { AddShoesModal } from '../modal/components/HeaderDropdown';
 import { EditShoesModal } from '../modal/components/HeaderDropdown/pages/EditShoesModal';
@@ -35,8 +37,7 @@ import { getAllAdmins } from '../../store/reducers/admins/AdminsActionCreators';
 import { AdminInfoItem } from './components/AdminInfoItem';
 import { BasicInput } from '../ui/BasicInput';
 import { debounce } from 'lodash';
-import UserReq from '../../http/users';
-import { Role } from '../../store/reducers/user/UserSlice';
+
 import { getAllUsersByEmail } from '../../store/reducers/findUsers/findUsersActionCreators';
 export const Admin: React.FC = () => {
    const { brands, types, seasons, colors } = useAppSelector(
@@ -205,14 +206,22 @@ export const Admin: React.FC = () => {
                   <h3 className='admin__manage-user__header'>Продавці:</h3>
                   {!isLoading &&
                      admins.map((admin) => (
-                        <AdminInfoItem key={admin.id} admin={admin} />
+                        <AdminInfoItem
+                           key={admin.id}
+                           admin={admin}
+                           icon={faTrash}
+                        />
                      ))}
                </div>
                <div className='admin__manage-user__user-search'>
                   <BasicInput onChange={debounceChangeUserInputValueHandler} />
                   {foundUsers &&
                      foundUsers.map((user) => (
-                        <AdminInfoItem key={user.id} admin={user} />
+                        <AdminInfoItem
+                           key={user.id}
+                           admin={user}
+                           icon={faAdd}
+                        />
                      ))}
                </div>
             </div>
