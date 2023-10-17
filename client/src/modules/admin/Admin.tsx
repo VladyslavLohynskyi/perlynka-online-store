@@ -33,12 +33,20 @@ import {
    updateColor,
 } from '../../store/reducers/shoes/ColorsActionCreators';
 import { HorizontalLine } from '../ui/HorizontalLine';
-import { getAllAdmins } from '../../store/reducers/admins/AdminsActionCreators';
+import {
+   addAdmin,
+   deleteAdmin,
+   getAllAdmins,
+} from '../../store/reducers/admins/AdminsActionCreators';
 import { AdminInfoItem } from './components/AdminInfoItem';
 import { BasicInput } from '../ui/BasicInput';
 import { debounce } from 'lodash';
 
-import { getAllUsersByEmail } from '../../store/reducers/findUsers/findUsersActionCreators';
+import {
+   deleteFoundUser,
+   getAllUsersByEmail,
+} from '../../store/reducers/findUsers/findUsersActionCreators';
+
 export const Admin: React.FC = () => {
    const { brands, types, seasons, colors } = useAppSelector(
       (state) => state.shoesReducer,
@@ -51,9 +59,7 @@ export const Admin: React.FC = () => {
    const changeUserInputValueHandler = (
       e: React.ChangeEvent<HTMLInputElement>,
    ) => {
-      if (e.target.value.length > 2) {
-         setUserInputValue(e.target.value);
-      }
+      setUserInputValue(e.target.value);
    };
    const debounceChangeUserInputValueHandler = useMemo(
       () => debounce(changeUserInputValueHandler, 1000),
@@ -71,7 +77,9 @@ export const Admin: React.FC = () => {
    }, [debounceChangeUserInputValueHandler]);
 
    useEffect(() => {
-      dispatch(getAllUsersByEmail(userInputValue));
+      if (userInputValue.length > 2) {
+         dispatch(getAllUsersByEmail(userInputValue));
+      }
    }, [userInputValue]);
    const [isAddShoesModalOpened, setIsAddShoesModalOpened] = useState(false);
    const [isEditShoesModalOpened, setIsEditShoesModalOpened] = useState(false);
@@ -98,6 +106,18 @@ export const Admin: React.FC = () => {
    const [isEditColorModalOpened, setIsEditColorModalOpened] = useState(false);
    const [isDeleteColorModalOpened, setIsDeleteColorModalOpened] =
       useState(false);
+
+   const handleClickDeleteAdmin = (id: string) => {
+      dispatch(deleteAdmin(id)).then(() => {
+         dispatch(getAllUsersByEmail(userInputValue));
+      });
+   };
+
+   const handleClickAddAdmin = (id: string) => {
+      dispatch(addAdmin(id)).then(() => {
+         dispatch(deleteFoundUser(id));
+      });
+   };
    return (
       <>
          <main className='admin__main'>
@@ -210,6 +230,9 @@ export const Admin: React.FC = () => {
                            key={admin.id}
                            admin={admin}
                            icon={faTrash}
+                           onClickButton={() => {
+                              handleClickDeleteAdmin(admin.id);
+                           }}
                         />
                      ))}
                </div>
@@ -221,6 +244,7 @@ export const Admin: React.FC = () => {
                            key={user.id}
                            admin={user}
                            icon={faAdd}
+                           onClickButton={() => handleClickAddAdmin(user.id)}
                         />
                      ))}
                </div>

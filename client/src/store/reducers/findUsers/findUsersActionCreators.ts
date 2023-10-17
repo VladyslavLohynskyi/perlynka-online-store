@@ -16,3 +16,7 @@ export const getAllUsersByEmail =
          dispatch(findUsersSlice.actions.error('Getting List OF Users Error'));
       }
    };
+
+export const deleteFoundUser = (id: string) => (dispatch: AppDispatch) => {
+   dispatch(findUsersSlice.actions.deleteFindUserSuccess(id));
+};

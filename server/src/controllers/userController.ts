@@ -20,6 +20,13 @@ interface IGetUsersByRole extends Request {
 interface IGetUserByEmail extends Request {
    query: { role: Role; email: string };
 }
+
+interface IChangeRole extends Request {
+   body: {
+      role: Role;
+      id: string;
+   };
+}
 const generateJwt = (id: number, email: string, role: string) => {
    return jwt.sign({ id, email, role }, process.env.SECRET_KEY, {
       expiresIn: '24h',
@@ -79,6 +86,15 @@ class userController {
          where: { role, email: { [Op.startsWith]: email } },
       });
       return res.json(users);
+   }
+
+   async changeRole(req: IChangeRole, res: Response) {
+      const { role, id } = req.body;
+      const user = await User.findOne({ where: { id } });
+      if (user) {
+         await User.update({ role }, { where: { id } });
+         return res.json(user);
+      }
    }
 }
 

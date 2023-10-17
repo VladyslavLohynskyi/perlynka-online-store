@@ -8,3 +8,4 @@ userRouter.post('/login', userController.login);
 userRouter.get('/auth', authMiddleware, userController.check);
 userRouter.get('/users', authMiddleware, userController.getUsersByRole);
 userRouter.get('/', authMiddleware, userController.getUserByEmail);
+userRouter.put('/role', authMiddleware, userController.changeRole);

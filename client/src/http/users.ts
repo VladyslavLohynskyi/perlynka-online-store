@@ -39,7 +39,21 @@ class UserReq {
       const { data } = await $authHost.get<IUserRes[]>('/user/', {
          params: { role, email },
       });
-      console.log(data);
+      return data;
+   };
+   deleteAdmin = async (id: string) => {
+      const { data } = await $authHost.put<IUserRes>('/user/role', {
+         id,
+         role: Role.USER,
+      });
+      return data;
+   };
+
+   addAdmin = async (id: string) => {
+      const { data } = await $authHost.put<IUserRes>('/user/role', {
+         id,
+         role: Role.ADMIN,
+      });
       return data;
    };
 }

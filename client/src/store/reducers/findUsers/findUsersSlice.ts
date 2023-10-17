@@ -26,6 +26,13 @@ export const findUsersSlice = createSlice({
          state.error = '';
          state.foundUsers = [...action.payload];
       },
+      deleteFindUserSuccess(state, action: PayloadAction<string>) {
+         state.isLoading = false;
+         state.error = '';
+         state.foundUsers = state.foundUsers.filter(
+            (user) => user.id !== action.payload,
+         );
+      },
       error(state, action: PayloadAction<string>) {
          state.isLoading = false;
          state.error = action.payload;

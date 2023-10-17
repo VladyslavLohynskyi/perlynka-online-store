@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IUserRes } from '../../../http/users';
+import { Role } from '../user/UserSlice';
 
 interface IUserState {
    admins: IUserRes[];
@@ -26,6 +27,23 @@ export const adminsSlice = createSlice({
          state.error = '';
          state.admins = [...action.payload];
       },
+
+      deleteAdminSuccess(state, action: PayloadAction<IUserRes>) {
+         state.isLoading = false;
+         state.error = '';
+         state.admins = state.admins.filter(
+            (admin) => admin.id !== action.payload.id,
+         );
+      },
+      addAdminSuccess(state, action: PayloadAction<IUserRes>) {
+         state.isLoading = false;
+         state.error = '';
+         state.admins = [
+            ...state.admins,
+            { ...action.payload, role: Role.ADMIN },
+         ];
+      },
+
       error(state, action: PayloadAction<string>) {
          state.isLoading = false;
          state.error = action.payload;
