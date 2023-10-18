@@ -46,6 +46,7 @@ import {
    deleteFoundUser,
    getAllUsersByEmail,
 } from '../../store/reducers/findUsers/findUsersActionCreators';
+import { AdminShoesPanelSection } from './components/AdminShoesPanelSection';
 
 export const Admin: React.FC = () => {
    const { brands, types, seasons, colors } = useAppSelector(
@@ -127,24 +128,12 @@ export const Admin: React.FC = () => {
             </div>
             <div className='admin__manage-shoes-container'>
                <div className='admin__manage-shoes'>
-                  <div className='admin__panel'>
-                     <p className='admin__panel-title'>Взуття</p>
-                     <Button
-                        buttonText='Додати'
-                        buttonClass='primary'
-                        buttonClick={() => setIsAddShoesModalOpened(true)}
-                     />
-                     <Button
-                        buttonText='Редагувати'
-                        buttonClass='secondary'
-                        buttonClick={() => setIsEditShoesModalOpened(true)}
-                     />
-                     <Button
-                        buttonText='Видалити'
-                        buttonClass='delete'
-                        buttonClick={() => setIsDeleteShoesModalOpened(true)}
-                     />
-                  </div>
+                  <AdminShoesPanelSection
+                     AddModalComponent={AddShoesModal}
+                     EditModalComponent={EditShoesModal}
+                     DeleteModalComponent={DeleteShoesModal}
+                  />
+
                   <div className='admin__panel'>
                      <p className='admin__panel-title'>Бренд</p>
                      <Button
