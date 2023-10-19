@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import User, { Role } from '../models/userModel';
 import Basket from '../models/basketModel';
 import { authRequest } from '../middleware/authMiddleware';
+import { Op } from 'sequelize';
 
 interface userRegistrationLoginRequest extends Request {
    body: {
@@ -12,6 +13,20 @@ interface userRegistrationLoginRequest extends Request {
    };
 }
 
+interface IGetUsersByRole extends Request {
+   query: { role: Role };
+}
+
+interface IGetUserByEmail extends Request {
+   query: { role: Role; email: string };
+}
+
+interface IChangeRole extends Request {
+   body: {
+      role: Role;
+      id: string;
+   };
+}
 const generateJwt = (id: number, email: string, role: string) => {
    return jwt.sign({ id, email, role }, process.env.SECRET_KEY, {
       expiresIn: '24h',
@@ -29,9 +44,10 @@ class userController {
          return res.json('User with this email has already exist');
       }
       const hashPassword = await bcrypt.hash(password, 5);
+      const users = await User.findAll();
       const user = await User.create({
          email,
-         role: Role.USER,
+         role: users.length ? Role.USER : Role.ADMIN,
          password: hashPassword,
       });
       const basket = await Basket.create({ userId: user.id });
@@ -56,6 +72,29 @@ class userController {
    async check(req: authRequest, res: Response) {
       const token = generateJwt(req.user!.id, req.user!.email, req.user!.role);
       return res.json({ token });
+   }
+
+   async getUsersByRole(req: IGetUsersByRole, res: Response) {
+      const { role } = req.query;
+      const users = await User.findAll({ where: { role } });
+      return res.json(users);
+   }
+
+   async getUserByEmail(req: IGetUserByEmail, res: Response) {
+      const { role, email } = req.query;
+      const users = await User.findAll({
+         where: { role, email: { [Op.startsWith]: email } },
+      });
+      return res.json(users);
+   }
+
+   async changeRole(req: IChangeRole, res: Response) {
+      const { role, id } = req.body;
+      const user = await User.findOne({ where: { id } });
+      if (user) {
+         await User.update({ role }, { where: { id } });
+         return res.json(user);
+      }
    }
 }
 
