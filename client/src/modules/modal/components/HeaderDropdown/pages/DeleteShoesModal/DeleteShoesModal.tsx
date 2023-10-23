@@ -57,6 +57,7 @@ export const DeleteShoesModal: React.FC<DeleteShoesModalType> = ({
                      <div className='delete-shoes-modal___shoes-view-info-container'>
                         <p>Модель: {foundShoes.model}</p>
                         <p>Ціна: {foundShoes.price}</p>
+                        <p>Стать: {foundShoes.sex}</p>
                         <p>
                            Бренд:{' '}
                            {
