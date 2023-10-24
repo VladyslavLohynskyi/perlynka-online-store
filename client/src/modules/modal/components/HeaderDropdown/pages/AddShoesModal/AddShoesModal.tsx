@@ -7,6 +7,7 @@ import { Button } from '../../../../../ui/Button';
 import { createShoes } from '../../../../../../store/reducers/shoes/ShoesActionCreators';
 import { ModalHeader } from '../../components/ModalHeader';
 import { ModalInput } from '../../components/ModalInput';
+import { SexEnum } from '../../../../../../store/reducers/shoes/ShoesSlice';
 
 export interface IEditSize {
    sizeId: number;
@@ -25,6 +26,7 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
    const [color, setColor] = useState(0);
    const [season, setSeason] = useState(0);
    const [file, setFile] = useState<null | Blob>(null);
+   const [sex, setSex] = useState<string>(SexEnum.UNISEX);
    const [addSizes, setAddSizes] = useState<IEditSize[]>([]);
    const [error, setError] = useState('');
    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -62,6 +64,7 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
       formData.append('colorId', String(color));
       formData.append('seasonId', String(season));
       formData.append('sizes', JSON.stringify(addSizes));
+      formData.append('sex', String(sex));
       formData.append('file', file);
       dispatch(createShoes(formData));
    };
@@ -164,6 +167,18 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
                         {season.name}
                      </option>
                   ))}
+               </select>
+            </div>
+            <div className='add-shoes-modal__selects-container'>
+               <select
+                  className='add-shoes-modal__select'
+                  name='sex'
+                  onChange={(e) => setSex(e.target.value)}
+                  value={sex}
+               >
+                  <option value={SexEnum.UNISEX}>{SexEnum.UNISEX}</option>
+                  <option value={SexEnum.GIRL}>{SexEnum.GIRL}</option>
+                  <option value={SexEnum.BOY}>{SexEnum.BOY}</option>
                </select>
             </div>
             <ModalInput

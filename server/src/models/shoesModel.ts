@@ -1,5 +1,7 @@
 import { sequelize } from '../db';
 import { DataTypes, Model, Optional } from 'sequelize';
+
+export type SexType = 'Хлопчик' | 'Дівчинка' | 'Унісекс';
 interface shoesAttributes {
    id: number;
    model: string;
@@ -10,6 +12,7 @@ interface shoesAttributes {
    colorId: number;
    seasonId: number;
    brandId: number;
+   sex: SexType;
 }
 
 interface shoesCreationAttributes extends Optional<shoesAttributes, 'id'> {}
@@ -31,6 +34,7 @@ const Shoes = sequelize.define<shoesInstance>('shoes', {
    seasonId: { allowNull: false, type: DataTypes.INTEGER },
    colorId: { allowNull: false, type: DataTypes.INTEGER },
    brandId: { allowNull: false, type: DataTypes.INTEGER },
+   sex: { allowNull: false, type: DataTypes.STRING, defaultValue: 'Унісекс' },
 });
 
 export default Shoes;

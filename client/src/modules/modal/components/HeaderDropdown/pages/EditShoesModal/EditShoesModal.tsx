@@ -7,6 +7,7 @@ import { getShoesById } from '../../../../../../http/shoes';
 import {
    IShoes,
    ISize,
+   SexEnum,
 } from '../../../../../../store/reducers/shoes/ShoesSlice';
 import { baseURL } from '../../../../../../utils/constants';
 import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
@@ -29,6 +30,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
    const [type, setType] = useState(0);
    const [color, setColor] = useState(0);
    const [season, setSeason] = useState(0);
+   const [sex, setSex] = useState<string>('');
    const [addSizes, setAddSizes] = useState<ISize[]>([]);
    const [file, setFile] = useState<null | Blob>(null);
    useEffect(() => {
@@ -39,6 +41,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
          setType(foundShoes.typeId);
          setColor(foundShoes.colorId);
          setSeason(foundShoes.seasonId);
+         setSex(foundShoes.sex);
          setAddSizes([]);
       }
    }, [foundShoes]);
@@ -94,6 +97,9 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
       }
       if (season !== shoes.seasonId) {
          formData.append('seasonId', String(season));
+      }
+      if (sex !== shoes.sex) {
+         formData.append('sex', String(sex));
       }
       if (
          JSON.stringify(addSizes) !==
@@ -220,6 +226,16 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                               {season.name}
                            </option>
                         ))}
+                     </select>
+                     <select
+                        className='add-shoes-modal__select'
+                        name='sex'
+                        onChange={(e) => setSex(e.target.value)}
+                        value={sex}
+                     >
+                        <option value={SexEnum.UNISEX}>{SexEnum.UNISEX}</option>
+                        <option value={SexEnum.GIRL}>{SexEnum.GIRL}</option>
+                        <option value={SexEnum.BOY}>{SexEnum.BOY}</option>
                      </select>
                   </div>
                   <div className='add-shoes-modal__sizes-container'>

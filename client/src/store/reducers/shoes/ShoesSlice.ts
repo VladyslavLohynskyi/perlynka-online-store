@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
+export enum SexEnum {
+   GIRL = 'Дівчинка',
+   BOY = 'Хлопчик',
+   UNISEX = 'Унісекс',
+}
 export interface IBasicCategory {
    id: string;
    name: string;
@@ -25,6 +29,7 @@ export interface IShoes {
    seasonId: number;
    brandId: number;
    sizes: ISize[];
+   sex: SexEnum;
 }
 export interface IShoesState {
    types: IBasicCategory[] | null;

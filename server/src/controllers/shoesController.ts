@@ -1,4 +1,4 @@
-import Shoes from '../models/shoesModel';
+import Shoes, { SexType } from '../models/shoesModel';
 import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
 import { promises } from 'fs';
@@ -21,6 +21,7 @@ interface shoesCreateRequest extends Request {
       seasonId: number;
       brandId: number;
       sizes: string;
+      sex: SexType;
    };
 }
 
@@ -34,14 +35,23 @@ interface shoesUpdateRequest extends Request {
       seasonId?: number;
       brandId?: number;
       sizes?: string;
+      sex?: SexType;
    };
 }
 
 class shoesController {
    async create(req: shoesCreateRequest, res: Response) {
       try {
-         const { model, price, brandId, typeId, colorId, seasonId, sizes } =
-            req.body;
+         const {
+            model,
+            price,
+            brandId,
+            typeId,
+            colorId,
+            seasonId,
+            sizes,
+            sex,
+         } = req.body;
          const img = req.files?.file;
          if (!img) {
             return res.json('Error: Upload one file');
@@ -61,6 +71,7 @@ class shoesController {
             colorId,
             seasonId,
             img: fileName,
+            sex,
          });
          const parseSizes: IParseSizes[] = JSON.parse(sizes);
          if (Array.isArray(parseSizes)) {
@@ -86,7 +97,6 @@ class shoesController {
 
    async deleteOne(req: Request, res: Response) {
       try {
-         console.log('yeah');
          const { id } = req.params;
 
          const shoes = await Shoes.findOne({ where: { id: id } });
@@ -127,6 +137,7 @@ class shoesController {
             seasonId,
             typeId,
             rating,
+            sex,
          } = shoes;
          return res.json({
             brandId,
@@ -137,6 +148,7 @@ class shoesController {
             seasonId,
             typeId,
             rating,
+            sex,
             sizes: [...sizes],
          });
       } catch (error) {
@@ -146,8 +158,17 @@ class shoesController {
 
    async update(req: shoesUpdateRequest, res: Response) {
       try {
-         const { id, model, price, brandId, typeId, colorId, seasonId, sizes } =
-            req.body;
+         const {
+            id,
+            model,
+            price,
+            brandId,
+            typeId,
+            colorId,
+            seasonId,
+            sizes,
+            sex,
+         } = req.body;
          const shoes = await Shoes.findOne({ where: { id } });
          if (!shoes) {
             return res.json(`Error: Shoes with id=${id} is not exist`);
@@ -167,6 +188,7 @@ class shoesController {
                typeId: typeId ? typeId : shoes.typeId,
                colorId: colorId ? colorId : shoes.colorId,
                seasonId: seasonId ? seasonId : shoes.seasonId,
+               sex: sex ? sex : shoes.sex,
             },
             { where: { id } },
          );

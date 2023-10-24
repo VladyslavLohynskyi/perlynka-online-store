@@ -7,7 +7,7 @@ import './Shop.scss';
 
 export const Shop: React.FC = () => {
    const { shoes } = useAppSelector((state) => state.shoesReducer);
-
+   console.log(shoes);
    return (
       <div className='shop'>
          <div className='shop__top'></div>
