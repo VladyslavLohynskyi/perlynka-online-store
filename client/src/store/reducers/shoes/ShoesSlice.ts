@@ -222,6 +222,13 @@ export const shoesSlice = createSlice({
          }
       },
 
+      sizeCreateSuccess(state, action: PayloadAction<ISizeCategory>) {
+         state.isLoading = false;
+         if (state.sizes) {
+            state.sizes = [...state.sizes, action.payload];
+         }
+      },
+
       error(state, action: PayloadAction<string>) {
          state.isLoading = false;
          state.error = action.payload;

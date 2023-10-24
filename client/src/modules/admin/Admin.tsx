@@ -46,6 +46,7 @@ import {
 } from '../../store/reducers/findUsers/findUsersActionCreators';
 import { AdminShoesPanelSection } from './components/AdminShoesPanelSection';
 import { AdminBasicPanelSection } from './components/AdminBasicPanelSection';
+import { AdminSizePanelSection } from './components/AdminSizePanelSection';
 
 export const Admin: React.FC = () => {
    const { brands, types, seasons, colors } = useAppSelector(
@@ -135,6 +136,7 @@ export const Admin: React.FC = () => {
                      updateValue={updateColor}
                      deleteValue={deleteColor}
                   />
+                  <AdminSizePanelSection />
                </div>
                <HorizontalLine />
             </div>
