@@ -88,11 +88,9 @@ class shoesController {
 
    async getAll(req: Request, res: Response) {
       try {
-         console.log('getAll');
          const shoes = await Shoes.findAll();
          return res.json(shoes);
       } catch (error) {
-         console.log(error);
          res.json('Shoes get all Error');
       }
    }

@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export enum SexEnum {
-   GIRL = 'girl',
-   BOY = 'boy',
-   UNISEX = 'unisex',
+   GIRL = 'Дівчинка',
+   BOY = 'Хлопчик',
+   UNISEX = 'Унісекс',
 }
 export interface IBasicCategory {
    id: string;
