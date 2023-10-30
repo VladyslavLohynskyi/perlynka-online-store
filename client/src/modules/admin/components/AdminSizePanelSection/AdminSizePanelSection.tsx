@@ -6,6 +6,7 @@ import { Button } from '../../../ui/Button';
 import { Modal } from '../../../modal/pages';
 
 import { AddSizeModal } from '../../../modal/components/HeaderDropdown/pages/AddSizeModal';
+import { EditSizeModal } from '../../../modal/components/HeaderDropdown/pages/EditSizeModal/EditSizeModal';
 
 export const AdminSizePanelSection: React.FC = () => {
    const [isAddModalOpened, setIsAddModalOpened] = useState(false);
@@ -38,6 +39,14 @@ export const AdminSizePanelSection: React.FC = () => {
             modalPosition='modal-position__admin'
          >
             <AddSizeModal onClose={() => setIsAddModalOpened(false)} />
+         </Modal>
+         <Modal
+            isModalOpen={isEditModalOpened}
+            onClose={() => setIsEditModalOpened(false)}
+            onBlur={true}
+            modalPosition='modal-position__admin'
+         >
+            <EditSizeModal onClose={() => setIsEditModalOpened(false)} />
          </Modal>
       </>
    );

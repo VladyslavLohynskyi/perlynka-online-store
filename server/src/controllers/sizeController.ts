@@ -20,7 +20,7 @@ class sizeController {
       return res.json(sizeObj);
    }
    async getAll(req: Request, res: Response) {
-      const sizes = await Size.findAll();
+      const sizes = await Size.findAll({ order: [['size', 'ASC']] });
       return res.json(sizes);
    }
    async delete(req: Request, res: Response) {

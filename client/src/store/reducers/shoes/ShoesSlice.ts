@@ -228,6 +228,16 @@ export const shoesSlice = createSlice({
             state.sizes = [...state.sizes, action.payload];
          }
       },
+      sizeUpdateSuccess(state, action: PayloadAction<ISizeCategory>) {
+         state.isLoading = false;
+         if (state.sizes) {
+            state.sizes = state.sizes.map((size) => {
+               if (size.id === action.payload.id) {
+                  return { ...size, size: action.payload.size };
+               } else return size;
+            });
+         }
+      },
 
       error(state, action: PayloadAction<string>) {
          state.isLoading = false;
