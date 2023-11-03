@@ -238,6 +238,14 @@ export const shoesSlice = createSlice({
             });
          }
       },
+      sizeDeleteSuccess(state, action: PayloadAction<number>) {
+         state.isLoading = false;
+         if (state.sizes) {
+            state.sizes = state.sizes.filter(
+               (size) => +size.id !== action.payload,
+            );
+         }
+      },
 
       error(state, action: PayloadAction<string>) {
          state.isLoading = false;

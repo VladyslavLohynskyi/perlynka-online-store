@@ -8,7 +8,7 @@ export const createSize = (size: number) => async (dispatch: AppDispatch) => {
       const newSize = await SizeReq.createSize(size);
       dispatch(shoesSlice.actions.sizeCreateSuccess(newSize));
    } catch (error) {
-      dispatch(shoesSlice.actions.error('Creating Brand Error'));
+      dispatch(shoesSlice.actions.error('Creating Size Error'));
    }
 };
 
@@ -19,6 +19,16 @@ export const updateSize =
          await SizeReq.updateSize(sizeObg);
          dispatch(shoesSlice.actions.sizeUpdateSuccess(sizeObg));
       } catch (error) {
-         dispatch(shoesSlice.actions.error('Updating Brand Error'));
+         dispatch(shoesSlice.actions.error('Updating size Error'));
       }
    };
+
+export const deleteSize = (id: number) => async (dispatch: AppDispatch) => {
+   try {
+      dispatch(shoesSlice.actions.start());
+      await SizeReq.deleteSizeById(id);
+      dispatch(shoesSlice.actions.sizeDeleteSuccess(id));
+   } catch (error) {
+      dispatch(shoesSlice.actions.error('Deleting size Error'));
+   }
+};
