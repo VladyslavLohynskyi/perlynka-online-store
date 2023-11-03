@@ -222,6 +222,31 @@ export const shoesSlice = createSlice({
          }
       },
 
+      sizeCreateSuccess(state, action: PayloadAction<ISizeCategory>) {
+         state.isLoading = false;
+         if (state.sizes) {
+            state.sizes = [...state.sizes, action.payload];
+         }
+      },
+      sizeUpdateSuccess(state, action: PayloadAction<ISizeCategory>) {
+         state.isLoading = false;
+         if (state.sizes) {
+            state.sizes = state.sizes.map((size) => {
+               if (size.id === action.payload.id) {
+                  return { ...size, size: action.payload.size };
+               } else return size;
+            });
+         }
+      },
+      sizeDeleteSuccess(state, action: PayloadAction<number>) {
+         state.isLoading = false;
+         if (state.sizes) {
+            state.sizes = state.sizes.filter(
+               (size) => +size.id !== action.payload,
+            );
+         }
+      },
+
       error(state, action: PayloadAction<string>) {
          state.isLoading = false;
          state.error = action.payload;
