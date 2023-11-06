@@ -1,25 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useAppSelector } from '../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
 import { ShoesItem } from '../components/shoesItem';
 
 import './Shop.scss';
+import { brandFilter } from '../../../store/reducers/filter/FilterActionCreators';
 
 export const Shop: React.FC = () => {
+   const dispatch = useAppDispatch();
    const { shoes, brands } = useAppSelector((state) => state.shoesReducer);
-   const [checked, setChecked] = useState<string[]>([]);
-
-   useEffect(() => {
-      console.log(checked);
-   }, [checked]);
-
+   const { selectedBrands } = useAppSelector((state) => state.filterReducer);
    const handleClickCheckbox = (name: string) => {
-      const isChecked = checked.find((el) => el === name);
-      if (!isChecked) {
-         setChecked((prev) => [...prev, name]);
-      } else {
-         setChecked((prev) => prev.filter((el) => el !== name));
-      }
+      dispatch(brandFilter(name));
    };
    return (
       <div className='shop'>
@@ -38,7 +30,7 @@ export const Shop: React.FC = () => {
                            <input
                               value={brand.name}
                               type='checkbox'
-                              checked={checked.includes(brand.name)}
+                              checked={selectedBrands.includes(brand.name)}
                               onChange={() => {}}
                            />
                            <span>{brand.name}</span>

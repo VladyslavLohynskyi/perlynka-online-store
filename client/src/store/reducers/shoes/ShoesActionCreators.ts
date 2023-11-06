@@ -36,7 +36,6 @@ export const preloadList = () => async (dispatch: AppDispatch) => {
       dispatch(shoesSlice.actions.shoesPreloadListError('registration Error'));
    }
 };
-
 export const createShoes =
    (shoesData: FormData) => async (dispatch: AppDispatch) => {
       try {
