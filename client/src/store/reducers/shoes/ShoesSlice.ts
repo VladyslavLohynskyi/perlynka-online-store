@@ -47,7 +47,6 @@ interface IPreloadList {
    brands: IBasicCategory[];
    colors: IBasicCategory[];
    seasons: IBasicCategory[];
-   shoes: IShoes[];
    sizes: ISizeCategory[];
 }
 
@@ -74,7 +73,6 @@ export const shoesSlice = createSlice({
       shoesPreloadListSuccess(state, action: PayloadAction<IPreloadList>) {
          state.isLoading = false;
          state.error = '';
-         state.shoes = action.payload.shoes;
          state.types = action.payload.types;
          state.seasons = action.payload.seasons;
          state.colors = action.payload.colors;
@@ -245,6 +243,11 @@ export const shoesSlice = createSlice({
                (size) => +size.id !== action.payload,
             );
          }
+      },
+
+      shoesGetAll(state, action: PayloadAction<IShoes[]>) {
+         state.isLoading = false;
+         state.shoes = action.payload;
       },
 
       error(state, action: PayloadAction<string>) {

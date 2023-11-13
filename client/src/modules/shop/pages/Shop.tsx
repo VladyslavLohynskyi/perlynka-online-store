@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
 import { ShoesItem } from '../components/shoesItem';
@@ -9,10 +9,11 @@ import { brandFilter } from '../../../store/reducers/filter/FilterActionCreators
 export const Shop: React.FC = () => {
    const dispatch = useAppDispatch();
    const { shoes, brands } = useAppSelector((state) => state.shoesReducer);
-   const { selectedBrands } = useAppSelector((state) => state.filterReducer);
-   const handleClickCheckbox = (name: string) => {
-      dispatch(brandFilter(name));
+   const { selectedBrandsId } = useAppSelector((state) => state.filterReducer);
+   const handleClickCheckbox = (id: number) => {
+      dispatch(brandFilter(id));
    };
+
    return (
       <div className='shop'>
          <div className='shop__top'></div>
@@ -25,12 +26,12 @@ export const Shop: React.FC = () => {
                         <div
                            className='checkbox-list__item'
                            key={brand.id}
-                           onClick={() => handleClickCheckbox(brand.name)}
+                           onClick={() => handleClickCheckbox(+brand.id)}
                         >
                            <input
                               value={brand.name}
                               type='checkbox'
-                              checked={selectedBrands.includes(brand.name)}
+                              checked={selectedBrandsId.includes(+brand.id)}
                               onChange={() => {}}
                            />
                            <span>{brand.name}</span>

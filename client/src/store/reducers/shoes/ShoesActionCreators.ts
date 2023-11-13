@@ -1,6 +1,7 @@
 import { AppDispatch } from '../../store';
 import { shoesSlice } from './ShoesSlice';
 import {
+   IFilter,
    createShoesReq,
    deleteShoesByIdReq,
    getAllShoes,
@@ -15,7 +16,7 @@ import { getAllSizes } from '../../../http/sizes';
 export const preloadList = () => async (dispatch: AppDispatch) => {
    try {
       dispatch(shoesSlice.actions.start());
-      const shoes = await getAllShoes();
+
       const brands = await BrandReq.getAllElements();
       const types = await TypeReq.getAllElements();
       const colors = await ColorReq.getAllElements();
@@ -24,7 +25,6 @@ export const preloadList = () => async (dispatch: AppDispatch) => {
 
       dispatch(
          shoesSlice.actions.shoesPreloadListSuccess({
-            shoes,
             brands,
             types,
             colors,
@@ -41,7 +41,7 @@ export const createShoes =
       try {
          dispatch(shoesSlice.actions.start());
          await createShoesReq(shoesData);
-         const shoes = await getAllShoes();
+         const shoes = await getAllShoes({ brandsId: [] });
          dispatch(shoesSlice.actions.shoesCreateSuccess([...shoes]));
       } catch (error) {
          dispatch(shoesSlice.actions.error('Creating Shoes Error'));
@@ -53,7 +53,7 @@ export const updateShoes =
       try {
          dispatch(shoesSlice.actions.start());
          await updateShoesReq(shoesData);
-         const shoes = await getAllShoes();
+         const shoes = await getAllShoes({ brandsId: [] });
          dispatch(shoesSlice.actions.shoesUpdateSuccess([...shoes]));
       } catch (error) {
          dispatch(shoesSlice.actions.error('Updating Shoes Error'));
@@ -69,3 +69,15 @@ export const deleteShoes = (id: number) => async (dispatch: AppDispatch) => {
       dispatch(shoesSlice.actions.error('Deleting Shoes Error'));
    }
 };
+
+export const getAllShoesByFilter =
+   ({ brandsId }: IFilter) =>
+   async (dispatch: AppDispatch) => {
+      try {
+         dispatch(shoesSlice.actions.start());
+         const shoes = await getAllShoes({ brandsId });
+         dispatch(shoesSlice.actions.shoesGetAll(shoes));
+      } catch (error) {
+         dispatch(shoesSlice.actions.error('Getting Shoes Error'));
+      }
+   };

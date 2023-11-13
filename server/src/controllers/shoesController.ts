@@ -4,8 +4,7 @@ import path from 'path';
 import { promises } from 'fs';
 import { Request, Response } from 'express';
 import ShoesSize from '../models/shoesSizeModel';
-import Brand from '../models/brandModel';
-import Size from '../models/sizeModel';
+
 import { Op } from 'sequelize';
 
 interface IParseSizes {
