@@ -4,14 +4,18 @@ import path from 'path';
 import { promises } from 'fs';
 import { Request, Response } from 'express';
 import ShoesSize from '../models/shoesSizeModel';
-import Brand from '../models/brandModel';
-import Size from '../models/sizeModel';
+
+import { Op } from 'sequelize';
 
 interface IParseSizes {
    sizeId: number;
    count: number;
 }
-
+interface shoesGetRequest extends Request {
+   query: {
+      brandsId: string;
+   };
+}
 interface shoesCreateRequest extends Request {
    body: {
       model: string;
@@ -86,9 +90,13 @@ class shoesController {
       }
    }
 
-   async getAll(req: Request, res: Response) {
+   async getAll(req: shoesGetRequest, res: Response) {
       try {
-         const shoes = await Shoes.findAll();
+         const { brandsId } = req.query;
+         const brandIdsParsed: string[] = JSON.parse(brandsId);
+         const shoes = await Shoes.findAll({
+            where: { brandId: { [Op.or]: [...brandIdsParsed] } },
+         });
          return res.json(shoes);
       } catch (error) {
          res.json('Shoes get all Error');

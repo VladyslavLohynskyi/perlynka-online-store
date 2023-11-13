@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import userReducer from './reducers/user/UserSlice';
 import shoesReducer from './reducers/shoes/ShoesSlice';
 import adminsReducer from './reducers/admins/AdminsSlice';
+import filterReducer from './reducers/filter/FilterSlice';
 import findUsersReducer from './reducers/findUsers/findUsersSlice';
 
 const rootReducer = combineReducers({
@@ -9,6 +10,7 @@ const rootReducer = combineReducers({
    shoesReducer,
    adminsReducer,
    findUsersReducer,
+   filterReducer,
 });
 
 export const setupStore = () => {

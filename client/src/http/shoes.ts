@@ -1,8 +1,14 @@
 import { $host, $authHost } from '.';
 import { IShoes } from '../store/reducers/shoes/ShoesSlice';
 
-export const getAllShoes = async () => {
-   const responseShoes = await $host.get<IShoes[]>('/shoes');
+export interface IFilter {
+   brandsId: number[];
+}
+export const getAllShoes = async ({ brandsId }: IFilter) => {
+   const brandIdStringified = JSON.stringify(brandsId);
+   const responseShoes = await $host.get<IShoes[]>('/shoes', {
+      params: { brandsId: brandIdStringified },
+   });
    const shoes = responseShoes.data;
    return shoes;
 };

@@ -26,3 +26,26 @@
       height: 100%;
    }
 }
+
+.checkbox-list {
+   &__container {
+      margin: 5px;
+   }
+   &__header {
+      font-weight: 500;
+      margin-bottom: 5px;
+   }
+
+   &__main {
+      margin-left: 5px;
+   }
+
+   &__item {
+      display: flex;
+      align-items: center;
+      padding: 2px 0;
+      & input {
+         margin-right: 5px;
+      }
+   }
+}
