@@ -42,7 +42,7 @@ export const filterSlice = createSlice({
          if (!state.selectedTypesId.includes(action.payload)) {
             state.selectedTypesId = [...state.selectedTypesId, action.payload];
          } else {
-            state.selectedBrandsId = state.selectedBrandsId.filter(
+            state.selectedTypesId = state.selectedTypesId.filter(
                (el) => el !== action.payload,
             );
          }

@@ -37,12 +37,11 @@ export const preloadList = () => async (dispatch: AppDispatch) => {
    }
 };
 export const createShoes =
-   (shoesData: FormData, { brandsId }: IFilter) =>
-   async (dispatch: AppDispatch) => {
+   (shoesData: FormData, filter: IFilter) => async (dispatch: AppDispatch) => {
       try {
          dispatch(shoesSlice.actions.start());
          await createShoesReq(shoesData);
-         const shoes = await getAllShoes({ brandsId });
+         const shoes = await getAllShoes(filter);
          dispatch(shoesSlice.actions.shoesCreateSuccess([...shoes]));
       } catch (error) {
          dispatch(shoesSlice.actions.error('Creating Shoes Error'));
@@ -50,12 +49,11 @@ export const createShoes =
    };
 
 export const updateShoes =
-   (shoesData: FormData, { brandsId }: IFilter) =>
-   async (dispatch: AppDispatch) => {
+   (shoesData: FormData, filter: IFilter) => async (dispatch: AppDispatch) => {
       try {
          dispatch(shoesSlice.actions.start());
          await updateShoesReq(shoesData);
-         const shoes = await getAllShoes({ brandsId });
+         const shoes = await getAllShoes(filter);
          dispatch(shoesSlice.actions.shoesUpdateSuccess([...shoes]));
       } catch (error) {
          dispatch(shoesSlice.actions.error('Updating Shoes Error'));
@@ -73,11 +71,10 @@ export const deleteShoes = (id: number) => async (dispatch: AppDispatch) => {
 };
 
 export const getAllShoesByFilter =
-   ({ brandsId }: IFilter) =>
-   async (dispatch: AppDispatch) => {
+   (filter: IFilter) => async (dispatch: AppDispatch) => {
       try {
          dispatch(shoesSlice.actions.start());
-         const shoes = await getAllShoes({ brandsId });
+         const shoes = await getAllShoes(filter);
          dispatch(shoesSlice.actions.shoesGetAll(shoes));
       } catch (error) {
          dispatch(shoesSlice.actions.error('Getting Shoes Error'));

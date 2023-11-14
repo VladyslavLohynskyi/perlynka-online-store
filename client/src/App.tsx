@@ -19,8 +19,13 @@ const App: FC = () => {
    }, []);
 
    useEffect(() => {
-      dispatch(getAllShoesByFilter({ brandsId: filter.selectedBrandsId }));
-   }, [filter.selectedBrandsId]);
+      dispatch(
+         getAllShoesByFilter({
+            brandsId: filter.selectedBrandsId,
+            typesId: filter.selectedTypesId,
+         }),
+      );
+   }, [filter.selectedBrandsId, filter.selectedTypesId]);
    if (user.isLoading || shoes.isLoading) {
       return <div>Loading...</div>;
    }
