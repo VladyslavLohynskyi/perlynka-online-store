@@ -14,6 +14,7 @@ interface IParseSizes {
 interface shoesGetRequest extends Request {
    query: {
       brandsId: string;
+      typesId: string;
    };
 }
 interface shoesCreateRequest extends Request {
@@ -92,10 +93,14 @@ class shoesController {
 
    async getAll(req: shoesGetRequest, res: Response) {
       try {
-         const { brandsId } = req.query;
+         const { brandsId, typesId } = req.query;
          const brandIdsParsed: string[] = JSON.parse(brandsId);
+         const typeIdsParsed: string[] = JSON.parse(typesId);
          const shoes = await Shoes.findAll({
-            where: { brandId: { [Op.or]: [...brandIdsParsed] } },
+            where: {
+               brandId: { [Op.or]: [...brandIdsParsed] },
+               typeId: { [Op.or]: [...typeIdsParsed] },
+            },
          });
          return res.json(shoes);
       } catch (error) {
