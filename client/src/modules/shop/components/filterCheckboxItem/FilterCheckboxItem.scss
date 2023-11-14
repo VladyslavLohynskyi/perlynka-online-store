@@ -1,0 +1,10 @@
+.checkbox-list {
+   &__item {
+      display: flex;
+      align-items: center;
+      padding: 2px 0;
+      & input {
+         margin-right: 5px;
+      }
+   }
+}
