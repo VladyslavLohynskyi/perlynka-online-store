@@ -2,12 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface IFilterState {
    selectedBrandsId: number[];
+   selectedTypesId: number[];
    isLoading: boolean;
    error: string;
 }
 
 const initialState: IFilterState = {
    selectedBrandsId: [],
+   selectedTypesId: [],
    isLoading: true,
    error: '',
 };
@@ -28,6 +30,17 @@ export const filterSlice = createSlice({
                ...state.selectedBrandsId,
                action.payload,
             ];
+         } else {
+            state.selectedBrandsId = state.selectedBrandsId.filter(
+               (el) => el !== action.payload,
+            );
+         }
+      },
+
+      typeFilterSuccess(state, action: PayloadAction<number>) {
+         state.isLoading = false;
+         if (!state.selectedTypesId.includes(action.payload)) {
+            state.selectedTypesId = [...state.selectedTypesId, action.payload];
          } else {
             state.selectedBrandsId = state.selectedBrandsId.filter(
                (el) => el !== action.payload,

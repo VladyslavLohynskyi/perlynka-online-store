@@ -9,3 +9,12 @@ export const brandFilter = (id: number) => async (dispatch: AppDispatch) => {
       dispatch(filterSlice.actions.error('Brand Filter Error'));
    }
 };
+
+export const typeFilter = (id: number) => async (dispatch: AppDispatch) => {
+   try {
+      dispatch(filterSlice.actions.start());
+      dispatch(filterSlice.actions.typeFilterSuccess(id));
+   } catch (error) {
+      dispatch(filterSlice.actions.error('Type Filter Error'));
+   }
+};

@@ -4,15 +4,26 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { ShoesItem } from '../components/shoesItem';
 
 import './Shop.scss';
-import { brandFilter } from '../../../store/reducers/filter/FilterActionCreators';
+import {
+   brandFilter,
+   typeFilter,
+} from '../../../store/reducers/filter/FilterActionCreators';
 import { FilterCheckboxList } from '../components/filterCheckboxList';
 
 export const Shop: React.FC = () => {
    const dispatch = useAppDispatch();
-   const { shoes, brands } = useAppSelector((state) => state.shoesReducer);
-   const { selectedBrandsId } = useAppSelector((state) => state.filterReducer);
+   const { shoes, brands, types } = useAppSelector(
+      (state) => state.shoesReducer,
+   );
+   const { selectedBrandsId, selectedTypesId } = useAppSelector(
+      (state) => state.filterReducer,
+   );
    const handleClickBrandCheckbox = (id: number) => {
       dispatch(brandFilter(id));
+   };
+
+   const handleClickTypeCheckbox = (id: number) => {
+      dispatch(typeFilter(id));
    };
 
    return (
@@ -25,6 +36,12 @@ export const Shop: React.FC = () => {
                   handleClickCheckbox={handleClickBrandCheckbox}
                   list={brands}
                   name='Виробник'
+               />
+               <FilterCheckboxList
+                  selectedValuesId={selectedTypesId}
+                  handleClickCheckbox={handleClickTypeCheckbox}
+                  list={types}
+                  name='Тип'
                />
             </aside>
             <section className='shop__shoes-list'>
