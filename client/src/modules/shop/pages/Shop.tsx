@@ -7,23 +7,27 @@ import './Shop.scss';
 import {
    brandFilter,
    typeFilter,
+   seasonFilter,
 } from '../../../store/reducers/filter/FilterActionCreators';
 import { FilterCheckboxList } from '../components/filterCheckboxList';
 
 export const Shop: React.FC = () => {
    const dispatch = useAppDispatch();
-   const { shoes, brands, types } = useAppSelector(
+   const { shoes, brands, types, seasons } = useAppSelector(
       (state) => state.shoesReducer,
    );
-   const { selectedBrandsId, selectedTypesId } = useAppSelector(
-      (state) => state.filterReducer,
-   );
+   const { selectedBrandsId, selectedTypesId, selectedSeasonsId } =
+      useAppSelector((state) => state.filterReducer);
    const handleClickBrandCheckbox = (id: number) => {
       dispatch(brandFilter(id));
    };
 
    const handleClickTypeCheckbox = (id: number) => {
       dispatch(typeFilter(id));
+   };
+
+   const handleClickSeasonCheckbox = (id: number) => {
+      dispatch(seasonFilter(id));
    };
 
    return (
@@ -42,6 +46,12 @@ export const Shop: React.FC = () => {
                   handleClickCheckbox={handleClickTypeCheckbox}
                   list={types}
                   name='Тип'
+               />
+               <FilterCheckboxList
+                  selectedValuesId={selectedSeasonsId}
+                  handleClickCheckbox={handleClickSeasonCheckbox}
+                  list={seasons}
+                  name='Сезон'
                />
             </aside>
             <section className='shop__shoes-list'>

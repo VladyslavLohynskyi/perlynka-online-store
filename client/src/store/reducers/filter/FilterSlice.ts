@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface IFilterState {
    selectedBrandsId: number[];
    selectedTypesId: number[];
+   selectedSeasonsId: number[];
    isLoading: boolean;
    error: string;
 }
@@ -10,6 +11,7 @@ interface IFilterState {
 const initialState: IFilterState = {
    selectedBrandsId: [],
    selectedTypesId: [],
+   selectedSeasonsId: [],
    isLoading: true,
    error: '',
 };
@@ -43,6 +45,20 @@ export const filterSlice = createSlice({
             state.selectedTypesId = [...state.selectedTypesId, action.payload];
          } else {
             state.selectedTypesId = state.selectedTypesId.filter(
+               (el) => el !== action.payload,
+            );
+         }
+      },
+
+      seasonFilterSuccess(state, action: PayloadAction<number>) {
+         state.isLoading = false;
+         if (!state.selectedSeasonsId.includes(action.payload)) {
+            state.selectedSeasonsId = [
+               ...state.selectedSeasonsId,
+               action.payload,
+            ];
+         } else {
+            state.selectedSeasonsId = state.selectedSeasonsId.filter(
                (el) => el !== action.payload,
             );
          }
