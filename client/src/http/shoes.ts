@@ -4,12 +4,22 @@ import { IShoes } from '../store/reducers/shoes/ShoesSlice';
 export interface IFilter {
    brandsId: number[];
    typesId: number[];
+   seasonsId: number[];
 }
-export const getAllShoes = async ({ brandsId, typesId }: IFilter) => {
+export const getAllShoes = async ({
+   brandsId,
+   typesId,
+   seasonsId,
+}: IFilter) => {
    const brandIdStringified = JSON.stringify(brandsId);
    const typesIdStringified = JSON.stringify(typesId);
+   const seasonsIdStringified = JSON.stringify(seasonsId);
    const responseShoes = await $host.get<IShoes[]>('/shoes', {
-      params: { brandsId: brandIdStringified, typesId: typesIdStringified },
+      params: {
+         brandsId: brandIdStringified,
+         typesId: typesIdStringified,
+         seasonsId: seasonsIdStringified,
+      },
    });
    const shoes = responseShoes.data;
    return shoes;

@@ -23,9 +23,14 @@ const App: FC = () => {
          getAllShoesByFilter({
             brandsId: filter.selectedBrandsId,
             typesId: filter.selectedTypesId,
+            seasonsId: filter.selectedSeasonsId,
          }),
       );
-   }, [filter.selectedBrandsId, filter.selectedTypesId]);
+   }, [
+      filter.selectedBrandsId,
+      filter.selectedTypesId,
+      filter.selectedSeasonsId,
+   ]);
    if (user.isLoading || shoes.isLoading) {
       return <div>Loading...</div>;
    }
