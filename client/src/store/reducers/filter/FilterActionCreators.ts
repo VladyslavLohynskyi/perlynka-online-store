@@ -27,3 +27,12 @@ export const seasonFilter = (id: number) => async (dispatch: AppDispatch) => {
       dispatch(filterSlice.actions.error('Season Filter Error'));
    }
 };
+
+export const colorFilter = (id: number) => async (dispatch: AppDispatch) => {
+   try {
+      dispatch(filterSlice.actions.start());
+      dispatch(filterSlice.actions.colorFilterSuccess(id));
+   } catch (error) {
+      dispatch(filterSlice.actions.error('Color Filter Error'));
+   }
+};
