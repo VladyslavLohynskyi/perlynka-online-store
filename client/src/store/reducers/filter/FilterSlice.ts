@@ -4,6 +4,7 @@ interface IFilterState {
    selectedBrandsId: number[];
    selectedTypesId: number[];
    selectedSeasonsId: number[];
+   selectedColorsId: number[];
    isLoading: boolean;
    error: string;
 }
@@ -12,6 +13,7 @@ const initialState: IFilterState = {
    selectedBrandsId: [],
    selectedTypesId: [],
    selectedSeasonsId: [],
+   selectedColorsId: [],
    isLoading: true,
    error: '',
 };
@@ -59,6 +61,20 @@ export const filterSlice = createSlice({
             ];
          } else {
             state.selectedSeasonsId = state.selectedSeasonsId.filter(
+               (el) => el !== action.payload,
+            );
+         }
+      },
+
+      colorFilterSuccess(state, action: PayloadAction<number>) {
+         state.isLoading = false;
+         if (!state.selectedColorsId.includes(action.payload)) {
+            state.selectedColorsId = [
+               ...state.selectedColorsId,
+               action.payload,
+            ];
+         } else {
+            state.selectedColorsId = state.selectedColorsId.filter(
                (el) => el !== action.payload,
             );
          }
