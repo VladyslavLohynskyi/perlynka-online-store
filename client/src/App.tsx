@@ -24,12 +24,14 @@ const App: FC = () => {
             brandsId: filter.selectedBrandsId,
             typesId: filter.selectedTypesId,
             seasonsId: filter.selectedSeasonsId,
+            colorsId: filter.selectedColorsId,
          }),
       );
    }, [
       filter.selectedBrandsId,
       filter.selectedTypesId,
       filter.selectedSeasonsId,
+      filter.selectedColorsId,
    ]);
    if (user.isLoading || shoes.isLoading) {
       return <div>Loading...</div>;
