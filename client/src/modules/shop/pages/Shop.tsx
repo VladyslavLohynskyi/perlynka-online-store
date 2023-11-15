@@ -4,14 +4,26 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { ShoesItem } from '../components/shoesItem';
 
 import './Shop.scss';
-import { brandFilter } from '../../../store/reducers/filter/FilterActionCreators';
+import {
+   brandFilter,
+   typeFilter,
+} from '../../../store/reducers/filter/FilterActionCreators';
+import { FilterCheckboxList } from '../components/filterCheckboxList';
 
 export const Shop: React.FC = () => {
    const dispatch = useAppDispatch();
-   const { shoes, brands } = useAppSelector((state) => state.shoesReducer);
-   const { selectedBrandsId } = useAppSelector((state) => state.filterReducer);
-   const handleClickCheckbox = (id: number) => {
+   const { shoes, brands, types } = useAppSelector(
+      (state) => state.shoesReducer,
+   );
+   const { selectedBrandsId, selectedTypesId } = useAppSelector(
+      (state) => state.filterReducer,
+   );
+   const handleClickBrandCheckbox = (id: number) => {
       dispatch(brandFilter(id));
+   };
+
+   const handleClickTypeCheckbox = (id: number) => {
+      dispatch(typeFilter(id));
    };
 
    return (
@@ -19,26 +31,18 @@ export const Shop: React.FC = () => {
          <div className='shop__top'></div>
          <div className='shop__container'>
             <aside className='shop__aside-filters'>
-               <div className='checkbox-list__container'>
-                  <h3 className='checkbox-list__header'>Виробник</h3>
-                  <div className='checkbox-list__main'>
-                     {brands?.map((brand) => (
-                        <div
-                           className='checkbox-list__item'
-                           key={brand.id}
-                           onClick={() => handleClickCheckbox(+brand.id)}
-                        >
-                           <input
-                              value={brand.name}
-                              type='checkbox'
-                              checked={selectedBrandsId.includes(+brand.id)}
-                              onChange={() => {}}
-                           />
-                           <span>{brand.name}</span>
-                        </div>
-                     ))}
-                  </div>
-               </div>
+               <FilterCheckboxList
+                  selectedValuesId={selectedBrandsId}
+                  handleClickCheckbox={handleClickBrandCheckbox}
+                  list={brands}
+                  name='Виробник'
+               />
+               <FilterCheckboxList
+                  selectedValuesId={selectedTypesId}
+                  handleClickCheckbox={handleClickTypeCheckbox}
+                  list={types}
+                  name='Тип'
+               />
             </aside>
             <section className='shop__shoes-list'>
                {shoes.length &&
