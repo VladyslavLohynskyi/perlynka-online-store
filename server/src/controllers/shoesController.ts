@@ -17,6 +17,7 @@ interface shoesGetRequest extends Request {
       typesId: string;
       seasonsId: string;
       colorsId: string;
+      sex: SexType;
    };
 }
 interface shoesCreateRequest extends Request {
@@ -95,17 +96,27 @@ class shoesController {
 
    async getAll(req: shoesGetRequest, res: Response) {
       try {
-         const { brandsId, typesId, seasonsId, colorsId } = req.query;
+         const { brandsId, typesId, seasonsId, colorsId, sex } = req.query;
          const brandIdsParsed: string[] = JSON.parse(brandsId);
          const typeIdsParsed: string[] = JSON.parse(typesId);
          const seasonIdsParsed: string[] = JSON.parse(seasonsId);
          const colorsIdsParsed: string[] = JSON.parse(colorsId);
+         const sexFilter = () => {
+            if (sex === 'Хлопчик') {
+               return ['Хлопчик', 'Унісекс'];
+            }
+            if (sex === 'Дівчинка') {
+               return ['Дівчинка', 'Унісекс'];
+            }
+            return [];
+         };
          const shoes = await Shoes.findAll({
             where: {
                brandId: { [Op.or]: [...brandIdsParsed] },
                typeId: { [Op.or]: [...typeIdsParsed] },
                seasonId: { [Op.or]: [...seasonIdsParsed] },
                colorId: { [Op.or]: [...colorsIdsParsed] },
+               sex: { [Op.or]: sexFilter() },
             },
          });
          return res.json(shoes);
