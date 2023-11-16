@@ -23,6 +23,7 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
       selectedTypesId,
       selectedSeasonsId,
       selectedColorsId,
+      selectedSex,
    } = useAppSelector((state) => state.filterReducer);
    const dispatch = useAppDispatch();
    const [model, setModel] = useState('');
@@ -78,6 +79,7 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
             typesId: selectedTypesId,
             seasonsId: selectedSeasonsId,
             colorsId: selectedColorsId,
+            sex: selectedSex,
          }),
       );
    };

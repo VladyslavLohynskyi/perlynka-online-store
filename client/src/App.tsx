@@ -26,6 +26,7 @@ const App: FC = () => {
             typesId: filter.selectedTypesId,
             seasonsId: filter.selectedSeasonsId,
             colorsId: filter.selectedColorsId,
+            sex: filter.selectedSex,
          }),
       );
    }, [
