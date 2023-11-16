@@ -16,6 +16,7 @@ interface shoesGetRequest extends Request {
       brandsId: string;
       typesId: string;
       seasonsId: string;
+      colorsId: string;
    };
 }
 interface shoesCreateRequest extends Request {
@@ -94,15 +95,17 @@ class shoesController {
 
    async getAll(req: shoesGetRequest, res: Response) {
       try {
-         const { brandsId, typesId, seasonsId } = req.query;
+         const { brandsId, typesId, seasonsId, colorsId } = req.query;
          const brandIdsParsed: string[] = JSON.parse(brandsId);
          const typeIdsParsed: string[] = JSON.parse(typesId);
          const seasonIdsParsed: string[] = JSON.parse(seasonsId);
+         const colorsIdsParsed: string[] = JSON.parse(colorsId);
          const shoes = await Shoes.findAll({
             where: {
                brandId: { [Op.or]: [...brandIdsParsed] },
                typeId: { [Op.or]: [...typeIdsParsed] },
                seasonId: { [Op.or]: [...seasonIdsParsed] },
+               colorId: { [Op.or]: [...colorsIdsParsed] },
             },
          });
          return res.json(shoes);
