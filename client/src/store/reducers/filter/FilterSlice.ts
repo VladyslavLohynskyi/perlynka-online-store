@@ -1,10 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { SexEnum } from '../shoes/ShoesSlice';
 
 interface IFilterState {
    selectedBrandsId: number[];
    selectedTypesId: number[];
    selectedSeasonsId: number[];
    selectedColorsId: number[];
+   selectedSex: SexEnum;
    isLoading: boolean;
    error: string;
 }
@@ -14,6 +16,7 @@ const initialState: IFilterState = {
    selectedTypesId: [],
    selectedSeasonsId: [],
    selectedColorsId: [],
+   selectedSex: SexEnum.UNISEX,
    isLoading: true,
    error: '',
 };
@@ -22,13 +25,7 @@ export const filterSlice = createSlice({
    name: 'filters',
    initialState,
    reducers: {
-      start(state) {
-         state.isLoading = true;
-         state.error = '';
-      },
-
       brandFilterSuccess(state, action: PayloadAction<number>) {
-         state.isLoading = false;
          if (!state.selectedBrandsId.includes(action.payload)) {
             state.selectedBrandsId = [
                ...state.selectedBrandsId,
@@ -42,7 +39,6 @@ export const filterSlice = createSlice({
       },
 
       typeFilterSuccess(state, action: PayloadAction<number>) {
-         state.isLoading = false;
          if (!state.selectedTypesId.includes(action.payload)) {
             state.selectedTypesId = [...state.selectedTypesId, action.payload];
          } else {
@@ -53,7 +49,6 @@ export const filterSlice = createSlice({
       },
 
       seasonFilterSuccess(state, action: PayloadAction<number>) {
-         state.isLoading = false;
          if (!state.selectedSeasonsId.includes(action.payload)) {
             state.selectedSeasonsId = [
                ...state.selectedSeasonsId,
@@ -67,7 +62,6 @@ export const filterSlice = createSlice({
       },
 
       colorFilterSuccess(state, action: PayloadAction<number>) {
-         state.isLoading = false;
          if (!state.selectedColorsId.includes(action.payload)) {
             state.selectedColorsId = [
                ...state.selectedColorsId,
@@ -80,9 +74,8 @@ export const filterSlice = createSlice({
          }
       },
 
-      error(state, action: PayloadAction<string>) {
-         state.isLoading = false;
-         state.error = action.payload;
+      sexFilterSuccess(state, action: PayloadAction<SexEnum>) {
+         state.selectedSex = action.payload;
       },
    },
 });

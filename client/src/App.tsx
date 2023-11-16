@@ -19,6 +19,7 @@ const App: FC = () => {
    }, []);
 
    useEffect(() => {
+      console.log(filter.selectedSex);
       dispatch(
          getAllShoesByFilter({
             brandsId: filter.selectedBrandsId,
@@ -32,6 +33,7 @@ const App: FC = () => {
       filter.selectedTypesId,
       filter.selectedSeasonsId,
       filter.selectedColorsId,
+      filter.selectedSex,
    ]);
    if (user.isLoading || shoes.isLoading) {
       return <div>Loading...</div>;
