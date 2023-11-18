@@ -11,10 +11,10 @@ export const FilterCheckboxItem: React.FC<FilterCheckboxItemType> = ({
    return (
       <div
          className='checkbox-list__item'
-         key={value.id}
          onClick={() => handleClickCheckbox(+value.id)}
       >
          <input
+            id={value.name}
             value={value.name}
             type='checkbox'
             checked={selectedValuesId.includes(+value.id)}
