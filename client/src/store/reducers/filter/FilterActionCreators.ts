@@ -1,38 +1,23 @@
 import { AppDispatch } from '../../store';
+import { SexEnum } from '../shoes/ShoesSlice';
 import { filterSlice } from './FilterSlice';
 
 export const brandFilter = (id: number) => async (dispatch: AppDispatch) => {
-   try {
-      dispatch(filterSlice.actions.start());
-      dispatch(filterSlice.actions.brandFilterSuccess(id));
-   } catch (error) {
-      dispatch(filterSlice.actions.error('Brand Filter Error'));
-   }
+   dispatch(filterSlice.actions.brandFilterSuccess(id));
 };
 
 export const typeFilter = (id: number) => async (dispatch: AppDispatch) => {
-   try {
-      dispatch(filterSlice.actions.start());
-      dispatch(filterSlice.actions.typeFilterSuccess(id));
-   } catch (error) {
-      dispatch(filterSlice.actions.error('Type Filter Error'));
-   }
+   dispatch(filterSlice.actions.typeFilterSuccess(id));
 };
 
 export const seasonFilter = (id: number) => async (dispatch: AppDispatch) => {
-   try {
-      dispatch(filterSlice.actions.start());
-      dispatch(filterSlice.actions.seasonFilterSuccess(id));
-   } catch (error) {
-      dispatch(filterSlice.actions.error('Season Filter Error'));
-   }
+   dispatch(filterSlice.actions.seasonFilterSuccess(id));
 };
 
 export const colorFilter = (id: number) => async (dispatch: AppDispatch) => {
-   try {
-      dispatch(filterSlice.actions.start());
-      dispatch(filterSlice.actions.colorFilterSuccess(id));
-   } catch (error) {
-      dispatch(filterSlice.actions.error('Color Filter Error'));
-   }
+   dispatch(filterSlice.actions.colorFilterSuccess(id));
+};
+
+export const sexFilter = (sex: SexEnum) => async (dispatch: AppDispatch) => {
+   dispatch(filterSlice.actions.sexFilterSuccess(sex));
 };

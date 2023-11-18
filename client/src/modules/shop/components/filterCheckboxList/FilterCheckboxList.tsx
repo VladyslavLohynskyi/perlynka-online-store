@@ -16,6 +16,7 @@ export const FilterCheckboxList: React.FC<FilterCheckboxListType> = ({
          <div className='checkbox-list__main'>
             {list?.map((value) => (
                <FilterCheckboxItem
+                  key={value.id}
                   value={value}
                   handleClickCheckbox={handleClickCheckbox}
                   selectedValuesId={selectedValuesId}
