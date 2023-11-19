@@ -111,7 +111,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
       if (
          JSON.stringify(addSizes) !==
          JSON.stringify(
-            shoes.sizes.map(({ sizeId, count, shoId }) => {
+            shoes.shoes_sizes.map(({ sizeId, count, shoId }) => {
                return { sizeId, count, shoId };
             }),
          )
@@ -255,7 +255,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                   </div>
                   <div className='add-shoes-modal__sizes-container'>
                      {sizes?.map((size) => {
-                        const value = foundShoes.sizes.find((el) => {
+                        const value = foundShoes.shoes_sizes.find((el) => {
                            return el.sizeId === Number(size.id);
                         });
 
