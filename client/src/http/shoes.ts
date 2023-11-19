@@ -7,6 +7,7 @@ export interface IFilter {
    seasonsId: number[];
    colorsId: number[];
    sex: SexEnum;
+   sizesId: number[];
 }
 export const getAllShoes = async ({
    brandsId,
@@ -14,11 +15,13 @@ export const getAllShoes = async ({
    seasonsId,
    colorsId,
    sex,
+   sizesId,
 }: IFilter) => {
    const brandIdStringified = JSON.stringify(brandsId);
    const typesIdStringified = JSON.stringify(typesId);
    const seasonsIdStringified = JSON.stringify(seasonsId);
    const colorsIdStringified = JSON.stringify(colorsId);
+   const sizesIdStringified = JSON.stringify(sizesId);
    const responseShoes = await $host.get<IShoes[]>('/shoes', {
       params: {
          brandsId: brandIdStringified,
@@ -26,6 +29,7 @@ export const getAllShoes = async ({
          seasonsId: seasonsIdStringified,
          colorsId: colorsIdStringified,
          sex,
+         sizesId: sizesIdStringified,
       },
    });
    const shoes = responseShoes.data;

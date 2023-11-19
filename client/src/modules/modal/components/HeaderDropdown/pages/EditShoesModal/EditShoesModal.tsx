@@ -26,6 +26,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
       selectedSeasonsId,
       selectedColorsId,
       selectedSex,
+      selectedSizesId,
    } = useAppSelector((state) => state.filterReducer);
    const dispatch = useAppDispatch();
    const [id, setId] = useState<number>(0);
@@ -128,6 +129,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
             seasonsId: selectedSeasonsId,
             colorsId: selectedColorsId,
             sex: selectedSex,
+            sizesId: selectedSizesId,
          }),
       );
    };
