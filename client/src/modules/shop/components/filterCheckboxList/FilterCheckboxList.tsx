@@ -14,10 +14,11 @@ export const FilterCheckboxList: React.FC<FilterCheckboxListType> = ({
       <div className='checkbox-list__container'>
          <h3 className='checkbox-list__header'>{name}</h3>
          <div className='checkbox-list__main'>
-            {list?.map((value) => (
+            {list?.map(({ id, name }) => (
                <FilterCheckboxItem
-                  key={value.id}
-                  value={value}
+                  key={id}
+                  name={name}
+                  id={id}
                   handleClickCheckbox={handleClickCheckbox}
                   selectedValuesId={selectedValuesId}
                />
