@@ -15,6 +15,7 @@ import { Button } from '../../../../../ui/Button';
 import { SizeEditItem } from '../../components/SizeEditItem';
 import { updateShoes } from '../../../../../../store/reducers/shoes/ShoesActionCreators';
 import { ModalSearch } from '../../components/ModalSearch';
+import { ButtonClassEnum } from '../../../../../ui/Button/ButtonType';
 
 export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
    const { brands, types, colors, seasons, sizes } = useAppSelector(
@@ -275,7 +276,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                   <div>
                      <Button
                         disabled={foundShoes ? false : true}
-                        buttonClass='primary'
+                        buttonClass={ButtonClassEnum.SECONDARY}
                         buttonText='Оновити'
                      />
                   </div>

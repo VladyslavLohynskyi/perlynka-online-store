@@ -7,6 +7,7 @@ import { Modal } from '../../../modal/pages';
 import { AddAdminModal } from '../../../modal/components/HeaderDropdown/pages/AddAdminModal';
 import { EditAdminModal } from '../../../modal/components/HeaderDropdown/pages/EditAdminModal';
 import { DeleteAdminModal } from '../../../modal/components/HeaderDropdown/pages/DeleteAdminModal';
+import { ButtonClassEnum } from '../../../ui/Button/ButtonType';
 
 export const AdminBasicPanelSection: React.FC<AdminBasicPanelSectionType> = ({
    header,
@@ -25,17 +26,17 @@ export const AdminBasicPanelSection: React.FC<AdminBasicPanelSectionType> = ({
             <p className='admin__panel-title'>{header}</p>
             <Button
                buttonText='Додати'
-               buttonClass='primary'
+               buttonClass={ButtonClassEnum.PRIMARY}
                buttonClick={() => setIsAddModalOpened(true)}
             />
             <Button
                buttonText='Редагувати'
-               buttonClass='secondary'
+               buttonClass={ButtonClassEnum.SECONDARY}
                buttonClick={() => setIsEditModalOpened(true)}
             />
             <Button
                buttonText='Видалити'
-               buttonClass='delete'
+               buttonClass={ButtonClassEnum.DELETE}
                buttonClick={() => setIsDeleteModalOpened(true)}
             />
          </div>

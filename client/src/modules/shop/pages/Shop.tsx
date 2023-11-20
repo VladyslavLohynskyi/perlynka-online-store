@@ -12,6 +12,9 @@ import {
 } from '../../../store/reducers/filter/FilterActionCreators';
 import { FilterCheckboxList } from '../components/filterCheckboxList';
 import { FilterSizeCheckboxList } from '../components/filterSizeCheckboxList';
+import { Button } from '../../ui/Button';
+import { ButtonClassEnum } from '../../ui/Button/ButtonType';
+import { SexEnum } from '../../../store/reducers/shoes/ShoesSlice';
 
 export const Shop: React.FC = () => {
    const dispatch = useAppDispatch();
@@ -23,6 +26,8 @@ export const Shop: React.FC = () => {
       selectedTypesId,
       selectedSeasonsId,
       selectedColorsId,
+      selectedSex,
+      selectedSizesId,
    } = useAppSelector((state) => state.filterReducer);
    const handleClickBrandCheckbox = (id: number) => {
       dispatch(brandFilter(id));
@@ -39,10 +44,30 @@ export const Shop: React.FC = () => {
    const handleClickColorCheckbox = (id: number) => {
       dispatch(colorFilter(id));
    };
+   const isFiltersEmpty =
+      !selectedBrandsId.length &&
+      !selectedTypesId.length &&
+      !selectedSeasonsId.length &&
+      !selectedSizesId.length &&
+      !selectedColorsId.length &&
+      selectedSex === SexEnum.UNISEX;
 
    return (
       <div className='shop'>
-         <div className='shop__top'></div>
+         <div className='shop__top'>
+            <div className='shop__reset-filters'>
+               <Button
+                  buttonClass={
+                     !isFiltersEmpty
+                        ? ButtonClassEnum.PROFILE
+                        : ButtonClassEnum.DISABLE
+                  }
+                  buttonText='Скинути фільтри'
+                  disabled={isFiltersEmpty}
+               />
+            </div>
+            <div className='shop__top-filters'></div>
+         </div>
          <div className='shop__container'>
             <aside className='shop__aside-filters'>
                <FilterCheckboxList

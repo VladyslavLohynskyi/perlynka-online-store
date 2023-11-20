@@ -8,6 +8,7 @@ import { Button } from '../../../../../ui/Button';
 import { ModalSearch } from '../../components/ModalSearch';
 import { ISizeCategory } from '../../../../../../store/reducers/shoes/ShoesSlice';
 import { updateSize } from '../../../../../../store/reducers/shoes/SizeActionCreators';
+import { ButtonClassEnum } from '../../../../../ui/Button/ButtonType';
 
 export const EditSizeModal: React.FC<EditSizeModalType> = ({ onClose }) => {
    const { sizes } = useAppSelector((state) => state.shoesReducer);
@@ -70,7 +71,7 @@ export const EditSizeModal: React.FC<EditSizeModalType> = ({ onClose }) => {
                   />
                   <Button
                      additionalClass='admin-modal-accept-btn'
-                     buttonClass='secondary'
+                     buttonClass={ButtonClassEnum.SECONDARY}
                      buttonText='Редагувати'
                      disabled={disable}
                      buttonClick={handleUpdateName}

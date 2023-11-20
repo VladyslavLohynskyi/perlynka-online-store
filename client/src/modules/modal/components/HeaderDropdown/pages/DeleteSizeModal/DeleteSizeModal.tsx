@@ -7,6 +7,7 @@ import { Button } from '../../../../../ui/Button';
 import { ModalSearch } from '../../components/ModalSearch';
 import { ISizeCategory } from '../../../../../../store/reducers/shoes/ShoesSlice';
 import { deleteSize } from '../../../../../../store/reducers/shoes/SizeActionCreators';
+import { ButtonClassEnum } from '../../../../../ui/Button/ButtonType';
 
 export const DeleteSizeModal: React.FC<DeleteSizeModalType> = ({ onClose }) => {
    const { sizes } = useAppSelector((state) => state.shoesReducer);
@@ -61,7 +62,7 @@ export const DeleteSizeModal: React.FC<DeleteSizeModalType> = ({ onClose }) => {
                   </div>
                   <Button
                      additionalClass='admin-modal-accept-btn'
-                     buttonClass='delete'
+                     buttonClass={ButtonClassEnum.DELETE}
                      buttonText='Видалити'
                      buttonClick={handleDeleteValue}
                   />

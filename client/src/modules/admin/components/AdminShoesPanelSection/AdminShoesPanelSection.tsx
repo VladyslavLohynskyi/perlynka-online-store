@@ -4,6 +4,7 @@ import './AdminShoesPanelSection.scss';
 import { AdminShoesPanelSectionType } from './AdminShoesPanelSectionType';
 import { Button } from '../../../ui/Button';
 import { Modal } from '../../../modal/pages';
+import { ButtonClassEnum } from '../../../ui/Button/ButtonType';
 
 export const AdminShoesPanelSection: React.FC<AdminShoesPanelSectionType> = ({
    AddModalComponent,
@@ -19,17 +20,17 @@ export const AdminShoesPanelSection: React.FC<AdminShoesPanelSectionType> = ({
             <p className='admin__panel-title'>Взуття</p>
             <Button
                buttonText='Додати'
-               buttonClass='primary'
+               buttonClass={ButtonClassEnum.PRIMARY}
                buttonClick={() => setIsAddModalOpened(true)}
             />
             <Button
                buttonText='Редагувати'
-               buttonClass='secondary'
+               buttonClass={ButtonClassEnum.SECONDARY}
                buttonClick={() => setIsEditModalOpened(true)}
             />
             <Button
                buttonText='Видалити'
-               buttonClass='delete'
+               buttonClass={ButtonClassEnum.DELETE}
                buttonClick={() => setIsDeleteModalOpened(true)}
             />
          </div>
