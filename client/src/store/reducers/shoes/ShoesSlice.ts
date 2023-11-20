@@ -28,7 +28,7 @@ export interface IShoes {
    colorId: number;
    seasonId: number;
    brandId: number;
-   sizes: ISize[];
+   shoes_sizes: ISize[];
    sex: SexEnum;
 }
 export interface IShoesState {

@@ -18,6 +18,7 @@ interface shoesGetRequest extends Request {
       seasonsId: string;
       colorsId: string;
       sex: SexType;
+      sizesId: string;
    };
 }
 interface shoesCreateRequest extends Request {
@@ -96,11 +97,13 @@ class shoesController {
 
    async getAll(req: shoesGetRequest, res: Response) {
       try {
-         const { brandsId, typesId, seasonsId, colorsId, sex } = req.query;
+         const { brandsId, typesId, seasonsId, colorsId, sex, sizesId } =
+            req.query;
          const brandIdsParsed: string[] = JSON.parse(brandsId);
          const typeIdsParsed: string[] = JSON.parse(typesId);
          const seasonIdsParsed: string[] = JSON.parse(seasonsId);
          const colorsIdsParsed: string[] = JSON.parse(colorsId);
+         const sizesIdsParsed: string[] = JSON.parse(sizesId);
          const sexFilter = () => {
             if (sex === 'Хлопчик') {
                return ['Хлопчик', 'Унісекс'];
@@ -117,6 +120,10 @@ class shoesController {
                seasonId: { [Op.or]: [...seasonIdsParsed] },
                colorId: { [Op.or]: [...colorsIdsParsed] },
                sex: { [Op.or]: sexFilter() },
+            },
+            include: {
+               model: ShoesSize,
+               where: { sizeId: { [Op.or]: [...sizesIdsParsed] } },
             },
          });
          return res.json(shoes);
@@ -151,36 +158,14 @@ class shoesController {
 
          const shoes = await Shoes.findOne({
             where: { id },
+            include: { model: ShoesSize },
          });
-         const sizes = await ShoesSize.findAll({ where: { shoId: id } });
          if (!shoes) {
             return res
                .status(403)
                .json(`Shoes with this id = ${id} doesn't exist`);
          }
-         const {
-            brandId,
-            colorId,
-            img,
-            price,
-            model,
-            seasonId,
-            typeId,
-            rating,
-            sex,
-         } = shoes;
-         return res.json({
-            brandId,
-            colorId,
-            img,
-            price,
-            model,
-            seasonId,
-            typeId,
-            rating,
-            sex,
-            sizes: [...sizes],
-         });
+         return res.json(shoes);
       } catch (error) {
          res.json('Getting One Error');
       }

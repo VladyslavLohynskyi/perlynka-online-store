@@ -21,3 +21,7 @@ export const colorFilter = (id: number) => async (dispatch: AppDispatch) => {
 export const sexFilter = (sex: SexEnum) => async (dispatch: AppDispatch) => {
    dispatch(filterSlice.actions.sexFilterSuccess(sex));
 };
+
+export const sizeFilter = (id: number) => async (dispatch: AppDispatch) => {
+   dispatch(filterSlice.actions.sizesFilterSuccess(id));
+};

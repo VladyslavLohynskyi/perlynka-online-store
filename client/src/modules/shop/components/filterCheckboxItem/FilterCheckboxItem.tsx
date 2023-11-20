@@ -6,21 +6,22 @@ import { FilterCheckboxItemType } from './FilterCheckboxItemType';
 export const FilterCheckboxItem: React.FC<FilterCheckboxItemType> = ({
    handleClickCheckbox,
    selectedValuesId,
-   value,
+   name,
+   id,
 }) => {
    return (
       <div
          className='checkbox-list__item'
-         onClick={() => handleClickCheckbox(+value.id)}
+         onClick={() => handleClickCheckbox(+id)}
       >
          <input
-            id={value.name}
-            value={value.name}
+            id={name}
+            value={name}
             type='checkbox'
-            checked={selectedValuesId.includes(+value.id)}
+            checked={selectedValuesId.includes(+id)}
             onChange={() => {}}
          />
-         <span>{value.name}</span>
+         <span>{name}</span>
       </div>
    );
 };

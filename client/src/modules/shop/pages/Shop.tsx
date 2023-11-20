@@ -11,6 +11,7 @@ import {
    colorFilter,
 } from '../../../store/reducers/filter/FilterActionCreators';
 import { FilterCheckboxList } from '../components/filterCheckboxList';
+import { FilterSizeCheckboxList } from '../components/filterSizeCheckboxList';
 
 export const Shop: React.FC = () => {
    const dispatch = useAppDispatch();
@@ -68,6 +69,7 @@ export const Shop: React.FC = () => {
                   list={colors}
                   name='Колір'
                />
+               <FilterSizeCheckboxList />
             </aside>
             <section className='shop__shoes-list'>
                {shoes.length &&

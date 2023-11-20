@@ -7,6 +7,7 @@ interface IFilterState {
    selectedSeasonsId: number[];
    selectedColorsId: number[];
    selectedSex: SexEnum;
+   selectedSizesId: number[];
    isLoading: boolean;
    error: string;
 }
@@ -16,11 +17,11 @@ const initialState: IFilterState = {
    selectedTypesId: [],
    selectedSeasonsId: [],
    selectedColorsId: [],
+   selectedSizesId: [],
    selectedSex: SexEnum.UNISEX,
    isLoading: true,
    error: '',
 };
-
 export const filterSlice = createSlice({
    name: 'filters',
    initialState,
@@ -69,6 +70,16 @@ export const filterSlice = createSlice({
             ];
          } else {
             state.selectedColorsId = state.selectedColorsId.filter(
+               (el) => el !== action.payload,
+            );
+         }
+      },
+
+      sizesFilterSuccess(state, action: PayloadAction<number>) {
+         if (!state.selectedSizesId.includes(action.payload)) {
+            state.selectedSizesId = [...state.selectedSizesId, action.payload];
+         } else {
+            state.selectedSizesId = state.selectedSizesId.filter(
                (el) => el !== action.payload,
             );
          }
