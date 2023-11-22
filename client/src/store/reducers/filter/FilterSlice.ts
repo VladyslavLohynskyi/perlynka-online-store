@@ -1,6 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SexEnum } from '../shoes/ShoesSlice';
 
+export enum SortEnum {
+   DEFAULT = '',
+   PRICE_ASC = 'price ASC',
+   PRICE_DESC = 'price DESC',
+   CREATED_AT_ASC = 'createdAt ASC',
+   CREATED_AT_DESC = 'createdAt DESC',
+}
 interface IFilterState {
    selectedBrandsId: number[];
    selectedTypesId: number[];
@@ -8,6 +15,7 @@ interface IFilterState {
    selectedColorsId: number[];
    selectedSex: SexEnum;
    selectedSizesId: number[];
+   selectedSortFilter: SortEnum;
    isLoading: boolean;
    error: string;
 }
@@ -18,6 +26,7 @@ const initialState: IFilterState = {
    selectedSeasonsId: [],
    selectedColorsId: [],
    selectedSizesId: [],
+   selectedSortFilter: SortEnum.DEFAULT,
    selectedSex: SexEnum.UNISEX,
    isLoading: true,
    error: '',
@@ -89,6 +98,9 @@ export const filterSlice = createSlice({
          state.selectedSex = action.payload;
       },
 
+      sortFilterSuccess(state, action: PayloadAction<SortEnum>) {
+         state.selectedSortFilter = action.payload;
+      },
       resetFiltersSuccess(state) {
          state.selectedBrandsId = [];
          state.selectedColorsId = [];
@@ -96,6 +108,7 @@ export const filterSlice = createSlice({
          state.selectedSizesId = [];
          state.selectedTypesId = [];
          state.selectedSex = SexEnum.UNISEX;
+         state.selectedSortFilter = SortEnum.DEFAULT;
       },
    },
 });

@@ -1,6 +1,6 @@
 import { AppDispatch } from '../../store';
 import { SexEnum } from '../shoes/ShoesSlice';
-import { filterSlice } from './FilterSlice';
+import { SortEnum, filterSlice } from './FilterSlice';
 
 export const brandFilter = (id: number) => async (dispatch: AppDispatch) => {
    dispatch(filterSlice.actions.brandFilterSuccess(id));
@@ -25,7 +25,9 @@ export const sexFilter = (sex: SexEnum) => async (dispatch: AppDispatch) => {
 export const sizeFilter = (id: number) => async (dispatch: AppDispatch) => {
    dispatch(filterSlice.actions.sizesFilterSuccess(id));
 };
-
+export const sortFilter = (sort: SortEnum) => async (dispatch: AppDispatch) => {
+   dispatch(filterSlice.actions.sortFilterSuccess(sort));
+};
 export const resetFilters = () => async (dispatch: AppDispatch) => {
    dispatch(filterSlice.actions.resetFiltersSuccess());
 };
