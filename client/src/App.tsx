@@ -27,6 +27,7 @@ const App: FC = () => {
             colorsId: filter.selectedColorsId,
             sex: filter.selectedSex,
             sizesId: filter.selectedSizesId,
+            sortBy: filter.selectedSortFilter,
          }),
       );
    }, [
@@ -36,6 +37,7 @@ const App: FC = () => {
       filter.selectedColorsId,
       filter.selectedSex,
       filter.selectedSizesId,
+      filter.selectedSortFilter,
    ]);
    if (user.isLoading || shoes.isLoading) {
       return <div>Loading...</div>;

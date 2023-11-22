@@ -1,4 +1,5 @@
 import { $host, $authHost } from '.';
+import { SortEnum } from '../store/reducers/filter/FilterSlice';
 import { IShoes, SexEnum } from '../store/reducers/shoes/ShoesSlice';
 
 export interface IFilter {
@@ -8,6 +9,7 @@ export interface IFilter {
    colorsId: number[];
    sex: SexEnum;
    sizesId: number[];
+   sortBy: SortEnum;
 }
 export const getAllShoes = async ({
    brandsId,
@@ -16,6 +18,7 @@ export const getAllShoes = async ({
    colorsId,
    sex,
    sizesId,
+   sortBy,
 }: IFilter) => {
    const brandIdStringified = JSON.stringify(brandsId);
    const typesIdStringified = JSON.stringify(typesId);
@@ -29,6 +32,8 @@ export const getAllShoes = async ({
          seasonsId: seasonsIdStringified,
          colorsId: colorsIdStringified,
          sex,
+         sortBy,
+
          sizesId: sizesIdStringified,
       },
    });

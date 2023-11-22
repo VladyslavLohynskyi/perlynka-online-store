@@ -6,10 +6,18 @@ import { Request, Response } from 'express';
 import ShoesSize from '../models/shoesSizeModel';
 
 import { Op } from 'sequelize';
+import { sequelize } from '../db';
 
 interface IParseSizes {
    sizeId: number;
    count: number;
+}
+
+enum SortEnum {
+   PRICE_ASC = 'price ASC',
+   PRICE_DESC = 'price DESC',
+   CREATED_AT_ASC = 'createdAt ASC',
+   CREATED_AT_DESC = 'createdAt DESC',
 }
 interface shoesGetRequest extends Request {
    query: {
@@ -19,6 +27,7 @@ interface shoesGetRequest extends Request {
       colorsId: string;
       sex: SexType;
       sizesId: string;
+      sortBy: SortEnum;
    };
 }
 interface shoesCreateRequest extends Request {
@@ -97,8 +106,15 @@ class shoesController {
 
    async getAll(req: shoesGetRequest, res: Response) {
       try {
-         const { brandsId, typesId, seasonsId, colorsId, sex, sizesId } =
-            req.query;
+         const {
+            brandsId,
+            typesId,
+            seasonsId,
+            colorsId,
+            sex,
+            sizesId,
+            sortBy,
+         } = req.query;
          const brandIdsParsed: string[] = JSON.parse(brandsId);
          const typeIdsParsed: string[] = JSON.parse(typesId);
          const seasonIdsParsed: string[] = JSON.parse(seasonsId);
@@ -113,6 +129,8 @@ class shoesController {
             }
             return [];
          };
+
+         const sortBySplit: string[] = sortBy.split(' ');
          const shoes = await Shoes.findAll({
             where: {
                brandId: { [Op.or]: [...brandIdsParsed] },
@@ -121,6 +139,7 @@ class shoesController {
                colorId: { [Op.or]: [...colorsIdsParsed] },
                sex: { [Op.or]: sexFilter() },
             },
+            order: [[sortBySplit[0], sortBySplit[1]]],
             include: {
                model: ShoesSize,
                where: { sizeId: { [Op.or]: [...sizesIdsParsed] } },

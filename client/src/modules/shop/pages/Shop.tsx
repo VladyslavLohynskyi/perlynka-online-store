@@ -41,7 +41,6 @@ export const Shop: React.FC = () => {
    } = useAppSelector((state) => state.filterReducer);
 
    const selectOptions: ISelectFilterOption[] = [
-      { id: 0, text: 'За замовчуванням', sort: SortEnum.DEFAULT },
       { id: 1, text: 'За спаданням цін', sort: SortEnum.PRICE_ASC },
       { id: 2, text: 'За зростанням цін', sort: SortEnum.PRICE_DESC },
       { id: 3, text: 'Від новіших моделей', sort: SortEnum.CREATED_AT_ASC },
@@ -76,7 +75,7 @@ export const Shop: React.FC = () => {
       !selectedSizesId.length &&
       !selectedColorsId.length &&
       selectedSex === SexEnum.UNISEX &&
-      selectedSortFilter === SortEnum.DEFAULT;
+      selectedSortFilter === SortEnum.PRICE_ASC;
 
    return (
       <div className='shop'>
