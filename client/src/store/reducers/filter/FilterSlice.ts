@@ -88,6 +88,15 @@ export const filterSlice = createSlice({
       sexFilterSuccess(state, action: PayloadAction<SexEnum>) {
          state.selectedSex = action.payload;
       },
+
+      resetFiltersSuccess(state) {
+         state.selectedBrandsId = [];
+         state.selectedColorsId = [];
+         state.selectedSeasonsId = [];
+         state.selectedSizesId = [];
+         state.selectedTypesId = [];
+         state.selectedSex = SexEnum.UNISEX;
+      },
    },
 });
 

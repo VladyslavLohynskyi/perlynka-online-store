@@ -7,6 +7,7 @@ import { ModalInput } from '../../components/ModalInput';
 import { Button } from '../../../../../ui/Button';
 import { ModalSearch } from '../../components/ModalSearch';
 import { IBasicCategory } from '../../../../../../store/reducers/shoes/ShoesSlice';
+import { ButtonClassEnum } from '../../../../../ui/Button/ButtonType';
 
 export const EditAdminModal: React.FC<EditAdminModalType> = ({
    onClose,
@@ -80,7 +81,7 @@ export const EditAdminModal: React.FC<EditAdminModalType> = ({
                   />
                   <Button
                      additionalClass='admin-modal-accept-btn'
-                     buttonClass='secondary'
+                     buttonClass={ButtonClassEnum.SECONDARY}
                      buttonText='Редагувати'
                      disabled={disable}
                      buttonClick={handleUpdateName}

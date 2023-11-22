@@ -25,3 +25,7 @@ export const sexFilter = (sex: SexEnum) => async (dispatch: AppDispatch) => {
 export const sizeFilter = (id: number) => async (dispatch: AppDispatch) => {
    dispatch(filterSlice.actions.sizesFilterSuccess(id));
 };
+
+export const resetFilters = () => async (dispatch: AppDispatch) => {
+   dispatch(filterSlice.actions.resetFiltersSuccess());
+};

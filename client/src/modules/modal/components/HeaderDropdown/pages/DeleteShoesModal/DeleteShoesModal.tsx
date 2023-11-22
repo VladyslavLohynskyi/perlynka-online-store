@@ -9,6 +9,7 @@ import { Button } from '../../../../../ui/Button';
 import { deleteShoes } from '../../../../../../store/reducers/shoes/ShoesActionCreators';
 import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
 import { ModalSearch } from '../../components/ModalSearch/';
+import { ButtonClassEnum } from '../../../../../ui/Button/ButtonType';
 export const DeleteShoesModal: React.FC<DeleteShoesModalType> = ({
    onClose,
 }) => {
@@ -95,7 +96,7 @@ export const DeleteShoesModal: React.FC<DeleteShoesModalType> = ({
                   <div>
                      <Button
                         disabled={foundShoes ? false : true}
-                        buttonClass='delete'
+                        buttonClass={ButtonClassEnum.DELETE}
                         buttonText='Видалити'
                         buttonClick={() => {
                            dispatch(deleteShoes(id));

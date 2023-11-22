@@ -6,6 +6,7 @@ import { ModalHeader } from '../../components/ModalHeader';
 import { ModalInput } from '../../components/ModalInput';
 import { Button } from '../../../../../ui/Button';
 import { createSize } from '../../../../../../store/reducers/shoes/SizeActionCreators';
+import { ButtonClassEnum } from '../../../../../ui/Button/ButtonType';
 
 export const AddSizeModal: React.FC<AddSizeModalType> = ({ onClose }) => {
    const { sizes } = useAppSelector((state) => state.shoesReducer);
@@ -49,7 +50,7 @@ export const AddSizeModal: React.FC<AddSizeModalType> = ({ onClose }) => {
             />
             {error && <p className='modal__error'>{error}</p>}
             <Button
-               buttonClass='primary'
+               buttonClass={ButtonClassEnum.PRIMARY}
                buttonText='Створити'
                width={'65%'}
                disabled={!value}

@@ -8,6 +8,7 @@ import { createShoes } from '../../../../../../store/reducers/shoes/ShoesActionC
 import { ModalHeader } from '../../components/ModalHeader';
 import { ModalInput } from '../../components/ModalInput';
 import { SexEnum } from '../../../../../../store/reducers/shoes/ShoesSlice';
+import { ButtonClassEnum } from '../../../../../ui/Button/ButtonType';
 
 export interface IEditSize {
    sizeId: number;
@@ -216,7 +217,10 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
             </div>
             {error && <p className='modal__error'>{error}</p>}
             <div className='add-shoes-modaladd-shoes-modal'>
-               <Button buttonClass='primary' buttonText='Додати' />
+               <Button
+                  buttonClass={ButtonClassEnum.PRIMARY}
+                  buttonText='Додати'
+               />
             </div>
          </form>
       </div>

@@ -6,6 +6,7 @@ import { ModalHeader } from '../../components/ModalHeader';
 import { Button } from '../../../../../ui/Button';
 import { ModalSearch } from '../../components/ModalSearch';
 import { IBasicCategory } from '../../../../../../store/reducers/shoes/ShoesSlice';
+import { ButtonClassEnum } from '../../../../../ui/Button/ButtonType';
 
 export const DeleteAdminModal: React.FC<DeleteAdminModalType> = ({
    onClose,
@@ -64,7 +65,7 @@ export const DeleteAdminModal: React.FC<DeleteAdminModalType> = ({
                   </div>
                   <Button
                      additionalClass='admin-modal-accept-btn'
-                     buttonClass='delete'
+                     buttonClass={ButtonClassEnum.DELETE}
                      buttonText='Видалити'
                      buttonClick={handleDeleteValue}
                   />

@@ -8,6 +8,7 @@ import { Modal } from '../../../modal/pages';
 import { AddSizeModal } from '../../../modal/components/HeaderDropdown/pages/AddSizeModal';
 import { EditSizeModal } from '../../../modal/components/HeaderDropdown/pages/EditSizeModal/EditSizeModal';
 import { DeleteSizeModal } from '../../../modal/components/HeaderDropdown/pages/DeleteSizeModal';
+import { ButtonClassEnum } from '../../../ui/Button/ButtonType';
 
 export const AdminSizePanelSection: React.FC = () => {
    const [isAddModalOpened, setIsAddModalOpened] = useState(false);
@@ -19,17 +20,17 @@ export const AdminSizePanelSection: React.FC = () => {
             <p className='admin__panel-title'>Розмір</p>
             <Button
                buttonText='Додати'
-               buttonClass='primary'
+               buttonClass={ButtonClassEnum.PRIMARY}
                buttonClick={() => setIsAddModalOpened(true)}
             />
             <Button
                buttonText='Редагувати'
-               buttonClass='secondary'
+               buttonClass={ButtonClassEnum.SECONDARY}
                buttonClick={() => setIsEditModalOpened(true)}
             />
             <Button
                buttonText='Видалити'
-               buttonClass='delete'
+               buttonClass={ButtonClassEnum.DELETE}
                buttonClick={() => setIsDeleteModalOpened(true)}
             />
          </div>
