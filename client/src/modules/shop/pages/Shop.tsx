@@ -9,6 +9,7 @@ import {
    typeFilter,
    seasonFilter,
    colorFilter,
+   resetFilters,
 } from '../../../store/reducers/filter/FilterActionCreators';
 import { FilterCheckboxList } from '../components/filterCheckboxList';
 import { FilterSizeCheckboxList } from '../components/filterSizeCheckboxList';
@@ -44,6 +45,9 @@ export const Shop: React.FC = () => {
    const handleClickColorCheckbox = (id: number) => {
       dispatch(colorFilter(id));
    };
+   const handleClickResetButton = () => {
+      dispatch(resetFilters());
+   };
    const isFiltersEmpty =
       !selectedBrandsId.length &&
       !selectedTypesId.length &&
@@ -64,6 +68,7 @@ export const Shop: React.FC = () => {
                   }
                   buttonText='Скинути фільтри'
                   disabled={isFiltersEmpty}
+                  buttonClick={handleClickResetButton}
                />
             </div>
             <div className='shop__top-filters'></div>
