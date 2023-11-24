@@ -27,6 +27,11 @@
       width: 80%;
       height: 100%;
    }
+   &__top-filters {
+      display: flex;
+      align-items: center;
+      margin-right: 3px;
+   }
 }
 
 .checkbox-list {

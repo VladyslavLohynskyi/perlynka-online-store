@@ -10,12 +10,20 @@ import {
    seasonFilter,
    colorFilter,
    resetFilters,
+   sortFilter,
 } from '../../../store/reducers/filter/FilterActionCreators';
 import { FilterCheckboxList } from '../components/filterCheckboxList';
 import { FilterSizeCheckboxList } from '../components/filterSizeCheckboxList';
 import { Button } from '../../ui/Button';
 import { ButtonClassEnum } from '../../ui/Button/ButtonType';
 import { SexEnum } from '../../../store/reducers/shoes/ShoesSlice';
+import { SortEnum } from '../../../store/reducers/filter/FilterSlice';
+
+interface ISelectFilterOption {
+   id: number;
+   text: string;
+   sort: string;
+}
 
 export const Shop: React.FC = () => {
    const dispatch = useAppDispatch();
@@ -29,7 +37,15 @@ export const Shop: React.FC = () => {
       selectedColorsId,
       selectedSex,
       selectedSizesId,
+      selectedSortFilter,
    } = useAppSelector((state) => state.filterReducer);
+
+   const selectOptions: ISelectFilterOption[] = [
+      { id: 1, text: 'За спаданням цін', sort: SortEnum.PRICE_ASC },
+      { id: 2, text: 'За зростанням цін', sort: SortEnum.PRICE_DESC },
+      { id: 3, text: 'Від новіших моделей', sort: SortEnum.CREATED_AT_ASC },
+      { id: 4, text: 'Від давніших моделей', sort: SortEnum.CREATED_AT_DESC },
+   ];
    const handleClickBrandCheckbox = (id: number) => {
       dispatch(brandFilter(id));
    };
@@ -48,13 +64,18 @@ export const Shop: React.FC = () => {
    const handleClickResetButton = () => {
       dispatch(resetFilters());
    };
+
+   const handleClickSelectSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      dispatch(sortFilter(e.target.value as SortEnum));
+   };
    const isFiltersEmpty =
       !selectedBrandsId.length &&
       !selectedTypesId.length &&
       !selectedSeasonsId.length &&
       !selectedSizesId.length &&
       !selectedColorsId.length &&
-      selectedSex === SexEnum.UNISEX;
+      selectedSex === SexEnum.UNISEX &&
+      selectedSortFilter === SortEnum.PRICE_ASC;
 
    return (
       <div className='shop'>
@@ -71,7 +92,19 @@ export const Shop: React.FC = () => {
                   buttonClick={handleClickResetButton}
                />
             </div>
-            <div className='shop__top-filters'></div>
+            <div className='shop__top-filters'>
+               <select
+                  name='filters'
+                  value={selectedSortFilter}
+                  onChange={handleClickSelectSort}
+               >
+                  {selectOptions.map((option) => (
+                     <option key={option.id} value={option.sort}>
+                        {option.text}
+                     </option>
+                  ))}
+               </select>
+            </div>
          </div>
          <div className='shop__container'>
             <aside className='shop__aside-filters'>
