@@ -42,7 +42,7 @@ export const createShoes =
          dispatch(shoesSlice.actions.start());
          await createShoesReq(shoesData);
          const shoes = await getAllShoes(filter);
-         dispatch(shoesSlice.actions.shoesCreateSuccess([...shoes]));
+         dispatch(shoesSlice.actions.shoesCreateSuccess(shoes));
       } catch (error) {
          dispatch(shoesSlice.actions.error('Creating Shoes Error'));
       }
@@ -54,7 +54,7 @@ export const updateShoes =
          dispatch(shoesSlice.actions.start());
          await updateShoesReq(shoesData);
          const shoes = await getAllShoes(filter);
-         dispatch(shoesSlice.actions.shoesUpdateSuccess([...shoes]));
+         dispatch(shoesSlice.actions.shoesUpdateSuccess(shoes));
       } catch (error) {
          dispatch(shoesSlice.actions.error('Updating Shoes Error'));
       }

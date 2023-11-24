@@ -131,7 +131,8 @@ class shoesController {
          };
 
          const sortBySplit: string[] = sortBy.split(' ');
-         const shoes = await Shoes.findAll({
+
+         const shoes = await Shoes.findAndCountAll({
             where: {
                brandId: { [Op.or]: [...brandIdsParsed] },
                typeId: { [Op.or]: [...typeIdsParsed] },
@@ -144,6 +145,7 @@ class shoesController {
                model: ShoesSize,
                where: { sizeId: { [Op.or]: [...sizesIdsParsed] } },
             },
+            distinct: true,
          });
          return res.json(shoes);
       } catch (error) {

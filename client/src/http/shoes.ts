@@ -25,18 +25,21 @@ export const getAllShoes = async ({
    const seasonsIdStringified = JSON.stringify(seasonsId);
    const colorsIdStringified = JSON.stringify(colorsId);
    const sizesIdStringified = JSON.stringify(sizesId);
-   const responseShoes = await $host.get<IShoes[]>('/shoes', {
-      params: {
-         brandsId: brandIdStringified,
-         typesId: typesIdStringified,
-         seasonsId: seasonsIdStringified,
-         colorsId: colorsIdStringified,
-         sex,
-         sortBy,
+   const responseShoes = await $host.get<{ count: number; rows: IShoes[] }>(
+      '/shoes',
+      {
+         params: {
+            brandsId: brandIdStringified,
+            typesId: typesIdStringified,
+            seasonsId: seasonsIdStringified,
+            colorsId: colorsIdStringified,
+            sex,
+            sortBy,
 
-         sizesId: sizesIdStringified,
+            sizesId: sizesIdStringified,
+         },
       },
-   });
+   );
    const shoes = responseShoes.data;
    return shoes;
 };
