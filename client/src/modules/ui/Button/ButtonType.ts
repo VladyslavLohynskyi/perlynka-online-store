@@ -5,6 +5,8 @@ export enum ButtonClassEnum {
    DISABLE = 'disable',
    DELETE = 'delete',
    PROFILE = 'profile',
+   PAGINATION = 'pagination',
+   ACTIVE_PAGINATION = 'active-pagination',
 }
 export interface ButtonPropsType {
    buttonClass: ButtonClassEnum;

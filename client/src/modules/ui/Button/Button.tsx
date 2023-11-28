@@ -21,7 +21,7 @@ export const Button: React.FC<ButtonPropsType> = ({
          disabled={disabled}
       >
          <span>{buttonText}</span>
-         <div className='button__icon'>{children}</div>
+         {children && <div className='button__icon'>{children}</div>}
       </button>
    );
 };

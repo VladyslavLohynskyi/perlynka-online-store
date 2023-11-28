@@ -31,3 +31,7 @@ export const sortFilter = (sort: SortEnum) => async (dispatch: AppDispatch) => {
 export const resetFilters = () => async (dispatch: AppDispatch) => {
    dispatch(filterSlice.actions.resetFiltersSuccess());
 };
+
+export const changePage = (page: number) => (dispatch: AppDispatch) => {
+   dispatch(filterSlice.actions.changePage(page));
+};

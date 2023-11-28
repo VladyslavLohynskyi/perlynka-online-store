@@ -15,6 +15,8 @@ interface IFilterState {
    selectedSex: SexEnum;
    selectedSizesId: number[];
    selectedSortFilter: SortEnum;
+   page: number;
+   limit: number;
    isLoading: boolean;
    error: string;
 }
@@ -27,6 +29,8 @@ const initialState: IFilterState = {
    selectedSizesId: [],
    selectedSortFilter: SortEnum.PRICE_ASC,
    selectedSex: SexEnum.UNISEX,
+   page: 1,
+   limit: 6,
    isLoading: true,
    error: '',
 };
@@ -99,6 +103,9 @@ export const filterSlice = createSlice({
 
       sortFilterSuccess(state, action: PayloadAction<SortEnum>) {
          state.selectedSortFilter = action.payload;
+      },
+      changePage(state, action: PayloadAction<number>) {
+         state.page = action.payload;
       },
       resetFiltersSuccess(state) {
          state.selectedBrandsId = [];
