@@ -10,6 +10,8 @@ export interface IFilter {
    sex: SexEnum;
    sizesId: number[];
    sortBy: SortEnum;
+   offset: number;
+   limit: number;
 }
 export const getAllShoes = async ({
    brandsId,
@@ -19,6 +21,8 @@ export const getAllShoes = async ({
    sex,
    sizesId,
    sortBy,
+   offset,
+   limit,
 }: IFilter) => {
    const brandIdStringified = JSON.stringify(brandsId);
    const typesIdStringified = JSON.stringify(typesId);
@@ -35,7 +39,8 @@ export const getAllShoes = async ({
             colorsId: colorsIdStringified,
             sex,
             sortBy,
-
+            offset,
+            limit,
             sizesId: sizesIdStringified,
          },
       },

@@ -28,6 +28,8 @@ interface shoesGetRequest extends Request {
       sex: SexType;
       sizesId: string;
       sortBy: SortEnum;
+      limit: string;
+      offset: string;
    };
 }
 interface shoesCreateRequest extends Request {
@@ -114,6 +116,8 @@ class shoesController {
             sex,
             sizesId,
             sortBy,
+            limit,
+            offset,
          } = req.query;
          const brandIdsParsed: string[] = JSON.parse(brandsId);
          const typeIdsParsed: string[] = JSON.parse(typesId);
@@ -146,6 +150,8 @@ class shoesController {
                where: { sizeId: { [Op.or]: [...sizesIdsParsed] } },
             },
             distinct: true,
+            limit: +limit,
+            offset: +offset,
          });
          return res.json(shoes);
       } catch (error) {
