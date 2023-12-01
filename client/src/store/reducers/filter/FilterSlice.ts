@@ -30,7 +30,7 @@ const initialState: IFilterState = {
    selectedSortFilter: SortEnum.PRICE_ASC,
    selectedSex: SexEnum.UNISEX,
    page: 1,
-   limit: 6,
+   limit: 1,
    isLoading: true,
    error: '',
 };
