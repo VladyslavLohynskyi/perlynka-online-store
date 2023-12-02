@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import './Pagination.scss';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
@@ -14,21 +14,44 @@ export const Pagination: React.FC = () => {
    const dispatch = useAppDispatch();
    const allPagesNumber = Math.ceil(countOfShoesModels / limit);
    const countPages = (number: number) => {
-      const pagesNumber: number[] = [];
-      for (let i = 0; i < number; i++) {
-         pagesNumber.push(i + 1);
+      let pagesNumber: number[] = [];
+      if (page >= 9) {
+         pagesNumber = [page - 4, page - 3, page - 2, page - 1, page];
+         for (let i = 1; i < 4; i++) {
+            if (page + i > allPagesNumber) {
+               pagesNumber.unshift(page - 4 - i);
+            } else {
+               pagesNumber.push(page + i);
+            }
+         }
+      } else {
+         for (let i = 0; i < number; i++) {
+            pagesNumber.push(i + 1);
+         }
       }
       return pagesNumber;
    };
-   const [pages, setPages] = useState<number[]>([
+   const pages: number[] = [
       ...countPages(allPagesNumber >= 9 ? 9 : allPagesNumber),
-   ]);
+   ];
    const handleClick = (number: number) => {
       dispatch(changePage(number));
    };
+   const handleClickRightArrow = () => {
+      dispatch(changePage(page + 1));
+   };
+   const handleClickLeftArrow = () => {
+      dispatch(changePage(page - 1));
+   };
    return (
       <div className='pagination__container'>
-         <IconButton icon={faArrowLeft} className='pagination__arrow-btn' />
+         {page > 1 && (
+            <IconButton
+               icon={faArrowLeft}
+               className='pagination__arrow-btn'
+               onClick={handleClickLeftArrow}
+            />
+         )}
          {pages.map((number) => (
             <Button
                key={number}
@@ -41,8 +64,13 @@ export const Pagination: React.FC = () => {
                buttonClick={() => handleClick(number)}
             />
          ))}
-
-         <IconButton icon={faArrowRight} className='pagination__arrow-btn' />
+         {pages[pages.length - 1] !== allPagesNumber && !!allPagesNumber && (
+            <IconButton
+               icon={faArrowRight}
+               className='pagination__arrow-btn'
+               onClick={handleClickRightArrow}
+            />
+         )}
       </div>
    );
 };
