@@ -64,7 +64,7 @@ export const Pagination: React.FC = () => {
                buttonClick={() => handleClick(number)}
             />
          ))}
-         {pages[pages.length - 1] !== allPagesNumber && !!allPagesNumber && (
+         {page !== allPagesNumber && !!allPagesNumber && (
             <IconButton
                icon={faArrowRight}
                className='pagination__arrow-btn'

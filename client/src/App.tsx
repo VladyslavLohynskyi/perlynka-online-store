@@ -7,7 +7,10 @@ import {
    preloadList,
 } from './store/reducers/shoes/ShoesActionCreators';
 import { authUser } from './store/reducers/user/UserActionCreators';
-import { changePage } from './store/reducers/filter/FilterActionCreators';
+import {
+   changePage,
+   preloadFilter,
+} from './store/reducers/filter/FilterActionCreators';
 
 const App: FC = () => {
    const dispatch = useAppDispatch();
@@ -15,8 +18,11 @@ const App: FC = () => {
    const shoes = useAppSelector((state) => state.shoesReducer);
    const filter = useAppSelector((state) => state.filterReducer);
    useEffect(() => {
-      dispatch(authUser());
-      dispatch(preloadList());
+      (async () => {
+         await dispatch(preloadList());
+         dispatch(preloadFilter());
+         await dispatch(authUser());
+      })();
    }, []);
 
    useEffect(() => {
