@@ -89,6 +89,31 @@
          background-color: #0303d8;
       }
    }
+
+   &--pagination {
+      color: rgb(34, 33, 33);
+      background-color: transparent;
+      border-color: transparent;
+      border-radius: 50%;
+      height: 25px;
+      width: 25px;
+
+      &:hover {
+         border-color: rgb(34, 33, 33);
+      }
+   }
+
+   &--active-pagination {
+      color: #fff;
+      background-color: gray;
+      border-color: gray;
+      border-radius: 50%;
+      height: 25px;
+      width: 25px;
+      &:hover {
+         background-color: rgb(34, 33, 33);
+      }
+   }
 }
 
 .admin-modal-accept-btn {

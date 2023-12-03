@@ -29,6 +29,8 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
       selectedSex,
       selectedSizesId,
       selectedSortFilter,
+      limit,
+      page,
    } = useAppSelector((state) => state.filterReducer);
    const dispatch = useAppDispatch();
    const [id, setId] = useState<number>(0);
@@ -133,6 +135,8 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
             sex: selectedSex,
             sizesId: selectedSizesId,
             sortBy: selectedSortFilter,
+            limit: limit,
+            offset: limit * (page - 1),
          }),
       );
    };

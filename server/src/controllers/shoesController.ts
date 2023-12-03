@@ -28,6 +28,8 @@ interface shoesGetRequest extends Request {
       sex: SexType;
       sizesId: string;
       sortBy: SortEnum;
+      limit: string;
+      offset: string;
    };
 }
 interface shoesCreateRequest extends Request {
@@ -114,6 +116,8 @@ class shoesController {
             sex,
             sizesId,
             sortBy,
+            limit,
+            offset,
          } = req.query;
          const brandIdsParsed: string[] = JSON.parse(brandsId);
          const typeIdsParsed: string[] = JSON.parse(typesId);
@@ -131,7 +135,8 @@ class shoesController {
          };
 
          const sortBySplit: string[] = sortBy.split(' ');
-         const shoes = await Shoes.findAll({
+
+         const shoes = await Shoes.findAndCountAll({
             where: {
                brandId: { [Op.or]: [...brandIdsParsed] },
                typeId: { [Op.or]: [...typeIdsParsed] },
@@ -144,6 +149,9 @@ class shoesController {
                model: ShoesSize,
                where: { sizeId: { [Op.or]: [...sizesIdsParsed] } },
             },
+            distinct: true,
+            limit: +limit,
+            offset: +offset,
          });
          return res.json(shoes);
       } catch (error) {

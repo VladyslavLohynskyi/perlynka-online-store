@@ -24,16 +24,19 @@
    &__shoes-list {
       display: flex;
       flex-wrap: wrap;
-      width: 80%;
-      height: 100%;
    }
    &__top-filters {
       display: flex;
       align-items: center;
       margin-right: 3px;
    }
+   &__right-side {
+      display: flex;
+      flex-direction: column;
+      width: 80%;
+      height: 100%;
+   }
 }
-
 .checkbox-list {
    &__container {
       margin: 5px;

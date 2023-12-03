@@ -18,6 +18,7 @@ import { Button } from '../../ui/Button';
 import { ButtonClassEnum } from '../../ui/Button/ButtonType';
 import { SexEnum } from '../../../store/reducers/shoes/ShoesSlice';
 import { SortEnum } from '../../../store/reducers/filter/FilterSlice';
+import { Pagination } from '../components/Pagination';
 
 interface ISelectFilterOption {
    id: number;
@@ -134,12 +135,15 @@ export const Shop: React.FC = () => {
                />
                <FilterSizeCheckboxList />
             </aside>
-            <section className='shop__shoes-list'>
-               {shoes.length &&
-                  shoes.map((shoes) => (
-                     <ShoesItem key={shoes.id} shoes={shoes} />
-                  ))}
-            </section>
+            <div className='shop__right-side'>
+               <section className='shop__shoes-list'>
+                  {!!shoes.length &&
+                     shoes.map((shoes) => (
+                        <ShoesItem key={shoes.id} shoes={shoes} />
+                     ))}
+               </section>
+               <Pagination />
+            </div>
          </div>
       </div>
    );

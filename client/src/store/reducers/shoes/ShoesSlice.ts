@@ -38,6 +38,7 @@ export interface IShoesState {
    seasons: IBasicCategory[] | null;
    sizes: ISizeCategory[] | null;
    shoes: IShoes[];
+   countOfShoesModels: number;
    isLoading: boolean;
    error: string;
 }
@@ -57,6 +58,7 @@ const initialState: IShoesState = {
    colors: null,
    shoes: [],
    sizes: null,
+   countOfShoesModels: 0,
    isLoading: true,
    error: '',
 };
@@ -84,16 +86,24 @@ export const shoesSlice = createSlice({
          state.error = action.payload;
       },
 
-      shoesCreateSuccess(state, action: PayloadAction<IShoes[]>) {
+      shoesCreateSuccess(
+         state,
+         action: PayloadAction<{ count: number; rows: IShoes[] }>,
+      ) {
          state.isLoading = false;
          state.error = '';
-         state.shoes = action.payload;
+         state.shoes = action.payload.rows;
+         state.countOfShoesModels = action.payload.count;
       },
 
-      shoesUpdateSuccess(state, action: PayloadAction<IShoes[]>) {
+      shoesUpdateSuccess(
+         state,
+         action: PayloadAction<{ count: number; rows: IShoes[] }>,
+      ) {
          state.isLoading = false;
          state.error = '';
-         state.shoes = action.payload;
+         state.shoes = action.payload.rows;
+         state.countOfShoesModels = action.payload.count;
       },
 
       shoesDeleteSuccess(state, action: PayloadAction<number>) {
@@ -245,9 +255,13 @@ export const shoesSlice = createSlice({
          }
       },
 
-      shoesGetAll(state, action: PayloadAction<IShoes[]>) {
+      shoesGetAll(
+         state,
+         action: PayloadAction<{ count: number; rows: IShoes[] }>,
+      ) {
          state.isLoading = false;
-         state.shoes = action.payload;
+         state.shoes = action.payload.rows;
+         state.countOfShoesModels = action.payload.count;
       },
 
       error(state, action: PayloadAction<string>) {
