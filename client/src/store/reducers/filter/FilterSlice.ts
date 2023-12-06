@@ -57,6 +57,8 @@ export const filterSlice = createSlice({
             );
          }
          document.cookie = `brandFilter=${state.selectedBrandsId}`;
+         state.page = 1;
+         document.cookie = `page=${state.page}`;
       },
 
       typeFilterSuccess(state, action: PayloadAction<number>) {
@@ -68,6 +70,8 @@ export const filterSlice = createSlice({
             );
          }
          document.cookie = `typeFilter=${state.selectedTypesId}`;
+         state.page = 1;
+         document.cookie = `page=${state.page}`;
       },
 
       seasonFilterSuccess(state, action: PayloadAction<number>) {
@@ -82,6 +86,8 @@ export const filterSlice = createSlice({
             );
          }
          document.cookie = `seasonFilter=${state.selectedSeasonsId}`;
+         state.page = 1;
+         document.cookie = `page=${state.page}`;
       },
 
       colorFilterSuccess(state, action: PayloadAction<number>) {
@@ -96,6 +102,8 @@ export const filterSlice = createSlice({
             );
          }
          document.cookie = `colorFilter=${state.selectedColorsId}`;
+         state.page = 1;
+         document.cookie = `page=${state.page}`;
       },
 
       sizesFilterSuccess(state, action: PayloadAction<number>) {
@@ -107,19 +115,26 @@ export const filterSlice = createSlice({
             );
          }
          document.cookie = `sizeFilter=${state.selectedSizesId}`;
+         state.page = 1;
+         document.cookie = `page=${state.page}`;
       },
 
       sexFilterSuccess(state, action: PayloadAction<SexEnum>) {
          state.selectedSex = action.payload;
          document.cookie = `sexFilter=${state.selectedSex}`;
+         state.page = 1;
+         document.cookie = `page=${state.page}`;
       },
 
       sortFilterSuccess(state, action: PayloadAction<SortEnum>) {
          state.selectedSortFilter = action.payload;
          document.cookie = `sortFilter=${state.selectedSortFilter}`;
+         state.page = 1;
+         document.cookie = `page=${state.page}`;
       },
       changePage(state, action: PayloadAction<number>) {
          state.page = action.payload;
+         document.cookie = `page=${state.page}`;
       },
       resetFiltersSuccess(state) {
          state.selectedBrandsId = [];
@@ -143,6 +158,8 @@ export const filterSlice = createSlice({
          state.selectedSortFilter = SortEnum.PRICE_ASC;
          document.cookie =
             'sortFilter= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
+         state.page = 1;
+         document.cookie = `page=${state.page}`;
       },
 
       preloadFilter(state) {
@@ -174,6 +191,7 @@ export const filterSlice = createSlice({
             (getCookieValue('sexFilter') as SexEnum) || SexEnum.UNISEX;
          state.selectedSortFilter =
             (getCookieValue('sortFilter') as SortEnum) || SortEnum.PRICE_ASC;
+         state.page = Number(getCookieValue('page')) || 1;
       },
    },
 });
