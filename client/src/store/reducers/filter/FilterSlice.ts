@@ -34,6 +34,13 @@ const initialState: IFilterState = {
    isLoading: true,
    error: '',
 };
+function getCookieValue(name: string) {
+   const regex = new RegExp(`(^| )${name}=([^;]+)`);
+   const match = document.cookie.match(regex);
+   if (match) {
+      return match[2];
+   }
+}
 export const filterSlice = createSlice({
    name: 'filters',
    initialState,
@@ -49,6 +56,9 @@ export const filterSlice = createSlice({
                (el) => el !== action.payload,
             );
          }
+         document.cookie = `brandFilter=${state.selectedBrandsId}`;
+         state.page = 1;
+         document.cookie = `page=${state.page}`;
       },
 
       typeFilterSuccess(state, action: PayloadAction<number>) {
@@ -59,6 +69,9 @@ export const filterSlice = createSlice({
                (el) => el !== action.payload,
             );
          }
+         document.cookie = `typeFilter=${state.selectedTypesId}`;
+         state.page = 1;
+         document.cookie = `page=${state.page}`;
       },
 
       seasonFilterSuccess(state, action: PayloadAction<number>) {
@@ -72,6 +85,9 @@ export const filterSlice = createSlice({
                (el) => el !== action.payload,
             );
          }
+         document.cookie = `seasonFilter=${state.selectedSeasonsId}`;
+         state.page = 1;
+         document.cookie = `page=${state.page}`;
       },
 
       colorFilterSuccess(state, action: PayloadAction<number>) {
@@ -85,6 +101,9 @@ export const filterSlice = createSlice({
                (el) => el !== action.payload,
             );
          }
+         document.cookie = `colorFilter=${state.selectedColorsId}`;
+         state.page = 1;
+         document.cookie = `page=${state.page}`;
       },
 
       sizesFilterSuccess(state, action: PayloadAction<number>) {
@@ -95,26 +114,84 @@ export const filterSlice = createSlice({
                (el) => el !== action.payload,
             );
          }
+         document.cookie = `sizeFilter=${state.selectedSizesId}`;
+         state.page = 1;
+         document.cookie = `page=${state.page}`;
       },
 
       sexFilterSuccess(state, action: PayloadAction<SexEnum>) {
          state.selectedSex = action.payload;
+         document.cookie = `sexFilter=${state.selectedSex}`;
+         state.page = 1;
+         document.cookie = `page=${state.page}`;
       },
 
       sortFilterSuccess(state, action: PayloadAction<SortEnum>) {
          state.selectedSortFilter = action.payload;
+         document.cookie = `sortFilter=${state.selectedSortFilter}`;
+         state.page = 1;
+         document.cookie = `page=${state.page}`;
       },
       changePage(state, action: PayloadAction<number>) {
          state.page = action.payload;
+         document.cookie = `page=${state.page}`;
       },
       resetFiltersSuccess(state) {
          state.selectedBrandsId = [];
+         document.cookie =
+            'brandFilter= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
          state.selectedColorsId = [];
+         document.cookie =
+            'colorFilter= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
          state.selectedSeasonsId = [];
+         document.cookie =
+            'seasonFilter= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
          state.selectedSizesId = [];
+         document.cookie =
+            'sizeFilter= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
          state.selectedTypesId = [];
+         document.cookie =
+            'typeFilter= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
          state.selectedSex = SexEnum.UNISEX;
+         document.cookie =
+            'sexFilter= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
          state.selectedSortFilter = SortEnum.PRICE_ASC;
+         document.cookie =
+            'sortFilter= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
+         state.page = 1;
+         document.cookie = `page=${state.page}`;
+      },
+
+      preloadFilter(state) {
+         state.selectedBrandsId =
+            getCookieValue('brandFilter')
+               ?.split(',')
+               .map((el) => Number(el)) || [];
+
+         state.selectedColorsId =
+            getCookieValue('colorFilter')
+               ?.split(',')
+               .map((el) => Number(el)) || [];
+
+         state.selectedSeasonsId =
+            getCookieValue('seasonFilter')
+               ?.split(',')
+               .map((el) => Number(el)) || [];
+
+         state.selectedTypesId =
+            getCookieValue('typeFilter')
+               ?.split(',')
+               .map((el) => Number(el)) || [];
+         state.selectedSizesId =
+            getCookieValue('sizeFilter')
+               ?.split(',')
+               .map((el) => Number(el)) || [];
+
+         state.selectedSex =
+            (getCookieValue('sexFilter') as SexEnum) || SexEnum.UNISEX;
+         state.selectedSortFilter =
+            (getCookieValue('sortFilter') as SortEnum) || SortEnum.PRICE_ASC;
+         state.page = Number(getCookieValue('page')) || 1;
       },
    },
 });

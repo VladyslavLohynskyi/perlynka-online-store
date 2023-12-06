@@ -7,7 +7,7 @@ import {
    preloadList,
 } from './store/reducers/shoes/ShoesActionCreators';
 import { authUser } from './store/reducers/user/UserActionCreators';
-import { changePage } from './store/reducers/filter/FilterActionCreators';
+import { preloadFilter } from './store/reducers/filter/FilterActionCreators';
 
 const App: FC = () => {
    const dispatch = useAppDispatch();
@@ -15,12 +15,14 @@ const App: FC = () => {
    const shoes = useAppSelector((state) => state.shoesReducer);
    const filter = useAppSelector((state) => state.filterReducer);
    useEffect(() => {
-      dispatch(authUser());
-      dispatch(preloadList());
+      (async () => {
+         await dispatch(preloadList());
+         dispatch(preloadFilter());
+         await dispatch(authUser());
+      })();
    }, []);
 
    useEffect(() => {
-      dispatch(changePage(1));
       dispatch(
          getAllShoesByFilter({
             brandsId: filter.selectedBrandsId,
@@ -42,23 +44,9 @@ const App: FC = () => {
       filter.selectedSex,
       filter.selectedSizesId,
       filter.selectedSortFilter,
+      filter.page,
    ]);
 
-   useEffect(() => {
-      dispatch(
-         getAllShoesByFilter({
-            brandsId: filter.selectedBrandsId,
-            typesId: filter.selectedTypesId,
-            seasonsId: filter.selectedSeasonsId,
-            colorsId: filter.selectedColorsId,
-            sex: filter.selectedSex,
-            sizesId: filter.selectedSizesId,
-            sortBy: filter.selectedSortFilter,
-            limit: filter.limit,
-            offset: filter.limit * (filter.page - 1),
-         }),
-      );
-   }, [filter.page]);
    if (user.isLoading || shoes.isLoading) {
       return <div>Loading...</div>;
    }
