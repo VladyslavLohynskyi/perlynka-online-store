@@ -1,6 +1,7 @@
 import { RoutesEnum } from '../../utils/constants';
 import { Admin } from '../admin';
 import Auth from '../auth/Auth';
+import { ShoesPage } from '../shoes/pages';
 import { Shop } from '../shop/pages';
 interface IRoutes {
    path: string;
@@ -37,6 +38,10 @@ export const publicRoutes: IRoutes[] = [
    {
       path: RoutesEnum.BASKET,
       Component: Shop,
+   },
+   {
+      path: RoutesEnum.SHOES + '/:id',
+      Component: ShoesPage,
    },
 ];
 
