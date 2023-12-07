@@ -1,6 +1,11 @@
+import { includes } from 'lodash';
 import { $host, $authHost } from '.';
 import { SortEnum } from '../store/reducers/filter/FilterSlice';
-import { IShoes, SexEnum } from '../store/reducers/shoes/ShoesSlice';
+import {
+   IBasicCategory,
+   IShoes,
+   SexEnum,
+} from '../store/reducers/shoes/ShoesSlice';
 
 export interface IFilter {
    brandsId: number[];
@@ -12,6 +17,13 @@ export interface IFilter {
    sortBy: SortEnum;
    offset: number;
    limit: number;
+}
+
+export interface IParticularShoes extends IShoes {
+   type: IBasicCategory;
+   season: IBasicCategory;
+   brand: IBasicCategory;
+   color: IBasicCategory;
 }
 export const getAllShoes = async ({
    brandsId,
@@ -50,7 +62,7 @@ export const getAllShoes = async ({
 };
 
 export const getShoesById = async (id: number) => {
-   const responseShoes = await $host.get<IShoes>(`shoes/${id}`);
+   const responseShoes = await $host.get<IParticularShoes>(`shoes/${id}`);
    const shoes = responseShoes.data;
    return shoes;
 };

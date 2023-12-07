@@ -5,8 +5,13 @@ import { promises } from 'fs';
 import { Request, Response } from 'express';
 import ShoesSize from '../models/shoesSizeModel';
 
-import { Op } from 'sequelize';
+import { Model, Op } from 'sequelize';
 import { sequelize } from '../db';
+import Brand from '../models/brandModel';
+import { type } from 'os';
+import Type from '../models/typeModel';
+import Season from '../models/seasonModel';
+import Color from '../models/colorModel';
 
 interface IParseSizes {
    sizeId: number;
@@ -185,7 +190,13 @@ class shoesController {
 
          const shoes = await Shoes.findOne({
             where: { id },
-            include: { model: ShoesSize },
+            include: [
+               { model: ShoesSize },
+               { model: Brand },
+               { model: Type },
+               { model: Season },
+               { model: Color },
+            ],
          });
          if (!shoes) {
             return res
