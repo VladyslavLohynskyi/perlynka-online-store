@@ -7,6 +7,8 @@ export enum ButtonClassEnum {
    PROFILE = 'profile',
    PAGINATION = 'pagination',
    ACTIVE_PAGINATION = 'active-pagination',
+   SIZE_BUTTON = 'size',
+   ACTIVE_SIZE_BUTTON = 'active-size',
 }
 export interface ButtonPropsType {
    buttonClass: ButtonClassEnum;

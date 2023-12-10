@@ -12,6 +12,7 @@ import { type } from 'os';
 import Type from '../models/typeModel';
 import Season from '../models/seasonModel';
 import Color from '../models/colorModel';
+import Size from '../models/sizeModel';
 
 interface IParseSizes {
    sizeId: number;
@@ -191,7 +192,7 @@ class shoesController {
          const shoes = await Shoes.findOne({
             where: { id },
             include: [
-               { model: ShoesSize },
+               { model: ShoesSize, include: [{ model: Size }] },
                { model: Brand },
                { model: Type },
                { model: Season },

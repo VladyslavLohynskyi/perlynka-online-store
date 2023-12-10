@@ -4,6 +4,8 @@ import { SortEnum } from '../store/reducers/filter/FilterSlice';
 import {
    IBasicCategory,
    IShoes,
+   ISize,
+   ISizeCategory,
    SexEnum,
 } from '../store/reducers/shoes/ShoesSlice';
 
@@ -18,12 +20,16 @@ export interface IFilter {
    offset: number;
    limit: number;
 }
+interface IParticularSize extends ISize {
+   size: ISizeCategory;
+}
 
 export interface IParticularShoes extends IShoes {
    type: IBasicCategory;
    season: IBasicCategory;
    brand: IBasicCategory;
    color: IBasicCategory;
+   shoes_sizes: IParticularSize[];
 }
 export const getAllShoes = async ({
    brandsId,

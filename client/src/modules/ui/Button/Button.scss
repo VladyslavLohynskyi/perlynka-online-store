@@ -114,6 +114,25 @@
          background-color: rgb(34, 33, 33);
       }
    }
+
+   &--size {
+      color: #212529;
+      background-color: transparent;
+      border-color: gray;
+      height: 40px;
+      width: 80px;
+      &:hover {
+         background-color: lightblue;
+      }
+   }
+
+   &--active-size {
+      color: #212529;
+      border-color: gray;
+      height: 40px;
+      width: 80px;
+      background-color: lightblue;
+   }
 }
 
 .admin-modal-accept-btn {

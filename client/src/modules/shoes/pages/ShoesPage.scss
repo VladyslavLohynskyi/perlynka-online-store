@@ -30,4 +30,10 @@
    &__model-size {
       font-size: 12px;
    }
+   &__sizes-buttons {
+      margin: 10px 0;
+      & button {
+         margin-right: 5px;
+      }
+   }
 }
