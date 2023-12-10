@@ -6,17 +6,33 @@ import { IParticularShoes, getShoesById } from '../../../http/shoes';
 import { baseURL } from '../../../utils/constants';
 import { Button } from '../../ui/Button';
 import { ButtonClassEnum } from '../../ui/Button/ButtonType';
+import { HorizontalLine } from '../../ui/HorizontalLine';
+import { IconButton } from '../../ui/IconButton';
+import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 export const ShoesPage: React.FC = () => {
    const { id } = useParams();
    const [currentShoes, setCurrentShoes] = useState<IParticularShoes>();
    const [selectedSize, setSelectedSize] = useState<number>(0);
+   const [count, setCount] = useState<number>(1);
    useEffect(() => {
       if (id) getShoesById(+id).then((shoes) => setCurrentShoes(shoes));
    }, []);
    const handleClickSizeButton = (size: number) => {
       if (size !== selectedSize) {
          setSelectedSize(size);
+      }
+   };
+
+   const handleClickIncrementCount = () => {
+      if (count < 9) {
+         setCount((prev) => prev + 1);
+      }
+   };
+
+   const handleClickDecrementCount = () => {
+      if (count > 1) {
+         setCount((prev) => prev - 1);
       }
    };
    return (
@@ -51,7 +67,29 @@ export const ShoesPage: React.FC = () => {
                         />
                      ))}
                   </div>
-                  <div className='shoes-page__buy-container'></div>
+                  <HorizontalLine />
+                  <div className='shoes-page__buy-container'>
+                     <div className='shoes-page__buy-counter'>
+                        <IconButton
+                           icon={faChevronUp}
+                           onClick={handleClickIncrementCount}
+                        />
+                        <div className='shoes-page__buy-number'>
+                           <p>{count}</p>
+                        </div>
+                        <IconButton
+                           icon={faChevronDown}
+                           onClick={handleClickDecrementCount}
+                        />
+                     </div>
+                     <div className='shoes-page__buy-button'>
+                        <Button
+                           buttonText='Купити'
+                           buttonClass={ButtonClassEnum.PROFILE}
+                        />
+                     </div>
+                  </div>
+                  <HorizontalLine />
                   <p>Відгуки:0</p>
                </div>
             </div>
