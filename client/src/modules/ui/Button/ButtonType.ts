@@ -9,6 +9,7 @@ export enum ButtonClassEnum {
    ACTIVE_PAGINATION = 'active-pagination',
    SIZE_BUTTON = 'size',
    ACTIVE_SIZE_BUTTON = 'active-size',
+   LINK = 'link',
 }
 export interface ButtonPropsType {
    buttonClass: ButtonClassEnum;

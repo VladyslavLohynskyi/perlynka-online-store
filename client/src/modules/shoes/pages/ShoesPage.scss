@@ -3,11 +3,13 @@
       display: flex;
       justify-content: center;
    }
-
+   &__info-container {
+      width: 425px;
+   }
    &__img-container {
       margin-right: 20px;
-      max-width: 630px;
-      max-height: 630px;
+      max-width: 420px;
+      max-height: 420px;
       width: 100%;
       & img {
          width: 100%;

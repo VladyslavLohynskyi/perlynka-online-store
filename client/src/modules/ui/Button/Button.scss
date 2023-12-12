@@ -133,6 +133,17 @@
       width: 80px;
       background-color: lightblue;
    }
+
+   &--link {
+      align-self: center;
+      width: fit-content;
+      background-color: transparent;
+      color: rgb(6, 79, 169);
+      text-decoration: underline;
+      &:hover {
+         color: rgb(35, 117, 217);
+      }
+   }
 }
 
 .admin-modal-accept-btn {

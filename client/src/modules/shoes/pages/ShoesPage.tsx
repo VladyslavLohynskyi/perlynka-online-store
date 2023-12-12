@@ -9,6 +9,7 @@ import { ButtonClassEnum } from '../../ui/Button/ButtonType';
 import { HorizontalLine } from '../../ui/HorizontalLine';
 import { IconButton } from '../../ui/IconButton';
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { Rating } from '../components/Rating';
 
 export const ShoesPage: React.FC = () => {
    const { id } = useParams();
@@ -90,7 +91,7 @@ export const ShoesPage: React.FC = () => {
                      </div>
                   </div>
                   <HorizontalLine />
-                  <p>Відгуки:0</p>
+                  <Rating />
                </div>
             </div>
          )}
