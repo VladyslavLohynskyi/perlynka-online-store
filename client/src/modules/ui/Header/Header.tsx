@@ -24,6 +24,7 @@ export const Header: React.FC = () => {
    };
    const onClickSex = (sex: SexEnum) => {
       dispatch(sexFilter(sex));
+      navigate(RoutesEnum.SHOP);
    };
    return (
       <>

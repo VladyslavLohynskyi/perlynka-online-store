@@ -7,6 +7,8 @@ import {
 } from '../../store/reducers/user/UserActionCreators';
 import { RoutesEnum } from '../../utils/constants';
 import './Auth.scss';
+import { Button } from '../ui/Button';
+import { ButtonClassEnum } from '../ui/Button/ButtonType';
 const Auth = () => {
    const dispatch = useAppDispatch();
    const location = useLocation();
@@ -49,13 +51,16 @@ const Auth = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   minLength={8}
                />
-               <button className='button--submit' type='submit'>
-                  {isLogin ? 'Увійти' : 'Зареєструватись'}
-               </button>
+               <Button
+                  buttonText={isLogin ? 'Увійти' : 'Зареєструватись'}
+                  buttonClass={ButtonClassEnum.PRIMARY}
+               />
             </form>
-            <button className='button--link' onClick={handleClickChangeAuth}>
-               {isLogin ? 'Немає акаута?' : 'Є акаунт?'}
-            </button>
+            <Button
+               buttonText={isLogin ? 'Немає акаута?' : 'Є акаунт?'}
+               buttonClass={ButtonClassEnum.LINK}
+               buttonClick={handleClickChangeAuth}
+            />
          </div>
       </div>
    );

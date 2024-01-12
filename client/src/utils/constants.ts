@@ -7,4 +7,5 @@ export enum RoutesEnum {
    BASKET = '/basket',
    PROFILE = '/profile',
    ADMIN = '/admin',
+   SHOES = '/shoes',
 }

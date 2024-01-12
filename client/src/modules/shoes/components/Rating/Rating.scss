@@ -1,0 +1,26 @@
+.rating {
+   display: flex;
+   align-items: center;
+   margin-top: 15px;
+
+   &__container {
+      display: flex;
+   }
+
+   &__star {
+      color: lightgrey;
+      padding: 0;
+      cursor: pointer;
+   }
+
+   &__star-active {
+      color: #b8811c;
+      padding: 0;
+      cursor: pointer;
+   }
+
+   &__reviews {
+      margin-left: 10px;
+      font-size: 16px;
+   }
+}

@@ -1,14 +1,19 @@
 import React from 'react';
 import { useAppSelector } from '../../../../hooks/redux';
-import { baseURL } from '../../../../utils/constants';
+import { RoutesEnum, baseURL } from '../../../../utils/constants';
 
 import './ShoesItem.scss';
 import { ShoesItemType } from './ShoesItemType';
+import { useNavigate } from 'react-router-dom';
 
 export const ShoesItem: React.FC<ShoesItemType> = ({ shoes }) => {
    const { brands } = useAppSelector((state) => state.shoesReducer);
+   const navigate = useNavigate();
    return (
-      <div className='shoes-item'>
+      <div
+         className='shoes-item'
+         onClick={() => navigate(RoutesEnum.SHOES + '/' + shoes.id)}
+      >
          <div className='shoes-item__id'>#{shoes.id}</div>
          <div className='shoes-item__img-container'>
             <img src={baseURL + shoes.img} alt='shoes' />
