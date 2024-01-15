@@ -3,4 +3,5 @@ import authMiddleware from '../middleware/authMiddleware';
 
 export const basketRouter = Router();
 import BasketController from '../controllers/basketController';
-basketRouter.post("/", authMiddleware, BasketController.addShoes);
+basketRouter.post("/", authMiddleware, BasketController.addToBasket);
+basketRouter.get("/", authMiddleware, BasketController.getBasket);

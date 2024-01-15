@@ -1,11 +1,12 @@
-import { Request, Response } from 'express';
+import { Request, RequestHandler, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import Basket from '../models/basketModel';
 import { Role } from '../models/userModel';
-import { BasketShoes } from '../models/models';
+import  BasketShoes from '../models/basketShoesModel';
+import Shoes from '../models/shoesModel';
 
 
-interface addDeviceRequest extends Request{
+interface addToBasketRequest extends Request{
     body: {
         shoId: string
     }
@@ -17,8 +18,7 @@ interface IUser {
     role: Role;
 }
 class BasketController {
-  async addShoes(req:addDeviceRequest, res:Response) {
-    console.log(true);
+  async addToBasket(req:addToBasketRequest, res:Response) {
     try {
       const { shoId } = req.body;
 
@@ -27,21 +27,39 @@ class BasketController {
       const basket = await Basket.findOne({ where: { userId: user.id } });
 
       const existShoes = await BasketShoes.findOne({
-        where: { basketId: basket!.id, shoId },
+        where: { basketId: basket!.id, shoId:+shoId },
       });
       if (!existShoes) {
         await BasketShoes.create({
           basketId: basket!.id,
-          shoId,
+          shoId:+shoId,
+          count:1
         });
         return res.json({ message: "Shoes added to basket" });
       } else {
        await BasketShoes.increment(
           { count: 1 },
-          { where: { basketId: basket!.id, shoId } }
+          { where: { basketId: basket!.id, shoId:+shoId } }
         );
         return res.json({ message: "Shoes added to basket" });
       }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async getBasket(req:Request, res:Response) {
+    try {
+      const token = req.header('authorization')!.split(" ")[1];
+      const user = jwt.verify(token, process.env.SECRET_KEY) as IUser;
+      const basket = await Basket.findOne({ where: { userId: user.id } });
+      const shoes = await BasketShoes.findAll({
+        attributes:{exclude:['shoId']},
+        where: { basketId: basket!.id},
+        include: {
+          model:Shoes,
+        }
+      });
+      return res.json(shoes);
     } catch (error) {
       console.log(error);
     }
