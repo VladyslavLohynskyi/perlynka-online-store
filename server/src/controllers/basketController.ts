@@ -127,6 +127,26 @@ class BasketController {
       );
       return res.json({ message: 'Shoes added to basket' });
    }
+   async decrementCount(req: IChangeCountRequest, res: Response) {
+      const { basketShoesId } = req.body;
+      const token = req.header('authorization')!.split(' ')[1];
+      const user = jwt.verify(token, process.env.SECRET_KEY) as IUser;
+      const basket = await Basket.findOne({ where: { userId: user.id } });
+      const shoes = await BasketShoes.findOne({
+         where: { basketId: basket!.id, id: basketShoesId },
+      });
+      if (shoes) {
+         if (shoes.count === 1) {
+            return res.json({ message: 'Count can not be smaller than 1' });
+         }
+         await BasketShoes.increment(
+            { count: -1 },
+            { where: { basketId: basket!.id, id: basketShoesId } },
+         );
+         return res.json({ message: 'Removed 1 shoes from basket' });
+      }
+      return res.json({ message: 'Shoes with that id is not exist' });
+   }
 }
 
 export default new BasketController();
