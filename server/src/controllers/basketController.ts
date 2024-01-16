@@ -4,10 +4,12 @@ import Basket from '../models/basketModel';
 import { Role } from '../models/userModel';
 import BasketShoes from '../models/basketShoesModel';
 import Shoes from '../models/shoesModel';
+import Size from '../models/sizeModel';
 
 interface addToBasketRequest extends Request {
    body: {
       shoId: string;
+      sizeId: string;
    };
 }
 
@@ -19,26 +21,33 @@ interface IUser {
 class BasketController {
    async addToBasket(req: addToBasketRequest, res: Response) {
       try {
-         const { shoId } = req.body;
-
+         const { shoId, sizeId } = req.body;
+         console.log(shoId, sizeId);
          const token = req.header('authorization')!.split(' ')[1];
          const user = jwt.verify(token, process.env.SECRET_KEY) as IUser;
          const basket = await Basket.findOne({ where: { userId: user.id } });
 
          const existShoes = await BasketShoes.findOne({
-            where: { basketId: basket!.id, shoId: +shoId },
+            where: { basketId: basket!.id, shoId: +shoId, sizeId: +sizeId },
          });
          if (!existShoes) {
             await BasketShoes.create({
                basketId: basket!.id,
                shoId: +shoId,
                count: 1,
+               sizeId: +sizeId,
             });
             return res.json({ message: 'Shoes added to basket' });
          } else {
             await BasketShoes.increment(
                { count: 1 },
-               { where: { basketId: basket!.id, shoId: +shoId } },
+               {
+                  where: {
+                     basketId: basket!.id,
+                     shoId: +shoId,
+                     sizeId: +sizeId,
+                  },
+               },
             );
             return res.json({ message: 'Shoes added to basket' });
          }
@@ -52,11 +61,14 @@ class BasketController {
          const user = jwt.verify(token, process.env.SECRET_KEY) as IUser;
          const basket = await Basket.findOne({ where: { userId: user.id } });
          const shoes = await BasketShoes.findAll({
-            attributes: { exclude: ['shoId'] },
+            attributes: { exclude: ['shoId', 'sizeId'] },
             where: { basketId: basket!.id },
-            include: {
-               model: Shoes,
-            },
+            include: [
+               {
+                  model: Shoes,
+               },
+               { model: Size },
+            ],
          });
          return res.json(shoes);
       } catch (error) {
@@ -65,16 +77,16 @@ class BasketController {
    }
    async deleteOneShoesFromBasket(req: Request, res: Response) {
       try {
-         const { id } = req.params;
+         const { id, sizeId } = req.params;
          const token = req.header('authorization')!.split(' ')[1];
          const user = jwt.verify(token, process.env.SECRET_KEY) as IUser;
          const basket = await Basket.findOne({ where: { userId: user.id } });
          const shoes = await BasketShoes.findOne({
-            where: { shoId: id, basketId: basket!.id },
+            where: { shoId: id, basketId: basket!.id, sizeId: +sizeId },
          });
          if (shoes) {
             await BasketShoes.destroy({
-               where: { shoId: id, basketId: basket!.id },
+               where: { shoId: id, basketId: basket!.id, sizeId: +sizeId },
             });
             return res.json({ message: 'Shoes deleted from basket', shoes });
          }
