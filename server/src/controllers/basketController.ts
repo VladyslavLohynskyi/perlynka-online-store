@@ -95,6 +95,20 @@ class BasketController {
          console.log('DELETE one shoes from basket ERROR', error);
       }
    }
+   async deleteAllFromBasket(req: Request, res: Response) {
+      try {
+         const token = req.header('authorization')!.split(' ')[1];
+         const user = jwt.verify(token, process.env.SECRET_KEY) as IUser;
+         const basket = await Basket.findOne({ where: { userId: user.id } });
+         await BasketShoes.destroy({
+            where: { basketId: basket!.id },
+         });
+
+         return res.json({ message: 'Basket Clear' });
+      } catch (error) {
+         console.log('DELETE all shoes from basket ERROR', error);
+      }
+   }
 }
 
 export default new BasketController();

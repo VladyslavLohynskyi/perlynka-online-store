@@ -11,3 +11,4 @@ basketRouter.delete(
    authMiddleware,
    BasketController.deleteOneShoesFromBasket,
 );
+basketRouter.delete('/', authMiddleware, BasketController.deleteAllFromBasket);
