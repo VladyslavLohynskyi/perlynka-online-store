@@ -12,3 +12,4 @@ basketRouter.delete(
    BasketController.deleteOneShoesFromBasket,
 );
 basketRouter.delete('/', authMiddleware, BasketController.deleteAllFromBasket);
+basketRouter.put('/increment', authMiddleware, BasketController.incrementCount);

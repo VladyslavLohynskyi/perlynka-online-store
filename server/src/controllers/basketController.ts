@@ -8,8 +8,8 @@ import Size from '../models/sizeModel';
 
 interface addToBasketRequest extends Request {
    body: {
-      shoId: string;
-      sizeId: string;
+      shoId: number;
+      sizeId: number;
    };
 }
 
@@ -18,24 +18,29 @@ interface IUser {
    email: string;
    role: Role;
 }
+
+interface IChangeCountRequest extends Request {
+   body: {
+      basketShoesId: number;
+   };
+}
 class BasketController {
    async addToBasket(req: addToBasketRequest, res: Response) {
       try {
          const { shoId, sizeId } = req.body;
-         console.log(shoId, sizeId);
          const token = req.header('authorization')!.split(' ')[1];
          const user = jwt.verify(token, process.env.SECRET_KEY) as IUser;
          const basket = await Basket.findOne({ where: { userId: user.id } });
 
          const existShoes = await BasketShoes.findOne({
-            where: { basketId: basket!.id, shoId: +shoId, sizeId: +sizeId },
+            where: { basketId: basket!.id, shoId, sizeId },
          });
          if (!existShoes) {
             await BasketShoes.create({
                basketId: basket!.id,
-               shoId: +shoId,
+               shoId,
                count: 1,
-               sizeId: +sizeId,
+               sizeId,
             });
             return res.json({ message: 'Shoes added to basket' });
          } else {
@@ -44,8 +49,8 @@ class BasketController {
                {
                   where: {
                      basketId: basket!.id,
-                     shoId: +shoId,
-                     sizeId: +sizeId,
+                     shoId,
+                     sizeId,
                   },
                },
             );
@@ -69,6 +74,7 @@ class BasketController {
                },
                { model: Size },
             ],
+            order: [['id', 'ASC']],
          });
          return res.json(shoes);
       } catch (error) {
@@ -108,6 +114,18 @@ class BasketController {
       } catch (error) {
          console.log('DELETE all shoes from basket ERROR', error);
       }
+   }
+
+   async incrementCount(req: IChangeCountRequest, res: Response) {
+      const { basketShoesId } = req.body;
+      const token = req.header('authorization')!.split(' ')[1];
+      const user = jwt.verify(token, process.env.SECRET_KEY) as IUser;
+      const basket = await Basket.findOne({ where: { userId: user.id } });
+      await BasketShoes.increment(
+         { count: 1 },
+         { where: { basketId: basket!.id, id: basketShoesId } },
+      );
+      return res.json({ message: 'Shoes added to basket' });
    }
 }
 
