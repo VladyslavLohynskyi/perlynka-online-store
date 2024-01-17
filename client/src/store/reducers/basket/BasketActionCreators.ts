@@ -26,6 +26,20 @@ export const getTotalCountOfShoesInBasket =
             basketSlice.actions.getTotalCountOfShoesInBasketSuccess(totalCount),
          );
       } catch (error) {
-         dispatch(basketSlice.actions.error('Adding Shoes to basket Error'));
+         dispatch(
+            basketSlice.actions.error(
+               'Getting count of all Shoes from basket Error',
+            ),
+         );
       }
    };
+
+export const getAllShoesOfBasket = () => async (dispatch: AppDispatch) => {
+   try {
+      dispatch(basketSlice.actions.start());
+      const basket = await BasketReq.getAllInBasket();
+      dispatch(basketSlice.actions.getAllShoesOfBasketSuccess(basket));
+   } catch (error) {
+      dispatch(basketSlice.actions.error('Getting all Shoes of basket Error'));
+   }
+};

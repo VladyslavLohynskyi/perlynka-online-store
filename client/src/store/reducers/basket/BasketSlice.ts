@@ -52,7 +52,11 @@ export const basketSlice = createSlice({
          state.error = '';
          state.totalCountOfShoesInBasket = action.payload;
       },
-
+      getAllShoesOfBasketSuccess(state, action: PayloadAction<IBasketItem[]>) {
+         state.isLoading = false;
+         state.error = '';
+         state.basket = [...action.payload];
+      },
       error(state, action: PayloadAction<string>) {
          state.isLoading = false;
          state.error = action.payload;

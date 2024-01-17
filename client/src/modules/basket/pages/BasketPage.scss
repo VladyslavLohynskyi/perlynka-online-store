@@ -21,12 +21,19 @@
       width: 100%;
       display: grid;
       grid-template-columns:
-         minmax(150px, 250px) minmax(100px, 300px)
+         100px minmax(100px, 300px) minmax(50px, 150px)
          minmax(50px, 150px) minmax(50px, 150px) minmax(100px, 150px);
 
       & div {
          font-size: 12px;
          font-weight: 500;
       }
+   }
+   &__empty-text {
+      align-self: center;
+      justify-self: center;
+      font-size: 36px;
+      color: rgb(105, 104, 104);
+      margin-top: 100px;
    }
 }
