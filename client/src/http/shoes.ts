@@ -2,7 +2,7 @@ import { $host, $authHost } from '.';
 import { SortEnum } from '../store/reducers/filter/FilterSlice';
 import {
    IBasicCategory,
-   IShoes,
+   IShoesWithSizes,
    ISize,
    ISizeCategory,
    SexEnum,
@@ -23,7 +23,7 @@ interface IParticularSize extends ISize {
    size: ISizeCategory;
 }
 
-export interface IParticularShoes extends IShoes {
+export interface IParticularShoes extends IShoesWithSizes {
    type: IBasicCategory;
    season: IBasicCategory;
    brand: IBasicCategory;
@@ -46,22 +46,22 @@ export const getAllShoes = async ({
    const seasonsIdStringified = JSON.stringify(seasonsId);
    const colorsIdStringified = JSON.stringify(colorsId);
    const sizesIdStringified = JSON.stringify(sizesId);
-   const responseShoes = await $host.get<{ count: number; rows: IShoes[] }>(
-      '/shoes',
-      {
-         params: {
-            brandsId: brandIdStringified,
-            typesId: typesIdStringified,
-            seasonsId: seasonsIdStringified,
-            colorsId: colorsIdStringified,
-            sex,
-            sortBy,
-            offset,
-            limit,
-            sizesId: sizesIdStringified,
-         },
+   const responseShoes = await $host.get<{
+      count: number;
+      rows: IShoesWithSizes[];
+   }>('/shoes', {
+      params: {
+         brandsId: brandIdStringified,
+         typesId: typesIdStringified,
+         seasonsId: seasonsIdStringified,
+         colorsId: colorsIdStringified,
+         sex,
+         sortBy,
+         offset,
+         limit,
+         sizesId: sizesIdStringified,
       },
-   );
+   });
    const shoes = responseShoes.data;
    return shoes;
 };
@@ -79,5 +79,5 @@ export const updateShoesReq = (shoesData: FormData) =>
    $authHost.put('/shoes', shoesData);
 
 export const deleteShoesByIdReq = async (id: number) => {
-   await $authHost.delete<IShoes>(`shoes/${id}`);
+   await $authHost.delete<IShoesWithSizes>(`shoes/${id}`);
 };

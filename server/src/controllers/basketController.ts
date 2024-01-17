@@ -10,6 +10,7 @@ interface addToBasketRequest extends Request {
    body: {
       shoId: number;
       sizeId: number;
+      count: number;
    };
 }
 
@@ -27,7 +28,7 @@ interface IChangeCountRequest extends Request {
 class BasketController {
    async addToBasket(req: addToBasketRequest, res: Response) {
       try {
-         const { shoId, sizeId } = req.body;
+         const { shoId, sizeId, count } = req.body;
          const token = req.header('authorization')!.split(' ')[1];
          const user = jwt.verify(token, process.env.SECRET_KEY) as IUser;
          const basket = await Basket.findOne({ where: { userId: user.id } });
@@ -39,13 +40,13 @@ class BasketController {
             await BasketShoes.create({
                basketId: basket!.id,
                shoId,
-               count: 1,
+               count,
                sizeId,
             });
             return res.json({ message: 'Shoes added to basket' });
          } else {
             await BasketShoes.increment(
-               { count: 1 },
+               { count },
                {
                   where: {
                      basketId: basket!.id,

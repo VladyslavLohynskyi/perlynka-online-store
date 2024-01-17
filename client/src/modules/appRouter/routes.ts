@@ -43,6 +43,10 @@ export const publicRoutes: IRoutes[] = [
       path: RoutesEnum.BASKET,
       Component: Shop,
    },
+   {
+      path: RoutesEnum.SHOES + '/:id',
+      Component: ShoesPage,
+   },
 ];
 
 export const adminRoutes: IRoutes[] = [
