@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavItem } from './components/NavItem';
 import { faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons';
 import './Header.scss';
@@ -10,12 +10,21 @@ import { Modal } from '../../modal/pages';
 import { HeaderDropdown } from '../../modal/components/HeaderDropdown';
 import { SexEnum } from '../../../store/reducers/shoes/ShoesSlice';
 import { sexFilter } from '../../../store/reducers/filter/FilterActionCreators';
+import { getTotalCountOfShoesInBasket } from '../../../store/reducers/basket/BasketActionCreators';
 
 export const Header: React.FC = () => {
    const { isAuth } = useAppSelector((state) => state.userReducer);
+   const { totalCountOfShoesInBasket } = useAppSelector(
+      (state) => state.basketReducer,
+   );
    const dispatch = useAppDispatch();
    const [isHeaderDropdownOpen, setIsHeaderDropdownOpen] = useState(false);
    const navigate = useNavigate();
+
+   useEffect(() => {
+      dispatch(getTotalCountOfShoesInBasket());
+   }, []);
+
    const handleClickUserIcon = () => {
       if (isAuth) {
          return setIsHeaderDropdownOpen(true);
@@ -50,10 +59,13 @@ export const Header: React.FC = () => {
                <NavItem text='Доставка' />
             </nav>
             <div className='icon-menu'>
-               <IconButton
-                  icon={faCartShopping}
-                  onClick={handleClickBasketIcon}
-               />
+               <div className='icon-menu__basket'>
+                  <IconButton
+                     icon={faCartShopping}
+                     onClick={handleClickBasketIcon}
+                  />
+                  <span>{totalCountOfShoesInBasket}</span>
+               </div>
                <IconButton icon={faUser} onClick={handleClickUserIcon} />
             </div>
          </header>

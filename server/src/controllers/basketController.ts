@@ -21,10 +21,6 @@ interface IUser {
    role: Role;
 }
 
-interface ITotalCountResFormDb {
-   totalCount: string;
-}
-
 interface IChangeCountRequest extends Request {
    body: {
       basketShoesId: number;

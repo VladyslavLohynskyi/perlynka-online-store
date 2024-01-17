@@ -10,16 +10,21 @@ export interface IBasketItem {
 }
 interface IBasketState {
    basket: IBasketItem[];
+   totalCountOfShoesInBasket: number;
    isLoading: boolean;
    error: string;
 }
 
 const initialState: IBasketState = {
    basket: [],
+   totalCountOfShoesInBasket: 0,
    isLoading: true,
    error: '',
 };
-
+interface IAddShoesToBasketSuccess {
+   basketItems: IBasketItem[];
+   count: number;
+}
 export const basketSlice = createSlice({
    name: 'basket',
    initialState,
@@ -28,11 +33,26 @@ export const basketSlice = createSlice({
          state.isLoading = true;
          state.error = '';
       },
-      addShoesToBasketSuccess(state, action: PayloadAction<IBasketItem[]>) {
+      addShoesToBasketSuccess(
+         state,
+         action: PayloadAction<IAddShoesToBasketSuccess>,
+      ) {
          state.isLoading = false;
          state.error = '';
-         state.basket = [...action.payload];
+         state.basket = [...action.payload.basketItems];
+         state.totalCountOfShoesInBasket =
+            state.totalCountOfShoesInBasket + action.payload.count;
       },
+
+      getTotalCountOfShoesInBasketSuccess(
+         state,
+         action: PayloadAction<number>,
+      ) {
+         state.isLoading = false;
+         state.error = '';
+         state.totalCountOfShoesInBasket = action.payload;
+      },
+
       error(state, action: PayloadAction<string>) {
          state.isLoading = false;
          state.error = action.payload;

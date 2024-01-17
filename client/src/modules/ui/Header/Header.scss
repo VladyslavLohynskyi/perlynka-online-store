@@ -23,4 +23,21 @@ nav {
 
 .icon-menu {
    display: flex;
+
+   &__basket {
+      height: 18px;
+      & span {
+         background-color: black;
+         font-size: 10px;
+         color: white;
+         width: 20px;
+         height: 20px;
+         padding: 0px 1px;
+         border: 1px solid black;
+         border-radius: 50px;
+         position: relative;
+         left: 26px;
+         top: -28px;
+      }
+   }
 }
