@@ -22,6 +22,10 @@ export const Header: React.FC = () => {
       }
       return navigate(RoutesEnum.LOGIN);
    };
+
+   const handleClickBasketIcon = () => {
+      return navigate(RoutesEnum.BASKET);
+   };
    const onClickSex = (sex: SexEnum) => {
       dispatch(sexFilter(sex));
       navigate(RoutesEnum.SHOP);
@@ -46,7 +50,10 @@ export const Header: React.FC = () => {
                <NavItem text='Доставка' />
             </nav>
             <div className='icon-menu'>
-               <IconButton icon={faCartShopping} />
+               <IconButton
+                  icon={faCartShopping}
+                  onClick={handleClickBasketIcon}
+               />
                <IconButton icon={faUser} onClick={handleClickUserIcon} />
             </div>
          </header>
