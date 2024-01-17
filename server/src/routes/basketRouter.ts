@@ -6,6 +6,11 @@ import BasketController from '../controllers/basketController';
 
 basketRouter.post('/', authMiddleware, BasketController.addToBasket);
 basketRouter.get('/', authMiddleware, BasketController.getBasket);
+basketRouter.get(
+   '/totalCount',
+   authMiddleware,
+   BasketController.getCountOfShoesInBasket,
+);
 basketRouter.delete(
    '/:id/:sizeId',
    authMiddleware,

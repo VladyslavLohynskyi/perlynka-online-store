@@ -5,6 +5,7 @@ import { Role } from '../models/userModel';
 import BasketShoes from '../models/basketShoesModel';
 import Shoes from '../models/shoesModel';
 import Size from '../models/sizeModel';
+import { Sequelize } from 'sequelize';
 
 interface addToBasketRequest extends Request {
    body: {
@@ -18,6 +19,10 @@ interface IUser {
    id: string;
    email: string;
    role: Role;
+}
+
+interface ITotalCountResFormDb {
+   totalCount: string;
 }
 
 interface IChangeCountRequest extends Request {
@@ -147,6 +152,18 @@ class BasketController {
          return res.json({ message: 'Removed 1 shoes from basket' });
       }
       return res.json({ message: 'Shoes with that id is not exist' });
+   }
+   async getCountOfShoesInBasket(req: Request, res: Response) {
+      const token = req.header('authorization')!.split(' ')[1];
+      const user = jwt.verify(token, process.env.SECRET_KEY) as IUser;
+      const basket = await Basket.findOne({ where: { userId: user.id } });
+      const totalCount = await BasketShoes.findOne({
+         attributes: [
+            [Sequelize.fn('sum', Sequelize.col('count')), 'totalCount'],
+         ],
+         where: { basketId: basket!.id },
+      });
+      return res.json(totalCount);
    }
 }
 
