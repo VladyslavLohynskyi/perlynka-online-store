@@ -36,4 +36,11 @@
       color: rgb(105, 104, 104);
       margin-top: 100px;
    }
+
+   &__btn-clear-all {
+      cursor: pointer;
+      &:hover {
+         color: gray;
+      }
+   }
 }

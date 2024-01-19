@@ -79,6 +79,13 @@ export const basketSlice = createSlice({
                state.totalCountOfShoesInBasket - +deleteItem.count;
          }
       },
+
+      deleteAllFromBasketSuccess(state) {
+         state.isLoading = false;
+         state.error = '';
+         state.basket = [];
+         state.totalCountOfShoesInBasket = 0;
+      },
       error(state, action: PayloadAction<string>) {
          state.isLoading = false;
          state.error = action.payload;

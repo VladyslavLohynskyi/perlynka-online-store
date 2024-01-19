@@ -2,7 +2,10 @@ import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import './BasketPage.scss';
 import { HorizontalLine } from '../../ui/HorizontalLine';
-import { getAllShoesOfBasket } from '../../../store/reducers/basket/BasketActionCreators';
+import {
+   deleteAllFromBasket,
+   getAllShoesOfBasket,
+} from '../../../store/reducers/basket/BasketActionCreators';
 import { BasketItem } from '../components/BasketItem';
 
 export const BasketPage: React.FC = () => {
@@ -11,6 +14,10 @@ export const BasketPage: React.FC = () => {
    useEffect(() => {
       dispatch(getAllShoesOfBasket());
    }, []);
+
+   const handleClickClearBasket = () => {
+      dispatch(deleteAllFromBasket());
+   };
    return (
       <div className='basket'>
          <div className='basket__main'>
@@ -22,7 +29,12 @@ export const BasketPage: React.FC = () => {
                <div>Ціна</div>
                <div>Кількість</div>
                <div>Вартість</div>
-               <div>Очистити корзину</div>
+               <div
+                  className='basket__btn-clear-all'
+                  onClick={handleClickClearBasket}
+               >
+                  Очистити корзину
+               </div>
             </div>
             <HorizontalLine />
             {basket.length > 0 ? (

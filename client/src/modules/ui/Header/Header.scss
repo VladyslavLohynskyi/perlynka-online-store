@@ -27,6 +27,7 @@ nav {
    &__basket {
       height: 18px;
       & span {
+         cursor: pointer;
          background-color: black;
          font-size: 10px;
          color: white;

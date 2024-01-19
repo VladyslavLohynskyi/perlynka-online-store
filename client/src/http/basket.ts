@@ -34,6 +34,11 @@ class BasketReq {
       );
       return data;
    };
+
+   deleteAllFromBasket = async () => {
+      const { data } = await $authHost.delete<IBasicResponse>(`/basket`);
+      return data;
+   };
 }
 
 export default new BasketReq();

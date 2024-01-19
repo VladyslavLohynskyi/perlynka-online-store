@@ -54,7 +54,17 @@ export const deleteOneShoesFromBasket =
          );
       } catch (error) {
          dispatch(
-            basketSlice.actions.error('Deleting one Shoes of basket Error'),
+            basketSlice.actions.error('Deleting one Shoes from basket Error'),
          );
       }
    };
+
+export const deleteAllFromBasket = () => async (dispatch: AppDispatch) => {
+   try {
+      dispatch(basketSlice.actions.start());
+      await BasketReq.deleteAllFromBasket();
+      dispatch(basketSlice.actions.deleteAllFromBasketSuccess());
+   } catch (error) {
+      dispatch(basketSlice.actions.error('Deleting All from basket Error'));
+   }
+};
