@@ -20,11 +20,19 @@ class BasketReq {
       const { data } = await $authHost.get<IBasketItem[]>('/basket');
       return data;
    };
+
    getTotalCountOfShoesInBasket = async () => {
       const { data } = await $authHost.get<ITotalCountRes>(
          '/basket/totalCount',
       );
       return +data.totalCount;
+   };
+
+   deleteOneShoesFromBasket = async (id: number, sizeId: number) => {
+      const { data } = await $authHost.delete<IBasicResponse>(
+         `/basket/${id}/${sizeId}`,
+      );
+      return data;
    };
 }
 

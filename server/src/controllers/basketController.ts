@@ -96,7 +96,7 @@ class BasketController {
             await BasketShoes.destroy({
                where: { shoId: id, basketId: basket!.id, sizeId: +sizeId },
             });
-            return res.json({ message: 'Shoes deleted from basket', shoes });
+            return res.json({ message: 'Shoes deleted from basket' });
          }
          return res.json({ message: 'Shoes with this id is not exist' });
       } catch (error) {

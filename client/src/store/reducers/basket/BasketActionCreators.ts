@@ -43,3 +43,18 @@ export const getAllShoesOfBasket = () => async (dispatch: AppDispatch) => {
       dispatch(basketSlice.actions.error('Getting all Shoes of basket Error'));
    }
 };
+
+export const deleteOneShoesFromBasket =
+   (id: number, sizeId: number) => async (dispatch: AppDispatch) => {
+      try {
+         dispatch(basketSlice.actions.start());
+         await BasketReq.deleteOneShoesFromBasket(id, sizeId);
+         dispatch(
+            basketSlice.actions.deleteOneShoesFromBasketSuccess({ id, sizeId }),
+         );
+      } catch (error) {
+         dispatch(
+            basketSlice.actions.error('Deleting one Shoes of basket Error'),
+         );
+      }
+   };

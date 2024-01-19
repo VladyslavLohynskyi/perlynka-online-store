@@ -4,19 +4,25 @@ import './BasketItem.scss';
 import { BasketItemType } from './BasketItemType';
 import { baseURL } from '../../../../utils/constants';
 import { HorizontalLine } from '../../../ui/HorizontalLine';
-import { useAppSelector } from '../../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { IconButton } from '../../../ui/IconButton';
 
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { deleteOneShoesFromBasket } from '../../../../store/reducers/basket/BasketActionCreators';
 
 export const BasketItem: React.FC<BasketItemType> = ({
    shoes,
    count,
    size,
 }) => {
+   const dispatch = useAppDispatch();
    const { brands, types, seasons } = useAppSelector(
       (state) => state.shoesReducer,
    );
+
+   const handleClickTrashButton = () => {
+      dispatch(deleteOneShoesFromBasket(shoes.id, +size.id));
+   };
    return (
       <>
          <div className='basket-item__container'>
@@ -45,7 +51,7 @@ export const BasketItem: React.FC<BasketItemType> = ({
             </div>
             <div>{shoes.price * count} грн.</div>
             <div className='basket-item__trash-button-container'>
-               <IconButton icon={faTrash} />
+               <IconButton icon={faTrash} onClick={handleClickTrashButton} />
             </div>
          </div>
          <HorizontalLine />

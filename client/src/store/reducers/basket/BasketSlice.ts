@@ -25,6 +25,11 @@ interface IAddShoesToBasketSuccess {
    basketItems: IBasketItem[];
    count: number;
 }
+
+interface IDeleteOneShoesFromBasketSuccessPayload {
+   id: number;
+   sizeId: number;
+}
 export const basketSlice = createSlice({
    name: 'basket',
    initialState,
@@ -56,6 +61,23 @@ export const basketSlice = createSlice({
          state.isLoading = false;
          state.error = '';
          state.basket = [...action.payload];
+      },
+      deleteOneShoesFromBasketSuccess(
+         state,
+         action: PayloadAction<IDeleteOneShoesFromBasketSuccessPayload>,
+      ) {
+         state.isLoading = false;
+         state.error = '';
+         const deleteItem = state.basket.find(
+            (el) =>
+               el.sho.id === action.payload.id &&
+               +el.size.id === action.payload.sizeId,
+         );
+         if (deleteItem) {
+            state.basket = state.basket.filter((el) => deleteItem.id !== el.id);
+            state.totalCountOfShoesInBasket =
+               state.totalCountOfShoesInBasket - +deleteItem.count;
+         }
       },
       error(state, action: PayloadAction<string>) {
          state.isLoading = false;
