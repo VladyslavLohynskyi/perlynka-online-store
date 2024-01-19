@@ -47,6 +47,14 @@ class BasketReq {
       );
       return data;
    };
+
+   decrementCountOfOneShoesInBasket = async (basketShoesId: number) => {
+      const { data } = await $authHost.put<IBasicResponse>(
+         `/basket/decrement`,
+         { basketShoesId },
+      );
+      return data;
+   };
 }
 
 export default new BasketReq();

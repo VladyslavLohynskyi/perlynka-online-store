@@ -19,6 +19,11 @@
 
    &__buy-counter {
       width: 31px;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
    }
 
    &__buy-number {
@@ -42,5 +47,12 @@
    &__trash-button-container {
       display: flex;
       justify-content: center;
+   }
+
+   &__img-container {
+      cursor: pointer;
+   }
+   &__main-info {
+      cursor: pointer;
    }
 }

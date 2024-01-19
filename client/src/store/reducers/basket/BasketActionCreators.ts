@@ -80,6 +80,29 @@ export const incrementCountOfOneShoesInBasket =
             ),
          );
       } catch (error) {
-         dispatch(basketSlice.actions.error('Deleting All from basket Error'));
+         dispatch(
+            basketSlice.actions.error(
+               'Increment count of shoes in basket  Error',
+            ),
+         );
+      }
+   };
+
+export const decrementCountOfOneShoesInBasket =
+   (basketShoesId: number) => async (dispatch: AppDispatch) => {
+      try {
+         dispatch(basketSlice.actions.start());
+         await BasketReq.decrementCountOfOneShoesInBasket(basketShoesId);
+         dispatch(
+            basketSlice.actions.decrementCountOfOneShoesInBasketSuccess(
+               basketShoesId,
+            ),
+         );
+      } catch (error) {
+         dispatch(
+            basketSlice.actions.error(
+               'Decrement count of shoes in basket  Error',
+            ),
+         );
       }
    };

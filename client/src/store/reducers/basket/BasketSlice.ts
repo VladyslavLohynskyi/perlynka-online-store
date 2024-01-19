@@ -4,7 +4,7 @@ import { IShoes, ISizeCategory } from '../shoes/ShoesSlice';
 export interface IBasketItem {
    id: string;
    basketId: string;
-   count: string;
+   count: number;
    sho: IShoes;
    size: ISizeCategory;
 }
@@ -38,6 +38,7 @@ export const basketSlice = createSlice({
          state.isLoading = true;
          state.error = '';
       },
+
       addShoesToBasketSuccess(
          state,
          action: PayloadAction<IAddShoesToBasketSuccess>,
@@ -57,11 +58,13 @@ export const basketSlice = createSlice({
          state.error = '';
          state.totalCountOfShoesInBasket = action.payload;
       },
+
       getAllShoesOfBasketSuccess(state, action: PayloadAction<IBasketItem[]>) {
          state.isLoading = false;
          state.error = '';
          state.basket = [...action.payload];
       },
+
       deleteOneShoesFromBasketSuccess(
          state,
          action: PayloadAction<IDeleteOneShoesFromBasketSuccessPayload>,
@@ -98,6 +101,19 @@ export const basketSlice = createSlice({
          );
          state.totalCountOfShoesInBasket += 1;
       },
+
+      decrementCountOfOneShoesInBasketSuccess(
+         state,
+         action: PayloadAction<number>,
+      ) {
+         state.isLoading = false;
+         state.error = '';
+         state.basket = state.basket.map((el) =>
+            +el.id === action.payload ? { ...el, count: +el.count - 1 } : el,
+         );
+         state.totalCountOfShoesInBasket -= 1;
+      },
+
       error(state, action: PayloadAction<string>) {
          state.isLoading = false;
          state.error = action.payload;
