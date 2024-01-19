@@ -85,7 +85,7 @@ export const Shop: React.FC = () => {
                <Button
                   buttonClass={
                      !isFiltersEmpty
-                        ? ButtonClassEnum.PROFILE
+                        ? ButtonClassEnum.BUY
                         : ButtonClassEnum.DISABLE
                   }
                   buttonText='Скинути фільтри'

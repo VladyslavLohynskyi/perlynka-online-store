@@ -106,3 +106,7 @@ export const decrementCountOfOneShoesInBasket =
          );
       }
    };
+
+export const clearBasketBeforeLogOut = () => (dispatch: AppDispatch) => {
+   dispatch(basketSlice.actions.clearBasketBeforeLogOut());
+};

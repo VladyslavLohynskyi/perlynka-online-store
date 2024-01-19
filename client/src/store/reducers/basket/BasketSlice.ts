@@ -114,6 +114,10 @@ export const basketSlice = createSlice({
          state.totalCountOfShoesInBasket -= 1;
       },
 
+      clearBasketBeforeLogOut(state) {
+         state.basket = [];
+         state.totalCountOfShoesInBasket = 0;
+      },
       error(state, action: PayloadAction<string>) {
          state.isLoading = false;
          state.error = action.payload;

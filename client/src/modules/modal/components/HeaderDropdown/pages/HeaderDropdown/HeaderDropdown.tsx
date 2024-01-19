@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
 import { RoutesEnum } from '../../../../../../utils/constants';
 import { logOutUser } from '../../../../../../store/reducers/user/UserActionCreators';
 import { HeaderDropdownType } from './HeaderDropdownType';
+import { clearBasketBeforeLogOut } from '../../../../../../store/reducers/basket/BasketActionCreators';
 
 export const HeaderDropdown: React.FC<HeaderDropdownType> = ({ onClose }) => {
    const dispatch = useAppDispatch();
@@ -14,6 +15,11 @@ export const HeaderDropdown: React.FC<HeaderDropdownType> = ({ onClose }) => {
    const handleClickDropDownItem = (func: () => void) => {
       func();
       onClose();
+   };
+
+   const handleClickLogoutButton = () => {
+      dispatch(clearBasketBeforeLogOut());
+      dispatch(logOutUser());
    };
    return (
       <div className='header-dropdown__container'>
@@ -33,9 +39,7 @@ export const HeaderDropdown: React.FC<HeaderDropdownType> = ({ onClose }) => {
          )}
          <DropdownItem
             text='Вихід'
-            onClick={() =>
-               handleClickDropDownItem(() => dispatch(logOutUser()))
-            }
+            onClick={() => handleClickDropDownItem(handleClickLogoutButton)}
          />
       </div>
    );
