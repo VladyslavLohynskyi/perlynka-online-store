@@ -39,6 +39,14 @@ class BasketReq {
       const { data } = await $authHost.delete<IBasicResponse>(`/basket`);
       return data;
    };
+
+   incrementCountOfOneShoesInBasket = async (basketShoesId: number) => {
+      const { data } = await $authHost.put<IBasicResponse>(
+         `/basket/increment`,
+         { basketShoesId },
+      );
+      return data;
+   };
 }
 
 export default new BasketReq();

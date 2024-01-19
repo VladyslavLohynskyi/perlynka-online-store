@@ -86,6 +86,18 @@ export const basketSlice = createSlice({
          state.basket = [];
          state.totalCountOfShoesInBasket = 0;
       },
+
+      incrementCountOfOneShoesInBasketSuccess(
+         state,
+         action: PayloadAction<number>,
+      ) {
+         state.isLoading = false;
+         state.error = '';
+         state.basket = state.basket.map((el) =>
+            +el.id === action.payload ? { ...el, count: el.count + 1 } : el,
+         );
+         state.totalCountOfShoesInBasket += 1;
+      },
       error(state, action: PayloadAction<string>) {
          state.isLoading = false;
          state.error = action.payload;

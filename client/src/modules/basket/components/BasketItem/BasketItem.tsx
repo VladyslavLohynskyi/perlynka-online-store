@@ -8,9 +8,13 @@ import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { IconButton } from '../../../ui/IconButton';
 
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { deleteOneShoesFromBasket } from '../../../../store/reducers/basket/BasketActionCreators';
+import {
+   deleteOneShoesFromBasket,
+   incrementCountOfOneShoesInBasket,
+} from '../../../../store/reducers/basket/BasketActionCreators';
 
 export const BasketItem: React.FC<BasketItemType> = ({
+   id,
    shoes,
    count,
    size,
@@ -22,6 +26,10 @@ export const BasketItem: React.FC<BasketItemType> = ({
 
    const handleClickTrashButton = () => {
       dispatch(deleteOneShoesFromBasket(shoes.id, +size.id));
+   };
+
+   const handleClickIncrementButton = () => {
+      dispatch(incrementCountOfOneShoesInBasket(id));
    };
    return (
       <>
@@ -43,7 +51,10 @@ export const BasketItem: React.FC<BasketItemType> = ({
             </div>
             <div>{shoes.price} грн.</div>
             <div className='basket-item__buy-counter'>
-               <IconButton icon={faChevronUp} />
+               <IconButton
+                  icon={faChevronUp}
+                  onClick={handleClickIncrementButton}
+               />
                <div className='basket-item__buy-number'>
                   <p>{count}</p>
                </div>

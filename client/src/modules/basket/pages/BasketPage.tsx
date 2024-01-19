@@ -39,7 +39,13 @@ export const BasketPage: React.FC = () => {
             <HorizontalLine />
             {basket.length > 0 ? (
                basket.map(({ id, sho, count, size }) => (
-                  <BasketItem key={id} shoes={sho} count={+count} size={size} />
+                  <BasketItem
+                     key={id}
+                     id={+id}
+                     shoes={sho}
+                     count={+count}
+                     size={size}
+                  />
                ))
             ) : (
                <p className='basket__empty-text'>Корзина Порожня</p>
