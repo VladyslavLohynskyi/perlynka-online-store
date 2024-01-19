@@ -43,4 +43,15 @@
          color: gray;
       }
    }
+   &__order-menu {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 60px;
+
+      &__price {
+         justify-self: center;
+         align-self: center;
+         font-weight: 500;
+      }
+   }
 }

@@ -50,7 +50,7 @@ export const BasketItem: React.FC<BasketItemType> = ({
             </div>
             <div>
                <p
-                  className='basket-item__img-container'
+                  className='basket-item__main-info'
                   onClick={() => navigate(RoutesEnum.SHOES + '/' + shoes.id)}
                >
                   {types?.find((type) => +type.id === shoes.typeId)?.name}{' '}

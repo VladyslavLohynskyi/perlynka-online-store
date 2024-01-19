@@ -105,7 +105,7 @@ export const ShoesPage: React.FC = () => {
                            buttonText={buyButtonText}
                            buttonClass={
                               buyButtonText === BuyButtonTextEnum.BUY
-                                 ? ButtonClassEnum.PROFILE
+                                 ? ButtonClassEnum.BUY
                                  : ButtonClassEnum.DELETE
                            }
                            buttonClick={handleClickBuyButton}
