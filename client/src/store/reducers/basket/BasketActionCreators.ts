@@ -1,6 +1,6 @@
 import BasketReq from '../../../http/basket';
 import { AppDispatch } from '../../store';
-import { basketSlice } from './BasketSlice';
+import { IBasketItem, basketSlice } from './BasketSlice';
 
 export const addShoesToBasket =
    (shoId: number, sizeId: number, count: number) =>
@@ -15,6 +15,11 @@ export const addShoesToBasket =
       } catch (error) {
          dispatch(basketSlice.actions.error('Adding Shoes to basket Error'));
       }
+   };
+
+export const addShoesToBasketNotAuth =
+   (basketItem: IBasketItem) => async (dispatch: AppDispatch) => {
+      dispatch(basketSlice.actions.addShoesToBasketNotAuthSuccess(basketItem));
    };
 
 export const getTotalCountOfShoesInBasket =
@@ -34,6 +39,13 @@ export const getTotalCountOfShoesInBasket =
       }
    };
 
+export const getTotalCountOfShoesInBasketNotAuth =
+   () => async (dispatch: AppDispatch) => {
+      dispatch(
+         basketSlice.actions.getTotalCountOfShoesInBasketNotAuthSuccess(),
+      );
+   };
+
 export const getAllShoesOfBasket = () => async (dispatch: AppDispatch) => {
    try {
       dispatch(basketSlice.actions.start());
@@ -44,6 +56,10 @@ export const getAllShoesOfBasket = () => async (dispatch: AppDispatch) => {
    }
 };
 
+export const getAllShoesOfBasketNotAuth =
+   () => async (dispatch: AppDispatch) => {
+      dispatch(basketSlice.actions.getAllShoesOfBasketNotAuthSuccess());
+   };
 export const deleteOneShoesFromBasket =
    (id: number, sizeId: number) => async (dispatch: AppDispatch) => {
       try {
@@ -58,6 +74,10 @@ export const deleteOneShoesFromBasket =
          );
       }
    };
+export const deleteOneShoesFromBasketNotAuth =
+   (id: string) => async (dispatch: AppDispatch) => {
+      dispatch(basketSlice.actions.deleteOneShoesFromBasketNotAuthSuccess(id));
+   };
 
 export const deleteAllFromBasket = () => async (dispatch: AppDispatch) => {
    try {
@@ -68,12 +88,16 @@ export const deleteAllFromBasket = () => async (dispatch: AppDispatch) => {
       dispatch(basketSlice.actions.error('Deleting All from basket Error'));
    }
 };
+export const deleteAllFromBasketNotAuth =
+   () => async (dispatch: AppDispatch) => {
+      dispatch(basketSlice.actions.deleteAllFromBasketNotAuthSuccess());
+   };
 
 export const incrementCountOfOneShoesInBasket =
-   (basketShoesId: number) => async (dispatch: AppDispatch) => {
+   (basketShoesId: string) => async (dispatch: AppDispatch) => {
       try {
          dispatch(basketSlice.actions.start());
-         await BasketReq.incrementCountOfOneShoesInBasket(basketShoesId);
+         await BasketReq.incrementCountOfOneShoesInBasket(+basketShoesId);
          dispatch(
             basketSlice.actions.incrementCountOfOneShoesInBasketSuccess(
                basketShoesId,
@@ -88,11 +112,18 @@ export const incrementCountOfOneShoesInBasket =
       }
    };
 
+export const incrementCountOfOneShoesInBasketNotAuth =
+   (id: string) => async (dispatch: AppDispatch) => {
+      dispatch(
+         basketSlice.actions.incrementCountOfOneShoesInBasketNotAuthSuccess(id),
+      );
+   };
+
 export const decrementCountOfOneShoesInBasket =
-   (basketShoesId: number) => async (dispatch: AppDispatch) => {
+   (basketShoesId: string) => async (dispatch: AppDispatch) => {
       try {
          dispatch(basketSlice.actions.start());
-         await BasketReq.decrementCountOfOneShoesInBasket(basketShoesId);
+         await BasketReq.decrementCountOfOneShoesInBasket(+basketShoesId);
          dispatch(
             basketSlice.actions.decrementCountOfOneShoesInBasketSuccess(
                basketShoesId,
@@ -105,6 +136,13 @@ export const decrementCountOfOneShoesInBasket =
             ),
          );
       }
+   };
+
+export const decrementCountOfOneShoesInBasketNotAuth =
+   (id: string) => async (dispatch: AppDispatch) => {
+      dispatch(
+         basketSlice.actions.decrementCountOfOneShoesInBasketNotAuthSuccess(id),
+      );
    };
 
 export const clearBasketBeforeLogOut = () => (dispatch: AppDispatch) => {

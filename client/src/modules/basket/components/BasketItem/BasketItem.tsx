@@ -10,8 +10,11 @@ import { IconButton } from '../../../ui/IconButton';
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import {
    decrementCountOfOneShoesInBasket,
+   decrementCountOfOneShoesInBasketNotAuth,
    deleteOneShoesFromBasket,
+   deleteOneShoesFromBasketNotAuth,
    incrementCountOfOneShoesInBasket,
+   incrementCountOfOneShoesInBasketNotAuth,
 } from '../../../../store/reducers/basket/BasketActionCreators';
 import { useNavigate } from 'react-router-dom';
 
@@ -22,21 +25,34 @@ export const BasketItem: React.FC<BasketItemType> = ({
    size,
 }) => {
    const dispatch = useAppDispatch();
+   const { isAuth } = useAppSelector((state) => state.userReducer);
    const { brands, types, seasons } = useAppSelector(
       (state) => state.shoesReducer,
    );
    const navigate = useNavigate();
    const handleClickTrashButton = () => {
-      dispatch(deleteOneShoesFromBasket(shoes.id, +size.id));
+      if (isAuth) {
+         dispatch(deleteOneShoesFromBasket(shoes.id, +size.id));
+      } else {
+         dispatch(deleteOneShoesFromBasketNotAuth(id));
+      }
    };
 
    const handleClickIncrementButton = () => {
-      dispatch(incrementCountOfOneShoesInBasket(id));
+      if (isAuth) {
+         dispatch(incrementCountOfOneShoesInBasket(id));
+      } else {
+         dispatch(incrementCountOfOneShoesInBasketNotAuth(id));
+      }
    };
 
    const handleClickDecrementButton = () => {
       if (count > 1) {
-         dispatch(decrementCountOfOneShoesInBasket(id));
+         if (isAuth) {
+            dispatch(decrementCountOfOneShoesInBasket(id));
+         } else {
+            dispatch(decrementCountOfOneShoesInBasketNotAuth(id));
+         }
       }
    };
    return (

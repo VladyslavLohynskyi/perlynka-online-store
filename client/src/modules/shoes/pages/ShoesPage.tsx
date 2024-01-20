@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import { v4 as uuidv4 } from 'uuid';
 import './ShoesPage.scss';
 import { useParams } from 'react-router-dom';
 import { IParticularShoes, getShoesById } from '../../../http/shoes';
@@ -10,14 +10,18 @@ import { HorizontalLine } from '../../ui/HorizontalLine';
 import { IconButton } from '../../ui/IconButton';
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { Rating } from '../components/Rating';
-import { useAppDispatch } from '../../../hooks/redux';
-import { addShoesToBasket } from '../../../store/reducers/basket/BasketActionCreators';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import {
+   addShoesToBasket,
+   addShoesToBasketNotAuth,
+} from '../../../store/reducers/basket/BasketActionCreators';
 enum BuyButtonTextEnum {
    BUY = 'Купити',
    SIZE_ERROR = 'Виберіть Розмір',
 }
 export const ShoesPage: React.FC = () => {
    const { id } = useParams();
+   const { isAuth } = useAppSelector((state) => state.userReducer);
    const dispatch = useAppDispatch();
    const [currentShoes, setCurrentShoes] = useState<IParticularShoes>();
    const [selectedSizeId, setSelectedSizeId] = useState<number>(0);
@@ -49,9 +53,51 @@ export const ShoesPage: React.FC = () => {
    };
 
    const handleClickBuyButton = () => {
-      if (currentShoes && selectedSizeId)
-         dispatch(addShoesToBasket(currentShoes.id, selectedSizeId, count));
-      else setBuyButtonText(BuyButtonTextEnum.SIZE_ERROR);
+      if (currentShoes && selectedSizeId) {
+         if (isAuth) {
+            dispatch(addShoesToBasket(currentShoes.id, selectedSizeId, count));
+         } else {
+            const {
+               id,
+               model,
+               price,
+               rating,
+               img,
+               typeId,
+               colorId,
+               seasonId,
+               brandId,
+               sex,
+               shoes_sizes,
+            } = currentShoes;
+            dispatch(
+               addShoesToBasketNotAuth({
+                  id: uuidv4(),
+                  count,
+                  sho: {
+                     id,
+                     model,
+                     price,
+                     rating,
+                     img,
+                     typeId,
+                     colorId,
+                     seasonId,
+                     brandId,
+                     sex,
+                  },
+                  size: {
+                     id: selectedSizeId + '',
+                     size: shoes_sizes.find(
+                        (el) => el.sizeId === selectedSizeId,
+                     )!.size.size,
+                  },
+               }),
+            );
+         }
+      } else {
+         setBuyButtonText(BuyButtonTextEnum.SIZE_ERROR);
+      }
    };
    return (
       <div className='shoes-page__container'>

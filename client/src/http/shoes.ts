@@ -20,6 +20,7 @@ export interface IFilter {
    limit: number;
 }
 interface IParticularSize extends ISize {
+   sizeId: number;
    size: ISizeCategory;
 }
 

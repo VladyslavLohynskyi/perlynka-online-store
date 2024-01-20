@@ -4,7 +4,9 @@ import './BasketPage.scss';
 import { HorizontalLine } from '../../ui/HorizontalLine';
 import {
    deleteAllFromBasket,
+   deleteAllFromBasketNotAuth,
    getAllShoesOfBasket,
+   getAllShoesOfBasketNotAuth,
 } from '../../../store/reducers/basket/BasketActionCreators';
 import { BasketItem } from '../components/BasketItem';
 import { Button } from '../../ui/Button';
@@ -12,6 +14,7 @@ import { ButtonClassEnum } from '../../ui/Button/ButtonType';
 
 export const BasketPage: React.FC = () => {
    const dispatch = useAppDispatch();
+   const { isAuth } = useAppSelector((state) => state.userReducer);
    const { basket, totalCountOfShoesInBasket } = useAppSelector(
       (state) => state.basketReducer,
    );
@@ -23,13 +26,21 @@ export const BasketPage: React.FC = () => {
          price += el.count * el.sho.price;
       });
       setTotalPrice(price);
-   }, [totalCountOfShoesInBasket]);
+   }, [totalCountOfShoesInBasket, basket]);
    useEffect(() => {
-      dispatch(getAllShoesOfBasket());
+      if (isAuth) {
+         dispatch(getAllShoesOfBasket());
+      } else {
+         dispatch(getAllShoesOfBasketNotAuth());
+      }
    }, []);
 
    const handleClickClearBasket = () => {
-      dispatch(deleteAllFromBasket());
+      if (isAuth) {
+         dispatch(deleteAllFromBasket());
+      } else {
+         dispatch(deleteAllFromBasketNotAuth());
+      }
    };
    return (
       <div className='basket'>
@@ -55,7 +66,7 @@ export const BasketPage: React.FC = () => {
                   {basket.map(({ id, sho, count, size }) => (
                      <BasketItem
                         key={id}
-                        id={+id}
+                        id={id}
                         shoes={sho}
                         count={+count}
                         size={size}

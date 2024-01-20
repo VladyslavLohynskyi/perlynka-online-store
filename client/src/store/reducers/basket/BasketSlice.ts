@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IShoes, ISizeCategory } from '../shoes/ShoesSlice';
+import { getCookieValue } from '../filter/FilterSlice';
 
 export interface IBasketItem {
    id: string;
-   basketId: string;
    count: number;
    sho: IShoes;
    size: ISizeCategory;
@@ -50,6 +50,31 @@ export const basketSlice = createSlice({
             state.totalCountOfShoesInBasket + action.payload.count;
       },
 
+      addShoesToBasketNotAuthSuccess(
+         state,
+         action: PayloadAction<IBasketItem>,
+      ) {
+         const existShoes = state.basket.find(
+            (el) =>
+               el.sho.id === action.payload.sho.id &&
+               el.size.id === action.payload.size.id,
+         );
+         if (existShoes) {
+            state.basket = state.basket.map((el) =>
+               el.sho.id === action.payload.sho.id &&
+               el.size.id === action.payload.size.id
+                  ? { ...el, count: el.count + action.payload.count }
+                  : el,
+            );
+         } else {
+            state.basket = [...state.basket, action.payload];
+         }
+         state.totalCountOfShoesInBasket =
+            state.totalCountOfShoesInBasket + action.payload.count;
+         document.cookie = `basket=${JSON.stringify(state.basket)}; path=/;`;
+         document.cookie = `totalCountOfShoesInBasket=${state.totalCountOfShoesInBasket}; path=/;`;
+      },
+
       getTotalCountOfShoesInBasketSuccess(
          state,
          action: PayloadAction<number>,
@@ -59,10 +84,25 @@ export const basketSlice = createSlice({
          state.totalCountOfShoesInBasket = action.payload;
       },
 
+      getTotalCountOfShoesInBasketNotAuthSuccess(state) {
+         const totalCount = getCookieValue('totalCountOfShoesInBasket');
+         if (totalCount) {
+            state.totalCountOfShoesInBasket = +totalCount;
+         }
+      },
+
       getAllShoesOfBasketSuccess(state, action: PayloadAction<IBasketItem[]>) {
          state.isLoading = false;
          state.error = '';
          state.basket = [...action.payload];
+      },
+      getAllShoesOfBasketNotAuthSuccess(state) {
+         const basket = JSON.parse(getCookieValue('basket') || '[]');
+         state.basket = [...basket];
+         const totalCount = getCookieValue('totalCountOfShoesInBasket');
+         if (totalCount) {
+            state.totalCountOfShoesInBasket = +totalCount;
+         }
       },
 
       deleteOneShoesFromBasketSuccess(
@@ -83,6 +123,20 @@ export const basketSlice = createSlice({
          }
       },
 
+      deleteOneShoesFromBasketNotAuthSuccess(
+         state,
+         action: PayloadAction<string>,
+      ) {
+         const deleteItem = state.basket.find((el) => el.id === action.payload);
+         if (deleteItem) {
+            state.basket = state.basket.filter((el) => deleteItem.id !== el.id);
+            state.totalCountOfShoesInBasket =
+               state.totalCountOfShoesInBasket - +deleteItem.count;
+         }
+         document.cookie = `basket=${JSON.stringify(state.basket)}; path=/;`;
+         document.cookie = `totalCountOfShoesInBasket=${state.totalCountOfShoesInBasket}; path=/;`;
+      },
+
       deleteAllFromBasketSuccess(state) {
          state.isLoading = false;
          state.error = '';
@@ -90,33 +144,66 @@ export const basketSlice = createSlice({
          state.totalCountOfShoesInBasket = 0;
       },
 
+      deleteAllFromBasketNotAuthSuccess(state) {
+         state.basket = [];
+         state.totalCountOfShoesInBasket = 0;
+         document.cookie = `basket=[]; path=/;`;
+         document.cookie = `totalCountOfShoesInBasket=0; path=/;`;
+      },
+
       incrementCountOfOneShoesInBasketSuccess(
          state,
-         action: PayloadAction<number>,
+         action: PayloadAction<string>,
       ) {
          state.isLoading = false;
          state.error = '';
          state.basket = state.basket.map((el) =>
-            +el.id === action.payload ? { ...el, count: el.count + 1 } : el,
+            el.id === action.payload ? { ...el, count: el.count + 1 } : el,
          );
          state.totalCountOfShoesInBasket += 1;
       },
 
+      incrementCountOfOneShoesInBasketNotAuthSuccess(
+         state,
+         action: PayloadAction<string>,
+      ) {
+         state.basket = state.basket.map((el) =>
+            el.id === action.payload ? { ...el, count: el.count + 1 } : el,
+         );
+         state.totalCountOfShoesInBasket += 1;
+         document.cookie = `basket=${JSON.stringify(state.basket)}; path=/;`;
+         document.cookie = `totalCountOfShoesInBasket=${state.totalCountOfShoesInBasket}; path=/;`;
+      },
+
       decrementCountOfOneShoesInBasketSuccess(
          state,
-         action: PayloadAction<number>,
+         action: PayloadAction<string>,
       ) {
          state.isLoading = false;
          state.error = '';
          state.basket = state.basket.map((el) =>
-            +el.id === action.payload ? { ...el, count: +el.count - 1 } : el,
+            el.id === action.payload ? { ...el, count: +el.count - 1 } : el,
          );
          state.totalCountOfShoesInBasket -= 1;
+      },
+      decrementCountOfOneShoesInBasketNotAuthSuccess(
+         state,
+         action: PayloadAction<string>,
+      ) {
+         state.basket = state.basket.map((el) =>
+            el.id === action.payload ? { ...el, count: +el.count - 1 } : el,
+         );
+         state.totalCountOfShoesInBasket -= 1;
+         document.cookie = `basket=${JSON.stringify(state.basket)}; path=/;`;
+         document.cookie = `totalCountOfShoesInBasket=${state.totalCountOfShoesInBasket}; path=/;`;
       },
 
       clearBasketBeforeLogOut(state) {
          state.basket = [];
+         document.cookie = 'basket= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
          state.totalCountOfShoesInBasket = 0;
+         document.cookie =
+            'totalCountOfShoesInBasket= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
       },
       error(state, action: PayloadAction<string>) {
          state.isLoading = false;
