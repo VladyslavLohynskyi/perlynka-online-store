@@ -6,12 +6,25 @@ interface IBasicResponse {
 interface ITotalCountRes {
    totalCount: string;
 }
+
+export interface IAddShoes {
+   shoId: number;
+   sizeId: number;
+   count: number;
+}
 class BasketReq {
    addShoesToBasket = async (shoId: number, sizeId: number, count: number) => {
+      const shoesReq = JSON.stringify([{ shoId, sizeId, count }]);
       const { data } = await $authHost.post<IBasicResponse>('/basket', {
-         shoId,
-         sizeId,
-         count,
+         shoes: shoesReq,
+      });
+      return data;
+   };
+
+   addALotShoesToBasket = async (shoes: IAddShoes[]) => {
+      const shoesReq = JSON.stringify(shoes);
+      const { data } = await $authHost.post<IBasicResponse>('/basket', {
+         shoes: shoesReq,
       });
       return data;
    };

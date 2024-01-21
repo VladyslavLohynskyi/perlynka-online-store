@@ -1,4 +1,4 @@
-import BasketReq from '../../../http/basket';
+import BasketReq, { IAddShoes } from '../../../http/basket';
 import { AppDispatch } from '../../store';
 import { IBasketItem, basketSlice } from './BasketSlice';
 
@@ -144,7 +144,22 @@ export const decrementCountOfOneShoesInBasketNotAuth =
          basketSlice.actions.decrementCountOfOneShoesInBasketNotAuthSuccess(id),
       );
    };
-
+export const synchronizeBaskets =
+   (shoes: IAddShoes[]) => async (dispatch: AppDispatch) => {
+      try {
+         dispatch(basketSlice.actions.start());
+         await BasketReq.addALotShoesToBasket(shoes);
+         const basketItems = await BasketReq.getAllInBasket();
+         dispatch(
+            basketSlice.actions.addShoesToBasketSuccess({
+               basketItems,
+               count: 0,
+            }),
+         );
+      } catch (error) {
+         dispatch(basketSlice.actions.error('Synchronize baskets  Error'));
+      }
+   };
 export const clearBasketBeforeLogOut = () => (dispatch: AppDispatch) => {
    dispatch(basketSlice.actions.clearBasketBeforeLogOut());
 };
