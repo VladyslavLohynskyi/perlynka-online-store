@@ -49,8 +49,8 @@ class RatingController {
          const avgRating = await Rating.findOne({
             where: { shoId: id },
             attributes: [
-               [Sequelize.fn('AVG', Sequelize.col('rate')), 'avg_rating'],
-               [Sequelize.fn('Count', Sequelize.col('rate')), 'count_ratings'],
+               [Sequelize.fn('AVG', Sequelize.col('rate')), 'avgRating'],
+               [Sequelize.fn('Count', Sequelize.col('rate')), 'countRatings'],
             ],
          });
          return res.json(avgRating);

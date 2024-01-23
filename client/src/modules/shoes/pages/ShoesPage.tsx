@@ -61,7 +61,6 @@ export const ShoesPage: React.FC = () => {
                id,
                model,
                price,
-               rating,
                img,
                typeId,
                colorId,
@@ -78,7 +77,6 @@ export const ShoesPage: React.FC = () => {
                      id,
                      model,
                      price,
-                     rating,
                      img,
                      typeId,
                      colorId,
@@ -159,10 +157,7 @@ export const ShoesPage: React.FC = () => {
                      </div>
                   </div>
                   <HorizontalLine />
-                  <Rating
-                     avgRating={currentShoes.rating}
-                     countRatings={+currentShoes.count_ratings}
-                  />
+                  <Rating shoId={currentShoes.id} />
                </div>
             </div>
          )}

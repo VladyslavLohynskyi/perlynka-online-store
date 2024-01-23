@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React, { useEffect, useState } from 'react';
+import RatingReq from '../../../../http/rating';
 import './Rating.scss';
 import { IconButton } from '../../../ui/IconButton';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
@@ -10,14 +10,28 @@ import { useNavigate } from 'react-router-dom';
 import { RoutesEnum } from '../../../../utils/constants';
 import { IRatingType } from './RatingType';
 
-export const Rating: React.FC<IRatingType> = ({ avgRating, countRatings }) => {
+export const Rating: React.FC<IRatingType> = ({ shoId }) => {
    const { isAuth } = useAppSelector((state) => state.userReducer);
    const navigate = useNavigate();
-   const [rating, setRating] = useState(avgRating || 0);
+   const [rating, setRating] = useState(0);
+   const [countRatings, setCountRatings] = useState(0);
    const [hover, setHover] = useState(0);
+
+   useEffect(() => {
+      RatingReq.getAvgRatingByShoesId(shoId).then((data) => {
+         setRating(data.avgRating);
+         setCountRatings(data.countRatings);
+      });
+   }, []);
    const handleClickStar = (index: number) => {
       if (isAuth) {
          setRating(index);
+         RatingReq.addRating(shoId, index).then(() =>
+            RatingReq.getAvgRatingByShoesId(shoId).then((data) => {
+               setRating(data.avgRating);
+               setCountRatings(data.countRatings);
+            }),
+         );
       }
    };
 

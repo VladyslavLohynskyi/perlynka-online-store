@@ -156,17 +156,6 @@ class shoesController {
                   where: { sizeId: { [Op.or]: [...sizesIdsParsed] } },
                },
             ],
-            attributes: {
-               include: [
-                  [
-                     Sequelize.literal(`(
-                        SELECT AVG(rate) FROM ratings WHERE "shoId" = shoes.id
-                 )`),
-                     'rating',
-                  ],
-               ],
-            },
-
             distinct: true,
             limit: +limit,
             offset: +offset,
@@ -203,22 +192,6 @@ class shoesController {
 
          const shoes = await Shoes.findOne({
             where: { id },
-            attributes: {
-               include: [
-                  [
-                     Sequelize.literal(`(
-                        SELECT AVG(rate) FROM ratings WHERE "shoId" = shoes.id
-                 )`),
-                     'rating',
-                  ],
-                  [
-                     Sequelize.literal(`(
-                        SELECT COUNT(rate) FROM ratings WHERE "shoId" = shoes.id
-                 )`),
-                     'count_ratings',
-                  ],
-               ],
-            },
             include: [
                { model: ShoesSize, include: [{ model: Size }] },
                { model: Brand },
