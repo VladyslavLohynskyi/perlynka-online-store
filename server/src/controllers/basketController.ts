@@ -1,5 +1,5 @@
-import { Request, RequestHandler, Response } from 'express';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 import Basket from '../models/basketModel';
 import { Role } from '../models/userModel';
 import BasketShoes from '../models/basketShoesModel';
@@ -13,7 +13,7 @@ interface IAddShoes {
    count: number;
 }
 
-interface IUser {
+export interface IUser {
    id: string;
    email: string;
    role: Role;
