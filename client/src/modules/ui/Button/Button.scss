@@ -144,6 +144,17 @@
          color: rgb(35, 117, 217);
       }
    }
+
+   &--buy {
+      color: #fff;
+      border-color: black;
+      background-color: black;
+
+      &:hover {
+         border-color: gray;
+         background-color: gray;
+      }
+   }
 }
 
 .admin-modal-accept-btn {

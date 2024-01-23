@@ -9,11 +9,7 @@ import Season from './seasonModel';
 import Size from './sizeModel';
 import ShoesSize from './shoesSizeModel';
 import Shoes from './shoesModel';
-
-const BasketShoes = sequelize.define('basket_shoes', {
-   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-   count: { type: DataTypes.INTEGER, defaultValue: 1 },
-});
+import BasketShoes from './basketShoesModel';
 
 const Rating = sequelize.define('rating', {
    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
@@ -52,6 +48,9 @@ Shoes.belongsTo(Brand);
 
 Shoes.hasMany(BasketShoes);
 BasketShoes.belongsTo(Shoes);
+
+Size.hasMany(BasketShoes);
+BasketShoes.belongsTo(Size);
 
 module.exports = {
    User,

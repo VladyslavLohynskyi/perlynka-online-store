@@ -6,6 +6,7 @@ import { shoesRouter } from './shoesRouter';
 import { sizeRouter } from './sizeRouter';
 import { typeRouter } from './typeRouter';
 import { userRouter } from './userRouter';
+import { basketRouter } from './basketRouter';
 export const router = Router();
 
 router.use('/user', userRouter);
@@ -15,3 +16,4 @@ router.use('/brand', brandRouter);
 router.use('/season', seasonRouter);
 router.use('/size', sizeRouter);
 router.use('/shoes', shoesRouter);
+router.use('/basket', basketRouter);

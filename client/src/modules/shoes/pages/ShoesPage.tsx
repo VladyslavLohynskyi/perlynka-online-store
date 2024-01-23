@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import { v4 as uuidv4 } from 'uuid';
 import './ShoesPage.scss';
 import { useParams } from 'react-router-dom';
 import { IParticularShoes, getShoesById } from '../../../http/shoes';
@@ -10,18 +10,33 @@ import { HorizontalLine } from '../../ui/HorizontalLine';
 import { IconButton } from '../../ui/IconButton';
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { Rating } from '../components/Rating';
-
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import {
+   addShoesToBasket,
+   addShoesToBasketNotAuth,
+} from '../../../store/reducers/basket/BasketActionCreators';
+enum BuyButtonTextEnum {
+   BUY = 'Купити',
+   SIZE_ERROR = 'Виберіть Розмір',
+}
 export const ShoesPage: React.FC = () => {
    const { id } = useParams();
+   const { isAuth } = useAppSelector((state) => state.userReducer);
+   const dispatch = useAppDispatch();
    const [currentShoes, setCurrentShoes] = useState<IParticularShoes>();
-   const [selectedSize, setSelectedSize] = useState<number>(0);
+   const [selectedSizeId, setSelectedSizeId] = useState<number>(0);
    const [count, setCount] = useState<number>(1);
+   const [buyButtonText, setBuyButtonText] = useState<BuyButtonTextEnum>(
+      BuyButtonTextEnum.BUY,
+   );
    useEffect(() => {
       if (id) getShoesById(+id).then((shoes) => setCurrentShoes(shoes));
    }, []);
-   const handleClickSizeButton = (size: number) => {
-      if (size !== selectedSize) {
-         setSelectedSize(size);
+
+   const handleClickSizeButton = (sizeId: number) => {
+      setBuyButtonText(BuyButtonTextEnum.BUY);
+      if (sizeId !== selectedSizeId) {
+         setSelectedSizeId(sizeId);
       }
    };
 
@@ -34,6 +49,54 @@ export const ShoesPage: React.FC = () => {
    const handleClickDecrementCount = () => {
       if (count > 1) {
          setCount((prev) => prev - 1);
+      }
+   };
+
+   const handleClickBuyButton = () => {
+      if (currentShoes && selectedSizeId) {
+         if (isAuth) {
+            dispatch(addShoesToBasket(currentShoes.id, selectedSizeId, count));
+         } else {
+            const {
+               id,
+               model,
+               price,
+               rating,
+               img,
+               typeId,
+               colorId,
+               seasonId,
+               brandId,
+               sex,
+               shoes_sizes,
+            } = currentShoes;
+            dispatch(
+               addShoesToBasketNotAuth({
+                  id: uuidv4(),
+                  count,
+                  sho: {
+                     id,
+                     model,
+                     price,
+                     rating,
+                     img,
+                     typeId,
+                     colorId,
+                     seasonId,
+                     brandId,
+                     sex,
+                  },
+                  size: {
+                     id: selectedSizeId + '',
+                     size: shoes_sizes.find(
+                        (el) => el.sizeId === selectedSizeId,
+                     )!.size.size,
+                  },
+               }),
+            );
+         }
+      } else {
+         setBuyButtonText(BuyButtonTextEnum.SIZE_ERROR);
       }
    };
    return (
@@ -60,11 +123,11 @@ export const ShoesPage: React.FC = () => {
                            key={sizeId}
                            buttonText={size.size}
                            buttonClass={
-                              +size.size === selectedSize
+                              +size.id === selectedSizeId
                                  ? ButtonClassEnum.ACTIVE_SIZE_BUTTON
                                  : ButtonClassEnum.SIZE_BUTTON
                            }
-                           buttonClick={() => handleClickSizeButton(+size.size)}
+                           buttonClick={() => handleClickSizeButton(+size.id)}
                         />
                      ))}
                   </div>
@@ -85,8 +148,13 @@ export const ShoesPage: React.FC = () => {
                      </div>
                      <div className='shoes-page__buy-button'>
                         <Button
-                           buttonText='Купити'
-                           buttonClass={ButtonClassEnum.PROFILE}
+                           buttonText={buyButtonText}
+                           buttonClass={
+                              buyButtonText === BuyButtonTextEnum.BUY
+                                 ? ButtonClassEnum.BUY
+                                 : ButtonClassEnum.DELETE
+                           }
+                           buttonClick={handleClickBuyButton}
                         />
                      </div>
                   </div>

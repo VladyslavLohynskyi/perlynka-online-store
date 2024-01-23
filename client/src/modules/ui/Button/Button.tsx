@@ -10,6 +10,7 @@ export const Button: React.FC<ButtonPropsType> = ({
    children,
    width,
    disabled,
+   ...props
 }) => {
    return (
       <button
@@ -19,6 +20,7 @@ export const Button: React.FC<ButtonPropsType> = ({
          onClick={buttonClick}
          style={{ width }}
          disabled={disabled}
+         {...props}
       >
          <span>{buttonText}</span>
          {children && <div className='button__icon'>{children}</div>}

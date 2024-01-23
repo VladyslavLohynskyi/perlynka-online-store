@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import {
    loginUser,
    registrationUser,
@@ -9,19 +9,28 @@ import { RoutesEnum } from '../../utils/constants';
 import './Auth.scss';
 import { Button } from '../ui/Button';
 import { ButtonClassEnum } from '../ui/Button/ButtonType';
+import { synchronizeBaskets } from '../../store/reducers/basket/BasketActionCreators';
 const Auth = () => {
    const dispatch = useAppDispatch();
    const location = useLocation();
    const navigate = useNavigate();
    const isLogin = location.pathname === RoutesEnum.LOGIN;
+   const { basket } = useAppSelector((state) => state.basketReducer);
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
-   const handleClickSubmitAuth = (e: React.FormEvent<HTMLFormElement>) => {
+   const handleClickSubmitAuth = async (
+      e: React.FormEvent<HTMLFormElement>,
+   ) => {
       e.preventDefault();
       if (isLogin) {
-         return dispatch(loginUser({ email, password }));
+         await dispatch(loginUser({ email, password }));
+         const shoes = basket.map(({ sho, size, count }) => {
+            return { shoId: sho.id, sizeId: +size.id, count };
+         });
+         await dispatch(synchronizeBaskets(shoes));
+      } else {
+         await dispatch(registrationUser({ email, password }));
       }
-      return dispatch(registrationUser({ email, password }));
    };
 
    const handleClickChangeAuth = () => {

@@ -10,8 +10,10 @@ export enum ButtonClassEnum {
    SIZE_BUTTON = 'size',
    ACTIVE_SIZE_BUTTON = 'active-size',
    LINK = 'link',
+   BUY = 'buy',
 }
-export interface ButtonPropsType {
+export interface ButtonPropsType
+   extends React.HTMLAttributes<HTMLButtonElement> {
    buttonClass: ButtonClassEnum;
    buttonText?: string;
    buttonClick?: () => void;

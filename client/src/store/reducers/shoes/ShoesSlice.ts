@@ -28,8 +28,11 @@ export interface IShoes {
    colorId: number;
    seasonId: number;
    brandId: number;
-   shoes_sizes: ISize[];
    sex: SexEnum;
+}
+
+export interface IShoesWithSizes extends IShoes {
+   shoes_sizes: ISize[];
 }
 export interface IShoesState {
    types: IBasicCategory[] | null;
@@ -37,7 +40,7 @@ export interface IShoesState {
    colors: IBasicCategory[] | null;
    seasons: IBasicCategory[] | null;
    sizes: ISizeCategory[] | null;
-   shoes: IShoes[];
+   shoes: IShoesWithSizes[];
    countOfShoesModels: number;
    isLoading: boolean;
    error: string;
@@ -88,7 +91,7 @@ export const shoesSlice = createSlice({
 
       shoesCreateSuccess(
          state,
-         action: PayloadAction<{ count: number; rows: IShoes[] }>,
+         action: PayloadAction<{ count: number; rows: IShoesWithSizes[] }>,
       ) {
          state.isLoading = false;
          state.error = '';
@@ -98,7 +101,7 @@ export const shoesSlice = createSlice({
 
       shoesUpdateSuccess(
          state,
-         action: PayloadAction<{ count: number; rows: IShoes[] }>,
+         action: PayloadAction<{ count: number; rows: IShoesWithSizes[] }>,
       ) {
          state.isLoading = false;
          state.error = '';
@@ -257,7 +260,7 @@ export const shoesSlice = createSlice({
 
       shoesGetAll(
          state,
-         action: PayloadAction<{ count: number; rows: IShoes[] }>,
+         action: PayloadAction<{ count: number; rows: IShoesWithSizes[] }>,
       ) {
          state.isLoading = false;
          state.shoes = action.payload.rows;

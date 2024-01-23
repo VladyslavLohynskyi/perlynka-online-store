@@ -5,8 +5,8 @@ import { ModalHeader } from '../../components/ModalHeader';
 import { ModalInput } from '../../components/ModalInput';
 import { getShoesById } from '../../../../../../http/shoes';
 import {
-   IShoes,
    ISize,
+   IShoesWithSizes,
    SexEnum,
 } from '../../../../../../store/reducers/shoes/ShoesSlice';
 import { baseURL } from '../../../../../../utils/constants';
@@ -35,7 +35,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
    const dispatch = useAppDispatch();
    const [id, setId] = useState<number>(0);
    const [error, setError] = useState('');
-   const [foundShoes, setFoundShoes] = useState<null | IShoes>(null);
+   const [foundShoes, setFoundShoes] = useState<null | IShoesWithSizes>(null);
    const [model, setModel] = useState('');
    const [price, setPrice] = useState(0);
    const [brand, setBrand] = useState(0);
@@ -88,7 +88,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
       if (e.target.files) setFile(e.target.files[0]);
    };
 
-   const handleSubmitUpdate = (shoes: IShoes) => {
+   const handleSubmitUpdate = (shoes: IShoesWithSizes) => {
       const formData = new FormData();
 
       formData.append('id', String(id));
