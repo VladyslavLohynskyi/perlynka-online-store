@@ -10,7 +10,10 @@ import { Modal } from '../../modal/pages';
 import { HeaderDropdown } from '../../modal/components/HeaderDropdown';
 import { SexEnum } from '../../../store/reducers/shoes/ShoesSlice';
 import { sexFilter } from '../../../store/reducers/filter/FilterActionCreators';
-import { getTotalCountOfShoesInBasket } from '../../../store/reducers/basket/BasketActionCreators';
+import {
+   getTotalCountOfShoesInBasket,
+   getTotalCountOfShoesInBasketNotAuth,
+} from '../../../store/reducers/basket/BasketActionCreators';
 
 export const Header: React.FC = () => {
    const { isAuth } = useAppSelector((state) => state.userReducer);
@@ -22,7 +25,11 @@ export const Header: React.FC = () => {
    const navigate = useNavigate();
 
    useEffect(() => {
-      dispatch(getTotalCountOfShoesInBasket());
+      if (isAuth) {
+         dispatch(getTotalCountOfShoesInBasket());
+      } else {
+         dispatch(getTotalCountOfShoesInBasketNotAuth());
+      }
    }, []);
 
    const handleClickUserIcon = () => {

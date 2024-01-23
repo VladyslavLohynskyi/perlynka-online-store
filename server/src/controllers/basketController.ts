@@ -7,12 +7,10 @@ import Shoes from '../models/shoesModel';
 import Size from '../models/sizeModel';
 import { Sequelize } from 'sequelize';
 
-interface addToBasketRequest extends Request {
-   body: {
-      shoId: number;
-      sizeId: number;
-      count: number;
-   };
+interface IAddShoes {
+   shoId: number;
+   sizeId: number;
+   count: number;
 }
 
 interface IUser {
@@ -26,42 +24,13 @@ interface IChangeCountRequest extends Request {
       basketShoesId: number;
    };
 }
-class BasketController {
-   async addToBasket(req: addToBasketRequest, res: Response) {
-      try {
-         const { shoId, sizeId, count } = req.body;
-         const token = req.header('authorization')!.split(' ')[1];
-         const user = jwt.verify(token, process.env.SECRET_KEY) as IUser;
-         const basket = await Basket.findOne({ where: { userId: user.id } });
 
-         const existShoes = await BasketShoes.findOne({
-            where: { basketId: basket!.id, shoId, sizeId },
-         });
-         if (!existShoes) {
-            await BasketShoes.create({
-               basketId: basket!.id,
-               shoId,
-               count,
-               sizeId,
-            });
-            return res.json({ message: 'Shoes added to basket' });
-         } else {
-            await BasketShoes.increment(
-               { count },
-               {
-                  where: {
-                     basketId: basket!.id,
-                     shoId,
-                     sizeId,
-                  },
-               },
-            );
-            return res.json({ message: 'Shoes added to basket' });
-         }
-      } catch (error) {
-         console.log(error);
-      }
-   }
+interface IAddALotOfShoesToBasketRequest extends Request {
+   body: {
+      shoes: string;
+   };
+}
+class BasketController {
    async getBasket(req: Request, res: Response) {
       try {
          const token = req.header('authorization')!.split(' ')[1];
@@ -160,6 +129,47 @@ class BasketController {
          where: { basketId: basket!.id },
       });
       return res.json(totalCount);
+   }
+
+   async addToBasket(req: IAddALotOfShoesToBasketRequest, res: Response) {
+      try {
+         const { shoes } = req.body;
+         const token = req.header('authorization')!.split(' ')[1];
+         const user = jwt.verify(token, process.env.SECRET_KEY) as IUser;
+         const parsedShoes = JSON.parse(shoes) as IAddShoes[];
+         const basket = await Basket.findOne({
+            where: { userId: user.id },
+         });
+
+         parsedShoes.forEach(async ({ shoId, sizeId, count }) => {
+            const existShoes = await BasketShoes.findOne({
+               where: { basketId: basket!.id, shoId, sizeId },
+            });
+            if (!existShoes) {
+               await BasketShoes.create({
+                  basketId: basket!.id,
+                  shoId,
+                  count,
+                  sizeId,
+               });
+            } else {
+               await BasketShoes.increment(
+                  { count },
+                  {
+                     where: {
+                        basketId: basket!.id,
+                        shoId,
+                        sizeId,
+                     },
+                  },
+               );
+            }
+         });
+
+         return res.json({ message: 'Shoes added to basket' });
+      } catch (error) {
+         console.log(error);
+      }
    }
 }
 
