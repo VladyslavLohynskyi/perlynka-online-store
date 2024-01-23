@@ -22,7 +22,7 @@ export interface IShoes {
    id: number;
    model: string;
    price: number;
-   rating: number;
+   rating: number | null;
    img: string;
    typeId: number;
    colorId: number;
@@ -33,6 +33,7 @@ export interface IShoes {
 
 export interface IShoesWithSizes extends IShoes {
    shoes_sizes: ISize[];
+   count_ratings: string;
 }
 export interface IShoesState {
    types: IBasicCategory[] | null;

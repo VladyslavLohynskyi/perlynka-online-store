@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 import { Request, Response } from 'express';
 import { IUser } from './basketController';
 import Shoes from '../models/shoesModel';
+import { Sequelize } from 'sequelize';
 const { Rating } = require('../models/models');
 
 interface IAddRatingToShoesRequest extends Request {
@@ -35,6 +36,26 @@ class RatingController {
          return res.json({ message: 'New rating added' });
       } catch (error) {
          console.log('adding error', error);
+      }
+   }
+
+   async getAvgRating(req: Request, res: Response) {
+      try {
+         const { id } = req.params;
+         const shoes = await Shoes.findOne({ where: { id } });
+         if (!shoes) {
+            return res.json({ message: 'Error shoes not exist' });
+         }
+         const avgRating = await Rating.findOne({
+            where: { shoId: id },
+            attributes: [
+               [Sequelize.fn('AVG', Sequelize.col('rate')), 'avg_rating'],
+               [Sequelize.fn('Count', Sequelize.col('rate')), 'count_ratings'],
+            ],
+         });
+         return res.json(avgRating);
+      } catch (error) {
+         console.log('get error AVG', error);
       }
    }
 }

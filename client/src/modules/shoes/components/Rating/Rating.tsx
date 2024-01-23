@@ -8,11 +8,12 @@ import { Button } from '../../../ui/Button';
 import { ButtonClassEnum } from '../../../ui/Button/ButtonType';
 import { useNavigate } from 'react-router-dom';
 import { RoutesEnum } from '../../../../utils/constants';
+import { IRatingType } from './RatingType';
 
-export const Rating: React.FC = () => {
+export const Rating: React.FC<IRatingType> = ({ avgRating, countRatings }) => {
    const { isAuth } = useAppSelector((state) => state.userReducer);
    const navigate = useNavigate();
-   const [rating, setRating] = useState(0);
+   const [rating, setRating] = useState(avgRating || 0);
    const [hover, setHover] = useState(0);
    const handleClickStar = (index: number) => {
       if (isAuth) {
@@ -64,7 +65,10 @@ export const Rating: React.FC = () => {
                   );
                })}
             </div>
-            <p className='rating__reviews'>Відгуків: 0</p>
+            <p className='rating__reviews'>
+               Оцінка: {(Math.round(rating * 10) / 10).toFixed(1)} (
+               {countRatings})
+            </p>
          </div>{' '}
       </>
    );

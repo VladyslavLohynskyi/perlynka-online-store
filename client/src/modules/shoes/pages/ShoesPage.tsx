@@ -114,7 +114,7 @@ export const ShoesPage: React.FC = () => {
                      ID товару: #{currentShoes.id}
                   </p>
                   <p className='shoes-page__model-price'>
-                     Ціна: {currentShoes.price}грн
+                     Ціна: {currentShoes.price} грн.
                   </p>
                   <p className='shoes-page__model-size'>Розмір взуття:</p>
                   <div className='shoes-page__sizes-buttons'>
@@ -159,7 +159,10 @@ export const ShoesPage: React.FC = () => {
                      </div>
                   </div>
                   <HorizontalLine />
-                  <Rating />
+                  <Rating
+                     avgRating={currentShoes.rating}
+                     countRatings={+currentShoes.count_ratings}
+                  />
                </div>
             </div>
          )}

@@ -4,3 +4,4 @@ import ratingController from '../controllers/ratingController';
 
 export const ratingRouter = Router();
 ratingRouter.post('/', authMiddleware, ratingController.addRating);
+ratingRouter.get('/:id', ratingController.getAvgRating);

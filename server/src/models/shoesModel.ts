@@ -6,7 +6,6 @@ interface shoesAttributes {
    id: number;
    model: string;
    price: number;
-   rating: number;
    img: string;
    typeId: number;
    colorId: number;
@@ -28,7 +27,6 @@ const Shoes = sequelize.define<shoesInstance>('shoes', {
    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
    model: { type: DataTypes.STRING, unique: true, allowNull: false },
    price: { type: DataTypes.INTEGER, allowNull: false },
-   rating: { type: DataTypes.INTEGER, defaultValue: 0 },
    img: { type: DataTypes.STRING, allowNull: false },
    typeId: { allowNull: false, type: DataTypes.INTEGER },
    seasonId: { allowNull: false, type: DataTypes.INTEGER },
