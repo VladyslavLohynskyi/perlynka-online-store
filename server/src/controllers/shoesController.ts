@@ -5,10 +5,10 @@ import { promises } from 'fs';
 import { Request, Response } from 'express';
 import ShoesSize from '../models/shoesSizeModel';
 
-import { Model, Op } from 'sequelize';
-import { sequelize } from '../db';
+import { Op, Sequelize } from 'sequelize';
+
 import Brand from '../models/brandModel';
-import { type } from 'os';
+
 import Type from '../models/typeModel';
 import Season from '../models/seasonModel';
 import Color from '../models/colorModel';
@@ -91,7 +91,6 @@ class shoesController {
          const shoes = await Shoes.create({
             model,
             price,
-            rating: 0,
             brandId,
             typeId,
             colorId,
@@ -151,10 +150,12 @@ class shoesController {
                sex: { [Op.or]: sexFilter() },
             },
             order: [[sortBySplit[0], sortBySplit[1]]],
-            include: {
-               model: ShoesSize,
-               where: { sizeId: { [Op.or]: [...sizesIdsParsed] } },
-            },
+            include: [
+               {
+                  model: ShoesSize,
+                  where: { sizeId: { [Op.or]: [...sizesIdsParsed] } },
+               },
+            ],
             distinct: true,
             limit: +limit,
             offset: +offset,

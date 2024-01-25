@@ -1,5 +1,3 @@
-import { sequelize } from '../db';
-import { DataTypes } from 'sequelize';
 import User from './userModel';
 import Basket from './basketModel';
 import Type from './typeModel';
@@ -10,11 +8,7 @@ import Size from './sizeModel';
 import ShoesSize from './shoesSizeModel';
 import Shoes from './shoesModel';
 import BasketShoes from './basketShoesModel';
-
-const Rating = sequelize.define('rating', {
-   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-   rate: { type: DataTypes.INTEGER, allowNull: false },
-});
+import Rating from './ratingModel';
 
 User.hasOne(Basket);
 Basket.belongsTo(User);

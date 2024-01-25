@@ -1,6 +1,6 @@
 import { $authHost } from '.';
 import { IBasketItem } from '../store/reducers/basket/BasketSlice';
-interface IBasicResponse {
+export interface IBasicResponse {
    message: string;
 }
 interface ITotalCountRes {

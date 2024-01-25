@@ -22,7 +22,6 @@ export interface IShoes {
    id: number;
    model: string;
    price: number;
-   rating: number;
    img: string;
    typeId: number;
    colorId: number;
