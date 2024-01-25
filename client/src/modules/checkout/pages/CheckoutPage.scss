@@ -1,0 +1,32 @@
+.checkout {
+   display: flex;
+   padding: 20px;
+   justify-content: center;
+   &__main {
+      display: flex;
+      flex-direction: column;
+
+      max-width: 1000px;
+      min-width: 620px;
+   }
+   &__page-header {
+      font-size: 24px;
+      margin-bottom: 25px;
+      margin-top: 15px;
+   }
+   &__names-columns-container {
+      margin: 5px;
+      width: 100%;
+      display: grid;
+      border: 1px solid gray;
+      grid-template-columns:
+         100px minmax(200px, 350px) minmax(200px, 250px)
+         minmax(50px, 150px) minmax(50px, 150px);
+
+      & div {
+         font-size: 12px;
+         font-weight: 500;
+         padding: 8px;
+      }
+   }
+}
