@@ -36,4 +36,20 @@
       color: rgb(105, 104, 104);
       margin-top: 100px;
    }
+
+   &__info {
+      padding: 8px 5px;
+      display: grid;
+      grid-template-columns: auto minmax(50px, 150px);
+      justify-content: end;
+      border-left: 1px solid gray;
+      border-right: 1px solid gray;
+      border-bottom: 1px solid gray;
+      &__header {
+         font-weight: 500;
+      }
+      &__text {
+         padding-left: 10px;
+      }
+   }
 }

@@ -16,7 +16,6 @@ export const CheckoutPage: React.FC = () => {
       (state) => state.basketReducer,
    );
    const [totalPrice, setTotalPrice] = useState<number>(0);
-
    useEffect(() => {
       let price = 0;
       basket.forEach((el) => {
@@ -53,6 +52,22 @@ export const CheckoutPage: React.FC = () => {
                         size={size}
                      />
                   ))}
+                  <div className='checkout__info'>
+                     <p className='checkout__info__header'>
+                        Доставка у відділення Нової Пошти:
+                     </p>
+                     <p className='checkout__info__text'>80 грн.</p>
+                  </div>
+                  <div className='checkout__info'>
+                     <p className='checkout__info__header'>Разом:</p>
+                     <p className='checkout__info__text'>{totalPrice} грн.</p>
+                  </div>
+                  <div className='checkout__info'>
+                     <p className='checkout__info__header'>Всього:</p>
+                     <p className='checkout__info__text'>
+                        {totalPrice + 80} грн.
+                     </p>
+                  </div>
                </>
             ) : (
                <p className='checkout__empty-text'>Ваша Корзина Порожня</p>
