@@ -5,9 +5,10 @@ import {
    getAllShoesOfBasket,
    getAllShoesOfBasketNotAuth,
 } from '../../../store/reducers/basket/BasketActionCreators';
-import { Button } from '../../ui/Button';
-import { ButtonClassEnum } from '../../ui/Button/ButtonType';
 import { CheckoutItem } from '../components/CheckoutItem';
+import { BasicInput } from '../../ui/BasicInput';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 export const CheckoutPage: React.FC = () => {
    const dispatch = useAppDispatch();
@@ -15,6 +16,11 @@ export const CheckoutPage: React.FC = () => {
    const { basket, totalCountOfShoesInBasket } = useAppSelector(
       (state) => state.basketReducer,
    );
+
+   const [email, setEmail] = useState<string>();
+   const [phone, setPhone] = useState<string>();
+   const [name, setName] = useState<string>();
+   const [surname, setSurname] = useState<string>();
    const [totalPrice, setTotalPrice] = useState<number>(0);
    useEffect(() => {
       let price = 0;
@@ -68,6 +74,69 @@ export const CheckoutPage: React.FC = () => {
                         {totalPrice + 80} грн.
                      </p>
                   </div>
+                  <form className='checkout__order-info'>
+                     <div className='checkout__customer-info__container'>
+                        <div className='checkout__customer-info__header'>
+                           <p>Покупець</p>
+                        </div>
+                        <div className='checkout__customer-info__input-container'>
+                           <label>
+                              <span>Email</span>
+                              <BasicInput
+                                 type='email'
+                                 value={email}
+                                 onChange={(e) => setEmail(e.target.value)}
+                                 required={true}
+                              />
+                           </label>
+                        </div>
+
+                        <div className='checkout__customer-info__input-container'>
+                           <label>
+                              <span>Ім'я</span>
+                              <BasicInput
+                                 type='text'
+                                 value={name}
+                                 onChange={(e) => setName(e.target.value)}
+                                 required={true}
+                              />
+                           </label>
+                        </div>
+
+                        <div className='checkout__customer-info__input-container'>
+                           <label>
+                              <span>Прізвище</span>
+                              <BasicInput
+                                 type='text'
+                                 value={surname}
+                                 onChange={(e) => setSurname(e.target.value)}
+                                 required={true}
+                              />
+                           </label>
+                        </div>
+                        <div className='checkout__customer-info__input-container'>
+                           <label>
+                              <span>Телефон</span>
+                              <PhoneInput
+                                 country={'ua'}
+                                 onlyCountries={['ua']}
+                                 inputClass='basic-input'
+                                 inputStyle={{ width: '100%' }}
+                                 disableDropdown={true}
+                                 countryCodeEditable={false}
+                                 inputProps={{
+                                    name: 'phone',
+                                    required: true,
+                                 }}
+                                 value={phone}
+                                 onChange={(e) => {
+                                    setPhone(e);
+                                 }}
+                              />
+                           </label>
+                        </div>
+                     </div>
+                  </form>
                </>
             ) : (
                <p className='checkout__empty-text'>Ваша Корзина Порожня</p>

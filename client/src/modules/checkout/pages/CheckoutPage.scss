@@ -52,4 +52,35 @@
          padding-left: 10px;
       }
    }
+
+   &__order-info {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+   }
+
+   &__customer-info {
+      &__container {
+         width: 100%;
+      }
+
+      &__header {
+         background-color: #f5f5f5;
+         border-bottom: 1px solid gray;
+         padding: 10px 15px;
+      }
+
+      &__input-container {
+         margin-top: 10px;
+         & label {
+            padding: 5px;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            & span {
+               cursor: pointer;
+               align-self: center;
+            }
+         }
+      }
+   }
 }
