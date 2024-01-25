@@ -1,6 +1,7 @@
 .checkout {
    display: flex;
    padding: 20px;
+
    justify-content: center;
    &__main {
       display: flex;
@@ -15,7 +16,6 @@
       margin-top: 15px;
    }
    &__names-columns-container {
-      margin: 5px;
       width: 100%;
       display: grid;
       border: 1px solid gray;
@@ -28,5 +28,12 @@
          font-weight: 500;
          padding: 8px;
       }
+   }
+   &__empty-text {
+      align-self: center;
+      justify-self: center;
+      font-size: 36px;
+      color: rgb(105, 104, 104);
+      margin-top: 100px;
    }
 }
