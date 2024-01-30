@@ -1,6 +1,9 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { baseURL } from '../utils/constants';
 
+const $novaPostApi = axios.create({
+   baseURL: 'https://api.novaposhta.ua/v2.0/json/',
+});
 const $host = axios.create({
    baseURL: baseURL + 'api/',
 });
@@ -22,4 +25,4 @@ const authInterceptor = (config: AxiosRequestConfig) => {
 
 $authHost.interceptors.request.use(authInterceptor);
 
-export { $host, $authHost };
+export { $host, $authHost, $novaPostApi };

@@ -9,6 +9,7 @@ import { CheckoutItem } from '../components/CheckoutItem';
 import { BasicInput } from '../../ui/BasicInput';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import novaPost, { IArea } from '../../../http/novaPost';
 
 export const CheckoutPage: React.FC = () => {
    const dispatch = useAppDispatch();
@@ -17,6 +18,8 @@ export const CheckoutPage: React.FC = () => {
       (state) => state.basketReducer,
    );
 
+   const [areaRef, setAreaRef] = useState<string>('');
+   const [areas, setAreas] = useState<IArea[]>();
    const [email, setEmail] = useState<string>();
    const [phone, setPhone] = useState<string>();
    const [name, setName] = useState<string>();
@@ -29,6 +32,9 @@ export const CheckoutPage: React.FC = () => {
       });
       setTotalPrice(price);
    }, [totalCountOfShoesInBasket, basket]);
+   useEffect(() => {
+      novaPost.getAreas().then((data) => setAreas(data));
+   }, []);
    useEffect(() => {
       if (isAuth) {
          dispatch(getAllShoesOfBasket());
@@ -48,7 +54,7 @@ export const CheckoutPage: React.FC = () => {
                <div>Разом</div>
             </div>
             {basket.length > 0 ? (
-               <>
+               <div>
                   {basket.map(({ id, sho, count, size }) => (
                      <CheckoutItem
                         key={id}
@@ -136,8 +142,53 @@ export const CheckoutPage: React.FC = () => {
                            </label>
                         </div>
                      </div>
+                     <div className='checkout__customer-info__container'>
+                        <div className='checkout__customer-info__header'>
+                           <p>Адреса доставки</p>
+                        </div>
+                        <div className='checkout__customer-info__input-container'>
+                           <label>
+                              <span>Область</span>
+                              <select
+                                 className='basic-input'
+                                 name='area'
+                                 onChange={(e) => setAreaRef(e.target.value)}
+                                 value={areaRef}
+                              >
+                                 <option value={''} hidden disabled>
+                                    Оберіть
+                                 </option>
+                                 {areas?.map((el) => (
+                                    <option key={el.Ref} value={el.Ref}>
+                                       {el.Description} {el.RegionType}
+                                    </option>
+                                 ))}
+                              </select>
+                           </label>
+                        </div>
+                        <div className='checkout__customer-info__input-container'>
+                           <label>
+                              <span>Місто</span>
+                              <select
+                                 className='basic-input'
+                                 name='area'
+                                 onChange={(e) => setAreaRef(e.target.value)}
+                                 value={areaRef}
+                              >
+                                 <option value={''} hidden disabled>
+                                    Оберіть
+                                 </option>
+                                 {areas?.map((el) => (
+                                    <option key={el.Ref} value={el.Ref}>
+                                       {el.Description} {el.RegionType}
+                                    </option>
+                                 ))}
+                              </select>
+                           </label>
+                        </div>
+                     </div>
                   </form>
-               </>
+               </div>
             ) : (
                <p className='checkout__empty-text'>Ваша Корзина Порожня</p>
             )}
