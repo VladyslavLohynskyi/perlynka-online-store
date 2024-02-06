@@ -10,7 +10,8 @@ import { BasicInput } from '../../ui/BasicInput';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import novaPost, { IArea } from '../../../http/novaPost';
-
+import Select from 'react-select';
+import ReactSelectAsync from 'react-select/async';
 export const CheckoutPage: React.FC = () => {
    const dispatch = useAppDispatch();
    const { isAuth } = useAppSelector((state) => state.userReducer);
@@ -25,6 +26,7 @@ export const CheckoutPage: React.FC = () => {
    const [name, setName] = useState<string>();
    const [surname, setSurname] = useState<string>();
    const [totalPrice, setTotalPrice] = useState<number>(0);
+   const [city, setCity] = useState<string>('');
    useEffect(() => {
       let price = 0;
       basket.forEach((el) => {
@@ -42,6 +44,18 @@ export const CheckoutPage: React.FC = () => {
          dispatch(getAllShoesOfBasketNotAuth());
       }
    }, []);
+
+   const promiseCityOptions = async (inputValue: string) => {
+      return novaPost.getCities(areaRef, inputValue).then((data) => {
+         return data.map((el) => {
+            return {
+               value: el.Description,
+               label: el.Description + ' ' + el.RegionsDescription,
+            };
+         });
+      });
+   };
+
    return (
       <div className='checkout'>
          <div className='checkout__main'>
@@ -149,41 +163,37 @@ export const CheckoutPage: React.FC = () => {
                         <div className='checkout__customer-info__input-container'>
                            <label>
                               <span>Область</span>
-                              <select
-                                 className='basic-input'
+                              <Select
                                  name='area'
-                                 onChange={(e) => setAreaRef(e.target.value)}
-                                 value={areaRef}
-                              >
-                                 <option value={''} hidden disabled>
-                                    Оберіть
-                                 </option>
-                                 {areas?.map((el) => (
-                                    <option key={el.Ref} value={el.Ref}>
-                                       {el.Description} {el.RegionType}
-                                    </option>
-                                 ))}
-                              </select>
+                                 onChange={(e) => setAreaRef(e!.value)}
+                                 placeholder=''
+                                 options={areas?.map((el) => {
+                                    return {
+                                       value: el.Ref,
+                                       label:
+                                          el.Description + ' ' + el.RegionType,
+                                    };
+                                 })}
+                              />
                            </label>
                         </div>
                         <div className='checkout__customer-info__input-container'>
                            <label>
                               <span>Місто</span>
-                              <select
-                                 className='basic-input'
-                                 name='area'
-                                 onChange={(e) => setAreaRef(e.target.value)}
-                                 value={areaRef}
-                              >
-                                 <option value={''} hidden disabled>
-                                    Оберіть
-                                 </option>
-                                 {areas?.map((el) => (
-                                    <option key={el.Ref} value={el.Ref}>
-                                       {el.Description} {el.RegionType}
-                                    </option>
-                                 ))}
-                              </select>
+                              {areaRef.length <= 0 ? (
+                                 <Select
+                                    isDisabled={areaRef.length <= 0}
+                                    placeholder=''
+                                 />
+                              ) : (
+                                 <ReactSelectAsync
+                                    cacheOptions
+                                    defaultOptions
+                                    onChange={(e) => setCity(e!.value)}
+                                    placeholder='Введіть назву населеного пункту'
+                                    loadOptions={promiseCityOptions}
+                                 />
+                              )}
                            </label>
                         </div>
                      </div>
