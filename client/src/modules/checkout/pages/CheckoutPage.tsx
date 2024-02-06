@@ -20,13 +20,16 @@ export const CheckoutPage: React.FC = () => {
    );
 
    const [areaRef, setAreaRef] = useState<string>('');
+   const [areaName, setAreaName] = useState<string>('');
    const [areas, setAreas] = useState<IArea[]>();
    const [email, setEmail] = useState<string>();
    const [phone, setPhone] = useState<string>();
    const [name, setName] = useState<string>();
    const [surname, setSurname] = useState<string>();
    const [totalPrice, setTotalPrice] = useState<number>(0);
-   const [city, setCity] = useState<string>('');
+   const [settlementRef, setSettlementRef] = useState<string>('');
+   const [settlementName, setSettlementName] = useState<string>('');
+   const [warehouseRef, setWarehouseRef] = useState<string>('');
    useEffect(() => {
       let price = 0;
       basket.forEach((el) => {
@@ -46,11 +49,22 @@ export const CheckoutPage: React.FC = () => {
    }, []);
 
    const promiseCityOptions = async (inputValue: string) => {
-      return novaPost.getCities(areaRef, inputValue).then((data) => {
+      return novaPost.getSettlements(areaRef, inputValue).then((data) => {
+         return data.map((el) => {
+            return {
+               value: el.Ref,
+               label: el.Description + ' ' + el.RegionsDescription,
+            };
+         });
+      });
+   };
+
+   const promiseWarehouseOptions = async (inputValue: string) => {
+      return novaPost.getWarehouses(settlementRef, inputValue).then((data) => {
          return data.map((el) => {
             return {
                value: el.Description,
-               label: el.Description + ' ' + el.RegionsDescription,
+               label: el.Description,
             };
          });
       });
@@ -165,7 +179,9 @@ export const CheckoutPage: React.FC = () => {
                               <span>Область</span>
                               <Select
                                  name='area'
-                                 onChange={(e) => setAreaRef(e!.value)}
+                                 onChange={(e) => {
+                                    setAreaRef(e!.value);
+                                 }}
                                  placeholder=''
                                  options={areas?.map((el) => {
                                     return {
@@ -189,9 +205,28 @@ export const CheckoutPage: React.FC = () => {
                                  <ReactSelectAsync
                                     cacheOptions
                                     defaultOptions
-                                    onChange={(e) => setCity(e!.value)}
+                                    onChange={(e) => setSettlementRef(e!.value)}
                                     placeholder='Введіть назву населеного пункту'
                                     loadOptions={promiseCityOptions}
+                                 />
+                              )}
+                           </label>
+                        </div>
+                        <div className='checkout__customer-info__input-container'>
+                           <label>
+                              <span>Відділення</span>
+                              {settlementRef.length <= 0 ? (
+                                 <Select
+                                    isDisabled={settlementRef.length <= 0}
+                                    placeholder=''
+                                 />
+                              ) : (
+                                 <ReactSelectAsync
+                                    cacheOptions
+                                    defaultOptions
+                                    onChange={(e) => setWarehouseRef(e!.value)}
+                                    placeholder='Введіть номер відділення'
+                                    loadOptions={promiseWarehouseOptions}
                                  />
                               )}
                            </label>

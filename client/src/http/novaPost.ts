@@ -6,7 +6,7 @@ export interface IArea {
    AreaCenter: string;
 }
 
-export interface ICity {
+export interface ISettlement {
    Ref: string;
    SettlementType: string;
    Latitude: string;
@@ -26,19 +26,31 @@ class NovaPostReq {
       });
       return data.data as IArea[];
    };
-   getCities = async (areaRef: string, cityName: string) => {
-      console.log(areaRef, cityName);
+   getSettlements = async (areaRef: string, settlementName: string) => {
       const { data } = await $novaPostApi.post('', {
          modelName: 'Address',
          calledMethod: 'getSettlements',
          methodProperties: {
             AreaRef: areaRef,
             Warehouse: '1',
-            FindByString: cityName,
+            FindByString: settlementName,
          },
       });
 
-      return data.data as ICity[];
+      return data.data as ISettlement[];
+   };
+
+   getWarehouses = async (settlementRef: string, warehouse: string) => {
+      const { data } = await $novaPostApi.post('', {
+         modelName: 'Address',
+         calledMethod: 'getWarehouses',
+         methodProperties: {
+            SettlementRef: settlementRef,
+            WarehouseId: warehouse,
+         },
+      });
+
+      return data.data as ISettlement[];
    };
 }
 
