@@ -18,6 +18,18 @@ export interface ISettlement {
    Area: string;
    AreaDescription: string;
 }
+
+export interface IWarehouse {
+   Ref: string;
+   CityDescription: string;
+   CityRef: string;
+   Description: string;
+   SettlementAreaDescription: string;
+   SettlementDescription: string;
+   SettlementRef: string;
+   SettlementTypeDescription: string;
+   ShortAddress: string;
+}
 class NovaPostReq {
    getAreas = async () => {
       const { data } = await $novaPostApi.post('', {
@@ -49,8 +61,7 @@ class NovaPostReq {
             WarehouseId: warehouse,
          },
       });
-
-      return data.data as ISettlement[];
+      return data.data as IWarehouse[];
    };
 }
 

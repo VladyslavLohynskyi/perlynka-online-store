@@ -9,9 +9,11 @@ import { CheckoutItem } from '../components/CheckoutItem';
 import { BasicInput } from '../../ui/BasicInput';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-import novaPost, { IArea } from '../../../http/novaPost';
+import novaPost, { IArea, IWarehouse } from '../../../http/novaPost';
 import Select from 'react-select';
 import ReactSelectAsync from 'react-select/async';
+import { Button } from '../../ui/Button';
+import { ButtonClassEnum } from '../../ui/Button/ButtonType';
 export const CheckoutPage: React.FC = () => {
    const dispatch = useAppDispatch();
    const { isAuth } = useAppSelector((state) => state.userReducer);
@@ -20,7 +22,6 @@ export const CheckoutPage: React.FC = () => {
    );
 
    const [areaRef, setAreaRef] = useState<string>('');
-   const [areaName, setAreaName] = useState<string>('');
    const [areas, setAreas] = useState<IArea[]>();
    const [email, setEmail] = useState<string>();
    const [phone, setPhone] = useState<string>();
@@ -28,8 +29,7 @@ export const CheckoutPage: React.FC = () => {
    const [surname, setSurname] = useState<string>();
    const [totalPrice, setTotalPrice] = useState<number>(0);
    const [settlementRef, setSettlementRef] = useState<string>('');
-   const [settlementName, setSettlementName] = useState<string>('');
-   const [warehouseRef, setWarehouseRef] = useState<string>('');
+   const [warehouse, setWarehouse] = useState<IWarehouse>();
    useEffect(() => {
       let price = 0;
       basket.forEach((el) => {
@@ -65,6 +65,7 @@ export const CheckoutPage: React.FC = () => {
             return {
                value: el.Description,
                label: el.Description,
+               data: el,
             };
          });
       });
@@ -92,23 +93,12 @@ export const CheckoutPage: React.FC = () => {
                         size={size}
                      />
                   ))}
+
                   <div className='checkout__info'>
-                     <p className='checkout__info__header'>
-                        Доставка у відділення Нової Пошти:
-                     </p>
-                     <p className='checkout__info__text'>80 грн.</p>
-                  </div>
-                  <div className='checkout__info'>
-                     <p className='checkout__info__header'>Разом:</p>
+                     <p className='checkout__info__header'>Разом досплати:</p>
                      <p className='checkout__info__text'>{totalPrice} грн.</p>
                   </div>
-                  <div className='checkout__info'>
-                     <p className='checkout__info__header'>Всього:</p>
-                     <p className='checkout__info__text'>
-                        {totalPrice + 80} грн.
-                     </p>
-                  </div>
-                  <form className='checkout__order-info'>
+                  <form name='checkout' className='checkout__order-info'>
                      <div className='checkout__customer-info__container'>
                         <div className='checkout__customer-info__header'>
                            <p>Покупець</p>
@@ -117,6 +107,8 @@ export const CheckoutPage: React.FC = () => {
                            <label>
                               <span>Email</span>
                               <BasicInput
+                                 autoFocus={true}
+                                 name={'email'}
                                  type='email'
                                  value={email}
                                  onChange={(e) => setEmail(e.target.value)}
@@ -129,6 +121,7 @@ export const CheckoutPage: React.FC = () => {
                            <label>
                               <span>Ім'я</span>
                               <BasicInput
+                                 name={'name'}
                                  type='text'
                                  value={name}
                                  onChange={(e) => setName(e.target.value)}
@@ -141,6 +134,7 @@ export const CheckoutPage: React.FC = () => {
                            <label>
                               <span>Прізвище</span>
                               <BasicInput
+                                 name={'surname'}
                                  type='text'
                                  value={surname}
                                  onChange={(e) => setSurname(e.target.value)}
@@ -183,6 +177,7 @@ export const CheckoutPage: React.FC = () => {
                                     setAreaRef(e!.value);
                                  }}
                                  placeholder=''
+                                 required={true}
                                  options={areas?.map((el) => {
                                     return {
                                        value: el.Ref,
@@ -198,11 +193,14 @@ export const CheckoutPage: React.FC = () => {
                               <span>Місто</span>
                               {areaRef.length <= 0 ? (
                                  <Select
+                                    name={'settlement'}
                                     isDisabled={areaRef.length <= 0}
                                     placeholder=''
                                  />
                               ) : (
                                  <ReactSelectAsync
+                                    name={'settlement'}
+                                    required={true}
                                     cacheOptions
                                     defaultOptions
                                     onChange={(e) => setSettlementRef(e!.value)}
@@ -217,20 +215,30 @@ export const CheckoutPage: React.FC = () => {
                               <span>Відділення</span>
                               {settlementRef.length <= 0 ? (
                                  <Select
+                                    name={'warehouse'}
                                     isDisabled={settlementRef.length <= 0}
                                     placeholder=''
                                  />
                               ) : (
                                  <ReactSelectAsync
+                                    name={'warehouse'}
                                     cacheOptions
                                     defaultOptions
-                                    onChange={(e) => setWarehouseRef(e!.value)}
+                                    required={true}
+                                    onChange={(e) => {
+                                       setWarehouse(e!.data);
+                                    }}
                                     placeholder='Введіть номер відділення'
                                     loadOptions={promiseWarehouseOptions}
                                  />
                               )}
                            </label>
                         </div>
+                        <Button
+                           buttonClass={ButtonClassEnum.BUY}
+                           buttonText='Оформити замовлення'
+                           style={{ height: '35px' }}
+                        />
                      </div>
                   </form>
                </div>
