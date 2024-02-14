@@ -14,6 +14,7 @@ import Select from 'react-select';
 import ReactSelectAsync from 'react-select/async';
 import { Button } from '../../ui/Button';
 import { ButtonClassEnum } from '../../ui/Button/ButtonType';
+import CheckoutReq, { ICustomerInfo, IOrderInfo } from '../../../http/checkout';
 export const CheckoutPage: React.FC = () => {
    const dispatch = useAppDispatch();
    const { isAuth } = useAppSelector((state) => state.userReducer);
@@ -71,6 +72,20 @@ export const CheckoutPage: React.FC = () => {
       });
    };
 
+   const handleClickCheckoutBtn = async () => {
+      const customerInfo: ICustomerInfo = {
+         name: name!,
+         surname: surname!,
+         email: email!,
+         phone: phone!,
+         SettlementAreaDescription: warehouse!.SettlementAreaDescription,
+         SettlementDescription: warehouse!.SettlementDescription,
+         SettlementTypeDescription: warehouse!.SettlementTypeDescription,
+         Description: warehouse!.Description,
+      };
+      const orderInfo: IOrderInfo = { price: totalPrice };
+      await CheckoutReq.createCheckout(customerInfo, orderInfo);
+   };
    return (
       <div className='checkout'>
          <div className='checkout__main'>
@@ -237,6 +252,7 @@ export const CheckoutPage: React.FC = () => {
                         <Button
                            buttonClass={ButtonClassEnum.BUY}
                            buttonText='Оформити замовлення'
+                           buttonClick={handleClickCheckoutBtn}
                            style={{ height: '35px' }}
                         />
                      </div>

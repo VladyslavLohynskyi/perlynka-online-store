@@ -1,10 +1,19 @@
 import { Request, Response } from 'express';
-import mailService from '../services/mailService';
-
+import mailService, {
+   ICustomerInfo,
+   IOrderInfo,
+} from '../services/mailService';
+interface ICheckoutRequest extends Request {
+   body: {
+      customerInfo: ICustomerInfo;
+      orderInfo: IOrderInfo;
+   };
+}
 class CheckoutController {
-   async create(req: Request, res: Response) {
-      await mailService.sendMail();
-      return res.json();
+   async create(req: ICheckoutRequest, res: Response) {
+      const { customerInfo, orderInfo } = req.body;
+      await mailService.sendCheckout(customerInfo, orderInfo);
+      return res.json({ massage: 'Created Checkout' });
    }
 }
 
