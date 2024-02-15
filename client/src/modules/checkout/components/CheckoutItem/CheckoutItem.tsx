@@ -27,6 +27,11 @@ export const CheckoutItem: React.FC<CheckoutItemType> = ({
    const { brands, types, seasons } = useAppSelector(
       (state) => state.shoesReducer,
    );
+   const type = types?.find((type) => +type.id === shoes.typeId)?.name;
+   const brand = brands?.find((brand) => +brand.id === shoes.brandId)?.name;
+   const season = seasons?.find(
+      (season) => +season.id === shoes.seasonId,
+   )?.name;
    const navigate = useNavigate();
    const handleClickTrashButton = () => {
       if (isAuth) {
@@ -66,10 +71,7 @@ export const CheckoutItem: React.FC<CheckoutItemType> = ({
                className='checkout-item__main-info'
                onClick={() => navigate(RoutesEnum.SHOES + '/' + shoes.id)}
             >
-               {types?.find((type) => +type.id === shoes.typeId)?.name}{' '}
-               {brands?.find((brand) => +brand.id === shoes.brandId)?.name}{' '}
-               {shoes.model}{' '}
-               {seasons?.find((season) => +season.id === shoes.seasonId)?.name}
+               {type || ''} {brand || ''} {shoes.model} {season || ''}
             </p>
             <p className='checkout-item__size-text'>Розмір: {size.size} EU</p>
          </div>

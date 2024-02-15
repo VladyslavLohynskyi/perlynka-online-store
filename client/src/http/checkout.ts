@@ -11,8 +11,14 @@ export interface ICustomerInfo {
    SettlementDescription: string;
    SettlementTypeDescription: string;
 }
+export interface IBasketCheckoutItem {
+   modelId: number;
+   count: number;
+   size: string;
+}
 export interface IOrderInfo {
    price: number;
+   basket: IBasketCheckoutItem[];
 }
 class CheckoutReq {
    createCheckout = async (

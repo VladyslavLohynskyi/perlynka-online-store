@@ -16,7 +16,7 @@ interface shoesAttributes {
 
 interface shoesCreationAttributes extends Optional<shoesAttributes, 'id'> {}
 
-interface shoesInstance
+export interface shoesInstance
    extends Model<shoesAttributes, shoesCreationAttributes>,
       shoesAttributes {
    createdAt?: Date;

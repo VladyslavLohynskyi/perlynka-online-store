@@ -14,7 +14,13 @@ import Select from 'react-select';
 import ReactSelectAsync from 'react-select/async';
 import { Button } from '../../ui/Button';
 import { ButtonClassEnum } from '../../ui/Button/ButtonType';
-import CheckoutReq, { ICustomerInfo, IOrderInfo } from '../../../http/checkout';
+import CheckoutReq, {
+   IBasketCheckoutItem,
+   ICustomerInfo,
+   IOrderInfo,
+} from '../../../http/checkout';
+import { count } from 'console';
+import { size } from 'lodash';
 export const CheckoutPage: React.FC = () => {
    const dispatch = useAppDispatch();
    const { isAuth } = useAppSelector((state) => state.userReducer);
@@ -83,7 +89,17 @@ export const CheckoutPage: React.FC = () => {
          SettlementTypeDescription: warehouse!.SettlementTypeDescription,
          Description: warehouse!.Description,
       };
-      const orderInfo: IOrderInfo = { price: totalPrice };
+      const basketOrder: IBasketCheckoutItem[] = basket.map((item) => {
+         return {
+            modelId: item.sho.id,
+            count: item.count,
+            size: item.size.size,
+         };
+      });
+      const orderInfo: IOrderInfo = {
+         price: totalPrice,
+         basket: basketOrder,
+      };
       await CheckoutReq.createCheckout(customerInfo, orderInfo);
    };
    return (

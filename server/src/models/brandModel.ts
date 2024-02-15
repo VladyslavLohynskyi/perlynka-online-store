@@ -8,7 +8,7 @@ interface brandAttributes {
 
 interface brandCreationAttributes extends Optional<brandAttributes, 'id'> {}
 
-interface brandInstance
+export interface brandInstance
    extends Model<brandAttributes, brandCreationAttributes>,
       brandAttributes {
    createdAt?: Date;
