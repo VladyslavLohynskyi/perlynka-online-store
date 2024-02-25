@@ -116,6 +116,7 @@ class MailService {
                        </div>
                    `,
       };
+
       await this.transporter.sendMail(
          mailOptionToCustomer,
          function (error, info) {
