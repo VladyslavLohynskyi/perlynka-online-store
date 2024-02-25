@@ -2,6 +2,7 @@ import { RoutesEnum } from '../../utils/constants';
 import { Admin } from '../admin';
 import Auth from '../auth/Auth';
 import { BasketPage } from '../basket/pages';
+import { CheckoutPage } from '../checkout/pages';
 import { ShoesPage } from '../shoes/pages';
 import { Shop } from '../shop/pages';
 interface IRoutes {
@@ -25,6 +26,10 @@ export const authRoutes: IRoutes[] = [
       path: RoutesEnum.SHOES + '/:id',
       Component: ShoesPage,
    },
+   {
+      path: RoutesEnum.CHECKOUT,
+      Component: CheckoutPage,
+   },
 ];
 
 export const publicRoutes: IRoutes[] = [
@@ -47,6 +52,10 @@ export const publicRoutes: IRoutes[] = [
    {
       path: RoutesEnum.SHOES + '/:id',
       Component: ShoesPage,
+   },
+   {
+      path: RoutesEnum.CHECKOUT,
+      Component: CheckoutPage,
    },
 ];
 

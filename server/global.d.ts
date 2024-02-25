@@ -7,5 +7,9 @@ namespace NodeJS {
       DB_HOST: string;
       DB_PORT: string;
       SECRET_KEY: string;
+      SMTP_HOST: string;
+      SMTP_PORT: string;
+      SMTP_USER: string;
+      SMTP_PASSWORD: string;
    }
 }

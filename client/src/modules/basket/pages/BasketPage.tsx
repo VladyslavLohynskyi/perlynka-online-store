@@ -11,9 +11,12 @@ import {
 import { BasketItem } from '../components/BasketItem';
 import { Button } from '../../ui/Button';
 import { ButtonClassEnum } from '../../ui/Button/ButtonType';
+import { useNavigate } from 'react-router-dom';
+import { RoutesEnum } from '../../../utils/constants';
 
 export const BasketPage: React.FC = () => {
    const dispatch = useAppDispatch();
+   const navigate = useNavigate();
    const { isAuth } = useAppSelector((state) => state.userReducer);
    const { basket, totalCountOfShoesInBasket } = useAppSelector(
       (state) => state.basketReducer,
@@ -76,6 +79,7 @@ export const BasketPage: React.FC = () => {
                      <Button
                         buttonText='Оформити Замовлення'
                         buttonClass={ButtonClassEnum.BUY}
+                        buttonClick={() => navigate(RoutesEnum.CHECKOUT)}
                      />
                      <p className='basket__order-menu__price'>
                         Всього: {totalPrice} грн.
