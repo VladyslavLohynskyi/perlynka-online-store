@@ -34,7 +34,7 @@ class BasketController {
    async getBasket(req: Request, res: Response) {
       try {
          const token = req.header('authorization')!.split(' ')[1];
-         const user = jwt.verify(token, process.env.SECRET_KEY) as IUser;
+         const user = jwt.verify(token, process.env.SECRET_KEY_ACCESS) as IUser;
          const basket = await Basket.findOne({ where: { userId: user.id } });
          const shoes = await BasketShoes.findAll({
             attributes: { exclude: ['shoId', 'sizeId'] },
@@ -56,7 +56,7 @@ class BasketController {
       try {
          const { id, sizeId } = req.params;
          const token = req.header('authorization')!.split(' ')[1];
-         const user = jwt.verify(token, process.env.SECRET_KEY) as IUser;
+         const user = jwt.verify(token, process.env.SECRET_KEY_ACCESS) as IUser;
          const basket = await Basket.findOne({ where: { userId: user.id } });
          const shoes = await BasketShoes.findOne({
             where: { shoId: id, basketId: basket!.id, sizeId: +sizeId },
@@ -75,7 +75,7 @@ class BasketController {
    async deleteAllFromBasket(req: Request, res: Response) {
       try {
          const token = req.header('authorization')!.split(' ')[1];
-         const user = jwt.verify(token, process.env.SECRET_KEY) as IUser;
+         const user = jwt.verify(token, process.env.SECRET_KEY_ACCESS) as IUser;
          const basket = await Basket.findOne({ where: { userId: user.id } });
          await BasketShoes.destroy({
             where: { basketId: basket!.id },
@@ -90,7 +90,7 @@ class BasketController {
    async incrementCount(req: IChangeCountRequest, res: Response) {
       const { basketShoesId } = req.body;
       const token = req.header('authorization')!.split(' ')[1];
-      const user = jwt.verify(token, process.env.SECRET_KEY) as IUser;
+      const user = jwt.verify(token, process.env.SECRET_KEY_ACCESS) as IUser;
       const basket = await Basket.findOne({ where: { userId: user.id } });
       await BasketShoes.increment(
          { count: 1 },
@@ -101,7 +101,7 @@ class BasketController {
    async decrementCount(req: IChangeCountRequest, res: Response) {
       const { basketShoesId } = req.body;
       const token = req.header('authorization')!.split(' ')[1];
-      const user = jwt.verify(token, process.env.SECRET_KEY) as IUser;
+      const user = jwt.verify(token, process.env.SECRET_KEY_ACCESS) as IUser;
       const basket = await Basket.findOne({ where: { userId: user.id } });
       const shoes = await BasketShoes.findOne({
          where: { basketId: basket!.id, id: basketShoesId },
@@ -120,7 +120,7 @@ class BasketController {
    }
    async getCountOfShoesInBasket(req: Request, res: Response) {
       const token = req.header('authorization')!.split(' ')[1];
-      const user = jwt.verify(token, process.env.SECRET_KEY) as IUser;
+      const user = jwt.verify(token, process.env.SECRET_KEY_ACCESS) as IUser;
       const basket = await Basket.findOne({ where: { userId: user.id } });
       const totalCount = await BasketShoes.findOne({
          attributes: [
@@ -135,7 +135,7 @@ class BasketController {
       try {
          const { shoes } = req.body;
          const token = req.header('authorization')!.split(' ')[1];
-         const user = jwt.verify(token, process.env.SECRET_KEY) as IUser;
+         const user = jwt.verify(token, process.env.SECRET_KEY_ACCESS) as IUser;
          const parsedShoes = JSON.parse(shoes) as IAddShoes[];
          const basket = await Basket.findOne({
             where: { userId: user.id },

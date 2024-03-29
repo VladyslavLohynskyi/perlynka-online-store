@@ -41,7 +41,6 @@ export const userSlice = createSlice({
          state.isLoading = false;
          state.error = '';
          state.user = action.payload.user;
-         state.isAuth = true;
          document.cookie = `token=${action.payload.token}`;
       },
       userRegistrationError(state, action: PayloadAction<string>) {
@@ -51,6 +50,7 @@ export const userSlice = createSlice({
 
       userLogin(state) {
          state.isLoading = true;
+         state.error = '';
       },
       userLoginSuccess(state, action: PayloadAction<IAuthUser>) {
          state.isLoading = false;
@@ -65,6 +65,7 @@ export const userSlice = createSlice({
 
       userAuth(state) {
          state.isLoading = true;
+         state.error = '';
       },
       userAuthSuccess(state, action: PayloadAction<IAuthUser>) {
          state.error = '';
@@ -77,7 +78,10 @@ export const userSlice = createSlice({
          state.isLoading = false;
          state.user = null;
          state.isAuth = false;
-         state.error = action.payload;
+      },
+
+      userClearError(state) {
+         state.error = '';
       },
 
       userLogOut(state) {

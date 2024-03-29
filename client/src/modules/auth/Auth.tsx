@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import {
@@ -10,12 +10,15 @@ import './Auth.scss';
 import { Button } from '../ui/Button';
 import { ButtonClassEnum } from '../ui/Button/ButtonType';
 import { synchronizeBaskets } from '../../store/reducers/basket/BasketActionCreators';
+import { userSlice } from '../../store/reducers/user/UserSlice';
+import { BasicInput } from '../ui/BasicInput';
 const Auth = () => {
    const dispatch = useAppDispatch();
    const location = useLocation();
    const navigate = useNavigate();
    const isLogin = location.pathname === RoutesEnum.LOGIN;
    const { basket } = useAppSelector((state) => state.basketReducer);
+   const { error } = useAppSelector((state) => state.userReducer);
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
    const handleClickSubmitAuth = async (
@@ -34,6 +37,7 @@ const Auth = () => {
    };
 
    const handleClickChangeAuth = () => {
+      dispatch(userSlice.actions.userClearError());
       if (isLogin) {
          return navigate(RoutesEnum.REGISTRATION);
       }
@@ -47,11 +51,15 @@ const Auth = () => {
                <h2 className='auth__header'>
                   {isLogin ? 'Login' : 'Registration'}
                </h2>
-               <input
+               {error && <h3 className='auth__error'>{error}</h3>}
+               <BasicInput
                   className='auth__input'
+                  autoFocus={true}
+                  name={'email'}
                   type='email'
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required={true}
                />
                <input
                   className='auth__input'
@@ -62,7 +70,9 @@ const Auth = () => {
                />
                <Button
                   buttonText={isLogin ? 'Увійти' : 'Зареєструватись'}
-                  buttonClass={ButtonClassEnum.PRIMARY}
+                  buttonClass={
+                     error ? ButtonClassEnum.DELETE : ButtonClassEnum.PRIMARY
+                  }
                />
             </form>
             <Button

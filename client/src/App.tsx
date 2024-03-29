@@ -21,7 +21,6 @@ const App: FC = () => {
          await dispatch(authUser());
       })();
    }, []);
-
    useEffect(() => {
       dispatch(
          getAllShoesByFilter({

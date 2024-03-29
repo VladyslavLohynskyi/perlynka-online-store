@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import { Role } from '../models/userModel';
+import ApiError from '../exceptions/ApiError';
 
 export interface IDecodedJwt {
    id: number;
@@ -23,12 +24,15 @@ export default function (req: authRequest, res: Response, next: NextFunction) {
       }
 
       if (!token) {
-         return res.status(401).json({ message: 'User not authorized' });
+         return next(ApiError.Unauthorized('Користувач не авторизований'));
       }
-      const decoded = jwt.verify(token, process.env.SECRET_KEY) as IDecodedJwt;
+      const decoded = jwt.verify(
+         token,
+         process.env.SECRET_KEY_ACCESS,
+      ) as IDecodedJwt;
       req.user = decoded;
       next();
    } catch (error) {
-      res.status(401).json({ message: 'User not authorized' });
+      next(ApiError.Unauthorized('Користувач не авторизований'));
    }
 }

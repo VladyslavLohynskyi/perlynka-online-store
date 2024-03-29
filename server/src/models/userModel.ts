@@ -11,6 +11,8 @@ interface userAttributes {
    email: string;
    password: string;
    role: Role;
+   isActivated: boolean;
+   activationLink: string;
 }
 
 interface userCreationAttributes extends Optional<userAttributes, 'id'> {}
@@ -27,6 +29,8 @@ const User = sequelize.define<userInstance>('user', {
    email: { type: DataTypes.STRING, unique: true },
    password: { type: DataTypes.STRING },
    role: { type: DataTypes.STRING, defaultValue: 'USER' },
+   isActivated: { type: DataTypes.BOOLEAN, defaultValue: false },
+   activationLink: { type: DataTypes.STRING },
 });
 
 export default User;

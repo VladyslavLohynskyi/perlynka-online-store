@@ -1,6 +1,7 @@
 import { Response, NextFunction } from 'express';
 import { Role } from '../models/userModel';
 import { authRequest } from './authMiddleware';
+import ApiError from '../exceptions/ApiError';
 
 export default function (role: Role) {
    return function (req: authRequest, res: Response, next: NextFunction) {
@@ -8,7 +9,7 @@ export default function (role: Role) {
          next();
       }
       if (req.user?.role !== role) {
-         return res.status(403).json({ message: "User don't have permission" });
+         return next(ApiError.forbidden('Користувач не має прав'));
       }
       next();
    };

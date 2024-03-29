@@ -5,7 +5,9 @@ export const userRouter = Router();
 
 userRouter.post('/registration', userController.registration);
 userRouter.post('/login', userController.login);
-userRouter.get('/auth', authMiddleware, userController.check);
 userRouter.get('/users', authMiddleware, userController.getUsersByRole);
 userRouter.get('/', authMiddleware, userController.getUserByEmail);
 userRouter.put('/role', authMiddleware, userController.changeRole);
+userRouter.get('/activate/:link', userController.activate);
+userRouter.get('/refresh', userController.refresh);
+userRouter.get('/logout', userController.logout);
