@@ -1,7 +1,9 @@
 import jwt from 'jsonwebtoken';
 import Token from '../models/tokenModel';
-import { where } from 'sequelize';
 import { IDecodedJwt } from '../middleware/authMiddleware';
+import { v4 as uuidv4 } from 'uuid';
+import bcrypt from 'bcrypt';
+import ForgotToken from '../models/forgotTokenModel';
 
 export interface IJwtPayload {
    id: number;
@@ -28,6 +30,16 @@ class TokenService {
          userId,
          refreshToken,
       });
+      return token;
+   }
+   async generateForgotToken(userId: number) {
+      const tokenData = await ForgotToken.findOne({ where: { userId } });
+      if (tokenData) {
+         await ForgotToken.destroy({ where: { userId } });
+      }
+      const token: string = uuidv4() + '.' + (Date.now() + 900000);
+      const hashToken: string = await bcrypt.hash(token, 5);
+      await ForgotToken.create({ userId: userId, forgotToken: hashToken });
       return token;
    }
 
