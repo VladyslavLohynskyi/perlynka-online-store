@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { IUser } from './basketController';
 import Shoes from '../models/shoesModel';
 import { Sequelize } from 'sequelize';
+import { IDecodedJwt } from '../middleware/authMiddleware';
 const { Rating } = require('../models/models');
 
 interface IAddRatingToShoesRequest extends Request {
@@ -17,7 +18,9 @@ class RatingController {
       try {
          const { shoId, rate } = req.body;
          const token = req.header('authorization')!.split(' ')[1];
-         const user = jwt.verify(token, process.env.SECRET_KEY) as IUser;
+
+         const user = jwt.verify(token, process.env.SECRET_KEY_ACCESS) as IUser;
+
          const shoes = await Shoes.findOne({ where: { id: shoId } });
          if (!shoes) {
             return { message: 'Error shoes is not exist' };

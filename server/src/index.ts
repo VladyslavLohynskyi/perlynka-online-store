@@ -7,15 +7,19 @@ import fileUpload from 'express-fileupload';
 const models = require('./models/models');
 import { router } from './routes/index';
 import path from 'path';
+import cookieParser from 'cookie-parser';
+import errorMiddleware from './middleware/errorMiddleware';
 
 const app: Application = express();
 const port: number = Number(process.env.PORT) || 8888;
 
-app.use(cors());
+app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }));
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.static(path.resolve(__dirname, 'static')));
 app.use(fileUpload({}));
 app.use('/api', router);
+app.use(errorMiddleware);
 
 const start = async () => {
    try {

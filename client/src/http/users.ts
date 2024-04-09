@@ -1,5 +1,7 @@
+import axios from 'axios';
 import { $host, $authHost } from '.';
 import { Role } from '../store/reducers/user/UserSlice';
+import { baseURL } from '../utils/constants';
 export interface IUserRes {
    id: string;
    email: string;
@@ -25,7 +27,10 @@ class UserReq {
    };
 
    auth = async () => {
-      const { data } = await $authHost.get<{ token: string }>('/user/auth');
+      const { data } = await axios.get<{ token: string }>(
+         `${baseURL}api/user/refresh`,
+         { withCredentials: true },
+      );
       return data;
    };
 
@@ -55,6 +60,10 @@ class UserReq {
          role: Role.ADMIN,
       });
       return data;
+   };
+
+   logout = async () => {
+      return $authHost.get('/user/logout');
    };
 }
 

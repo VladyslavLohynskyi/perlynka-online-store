@@ -3,6 +3,8 @@ import { AppDispatch } from '../../store';
 import { IUser, userSlice } from './UserSlice';
 import UserReq from '../../../http/users';
 
+import axios, { AxiosError } from 'axios';
+
 interface IAuthUserProps {
    email: string;
    password: string;
@@ -22,9 +24,18 @@ export const registrationUser =
             }),
          );
       } catch (error) {
-         dispatch(
-            userSlice.actions.userRegistrationError('registration Error'),
-         );
+         if (axios.isAxiosError(error)) {
+            dispatch(
+               userSlice.actions.userRegistrationError(
+                  error.response?.data.message,
+               ),
+            );
+         } else
+            dispatch(
+               userSlice.actions.userRegistrationError(
+                  'Невідома помилка при реєстрації',
+               ),
+            );
       }
    };
 
@@ -39,7 +50,16 @@ export const loginUser =
             userSlice.actions.userLoginSuccess({ user, token: data.token }),
          );
       } catch (error) {
-         dispatch(userSlice.actions.userLoginError('login Error'));
+         if (axios.isAxiosError(error)) {
+            dispatch(
+               userSlice.actions.userLoginError(error.response?.data.message),
+            );
+         } else
+            dispatch(
+               userSlice.actions.userLoginError(
+                  'Невідома помилка під час входу в обліковий запис',
+               ),
+            );
       }
    };
 
@@ -50,10 +70,24 @@ export const authUser = () => async (dispatch: AppDispatch) => {
       const user: IUser = jwt_decode(data.token);
       dispatch(userSlice.actions.userAuthSuccess({ user, token: data.token }));
    } catch (error) {
-      dispatch(userSlice.actions.userAuthError('auth Error'));
+      if (axios.isAxiosError(error)) {
+         dispatch(
+            userSlice.actions.userAuthError(error.response?.data.message),
+         );
+      } else
+         dispatch(
+            userSlice.actions.userAuthError(
+               'Невідома помилка під час аунтефікації',
+            ),
+         );
    }
 };
 
-export const logOutUser = () => (dispatch: AppDispatch) => {
-   dispatch(userSlice.actions.userLogOut());
+export const logOutUser = () => async (dispatch: AppDispatch) => {
+   try {
+      await UserReq.logout();
+      dispatch(userSlice.actions.userLogOut());
+   } catch (error) {
+      console.log(error);
+   }
 };

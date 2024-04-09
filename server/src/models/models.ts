@@ -9,9 +9,13 @@ import ShoesSize from './shoesSizeModel';
 import Shoes from './shoesModel';
 import BasketShoes from './basketShoesModel';
 import Rating from './ratingModel';
+import Token from './tokenModel';
 
 User.hasOne(Basket);
 Basket.belongsTo(User);
+
+User.hasOne(Token);
+Token.belongsTo(User);
 
 User.hasMany(Rating);
 Rating.belongsTo(User);
@@ -58,4 +62,5 @@ module.exports = {
    Size,
    ShoesSize,
    Rating,
+   Token,
 };

@@ -41,6 +41,19 @@ class MailService {
       });
    }
 
+   async sendActivationMail(to: string, link: string) {
+      await this.transporter.sendMail({
+         to,
+         subject:
+            'Активація облікового запсу на сайті онлайн-магазину Перлинка',
+         html: `
+         <div>
+            <h1>Для активації перейдіть по посиланню нижче</h1>
+            <a href="${link}">${link}</a>
+         </div>`,
+      });
+   }
+
    async sendCheckout(customerInfo: ICustomerInfo, orderInfo: IOrderInfo) {
       const checkoutShoesDivItem = await Promise.all(
          orderInfo.basket.map(async (item) => {

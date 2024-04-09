@@ -1,7 +1,9 @@
+import axios from 'axios';
 import BasketReq, { IAddShoes } from '../../../http/basket';
 import { AppDispatch } from '../../store';
 import { IBasketItem, basketSlice } from './BasketSlice';
-
+import { userSlice } from '../user/UserSlice';
+import UserReq from '../../../http/users';
 export const addShoesToBasket =
    (shoId: number, sizeId: number, count: number) =>
    async (dispatch: AppDispatch) => {
