@@ -24,7 +24,10 @@ class TokenService {
       if (tokenData) {
          return Token.update({ refreshToken }, { where: { userId } });
       }
-      const token = await Token.create({ userId, refreshToken });
+      const token = await Token.create({
+         userId,
+         refreshToken,
+      });
       return token;
    }
 
