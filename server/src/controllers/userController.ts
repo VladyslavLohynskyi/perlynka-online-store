@@ -18,10 +18,9 @@ interface userRegistrationLoginRequest extends Request {
    };
 }
 
-interface ICheckForgotRequest extends Request {
+interface IForgotPasswordRequest extends Request {
    body: {
-      userId: number;
-      token: string;
+      email: string;
    };
 }
 
@@ -29,6 +28,9 @@ interface IGetUsersByRole extends Request {
    query: { role: Role };
 }
 
+interface ICheckForgotRequest extends Request {
+   query: { userId: string; token: string };
+}
 interface IGetUserByEmail extends Request {
    query: { role: Role; email: string };
 }
@@ -183,14 +185,39 @@ class userController {
       });
       return res.json({ token: tokens.accessToken });
    }
+
+   async forgotPassword(
+      req: IForgotPasswordRequest,
+      res: Response,
+      next: NextFunction,
+   ) {
+      const { email } = req.body;
+      const userData = await User.findOne({ where: { email } });
+      if (!userData) {
+         return next(
+            ApiError.badRequest(
+               'Користувач з такою електроною поштою не існує',
+            ),
+         );
+      }
+      const forgotToken = await tokenService.generateForgotToken(userData.id);
+      mailService.sendForgotPasswordMail(
+         email,
+         process.env.CLIENT_URL + '/forgot/' + userData.id + '/' + forgotToken,
+      );
+      return res.status(200).json({
+         message:
+            'На електрону пошту надіслано лист з посиланням для зміни паролю',
+      });
+   }
    async checkForgotToken(
       req: ICheckForgotRequest,
       res: Response,
       next: NextFunction,
    ) {
-      const { userId, token } = req.body;
+      const { id, token } = req.params;
       const tokenData = await ForgotToken.findOne({
-         where: { userId: userId },
+         where: { userId: +id },
       });
       if (!tokenData) {
          return next(ApiError.badRequest('Не вірні данні для зміни паролю'));
