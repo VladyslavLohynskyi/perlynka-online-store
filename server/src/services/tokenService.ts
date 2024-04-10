@@ -32,6 +32,7 @@ class TokenService {
       });
       return token;
    }
+
    async generateForgotToken(userId: number) {
       const tokenData = await ForgotToken.findOne({ where: { userId } });
       if (tokenData) {
@@ -69,6 +70,11 @@ class TokenService {
       } catch (error) {
          return null;
       }
+   }
+
+   validateForgotToken(token: string) {
+      const isTokenActive = +token.split('.')[1] > Date.now();
+      return isTokenActive;
    }
 
    async findToken(refreshToken: string) {

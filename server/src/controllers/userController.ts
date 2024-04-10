@@ -9,11 +9,19 @@ import { v4 as uuidv4 } from 'uuid';
 import mailService from '../services/mailService';
 import tokenService from '../services/tokenService';
 import ApiError from '../exceptions/ApiError';
+import ForgotToken from '../models/forgotTokenModel';
 
 interface userRegistrationLoginRequest extends Request {
    body: {
       email: string;
       password: string;
+   };
+}
+
+interface ICheckForgotRequest extends Request {
+   body: {
+      userId: number;
+      token: string;
    };
 }
 
@@ -174,6 +182,32 @@ class userController {
          httpOnly: true,
       });
       return res.json({ token: tokens.accessToken });
+   }
+   async checkForgotToken(
+      req: ICheckForgotRequest,
+      res: Response,
+      next: NextFunction,
+   ) {
+      const { userId, token } = req.body;
+      const tokenData = await ForgotToken.findOne({
+         where: { userId: userId },
+      });
+      if (!tokenData) {
+         return next(ApiError.badRequest('Не вірні данні для зміни паролю'));
+      }
+      const compareTokens = bcrypt.compareSync(token, tokenData.forgotToken);
+      if (!compareTokens) {
+         return next(ApiError.badRequest('Не вірні данні для зміни паролю'));
+      }
+      const validateForgotToken = tokenService.validateForgotToken(token);
+      if (!validateForgotToken) {
+         return next(
+            ApiError.badRequest(
+               'Час для зміни паролю за цим посиланням вичерпаний',
+            ),
+         );
+      }
+      return res.status(200).json({ message: 'Токен валідний', token });
    }
 }
 
