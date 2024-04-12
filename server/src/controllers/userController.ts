@@ -24,6 +24,14 @@ interface IForgotPasswordRequest extends Request {
    };
 }
 
+interface IForgotPasswordChangeRequest extends Request {
+   body: {
+      userId: number;
+      password: string;
+      token: string;
+   };
+}
+
 interface IGetUsersByRole extends Request {
    query: { role: Role };
 }
@@ -226,7 +234,10 @@ class userController {
       if (!compareTokens) {
          return next(ApiError.badRequest('Не вірні данні для зміни паролю'));
       }
-      const validateForgotToken = tokenService.validateForgotToken(token);
+      const validateForgotToken = await tokenService.validateForgotToken(
+         +id,
+         token,
+      );
       if (!validateForgotToken) {
          return next(
             ApiError.badRequest(
@@ -235,6 +246,48 @@ class userController {
          );
       }
       return res.status(200).json({ message: 'Токен валідний', token });
+   }
+
+   async forgotPasswordChange(
+      req: IForgotPasswordChangeRequest,
+      res: Response,
+      next: NextFunction,
+   ) {
+      const { userId, password, token } = req.body;
+      const userData = await User.findOne({ where: { id: userId } });
+      if (!userData) {
+         return next(
+            ApiError.badRequest(
+               'Користувач з такою електроною поштою не існує',
+            ),
+         );
+      }
+      const tokenData = await ForgotToken.findOne({
+         where: { userId },
+      });
+      if (!tokenData) {
+         return next(ApiError.badRequest('Не вірні данні для зміни паролю'));
+      }
+      const compareTokens = bcrypt.compareSync(token, tokenData.forgotToken);
+      if (!compareTokens) {
+         return next(ApiError.badRequest('Не вірні данні для зміни паролю'));
+      }
+      const validateForgotToken = await tokenService.validateForgotToken(
+         userId,
+         token,
+      );
+      if (!validateForgotToken) {
+         return next(
+            ApiError.badRequest(
+               'Час для зміни паролю за цим посиланням вичерпаний',
+            ),
+         );
+      }
+      const hashPassword = await bcrypt.hash(password, 5);
+      await User.update({ password: hashPassword }, { where: { id: userId } });
+      await ForgotToken.destroy({ where: { userId } });
+      await mailService.sendChangePasswordSuccessMail(userData.email);
+      return res.status(200).json({ message: 'Пароль змінено успішно' });
    }
 }
 
