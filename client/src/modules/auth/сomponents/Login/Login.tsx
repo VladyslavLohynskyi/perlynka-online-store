@@ -20,11 +20,10 @@ const Login = () => {
       e: React.FormEvent<HTMLFormElement>,
    ) => {
       e.preventDefault();
-      await dispatch(loginUser({ email, password }));
       const shoes = basket.map(({ sho, size, count }) => {
          return { shoId: sho.id, sizeId: +size.id, count };
       });
-      await dispatch(synchronizeBaskets(shoes));
+      await dispatch(loginUser({ email, password, shoes }));
    };
 
    const handleClickChangeAuth = (route: RoutesEnum) => {

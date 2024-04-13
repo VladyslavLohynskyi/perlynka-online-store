@@ -4,14 +4,22 @@ import { IUser, userSlice } from './UserSlice';
 import UserReq from '../../../http/users';
 
 import axios, { AxiosError } from 'axios';
+import { synchronizeBaskets } from '../basket/BasketActionCreators';
+import { IAddShoes } from '../../../http/basket';
 
-interface IAuthUserProps {
+interface ILoginUserProps {
+   email: string;
+   password: string;
+   shoes: IAddShoes[];
+}
+
+interface ISignUpUserProps {
    email: string;
    password: string;
 }
 
 export const registrationUser =
-   ({ email, password }: IAuthUserProps) =>
+   ({ email, password }: ISignUpUserProps) =>
    async (dispatch: AppDispatch) => {
       try {
          dispatch(userSlice.actions.userRegistration());
@@ -40,7 +48,7 @@ export const registrationUser =
    };
 
 export const loginUser =
-   ({ email, password }: IAuthUserProps) =>
+   ({ email, password, shoes }: ILoginUserProps) =>
    async (dispatch: AppDispatch) => {
       try {
          dispatch(userSlice.actions.userLogin());
@@ -49,6 +57,7 @@ export const loginUser =
          dispatch(
             userSlice.actions.userLoginSuccess({ user, token: data.token }),
          );
+         dispatch(synchronizeBaskets(shoes));
       } catch (error) {
          if (axios.isAxiosError(error)) {
             dispatch(
