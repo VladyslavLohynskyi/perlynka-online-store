@@ -46,6 +46,10 @@ export const publicRoutes: IRoutes[] = [
       Component: Auth,
    },
    {
+      path: RoutesEnum.FORGOT_PASSWORD,
+      Component: Auth,
+   },
+   {
       path: RoutesEnum.BASKET,
       Component: BasketPage,
    },
