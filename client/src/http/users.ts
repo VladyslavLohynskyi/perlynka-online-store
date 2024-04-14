@@ -65,6 +65,10 @@ class UserReq {
    logout = async () => {
       return $authHost.get('/user/logout');
    };
+
+   sendForgotPasswordLink(email: string) {
+      return $host.post('/user/forgot-password', { email });
+   }
 }
 
 export default new UserReq();

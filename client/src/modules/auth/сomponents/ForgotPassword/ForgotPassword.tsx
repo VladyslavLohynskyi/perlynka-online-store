@@ -5,21 +5,31 @@ import { Button } from '../../../ui/Button';
 import { ButtonClassEnum } from '../../../ui/Button/ButtonType';
 import { RoutesEnum } from '../../../../utils/constants';
 import { userSlice } from '../../../../store/reducers/user/UserSlice';
-import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
+import { useAppDispatch } from '../../../../hooks/redux';
+import userReq from '../../../../http/users';
+import axios from 'axios';
 
 const ForgotPassword = () => {
    const dispatch = useAppDispatch();
    const navigate = useNavigate();
-   const { error } = useAppSelector((state) => state.userReducer);
+   const [error, setError] = useState('');
    const [email, setEmail] = useState('');
+   const [isSent, setIsSent] = useState(false);
    const handleClickSubmitAuth = async (
       e: React.FormEvent<HTMLFormElement>,
    ) => {
       e.preventDefault();
+      try {
+         await userReq.sendForgotPasswordLink(email);
+         setIsSent(true);
+      } catch (error) {
+         if (axios.isAxiosError(error)) {
+            setError(error.response?.data.message);
+         }
+      }
    };
 
-   const handleClickChangeAuth = () => {
-      dispatch(userSlice.actions.userClearError());
+   const handleClickChangeAuth = async () => {
       return navigate(RoutesEnum.LOGIN);
    };
 
@@ -34,16 +44,31 @@ const ForgotPassword = () => {
                name={'email'}
                type='email'
                value={email}
-               onChange={(e) => setEmail(e.target.value)}
+               onChange={(e) => {
+                  setEmail(e.target.value);
+                  setError('');
+                  setIsSent(false);
+               }}
                required={true}
             />
             <Button
                buttonText={'Підтвердити'}
                buttonClass={
-                  error ? ButtonClassEnum.DELETE : ButtonClassEnum.PRIMARY
+                  error
+                     ? ButtonClassEnum.DELETE
+                     : isSent
+                     ? ButtonClassEnum.DISABLE
+                     : ButtonClassEnum.PRIMARY
                }
+               disabled={isSent}
             />
          </form>
+         {isSent && (
+            <p className='auth__message'>
+               На вашу вказану електронну пошту надіслано посилання для зміни
+               паролю
+            </p>
+         )}
          <Button
             buttonText={'Є акаунт?'}
             buttonClass={ButtonClassEnum.LINK}
