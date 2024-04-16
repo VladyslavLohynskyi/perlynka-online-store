@@ -1,6 +1,7 @@
 import { RoutesEnum } from '../../utils/constants';
 import { Admin } from '../admin';
 import Auth from '../auth/Auth';
+import ChangePassword from '../auth/сomponents/ChangePassword/ChangePassword';
 import { BasketPage } from '../basket/pages';
 import { CheckoutPage } from '../checkout/pages';
 import { ShoesPage } from '../shoes/pages';
@@ -56,6 +57,11 @@ export const publicRoutes: IRoutes[] = [
    {
       path: RoutesEnum.SHOES + '/:id',
       Component: ShoesPage,
+   },
+
+   {
+      path: RoutesEnum.FORGOT_FORM + '/:id' + '/:token',
+      Component: ChangePassword,
    },
    {
       path: RoutesEnum.CHECKOUT,

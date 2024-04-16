@@ -69,6 +69,9 @@ class UserReq {
    sendForgotPasswordLink(email: string) {
       return $host.post('/user/forgot-password', { email });
    }
+   checkForgotToken(id: string, token: string) {
+      return $host.get('/user/forgot-password/check/' + id + '/' + token);
+   }
 }
 
 export default new UserReq();

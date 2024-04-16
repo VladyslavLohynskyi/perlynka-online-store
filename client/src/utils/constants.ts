@@ -9,4 +9,5 @@ export enum RoutesEnum {
    SHOES = '/shoes',
    CHECKOUT = '/checkout',
    FORGOT_PASSWORD = '/forgot-password',
+   FORGOT_FORM = '/forgot-form',
 }

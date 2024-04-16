@@ -211,7 +211,11 @@ class userController {
       const forgotToken = await tokenService.generateForgotToken(userData.id);
       mailService.sendForgotPasswordMail(
          email,
-         process.env.CLIENT_URL + '/forgot/' + userData.id + '/' + forgotToken,
+         process.env.CLIENT_URL +
+            '/forgot-form/' +
+            userData.id +
+            '/' +
+            forgotToken,
       );
       return res.status(200).json({
          message:
