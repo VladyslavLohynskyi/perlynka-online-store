@@ -5,6 +5,7 @@ import { ButtonClassEnum } from '../../../ui/Button/ButtonType';
 import { RoutesEnum } from '../../../../utils/constants';
 import userReq from '../../../../http/users';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const ChangePassword = () => {
    const { id, token } = useParams();
@@ -17,6 +18,8 @@ const ChangePassword = () => {
    }, []);
    const navigate = useNavigate();
    const [password, setPassword] = useState('');
+   const [isChanged, setIsChanged] = useState(false);
+   const [error, setError] = useState('');
 
    const handleClickSubmitAuth = async (
       e: React.FormEvent<HTMLFormElement>,
@@ -27,9 +30,11 @@ const ChangePassword = () => {
    const handleClickMain = async () => {
       try {
          await userReq.forgotPasswordChange(id!, password, token!);
-         return navigate(RoutesEnum.LOGIN);
-      } catch (e) {
-         return navigate(RoutesEnum.SHOES);
+         setIsChanged(true);
+      } catch (error) {
+         if (axios.isAxiosError(error)) {
+            setError(error.response?.data.message);
+         }
       }
    };
 
@@ -38,6 +43,7 @@ const ChangePassword = () => {
          <div className='auth__container'>
             <form className='auth__form' onSubmit={handleClickSubmitAuth}>
                <h2 className='auth__header'>Форма зміни паролю</h2>
+               {error && <h3 className='auth__error'>{error}</h3>}
                <input
                   className='auth__input'
                   type='password'
@@ -49,8 +55,12 @@ const ChangePassword = () => {
                   buttonText={'Підтвердити'}
                   buttonClass={ButtonClassEnum.PRIMARY}
                   buttonClick={handleClickMain}
+                  disabled={isChanged}
                />
             </form>
+            {isChanged && (
+               <p className='auth__message'>Пароль було змінено успішно</p>
+            )}
             <Button
                buttonText={'На головну'}
                buttonClass={ButtonClassEnum.LINK}
