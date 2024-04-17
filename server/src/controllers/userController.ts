@@ -1,9 +1,7 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
 import User, { Role } from '../models/userModel';
 import Basket from '../models/basketModel';
-import { authRequest } from '../middleware/authMiddleware';
 import { Op } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import mailService from '../services/mailService';

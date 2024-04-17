@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { BasicInput } from '../../../ui/BasicInput';
 import { Button } from '../../../ui/Button';
 import { ButtonClassEnum } from '../../../ui/Button/ButtonType';
 import { RoutesEnum } from '../../../../utils/constants';
 import { userSlice } from '../../../../store/reducers/user/UserSlice';
 import { loginUser } from '../../../../store/reducers/user/UserActionCreators';
-import { synchronizeBaskets } from '../../../../store/reducers/basket/BasketActionCreators';
+
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 
 const Login = () => {

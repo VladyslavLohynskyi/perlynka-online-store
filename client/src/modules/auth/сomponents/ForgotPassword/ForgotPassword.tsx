@@ -4,13 +4,10 @@ import { BasicInput } from '../../../ui/BasicInput';
 import { Button } from '../../../ui/Button';
 import { ButtonClassEnum } from '../../../ui/Button/ButtonType';
 import { RoutesEnum } from '../../../../utils/constants';
-import { userSlice } from '../../../../store/reducers/user/UserSlice';
-import { useAppDispatch } from '../../../../hooks/redux';
 import userReq from '../../../../http/users';
 import axios from 'axios';
 
 const ForgotPassword = () => {
-   const dispatch = useAppDispatch();
    const navigate = useNavigate();
    const [error, setError] = useState('');
    const [email, setEmail] = useState('');

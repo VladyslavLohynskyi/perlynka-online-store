@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-
+import { useLocation } from 'react-router-dom';
 import { RoutesEnum } from '../../utils/constants';
 import './Auth.scss';
 import Login from './сomponents/Login/Login';
