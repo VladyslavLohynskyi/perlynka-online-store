@@ -10,12 +10,16 @@ import Shoes from './shoesModel';
 import BasketShoes from './basketShoesModel';
 import Rating from './ratingModel';
 import Token from './tokenModel';
+import ForgotToken from './forgotTokenModel';
 
 User.hasOne(Basket);
 Basket.belongsTo(User);
 
 User.hasOne(Token);
 Token.belongsTo(User);
+
+User.hasOne(ForgotToken);
+ForgotToken.belongsTo(User);
 
 User.hasMany(Rating);
 Rating.belongsTo(User);

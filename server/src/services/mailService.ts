@@ -40,12 +40,36 @@ class MailService {
          from: process.env.SMTP_USER,
       });
    }
+   async sendForgotPasswordMail(to: string, link: string) {
+      await this.transporter.sendMail({
+         to,
+         subject:
+            'Зміна паролю облікового запису на сайті онлайн-магазину Перлинка',
+         html: `
+         <div>
+            <h1>Для зміни паролю перейдіть по посиланню нижче</h1>
+            <a href="${link}">${link}</a>
+         </div>`,
+      });
+   }
+
+   async sendChangePasswordSuccessMail(to: string) {
+      await this.transporter.sendMail({
+         to,
+         subject:
+            'Успішна зміна паролю облікового запису на сайті онлайн-магазину Перлинка',
+         html: `
+         <div>
+            <h1>Ваш пароль від обілкового запису на сайті онлайн-магазину Перлинка успішно змінено</h1>
+         </div>`,
+      });
+   }
 
    async sendActivationMail(to: string, link: string) {
       await this.transporter.sendMail({
          to,
          subject:
-            'Активація облікового запсу на сайті онлайн-магазину Перлинка',
+            'Активація облікового запису на сайті онлайн-магазину Перлинка',
          html: `
          <div>
             <h1>Для активації перейдіть по посиланню нижче</h1>
