@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BasicInput } from '../../../ui/BasicInput';
 import { Button } from '../../../ui/Button';
 import { ButtonClassEnum } from '../../../ui/Button/ButtonType';
 import { RoutesEnum } from '../../../../utils/constants';
-import { userSlice } from '../../../../store/reducers/user/UserSlice';
-import { useAppDispatch } from '../../../../hooks/redux';
 import userReq from '../../../../http/users';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
 const ChangePassword = () => {
@@ -29,7 +25,12 @@ const ChangePassword = () => {
    };
 
    const handleClickMain = async () => {
-      return navigate(RoutesEnum.SHOES);
+      try {
+         await userReq.forgotPasswordChange(id!, password, token!);
+         return navigate(RoutesEnum.LOGIN);
+      } catch (e) {
+         return navigate(RoutesEnum.SHOES);
+      }
    };
 
    return (
@@ -47,12 +48,13 @@ const ChangePassword = () => {
                <Button
                   buttonText={'Підтвердити'}
                   buttonClass={ButtonClassEnum.PRIMARY}
+                  buttonClick={handleClickMain}
                />
             </form>
             <Button
                buttonText={'На головну'}
                buttonClass={ButtonClassEnum.LINK}
-               buttonClick={handleClickMain}
+               buttonClick={() => navigate(RoutesEnum.SHOES)}
             />
          </div>
       </div>

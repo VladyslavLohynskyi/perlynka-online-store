@@ -74,7 +74,6 @@ class TokenService {
 
    async validateForgotToken(userId: number, token: string) {
       const isTokenActive = +token.split('.')[1] > Date.now();
-      console.log(isTokenActive, +token.split('.')[1], Date.now());
       if (!isTokenActive) {
          await ForgotToken.destroy({ where: { userId } });
       }
