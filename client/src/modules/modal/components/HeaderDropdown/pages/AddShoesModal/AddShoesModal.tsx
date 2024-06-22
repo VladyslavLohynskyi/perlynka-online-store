@@ -10,11 +10,24 @@ import { ModalInput } from '../../components/ModalInput';
 import { SexEnum } from '../../../../../../store/reducers/shoes/ShoesSlice';
 import { ButtonClassEnum } from '../../../../../ui/Button/ButtonType';
 
+import { IconButton } from '../../../../../ui/IconButton';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+
 export interface IEditSize {
    sizeId: number;
    count: number;
 }
 
+export interface IShoesInfo {
+   id: number;
+   title: string;
+   description: string;
+}
+
+enum keyShoesInfoEnum {
+   DESCRIPTION = 'description',
+   TITLE = 'title',
+}
 export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
    const { brands, types, colors, seasons, sizes } = useAppSelector(
       (state) => state.shoesReducer,
@@ -41,8 +54,35 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
    const [sex, setSex] = useState<string>(SexEnum.UNISEX);
    const [addSizes, setAddSizes] = useState<IEditSize[]>([]);
    const [error, setError] = useState('');
-   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
+   const [infos, setInfos] = useState<IShoesInfo[]>([]);
+
+   const addInfo = () => {
+      setInfos((prev) => {
+         return [...prev, { title: '', description: '', id: Date.now() }];
+      });
+   };
+
+   const removeInfo = (id: number) => {
+      setInfos((prev) => {
+         return prev.filter((info) => info.id !== id);
+      });
+   };
+
+   const changeInfo = (key: keyShoesInfoEnum, value: string, id: number) => {
+      setInfos((prev) => {
+         return prev.map((info) =>
+            info.id === id
+               ? {
+                    ...info,
+                    [key[0].toUpperCase() + key.slice(1)]:
+                       value[0].toUpperCase() + value.slice(1),
+                 }
+               : info,
+         );
+      });
+   };
+
+   const handleSubmit = async () => {
       setError('');
       if (!brand) {
          setError('Виберіть бренд');
@@ -68,6 +108,14 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
          setError('Виберіть фотографію');
          return;
       }
+
+      if (
+         infos.length > 0 &&
+         infos.find((info) => !info.description || !info.title)
+      ) {
+         setError('Введіть додатковий опис до товару');
+         return;
+      }
       const formData = new FormData();
       formData.append('model', model);
       formData.append('price', String(price));
@@ -78,6 +126,7 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
       formData.append('sizes', JSON.stringify(addSizes));
       formData.append('sex', String(sex));
       formData.append('file', file);
+      formData.append('shoesInfos', JSON.stringify(infos));
       dispatch(
          createShoes(formData, {
             brandsId: selectedBrandsId,
@@ -91,6 +140,7 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
             offset: limit * (page - 1),
          }),
       );
+      onClose();
    };
    const handleChangeSize = (sizeId: number, count: number) => {
       if (count > 0) {
@@ -113,7 +163,7 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
    return (
       <div className='add-shoes-modal__container'>
          <ModalHeader text='Додати нове взуття' onClose={onClose} />
-         <form onSubmit={handleSubmit} className='add-shoes-modal__main'>
+         <form className='add-shoes-modal__main'>
             <ModalInput
                text='Модель'
                value={model}
@@ -221,11 +271,59 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
                   />
                ))}
             </div>
+            <div>
+               <Button
+                  buttonClass={ButtonClassEnum.SECONDARY}
+                  buttonText='Додати додатковий опис товару'
+                  onClick={(e) => {
+                     e.preventDefault();
+                     addInfo();
+                  }}
+               />
+               {infos.map((info) => (
+                  <div
+                     className='add-shoes-modal__info-container'
+                     key={info.id}
+                  >
+                     <ModalInput
+                        text='Заголовок'
+                        onChange={(e) =>
+                           changeInfo(
+                              keyShoesInfoEnum.TITLE,
+                              e.target.value,
+                              info.id,
+                           )
+                        }
+                        type='text'
+                        required={true}
+                     />
+                     <ModalInput
+                        text='Oпис'
+                        onChange={(e) =>
+                           changeInfo(
+                              keyShoesInfoEnum.DESCRIPTION,
+                              e.target.value,
+                              info.id,
+                           )
+                        }
+                        type='text'
+                        required={true}
+                     />
+                     <div className='add-shoes-modal__info-container__trash-button-container'>
+                        <IconButton
+                           icon={faTrash}
+                           onClick={() => removeInfo(info.id)}
+                        />
+                     </div>
+                  </div>
+               ))}
+            </div>
             {error && <p className='modal__error'>{error}</p>}
-            <div className='add-shoes-modaladd-shoes-modal'>
+            <div>
                <Button
                   buttonClass={ButtonClassEnum.PRIMARY}
                   buttonText='Додати'
+                  onClick={handleSubmit}
                />
             </div>
          </form>

@@ -8,7 +8,7 @@
       max-height: 700px;
       border-radius: 8px;
       box-shadow: 0 0 0 1px rgba(29, 28, 29, 0.13), 0 18px 48px 0 #00000059;
-      overflow: hidden;
+      overflow: auto;
    }
    &__header {
       height: 50px;
@@ -62,5 +62,18 @@
 
    &__footer {
       margin-top: 15px;
+   }
+
+   &__info-container {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr 0.25fr;
+
+      &__trash-button-container {
+         align-self: center;
+
+         & svg {
+            margin-top: 10px;
+         }
+      }
    }
 }

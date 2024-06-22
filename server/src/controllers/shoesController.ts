@@ -13,6 +13,7 @@ import Type from '../models/typeModel';
 import Season from '../models/seasonModel';
 import Color from '../models/colorModel';
 import Size from '../models/sizeModel';
+import ShoesInfo from '../models/shoesInfoModel';
 
 interface IParseSizes {
    sizeId: number;
@@ -48,6 +49,7 @@ interface shoesCreateRequest extends Request {
       brandId: number;
       sizes: string;
       sex: SexType;
+      shoesInfos: string;
    };
 }
 
@@ -65,6 +67,11 @@ interface shoesUpdateRequest extends Request {
    };
 }
 
+export interface IShoesInfo {
+   title: string;
+   description: string;
+}
+
 class shoesController {
    async create(req: shoesCreateRequest, res: Response) {
       try {
@@ -77,6 +84,7 @@ class shoesController {
             seasonId,
             sizes,
             sex,
+            shoesInfos,
          } = req.body;
          const img = req.files?.file;
          if (!img) {
@@ -104,7 +112,16 @@ class shoesController {
                ShoesSize.create({ sizeId, count, shoId: shoes.id }),
             );
          }
-
+         if (shoesInfos.length != 0) {
+            const parseInfo = JSON.parse(shoesInfos) as IShoesInfo[];
+            parseInfo.map((element) => {
+               ShoesInfo.create({
+                  title: element.title,
+                  description: element.description,
+                  shoId: shoes.id,
+               });
+            });
+         }
          return res.json(shoes);
       } catch (error) {
          res.json('Shoes creating Error ');

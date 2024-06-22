@@ -5,7 +5,7 @@ interface shoesInfoAttributes {
    id: number;
    title: string;
    description: string;
-   shoesId: number;
+   shoId: number;
 }
 
 interface shoesInfoCreationAttributes
@@ -22,7 +22,7 @@ const ShoesInfo = sequelize.define<shoesInfoInstance>('shoes_info', {
    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
    title: { type: DataTypes.STRING, allowNull: false },
    description: { type: DataTypes.STRING, allowNull: false },
-   shoesId: { allowNull: false, type: DataTypes.INTEGER },
+   shoId: { allowNull: false, type: DataTypes.INTEGER },
 });
 
 export default ShoesInfo;
