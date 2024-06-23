@@ -215,6 +215,9 @@ class shoesController {
                { model: Type },
                { model: Season },
                { model: Color },
+               {
+                  model: ShoesInfo,
+               },
             ],
          });
          if (!shoes) {

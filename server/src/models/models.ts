@@ -55,7 +55,7 @@ BasketShoes.belongsTo(Shoes);
 Size.hasMany(BasketShoes);
 BasketShoes.belongsTo(Size);
 
-Shoes.hasMany(ShoesInfo, { as: 'info' });
+Shoes.hasMany(ShoesInfo);
 ShoesInfo.belongsTo(Shoes);
 
 module.exports = {

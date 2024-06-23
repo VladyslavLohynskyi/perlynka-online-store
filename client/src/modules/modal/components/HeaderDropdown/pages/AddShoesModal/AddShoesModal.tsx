@@ -74,15 +74,15 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
             info.id === id
                ? {
                     ...info,
-                    [key[0].toUpperCase() + key.slice(1)]:
-                       value[0].toUpperCase() + value.slice(1),
+                    [key]: value,
                  }
                : info,
          );
       });
    };
 
-   const handleSubmit = async () => {
+   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
+      e.preventDefault();
       setError('');
       if (!brand) {
          setError('Виберіть бренд');
@@ -163,7 +163,7 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
    return (
       <div className='add-shoes-modal__container'>
          <ModalHeader text='Додати нове взуття' onClose={onClose} />
-         <form className='add-shoes-modal__main'>
+         <form className='add-shoes-modal__main' onSubmit={handleSubmit}>
             <ModalInput
                text='Модель'
                value={model}
@@ -323,7 +323,6 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
                <Button
                   buttonClass={ButtonClassEnum.PRIMARY}
                   buttonText='Додати'
-                  onClick={handleSubmit}
                />
             </div>
          </form>

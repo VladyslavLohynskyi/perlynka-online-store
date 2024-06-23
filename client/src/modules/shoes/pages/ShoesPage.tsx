@@ -100,66 +100,128 @@ export const ShoesPage: React.FC = () => {
    return (
       <div className='shoes-page__container'>
          {currentShoes && (
-            <div className='shoes-page__main'>
-               <div className='shoes-page__img-container'>
-                  <img src={baseURL + currentShoes.img} alt='Взуття' />
-               </div>
-               <div className='shoes-page__info-container'>
-                  <h3 className='shoes-page__model-name'>
-                     {currentShoes.brand.name} {currentShoes.model}
-                  </h3>
-                  <p className='shoes-page__model-id'>
-                     ID товару: #{currentShoes.id}
-                  </p>
-                  <p className='shoes-page__model-price'>
-                     Ціна: {currentShoes.price} грн.
-                  </p>
-                  <p className='shoes-page__model-size'>Розмір взуття:</p>
-                  <div className='shoes-page__sizes-buttons'>
-                     {currentShoes.shoes_sizes.map(({ size, sizeId }) => (
-                        <Button
-                           key={sizeId}
-                           buttonText={size.size}
-                           buttonClass={
-                              +size.id === selectedSizeId
-                                 ? ButtonClassEnum.ACTIVE_SIZE_BUTTON
-                                 : ButtonClassEnum.SIZE_BUTTON
-                           }
-                           buttonClick={() => handleClickSizeButton(+size.id)}
-                        />
-                     ))}
+            <>
+               <div className='shoes-page__main'>
+                  <div className='shoes-page__img-container'>
+                     <img src={baseURL + currentShoes.img} alt='Взуття' />
                   </div>
-                  <HorizontalLine />
-                  <div className='shoes-page__buy-container'>
-                     <div className='shoes-page__buy-counter'>
-                        <IconButton
-                           icon={faChevronUp}
-                           onClick={handleClickIncrementCount}
-                        />
-                        <div className='shoes-page__buy-number'>
-                           <p>{count}</p>
+                  <div className='shoes-page__info-container'>
+                     <h3 className='shoes-page__model-name'>
+                        {currentShoes.brand.name} {currentShoes.model}
+                     </h3>
+                     <p className='shoes-page__model-id'>
+                        ID товару: #{currentShoes.id}
+                     </p>
+                     <p className='shoes-page__model-price'>
+                        Ціна: {currentShoes.price} грн.
+                     </p>
+                     <p className='shoes-page__model-size'>Розмір взуття:</p>
+                     <div className='shoes-page__sizes-buttons'>
+                        {currentShoes.shoes_sizes.map(({ size, sizeId }) => (
+                           <Button
+                              key={sizeId}
+                              buttonText={size.size}
+                              buttonClass={
+                                 +size.id === selectedSizeId
+                                    ? ButtonClassEnum.ACTIVE_SIZE_BUTTON
+                                    : ButtonClassEnum.SIZE_BUTTON
+                              }
+                              buttonClick={() =>
+                                 handleClickSizeButton(+size.id)
+                              }
+                           />
+                        ))}
+                     </div>
+                     <HorizontalLine />
+                     <div className='shoes-page__buy-container'>
+                        <div className='shoes-page__buy-counter'>
+                           <IconButton
+                              icon={faChevronUp}
+                              onClick={handleClickIncrementCount}
+                           />
+                           <div className='shoes-page__buy-number'>
+                              <p>{count}</p>
+                           </div>
+                           <IconButton
+                              icon={faChevronDown}
+                              onClick={handleClickDecrementCount}
+                           />
                         </div>
-                        <IconButton
-                           icon={faChevronDown}
-                           onClick={handleClickDecrementCount}
-                        />
+                        <div className='shoes-page__buy-button'>
+                           <Button
+                              buttonText={buyButtonText}
+                              buttonClass={
+                                 buyButtonText === BuyButtonTextEnum.BUY
+                                    ? ButtonClassEnum.BUY
+                                    : ButtonClassEnum.DELETE
+                              }
+                              buttonClick={handleClickBuyButton}
+                           />
+                        </div>
                      </div>
-                     <div className='shoes-page__buy-button'>
-                        <Button
-                           buttonText={buyButtonText}
-                           buttonClass={
-                              buyButtonText === BuyButtonTextEnum.BUY
-                                 ? ButtonClassEnum.BUY
-                                 : ButtonClassEnum.DELETE
-                           }
-                           buttonClick={handleClickBuyButton}
-                        />
-                     </div>
+                     <HorizontalLine />
+                     <Rating shoId={currentShoes.id} />
                   </div>
-                  <HorizontalLine />
-                  <Rating shoId={currentShoes.id} />
                </div>
-            </div>
+               <div className='shoes-page__characteristics-container'>
+                  <HorizontalLine />
+                  <h3>Опис товару :</h3>
+                  <p
+                     style={{
+                        background: 'lightgray',
+                        padding: 10,
+                     }}
+                  >
+                     Бренд : {currentShoes.brand.name}
+                  </p>
+                  <p
+                     style={{
+                        background: 'transparent',
+                        padding: 10,
+                     }}
+                  >
+                     Модель : {currentShoes.model}
+                  </p>
+
+                  <p
+                     style={{
+                        background: 'lightgray',
+                        padding: 10,
+                     }}
+                  >
+                     Тип : {currentShoes.type.name}
+                  </p>
+                  <p
+                     style={{
+                        background: 'transparent',
+                        padding: 10,
+                     }}
+                  >
+                     Cезон : {currentShoes.season.name}
+                  </p>
+                  <p
+                     style={{
+                        background: 'lightgray',
+                        padding: 10,
+                     }}
+                  >
+                     Колір : {currentShoes.color.name}
+                  </p>
+                  {currentShoes.shoes_infos.map((info, index) => (
+                     <p
+                        key={info.id}
+                        style={{
+                           background:
+                              index % 2 === 0 ? 'transparent' : 'lightgray',
+                           padding: 10,
+                        }}
+                     >
+                        {info.title} : {info.description}
+                     </p>
+                  ))}
+                  <HorizontalLine />
+               </div>
+            </>
          )}
       </div>
    );

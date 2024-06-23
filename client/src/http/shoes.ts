@@ -1,4 +1,5 @@
 import { $host, $authHost } from '.';
+import { IShoesInfo } from '../modules/modal/components/HeaderDropdown';
 import { SortEnum } from '../store/reducers/filter/FilterSlice';
 import {
    IBasicCategory,
@@ -30,6 +31,7 @@ export interface IParticularShoes extends IShoesWithSizes {
    brand: IBasicCategory;
    color: IBasicCategory;
    shoes_sizes: IParticularSize[];
+   shoes_infos: IShoesInfo[];
 }
 export const getAllShoes = async ({
    brandsId,
