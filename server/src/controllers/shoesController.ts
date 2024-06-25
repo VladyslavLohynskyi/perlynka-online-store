@@ -64,7 +64,8 @@ interface shoesUpdateRequest extends Request {
       brandId?: number;
       sizes?: string;
       sex?: SexType;
-      shoes_infos: string;
+      shoesInfos?: string;
+      newShoesInfos: string;
    };
 }
 
@@ -245,7 +246,8 @@ class shoesController {
             seasonId,
             sizes,
             sex,
-            shoes_infos,
+            shoesInfos,
+            newShoesInfos,
          } = req.body;
          const shoes = await Shoes.findOne({ where: { id } });
          if (!shoes) {
@@ -294,14 +296,27 @@ class shoesController {
             }
          }
 
-         if (shoes_infos) {
-            const parseShoesInfos: IShoesInfo[] = JSON.parse(shoes_infos);
+         if (shoesInfos) {
+            const parseShoesInfos: IShoesInfo[] = JSON.parse(shoesInfos);
             if (Array.isArray(parseShoesInfos)) {
                parseShoesInfos.forEach(async ({ id, title, description }) => {
                   await ShoesInfo.update(
                      { title, description },
                      { where: { id } },
                   );
+               });
+            }
+         }
+
+         if (newShoesInfos) {
+            const parseNewShoesInfos: IShoesInfo[] = JSON.parse(newShoesInfos);
+            if (Array.isArray(parseNewShoesInfos)) {
+               parseNewShoesInfos.forEach(async ({ title, description }) => {
+                  await ShoesInfo.create({
+                     title,
+                     description,
+                     shoId: shoes.id,
+                  });
                });
             }
          }

@@ -49,6 +49,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
    const [addSizes, setAddSizes] = useState<ISize[]>([]);
    const [file, setFile] = useState<null | Blob>(null);
    const [infos, setInfos] = useState<IShoesInfo[]>([]);
+   const [addedInfos, setAddedInfos] = useState<IShoesInfo[]>([]);
    useEffect(() => {
       if (foundShoes) {
          setModel(foundShoes.model);
@@ -67,7 +68,12 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
       }
    }, [foundShoes]);
 
-   const changeInfo = (key: keyShoesInfoEnum, value: string, id: number) => {
+   const changeInfo = (
+      key: keyShoesInfoEnum,
+      value: string,
+      id: number,
+      setInfos: (value: React.SetStateAction<IShoesInfo[]>) => void,
+   ) => {
       setInfos((prev) => {
          return prev.map((info) =>
             info.id === id
@@ -77,6 +83,12 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                  }
                : info,
          );
+      });
+   };
+
+   const addInfo = () => {
+      setAddedInfos((prev) => {
+         return [...prev, { title: '', description: '', id: Date.now() }];
       });
    };
 
@@ -149,7 +161,10 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
          formData.append('file', file);
       }
       if (JSON.stringify(infos) !== JSON.stringify(shoes.shoes_infos)) {
-         formData.append('shoes_infos', JSON.stringify(infos));
+         formData.append('shoesInfos', JSON.stringify(infos));
+      }
+      if (addedInfos.length > 0) {
+         formData.append('newShoesInfos', JSON.stringify(addedInfos));
       }
       dispatch(
          updateShoes(formData, {
@@ -306,6 +321,14 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                   </div>
 
                   <div>
+                     <Button
+                        buttonClass={ButtonClassEnum.SECONDARY}
+                        buttonText='Додати додатковий опис товару'
+                        onClick={(e) => {
+                           e.preventDefault();
+                           addInfo();
+                        }}
+                     />
                      {infos.map((info) => (
                         <div
                            className='add-shoes-modal__info-container'
@@ -318,6 +341,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                                     keyShoesInfoEnum.TITLE,
                                     e.target.value,
                                     info.id,
+                                    setInfos,
                                  )
                               }
                               value={info.title}
@@ -331,6 +355,42 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                                     keyShoesInfoEnum.DESCRIPTION,
                                     e.target.value,
                                     info.id,
+                                    setInfos,
+                                 )
+                              }
+                              value={info.description}
+                              type='text'
+                              required={true}
+                           />
+                        </div>
+                     ))}
+                     {addedInfos.map((info) => (
+                        <div
+                           className='add-shoes-modal__info-container'
+                           key={info.id}
+                        >
+                           <ModalInput
+                              text='Заголовок'
+                              onChange={(e) =>
+                                 changeInfo(
+                                    keyShoesInfoEnum.TITLE,
+                                    e.target.value,
+                                    info.id,
+                                    setAddedInfos,
+                                 )
+                              }
+                              value={info.title}
+                              type='text'
+                              required={true}
+                           />
+                           <ModalInput
+                              text='Oпис'
+                              onChange={(e) =>
+                                 changeInfo(
+                                    keyShoesInfoEnum.DESCRIPTION,
+                                    e.target.value,
+                                    info.id,
+                                    setAddedInfos,
                                  )
                               }
                               value={info.description}
@@ -343,7 +403,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                   <div>
                      <Button
                         disabled={foundShoes ? false : true}
-                        buttonClass={ButtonClassEnum.SECONDARY}
+                        buttonClass={ButtonClassEnum.PRIMARY}
                         buttonText='Оновити'
                      />
                   </div>
