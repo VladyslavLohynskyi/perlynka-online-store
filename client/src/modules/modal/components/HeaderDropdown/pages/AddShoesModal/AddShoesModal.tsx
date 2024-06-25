@@ -24,7 +24,7 @@ export interface IShoesInfo {
    description: string;
 }
 
-enum keyShoesInfoEnum {
+export enum keyShoesInfoEnum {
    DESCRIPTION = 'description',
    TITLE = 'title',
 }

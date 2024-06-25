@@ -3,7 +3,7 @@ import { EditShoesModalType } from './EditShoesModalType';
 import './EditShoesModal.scss';
 import { ModalHeader } from '../../components/ModalHeader';
 import { ModalInput } from '../../components/ModalInput';
-import { getShoesById } from '../../../../../../http/shoes';
+import { IParticularShoes, getShoesById } from '../../../../../../http/shoes';
 import {
    ISize,
    IShoesWithSizes,
@@ -16,6 +16,9 @@ import { SizeEditItem } from '../../components/SizeEditItem';
 import { updateShoes } from '../../../../../../store/reducers/shoes/ShoesActionCreators';
 import { ModalSearch } from '../../components/ModalSearch';
 import { ButtonClassEnum } from '../../../../../ui/Button/ButtonType';
+import { IShoesInfo, keyShoesInfoEnum } from '../AddShoesModal';
+import { IconButton } from '../../../../../ui/IconButton';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
    const { brands, types, colors, seasons, sizes } = useAppSelector(
@@ -35,7 +38,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
    const dispatch = useAppDispatch();
    const [id, setId] = useState<number>(0);
    const [error, setError] = useState('');
-   const [foundShoes, setFoundShoes] = useState<null | IShoesWithSizes>(null);
+   const [foundShoes, setFoundShoes] = useState<null | IParticularShoes>(null);
    const [model, setModel] = useState('');
    const [price, setPrice] = useState(0);
    const [brand, setBrand] = useState(0);
@@ -45,6 +48,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
    const [sex, setSex] = useState<string>('');
    const [addSizes, setAddSizes] = useState<ISize[]>([]);
    const [file, setFile] = useState<null | Blob>(null);
+   const [infos, setInfos] = useState<IShoesInfo[]>([]);
    useEffect(() => {
       if (foundShoes) {
          setModel(foundShoes.model);
@@ -55,8 +59,26 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
          setSeason(foundShoes.seasonId);
          setSex(foundShoes.sex);
          setAddSizes([]);
+         setInfos((prev) =>
+            Array.isArray(foundShoes.shoes_infos)
+               ? foundShoes.shoes_infos
+               : prev,
+         );
       }
    }, [foundShoes]);
+
+   const changeInfo = (key: keyShoesInfoEnum, value: string, id: number) => {
+      setInfos((prev) => {
+         return prev.map((info) =>
+            info.id === id
+               ? {
+                    ...info,
+                    [key]: value,
+                 }
+               : info,
+         );
+      });
+   };
 
    const handleChangeSize = (sizeId: number, count: number) => {
       if (count > 0) {
@@ -88,7 +110,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
       if (e.target.files) setFile(e.target.files[0]);
    };
 
-   const handleSubmitUpdate = (shoes: IShoesWithSizes) => {
+   const handleSubmitUpdate = (shoes: IParticularShoes) => {
       const formData = new FormData();
 
       formData.append('id', String(id));
@@ -125,6 +147,9 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
       }
       if (file) {
          formData.append('file', file);
+      }
+      if (JSON.stringify(infos) !== JSON.stringify(shoes.shoes_infos)) {
+         formData.append('shoes_infos', JSON.stringify(infos));
       }
       dispatch(
          updateShoes(formData, {
@@ -278,6 +303,42 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                            />
                         );
                      })}
+                  </div>
+
+                  <div>
+                     {infos.map((info) => (
+                        <div
+                           className='add-shoes-modal__info-container'
+                           key={info.id}
+                        >
+                           <ModalInput
+                              text='Заголовок'
+                              onChange={(e) =>
+                                 changeInfo(
+                                    keyShoesInfoEnum.TITLE,
+                                    e.target.value,
+                                    info.id,
+                                 )
+                              }
+                              value={info.title}
+                              type='text'
+                              required={true}
+                           />
+                           <ModalInput
+                              text='Oпис'
+                              onChange={(e) =>
+                                 changeInfo(
+                                    keyShoesInfoEnum.DESCRIPTION,
+                                    e.target.value,
+                                    info.id,
+                                 )
+                              }
+                              value={info.description}
+                              type='text'
+                              required={true}
+                           />
+                        </div>
+                     ))}
                   </div>
                   <div>
                      <Button

@@ -5,7 +5,7 @@ import { promises } from 'fs';
 import { Request, Response } from 'express';
 import ShoesSize from '../models/shoesSizeModel';
 
-import { Op, Sequelize } from 'sequelize';
+import { Op, Sequelize, where } from 'sequelize';
 
 import Brand from '../models/brandModel';
 
@@ -64,10 +64,12 @@ interface shoesUpdateRequest extends Request {
       brandId?: number;
       sizes?: string;
       sex?: SexType;
+      shoes_infos: string;
    };
 }
 
 export interface IShoesInfo {
+   id: number;
    title: string;
    description: string;
 }
@@ -243,6 +245,7 @@ class shoesController {
             seasonId,
             sizes,
             sex,
+            shoes_infos,
          } = req.body;
          const shoes = await Shoes.findOne({ where: { id } });
          if (!shoes) {
@@ -287,6 +290,18 @@ class shoesController {
                         sizeId: sizeId,
                      });
                   }
+               });
+            }
+         }
+
+         if (shoes_infos) {
+            const parseShoesInfos: IShoesInfo[] = JSON.parse(shoes_infos);
+            if (Array.isArray(parseShoesInfos)) {
+               parseShoesInfos.forEach(async ({ id, title, description }) => {
+                  await ShoesInfo.update(
+                     { title, description },
+                     { where: { id } },
+                  );
                });
             }
          }
