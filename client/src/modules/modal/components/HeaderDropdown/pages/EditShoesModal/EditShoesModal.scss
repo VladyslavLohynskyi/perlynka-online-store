@@ -7,7 +7,9 @@
       min-height: 150px;
       border-radius: 8px;
       box-shadow: 0 0 0 1px rgba(29, 28, 29, 0.13), 0 18px 48px 0 #00000059;
-      overflow: hidden;
+      height: fit-content;
+      max-height: 700px;
+      overflow: auto;
    }
    &__main {
       margin: 20px 0 30px 0;

@@ -50,6 +50,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
    const [file, setFile] = useState<null | Blob>(null);
    const [infos, setInfos] = useState<IShoesInfo[]>([]);
    const [addedInfos, setAddedInfos] = useState<IShoesInfo[]>([]);
+   const [deletedInfoIds, setDeletedInfoIds] = useState<number[]>([]);
    useEffect(() => {
       if (foundShoes) {
          setModel(foundShoes.model);
@@ -89,6 +90,15 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
    const addInfo = () => {
       setAddedInfos((prev) => {
          return [...prev, { title: '', description: '', id: Date.now() }];
+      });
+   };
+
+   const removeInfo = (
+      id: number,
+      setInfos: (value: React.SetStateAction<IShoesInfo[]>) => void,
+   ) => {
+      setInfos((prev) => {
+         return prev.filter((info) => info.id !== id);
       });
    };
 
@@ -165,6 +175,9 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
       }
       if (addedInfos.length > 0) {
          formData.append('newShoesInfos', JSON.stringify(addedInfos));
+      }
+      if (deletedInfoIds.length > 0) {
+         formData.append('deletedShoesInfoIds', JSON.stringify(deletedInfoIds));
       }
       dispatch(
          updateShoes(formData, {
@@ -362,6 +375,18 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                               type='text'
                               required={true}
                            />
+                           <div className='add-shoes-modal__info-container__trash-button-container'>
+                              <IconButton
+                                 icon={faTrash}
+                                 onClick={() => {
+                                    removeInfo(info.id, setInfos);
+                                    setDeletedInfoIds((prev) => [
+                                       ...prev,
+                                       info.id,
+                                    ]);
+                                 }}
+                              />
+                           </div>
                         </div>
                      ))}
                      {addedInfos.map((info) => (
@@ -397,6 +422,14 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                               type='text'
                               required={true}
                            />
+                           <div className='add-shoes-modal__info-container__trash-button-container'>
+                              <IconButton
+                                 icon={faTrash}
+                                 onClick={() =>
+                                    removeInfo(info.id, setAddedInfos)
+                                 }
+                              />
+                           </div>
                         </div>
                      ))}
                   </div>

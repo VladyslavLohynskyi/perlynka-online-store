@@ -66,6 +66,7 @@ interface shoesUpdateRequest extends Request {
       sex?: SexType;
       shoesInfos?: string;
       newShoesInfos: string;
+      deletedShoesInfoIds: string;
    };
 }
 
@@ -248,6 +249,7 @@ class shoesController {
             sex,
             shoesInfos,
             newShoesInfos,
+            deletedShoesInfoIds,
          } = req.body;
          const shoes = await Shoes.findOne({ where: { id } });
          if (!shoes) {
@@ -321,9 +323,23 @@ class shoesController {
             }
          }
 
-         return res.json({ message: 'Device is updated' });
+         if (deletedShoesInfoIds) {
+            const parsedDeletedShoesInfoIds: number[] =
+               JSON.parse(deletedShoesInfoIds);
+            if (Array.isArray(parsedDeletedShoesInfoIds)) {
+               parsedDeletedShoesInfoIds.forEach(async (id) => {
+                  await ShoesInfo.destroy({
+                     where: {
+                        id,
+                        shoId: shoes.id,
+                     },
+                  });
+               });
+            }
+         }
+         return res.json({ message: 'Shoes is updated' });
       } catch (error) {
-         return res.json('Device updating Error ');
+         return res.json('Shoes updating Error ');
       }
    }
 }
