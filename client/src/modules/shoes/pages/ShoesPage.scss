@@ -71,4 +71,15 @@
          height: 15px;
       }
    }
+
+   &__characteristics-container {
+      margin: auto;
+      width: 100%;
+      max-width: 865px;
+
+      & h3 {
+         font-size: 18px;
+         margin-bottom: 10px;
+      }
+   }
 }

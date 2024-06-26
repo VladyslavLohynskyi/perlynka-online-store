@@ -11,6 +11,7 @@ import BasketShoes from './basketShoesModel';
 import Rating from './ratingModel';
 import Token from './tokenModel';
 import ForgotToken from './forgotTokenModel';
+import ShoesInfo from './shoesInfoModel';
 
 User.hasOne(Basket);
 Basket.belongsTo(User);
@@ -54,6 +55,9 @@ BasketShoes.belongsTo(Shoes);
 Size.hasMany(BasketShoes);
 BasketShoes.belongsTo(Size);
 
+Shoes.hasMany(ShoesInfo);
+ShoesInfo.belongsTo(Shoes);
+
 module.exports = {
    User,
    Basket,
@@ -67,4 +71,5 @@ module.exports = {
    ShoesSize,
    Rating,
    Token,
+   ShoesInfo,
 };

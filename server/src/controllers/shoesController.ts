@@ -5,7 +5,7 @@ import { promises } from 'fs';
 import { Request, Response } from 'express';
 import ShoesSize from '../models/shoesSizeModel';
 
-import { Op, Sequelize } from 'sequelize';
+import { Op, Sequelize, where } from 'sequelize';
 
 import Brand from '../models/brandModel';
 
@@ -13,6 +13,7 @@ import Type from '../models/typeModel';
 import Season from '../models/seasonModel';
 import Color from '../models/colorModel';
 import Size from '../models/sizeModel';
+import ShoesInfo from '../models/shoesInfoModel';
 
 interface IParseSizes {
    sizeId: number;
@@ -48,6 +49,7 @@ interface shoesCreateRequest extends Request {
       brandId: number;
       sizes: string;
       sex: SexType;
+      shoesInfos: string;
    };
 }
 
@@ -62,7 +64,16 @@ interface shoesUpdateRequest extends Request {
       brandId?: number;
       sizes?: string;
       sex?: SexType;
+      shoesInfos?: string;
+      newShoesInfos: string;
+      deletedShoesInfoIds: string;
    };
+}
+
+export interface IShoesInfo {
+   id: number;
+   title: string;
+   description: string;
 }
 
 class shoesController {
@@ -77,6 +88,7 @@ class shoesController {
             seasonId,
             sizes,
             sex,
+            shoesInfos,
          } = req.body;
          const img = req.files?.file;
          if (!img) {
@@ -104,7 +116,16 @@ class shoesController {
                ShoesSize.create({ sizeId, count, shoId: shoes.id }),
             );
          }
-
+         if (shoesInfos.length != 0) {
+            const parseInfo = JSON.parse(shoesInfos) as IShoesInfo[];
+            parseInfo.map((element) => {
+               ShoesInfo.create({
+                  title: element.title,
+                  description: element.description,
+                  shoId: shoes.id,
+               });
+            });
+         }
          return res.json(shoes);
       } catch (error) {
          res.json('Shoes creating Error ');
@@ -198,6 +219,9 @@ class shoesController {
                { model: Type },
                { model: Season },
                { model: Color },
+               {
+                  model: ShoesInfo,
+               },
             ],
          });
          if (!shoes) {
@@ -223,6 +247,9 @@ class shoesController {
             seasonId,
             sizes,
             sex,
+            shoesInfos,
+            newShoesInfos,
+            deletedShoesInfoIds,
          } = req.body;
          const shoes = await Shoes.findOne({ where: { id } });
          if (!shoes) {
@@ -271,9 +298,48 @@ class shoesController {
             }
          }
 
-         return res.json({ message: 'Device is updated' });
+         if (shoesInfos) {
+            const parseShoesInfos: IShoesInfo[] = JSON.parse(shoesInfos);
+            if (Array.isArray(parseShoesInfos)) {
+               parseShoesInfos.forEach(async ({ id, title, description }) => {
+                  await ShoesInfo.update(
+                     { title, description },
+                     { where: { id } },
+                  );
+               });
+            }
+         }
+
+         if (newShoesInfos) {
+            const parseNewShoesInfos: IShoesInfo[] = JSON.parse(newShoesInfos);
+            if (Array.isArray(parseNewShoesInfos)) {
+               parseNewShoesInfos.forEach(async ({ title, description }) => {
+                  await ShoesInfo.create({
+                     title,
+                     description,
+                     shoId: shoes.id,
+                  });
+               });
+            }
+         }
+
+         if (deletedShoesInfoIds) {
+            const parsedDeletedShoesInfoIds: number[] =
+               JSON.parse(deletedShoesInfoIds);
+            if (Array.isArray(parsedDeletedShoesInfoIds)) {
+               parsedDeletedShoesInfoIds.forEach(async (id) => {
+                  await ShoesInfo.destroy({
+                     where: {
+                        id,
+                        shoId: shoes.id,
+                     },
+                  });
+               });
+            }
+         }
+         return res.json({ message: 'Shoes is updated' });
       } catch (error) {
-         return res.json('Device updating Error ');
+         return res.json('Shoes updating Error ');
       }
    }
 }
