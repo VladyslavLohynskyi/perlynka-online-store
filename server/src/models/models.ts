@@ -12,6 +12,7 @@ import Rating from './ratingModel';
 import Token from './tokenModel';
 import ForgotToken from './forgotTokenModel';
 import ShoesInfo from './shoesInfoModel';
+import ShoesImage from './shoesImageModel';
 
 User.hasOne(Basket);
 Basket.belongsTo(User);
@@ -57,6 +58,9 @@ BasketShoes.belongsTo(Size);
 
 Shoes.hasMany(ShoesInfo);
 ShoesInfo.belongsTo(Shoes);
+
+Shoes.hasMany(ShoesImage);
+ShoesImage.belongsTo(Shoes);
 
 module.exports = {
    User,

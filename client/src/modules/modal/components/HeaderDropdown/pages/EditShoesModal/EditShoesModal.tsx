@@ -6,7 +6,6 @@ import { ModalInput } from '../../components/ModalInput';
 import { IParticularShoes, getShoesById } from '../../../../../../http/shoes';
 import {
    ISize,
-   IShoesWithSizes,
    SexEnum,
 } from '../../../../../../store/reducers/shoes/ShoesSlice';
 import { baseURL } from '../../../../../../utils/constants';
