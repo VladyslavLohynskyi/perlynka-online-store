@@ -14,6 +14,7 @@ import Season from '../models/seasonModel';
 import Color from '../models/colorModel';
 import Size from '../models/sizeModel';
 import ShoesInfo from '../models/shoesInfoModel';
+import ShoesImage from '../models/shoesImageModel';
 
 interface IParseSizes {
    sizeId: number;
@@ -90,15 +91,17 @@ class shoesController {
             sex,
             shoesInfos,
          } = req.body;
-         const img = req.files?.file;
+         const img = req.files?.images;
          if (!img) {
-            return res.json('Error: Upload one file');
+            return res.json('Error: Upload file');
          }
-         const fileName = uuidv4() + '.jpg';
+         const fileMainName = uuidv4() + '.jpg';
          if (!Array.isArray(img)) {
-            img.mv(path.resolve(__dirname, '..', 'static', fileName));
+            await img.mv(path.resolve(__dirname, '..', 'static', fileMainName));
          } else {
-            res.json('Error: Upload only one file');
+            await img[img.length - 1].mv(
+               path.resolve(__dirname, '..', 'static', fileMainName),
+            );
          }
          const shoes = await Shoes.create({
             model,
@@ -107,9 +110,19 @@ class shoesController {
             typeId,
             colorId,
             seasonId,
-            img: fileName,
+            img: fileMainName,
             sex,
          });
+
+         if (Array.isArray(img)) {
+            for (let i = img.length - 2; i >= 0; i--) {
+               const fileName = uuidv4() + '.jpg';
+               await img[i].mv(
+                  path.resolve(__dirname, '..', 'static', fileName),
+               );
+               await ShoesImage.create({ shoId: shoes.id, img: fileName });
+            }
+         }
          const parseSizes: IParseSizes[] = JSON.parse(sizes);
          if (Array.isArray(parseSizes)) {
             parseSizes.map(({ sizeId, count }) =>

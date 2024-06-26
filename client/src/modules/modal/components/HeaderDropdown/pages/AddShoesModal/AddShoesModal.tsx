@@ -50,7 +50,7 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
    const [type, setType] = useState(0);
    const [color, setColor] = useState(0);
    const [season, setSeason] = useState(0);
-   const [file, setFile] = useState<null | Blob>(null);
+   const [file, setFile] = useState<null | FileList>(null);
    const [sex, setSex] = useState<string>(SexEnum.UNISEX);
    const [addSizes, setAddSizes] = useState<IEditSize[]>([]);
    const [error, setError] = useState('');
@@ -104,8 +104,8 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
          setError('Виберіть кількість пар');
          return;
       }
-      if (!file) {
-         setError('Виберіть фотографію');
+      if (!file || file.length > 3) {
+         setError('Виберіть фотографії (до 3 включно)');
          return;
       }
 
@@ -125,7 +125,9 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
       formData.append('seasonId', String(season));
       formData.append('sizes', JSON.stringify(addSizes));
       formData.append('sex', String(sex));
-      formData.append('file', file);
+      for (let i = 0; i < file.length; i++) {
+         formData.append('images', file[i]);
+      }
       formData.append('shoesInfos', JSON.stringify(infos));
       dispatch(
          createShoes(formData, {
@@ -158,7 +160,14 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
    };
 
    const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files) setFile(e.target.files[0]);
+      setError('');
+      if (e.target.files) {
+         if (Array.from(e.target.files).length > 3) {
+            setError('Забагато зображень, виберіть до 3 фотографій включно');
+            return;
+         }
+         setFile(e.target.files);
+      }
    };
    return (
       <div className='add-shoes-modal__container'>
@@ -260,6 +269,8 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
                onChange={handleChangeFile}
                type='file'
                required={true}
+               accept='image/*'
+               multiple={true}
             />
             <div className='add-shoes-modal__sizes-container'>
                {sizes?.map((size) => (
