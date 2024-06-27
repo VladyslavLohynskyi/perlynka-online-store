@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import './ShoesPage.scss';
 import { useParams } from 'react-router-dom';
-import { IParticularShoes, getShoesById } from '../../../http/shoes';
+import {
+   IParticularShoes,
+   IShoesImage,
+   getShoesById,
+} from '../../../http/shoes';
 import { baseURL } from '../../../utils/constants';
 import { Button } from '../../ui/Button';
 import { ButtonClassEnum } from '../../ui/Button/ButtonType';
@@ -26,11 +30,20 @@ export const ShoesPage: React.FC = () => {
    const [currentShoes, setCurrentShoes] = useState<IParticularShoes>();
    const [selectedSizeId, setSelectedSizeId] = useState<number>(0);
    const [count, setCount] = useState<number>(1);
+   const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
+   const [slides, setSlides] = useState<IShoesImage[]>([]);
    const [buyButtonText, setBuyButtonText] = useState<BuyButtonTextEnum>(
       BuyButtonTextEnum.BUY,
    );
    useEffect(() => {
-      if (id) getShoesById(+id).then((shoes) => setCurrentShoes(shoes));
+      if (id)
+         getShoesById(+id).then((shoes) => {
+            setCurrentShoes(shoes);
+            setSlides([
+               { id: 0, img: shoes.img, shoId: shoes.id },
+               ...shoes.shoes_images,
+            ]);
+         });
    }, []);
 
    const handleClickSizeButton = (sizeId: number) => {
@@ -102,8 +115,31 @@ export const ShoesPage: React.FC = () => {
          {currentShoes && (
             <>
                <div className='shoes-page__main'>
-                  <div className='shoes-page__img-container'>
-                     <img src={baseURL + currentShoes.img} alt='Взуття' />
+                  <div className='shoes-page__carousel-container'>
+                     {slides.length > 1 && (
+                        <div className='shoes-page__carousel-options'>
+                           {slides.map(
+                              ({ img, id }, index) =>
+                                 index !== currentSlideIndex && (
+                                    <div
+                                       onClick={() =>
+                                          setCurrentSlideIndex(index)
+                                       }
+                                       key={id}
+                                       className='shoes-page__carousel-option-container'
+                                    >
+                                       <img src={baseURL + img} alt='Взуття' />
+                                    </div>
+                                 ),
+                           )}
+                        </div>
+                     )}
+                     <div className='shoes-page__img-container'>
+                        <img
+                           src={baseURL + slides[currentSlideIndex].img}
+                           alt='Взуття'
+                        />
+                     </div>
                   </div>
                   <div className='shoes-page__info-container'>
                      <h3 className='shoes-page__model-name'>

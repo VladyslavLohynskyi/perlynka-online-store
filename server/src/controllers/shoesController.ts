@@ -235,6 +235,7 @@ class shoesController {
                {
                   model: ShoesInfo,
                },
+               { model: ShoesImage },
             ],
          });
          if (!shoes) {
