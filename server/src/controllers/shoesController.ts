@@ -66,8 +66,9 @@ interface shoesUpdateRequest extends Request {
       sizes?: string;
       sex?: SexType;
       shoesInfos?: string;
-      newShoesInfos: string;
-      deletedShoesInfoIds: string;
+      newShoesInfos?: string;
+      deletedShoesInfoIds?: string;
+      deletedImagesNames?: string;
    };
 }
 
@@ -264,6 +265,7 @@ class shoesController {
             shoesInfos,
             newShoesInfos,
             deletedShoesInfoIds,
+            deletedImagesNames,
          } = req.body;
          const shoes = await Shoes.findOne({ where: { id } });
          if (!shoes) {
@@ -350,6 +352,17 @@ class shoesController {
                   });
                });
             }
+         }
+
+         if (deletedImagesNames) {
+            const parsedDeletedImagesNames: string[] =
+               JSON.parse(deletedImagesNames);
+            parsedDeletedImagesNames.forEach(async (element) => {
+               await ShoesImage.destroy({ where: { img: element } });
+               await promises.unlink(
+                  path.resolve(__dirname, '..', 'static', element),
+               );
+            });
          }
          return res.json({ message: 'Shoes is updated' });
       } catch (error) {

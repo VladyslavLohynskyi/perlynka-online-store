@@ -25,16 +25,34 @@
       width: 100%;
    }
 
-   &___main-edit-container {
+   &__edit-images-container {
       display: flex;
+      flex-direction: row;
       width: 100%;
-      height: 200px;
-
+      margin-top: 10px;
+   }
+   &__img-container {
+      width: 150px;
+      height: 150px;
       & img {
          height: 100%;
+         width: 100%;
+         object-fit: cover;
       }
    }
 
+   &__edit-img-container {
+      width: 150px;
+      height: 202px;
+      margin-right: 10px;
+   }
+
+   &__trash-button-container {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+   }
    &__edit-form {
       margin: 10px 0;
    }
