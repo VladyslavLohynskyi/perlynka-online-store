@@ -22,6 +22,12 @@ import { ButtonClassEnum } from '../../../../../ui/Button/ButtonType';
 import { IShoesInfo, keyShoesInfoEnum } from '../AddShoesModal';
 import { IconButton } from '../../../../../ui/IconButton';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import Input from 'react-select/dist/declarations/src/components/Input';
+
+interface INewAdditionImages {
+   id: number;
+   img: null | Blob;
+}
 
 export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
    const { brands, types, colors, seasons, sizes } = useAppSelector(
@@ -56,6 +62,9 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
    const [deletedInfoIds, setDeletedInfoIds] = useState<number[]>([]);
    const [additionImages, setAdditionImages] = useState<IShoesImage[]>([]);
    const [deletedImages, setDeletedImages] = useState<string[]>([]);
+   const [newAdditionImages, setNewAdditionImages] = useState<
+      INewAdditionImages[]
+   >([]);
    useEffect(() => {
       if (foundShoes) {
          setModel(foundShoes.model);
@@ -72,12 +81,19 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                ? foundShoes.shoes_infos
                : prev,
          );
+         for (let i = 0; i < 2 - foundShoes.shoes_images.length; i++) {
+            setNewAdditionImages((prev) => [
+               ...prev,
+               { id: Date.now() + i, img: null },
+            ]);
+         }
       }
    }, [foundShoes]);
 
    const removeImage = (img: string) => {
       setDeletedImages((prev) => [...prev, img]);
       setAdditionImages((prev) => prev.filter((el) => el.img !== img));
+      setNewAdditionImages((prev) => [...prev, { id: Date.now(), img: null }]);
    };
 
    const changeInfo = (
@@ -143,6 +159,17 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
       if (e.target.files) setFile(e.target.files[0]);
    };
 
+   const handleChangeAdditionImage = (
+      e: React.ChangeEvent<HTMLInputElement>,
+      id: number,
+   ) => {
+      setNewAdditionImages((prev) =>
+         prev.map((el) =>
+            el.id === id ? { ...el, img: e.target.files![0] } : el,
+         ),
+      );
+   };
+
    const handleSubmitUpdate = (shoes: IParticularShoes) => {
       const formData = new FormData();
 
@@ -194,6 +221,11 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
       if (deletedImages.length > 0) {
          formData.append('deletedImagesNames', JSON.stringify(deletedImages));
       }
+
+      newAdditionImages.forEach(({ img }) => {
+         if (img) formData.append('newAdditionImages', img);
+      });
+
       dispatch(
          updateShoes(formData, {
             brandsId: selectedBrandsId,
@@ -272,6 +304,28 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                                  onClick={() => removeImage(img)}
                               />
                            </div>
+                        </div>
+                     ))}
+                     {newAdditionImages.map(({ id, img }) => (
+                        <div
+                           key={id}
+                           className='edit-shoes-modal__edit-img-container'
+                        >
+                           <div className='edit-shoes-modal__img-container'>
+                              {img && (
+                                 <img
+                                    src={URL.createObjectURL(img)}
+                                    alt='Взуття'
+                                 />
+                              )}
+                           </div>
+                           <ModalInput
+                              text='Завантажити Фото'
+                              onChange={(e) => handleChangeAdditionImage(e, id)}
+                              type='file'
+                              required={false}
+                              accept='image/*'
+                           />
                         </div>
                      ))}
                   </div>

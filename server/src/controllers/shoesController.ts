@@ -272,6 +272,7 @@ class shoesController {
             return res.json(`Error: Shoes with id=${id} is not exist`);
          }
          const img = req.files?.file;
+         const additionImages = req.files?.newAdditionImages;
          if (!Array.isArray(img) && img) {
             await promises.unlink(
                path.resolve(__dirname, '..', 'static', shoes.img),
@@ -363,6 +364,24 @@ class shoesController {
                   path.resolve(__dirname, '..', 'static', element),
                );
             });
+         }
+
+         if (additionImages) {
+            if (Array.isArray(additionImages)) {
+               additionImages.forEach(async (el) => {
+                  const fileName = uuidv4() + '.jpg';
+                  await el.mv(
+                     path.resolve(__dirname, '..', 'static', fileName),
+                  );
+                  await ShoesImage.create({ shoId: shoes.id, img: fileName });
+               });
+            } else {
+               const fileName = uuidv4() + '.jpg';
+               await additionImages.mv(
+                  path.resolve(__dirname, '..', 'static', fileName),
+               );
+               await ShoesImage.create({ shoId: shoes.id, img: fileName });
+            }
          }
          return res.json({ message: 'Shoes is updated' });
       } catch (error) {
