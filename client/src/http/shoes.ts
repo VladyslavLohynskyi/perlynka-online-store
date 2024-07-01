@@ -24,7 +24,11 @@ interface IParticularSize extends ISize {
    sizeId: number;
    size: ISizeCategory;
 }
-
+export interface IShoesImage {
+   id: number;
+   img: string;
+   shoId: number;
+}
 export interface IParticularShoes extends IShoesWithSizes {
    type: IBasicCategory;
    season: IBasicCategory;
@@ -32,6 +36,7 @@ export interface IParticularShoes extends IShoesWithSizes {
    color: IBasicCategory;
    shoes_sizes: IParticularSize[];
    shoes_infos: IShoesInfo[];
+   shoes_images: IShoesImage[];
 }
 export const getAllShoes = async ({
    brandsId,

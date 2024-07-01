@@ -14,6 +14,7 @@ import Season from '../models/seasonModel';
 import Color from '../models/colorModel';
 import Size from '../models/sizeModel';
 import ShoesInfo from '../models/shoesInfoModel';
+import ShoesImage from '../models/shoesImageModel';
 
 interface IParseSizes {
    sizeId: number;
@@ -65,8 +66,9 @@ interface shoesUpdateRequest extends Request {
       sizes?: string;
       sex?: SexType;
       shoesInfos?: string;
-      newShoesInfos: string;
-      deletedShoesInfoIds: string;
+      newShoesInfos?: string;
+      deletedShoesInfoIds?: string;
+      deletedImagesNames?: string;
    };
 }
 
@@ -90,15 +92,17 @@ class shoesController {
             sex,
             shoesInfos,
          } = req.body;
-         const img = req.files?.file;
+         const img = req.files?.images;
          if (!img) {
-            return res.json('Error: Upload one file');
+            return res.json('Error: Upload file');
          }
-         const fileName = uuidv4() + '.jpg';
+         const fileMainName = uuidv4() + '.jpg';
          if (!Array.isArray(img)) {
-            img.mv(path.resolve(__dirname, '..', 'static', fileName));
+            await img.mv(path.resolve(__dirname, '..', 'static', fileMainName));
          } else {
-            res.json('Error: Upload only one file');
+            await img[img.length - 1].mv(
+               path.resolve(__dirname, '..', 'static', fileMainName),
+            );
          }
          const shoes = await Shoes.create({
             model,
@@ -107,9 +111,19 @@ class shoesController {
             typeId,
             colorId,
             seasonId,
-            img: fileName,
+            img: fileMainName,
             sex,
          });
+
+         if (Array.isArray(img)) {
+            for (let i = img.length - 2; i >= 0; i--) {
+               const fileName = uuidv4() + '.jpg';
+               await img[i].mv(
+                  path.resolve(__dirname, '..', 'static', fileName),
+               );
+               await ShoesImage.create({ shoId: shoes.id, img: fileName });
+            }
+         }
          const parseSizes: IParseSizes[] = JSON.parse(sizes);
          if (Array.isArray(parseSizes)) {
             parseSizes.map(({ sizeId, count }) =>
@@ -222,6 +236,7 @@ class shoesController {
                {
                   model: ShoesInfo,
                },
+               { model: ShoesImage },
             ],
          });
          if (!shoes) {
@@ -250,12 +265,14 @@ class shoesController {
             shoesInfos,
             newShoesInfos,
             deletedShoesInfoIds,
+            deletedImagesNames,
          } = req.body;
          const shoes = await Shoes.findOne({ where: { id } });
          if (!shoes) {
             return res.json(`Error: Shoes with id=${id} is not exist`);
          }
          const img = req.files?.file;
+         const additionImages = req.files?.newAdditionImages;
          if (!Array.isArray(img) && img) {
             await promises.unlink(
                path.resolve(__dirname, '..', 'static', shoes.img),
@@ -335,6 +352,35 @@ class shoesController {
                      },
                   });
                });
+            }
+         }
+
+         if (deletedImagesNames) {
+            const parsedDeletedImagesNames: string[] =
+               JSON.parse(deletedImagesNames);
+            parsedDeletedImagesNames.forEach(async (element) => {
+               await ShoesImage.destroy({ where: { img: element } });
+               await promises.unlink(
+                  path.resolve(__dirname, '..', 'static', element),
+               );
+            });
+         }
+
+         if (additionImages) {
+            if (Array.isArray(additionImages)) {
+               additionImages.forEach(async (el) => {
+                  const fileName = uuidv4() + '.jpg';
+                  await el.mv(
+                     path.resolve(__dirname, '..', 'static', fileName),
+                  );
+                  await ShoesImage.create({ shoId: shoes.id, img: fileName });
+               });
+            } else {
+               const fileName = uuidv4() + '.jpg';
+               await additionImages.mv(
+                  path.resolve(__dirname, '..', 'static', fileName),
+               );
+               await ShoesImage.create({ shoId: shoes.id, img: fileName });
             }
          }
          return res.json({ message: 'Shoes is updated' });
