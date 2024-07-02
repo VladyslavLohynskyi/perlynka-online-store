@@ -1,0 +1,35 @@
+.modal-alert {
+   &__container {
+      position: fixed;
+      left: 0;
+      top: 20px;
+      right: 0;
+
+      display: flex;
+      height: 100px;
+      align-items: center;
+      justify-content: center;
+   }
+
+   &__content {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-radius: 6px;
+      height: 80%;
+      width: 45%;
+      background-color: #d1e7dd;
+
+      & h3 {
+         margin: 0;
+      }
+   }
+
+   &--success {
+      border: 1px solid #0f5132;
+   }
+
+   &--danger {
+      border: 1px solid #981006;
+   }
+}

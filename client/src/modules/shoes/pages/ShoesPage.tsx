@@ -19,6 +19,8 @@ import {
    addShoesToBasket,
    addShoesToBasketNotAuth,
 } from '../../../store/reducers/basket/BasketActionCreators';
+import Alert from '../../ui/Alert/Alert';
+import { AlertTypeEnum } from '../../ui/Alert/AlertType';
 enum BuyButtonTextEnum {
    BUY = 'Купити',
    SIZE_ERROR = 'Виберіть Розмір',
@@ -26,6 +28,7 @@ enum BuyButtonTextEnum {
 export const ShoesPage: React.FC = () => {
    const { id } = useParams();
    const { isAuth } = useAppSelector((state) => state.userReducer);
+   const { error } = useAppSelector((state) => state.basketReducer);
    const dispatch = useAppDispatch();
    const [currentShoes, setCurrentShoes] = useState<IParticularShoes>();
    const [selectedSizeId, setSelectedSizeId] = useState<number>(0);
@@ -35,6 +38,11 @@ export const ShoesPage: React.FC = () => {
    const [buyButtonText, setBuyButtonText] = useState<BuyButtonTextEnum>(
       BuyButtonTextEnum.BUY,
    );
+   const [showAlertNotification, setShowAlertNotification] =
+      useState<boolean>(false);
+
+   const [alertNotificationMessage, setAlertNotificationMessage] =
+      useState<string>('');
    useEffect(() => {
       if (id)
          getShoesById(+id).then((shoes) => {
@@ -65,10 +73,16 @@ export const ShoesPage: React.FC = () => {
       }
    };
 
-   const handleClickBuyButton = () => {
+   const handleClickBuyButton = async () => {
       if (currentShoes && selectedSizeId) {
          if (isAuth) {
-            dispatch(addShoesToBasket(currentShoes.id, selectedSizeId, count));
+            await dispatch(
+               addShoesToBasket(currentShoes.id, selectedSizeId, count),
+            );
+            setShowAlertNotification(true);
+            setAlertNotificationMessage(
+               error ? error : 'Товар успішно додано до корзини',
+            );
          } else {
             const {
                id,
@@ -259,6 +273,15 @@ export const ShoesPage: React.FC = () => {
                </div>
             </>
          )}
+         <Alert
+            show={showAlertNotification}
+            onClose={() => {
+               setShowAlertNotification(false);
+               setAlertNotificationMessage('');
+            }}
+            type={error ? AlertTypeEnum.DANGER : AlertTypeEnum.SUCCESS}
+            message={alertNotificationMessage}
+         />
       </div>
    );
 };
