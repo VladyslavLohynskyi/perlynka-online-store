@@ -13,17 +13,20 @@ interface IBasketState {
    totalCountOfShoesInBasket: number;
    isLoading: boolean;
    error: string;
+   message: string;
 }
 
 const initialState: IBasketState = {
    basket: [],
    totalCountOfShoesInBasket: 0,
+   message: '',
    isLoading: true,
    error: '',
 };
 interface IAddShoesToBasketSuccess {
    basketItems: IBasketItem[];
    count: number;
+   message: string;
 }
 
 interface IDeleteOneShoesFromBasketSuccessPayload {
@@ -37,6 +40,7 @@ export const basketSlice = createSlice({
       start(state) {
          state.isLoading = true;
          state.error = '';
+         state.message = '';
       },
 
       addShoesToBasketSuccess(
@@ -48,6 +52,7 @@ export const basketSlice = createSlice({
          state.basket = [...action.payload.basketItems];
          state.totalCountOfShoesInBasket =
             state.totalCountOfShoesInBasket + action.payload.count;
+         state.message = action.payload.message;
       },
 
       addShoesToBasketNotAuthSuccess(
@@ -73,6 +78,7 @@ export const basketSlice = createSlice({
             state.totalCountOfShoesInBasket + action.payload.count;
          document.cookie = `basket=${JSON.stringify(state.basket)}; path=/;`;
          document.cookie = `totalCountOfShoesInBasket=${state.totalCountOfShoesInBasket}; path=/;`;
+         state.message = 'Товар успішно додано в корзину';
       },
 
       getTotalCountOfShoesInBasketSuccess(

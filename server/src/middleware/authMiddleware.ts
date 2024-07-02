@@ -33,6 +33,6 @@ export default function (req: authRequest, res: Response, next: NextFunction) {
       req.user = decoded;
       next();
    } catch (error) {
-      next(ApiError.Unauthorized('Користувач не авторизований'));
+      return next(ApiError.Unauthorized('Користувач не авторизований'));
    }
 }

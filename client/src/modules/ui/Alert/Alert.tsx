@@ -1,6 +1,8 @@
 import './Alert.scss';
 import React from 'react';
 import { AlertType } from './AlertType';
+import { IconButton } from '../IconButton';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 const Alert: React.FC<AlertType> = ({ show, onClose, type, message }) => {
    if (!show) {
@@ -25,7 +27,7 @@ const Alert: React.FC<AlertType> = ({ show, onClose, type, message }) => {
             }}
          >
             <h3>{message}</h3>
-            <button onClick={() => onClose()}>Закрити</button>
+            <IconButton icon={faClose} onClick={onClose} />
          </div>
       </div>
    );
