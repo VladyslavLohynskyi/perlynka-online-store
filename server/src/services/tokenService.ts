@@ -13,7 +13,7 @@ export interface IJwtPayload {
 class TokenService {
    generateTokens(payload: IJwtPayload) {
       const accessToken = jwt.sign(payload, process.env.SECRET_KEY_ACCESS, {
-         expiresIn: '30m',
+         expiresIn: '45m',
       });
       const refreshToken = jwt.sign(payload, process.env.SECRET_KEY_REFRESH, {
          expiresIn: '30d',

@@ -260,7 +260,6 @@ class BasketController {
          });
          return res.json({ message: 'Взуття успішно додано до кошику' });
       } catch (error) {
-         console.log(error);
          return next(
             ApiError.internalServer(
                'Невідома помилка при додавані товару в корзину',

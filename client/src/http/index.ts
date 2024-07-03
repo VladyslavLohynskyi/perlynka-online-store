@@ -21,7 +21,6 @@ const authInterceptor = (config: AxiosRequestConfig) => {
       ?.split('=')[1];
 
    config.headers!.authorization = `Bearer ${cookieValue}`;
-
    return config;
 };
 
@@ -31,13 +30,6 @@ $authHost.interceptors.response.use(
    },
    async (error) => {
       const originalRequest = error.config;
-      if (
-         error.response.status === 401 &&
-         error.config &&
-         !error.config._isRetry
-      ) {
-         originalRequest._isRetry = true;
-      }
       if (error.response.status === 401) {
          try {
             const { data } = await axios.get<{ token: string }>(
@@ -46,7 +38,13 @@ $authHost.interceptors.response.use(
             );
 
             document.cookie = `token=${data.token}`;
-            return $authHost.request(originalRequest);
+            return $authHost({
+               method: originalRequest.method,
+               url: originalRequest.url,
+               data: originalRequest.data
+                  ? JSON.parse(originalRequest.data)
+                  : {},
+            });
          } catch (error) {
             document.cookie =
                'token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
