@@ -2,10 +2,10 @@ import Shoes, { SexType } from '../models/shoesModel';
 import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
 import { promises } from 'fs';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import ShoesSize from '../models/shoesSizeModel';
 
-import { Op, Sequelize, where } from 'sequelize';
+import { Op } from 'sequelize';
 
 import Brand from '../models/brandModel';
 
@@ -15,6 +15,7 @@ import Color from '../models/colorModel';
 import Size from '../models/sizeModel';
 import ShoesInfo from '../models/shoesInfoModel';
 import ShoesImage from '../models/shoesImageModel';
+import ApiError from '../exceptions/ApiError';
 
 interface IParseSizes {
    sizeId: number;
@@ -79,7 +80,7 @@ export interface IShoesInfo {
 }
 
 class shoesController {
-   async create(req: shoesCreateRequest, res: Response) {
+   async create(req: shoesCreateRequest, res: Response, next: NextFunction) {
       try {
          const {
             model,
@@ -94,7 +95,7 @@ class shoesController {
          } = req.body;
          const img = req.files?.images;
          if (!img) {
-            return res.json('Error: Upload file');
+            return next(ApiError.badRequest('Зображень не знайдено'));
          }
          const fileMainName = uuidv4() + '.jpg';
          if (!Array.isArray(img)) {
@@ -140,13 +141,17 @@ class shoesController {
                });
             });
          }
-         return res.json(shoes);
+         return res.json({ message: 'Взуття успішно створене' });
       } catch (error) {
-         res.json('Shoes creating Error ');
+         return next(
+            ApiError.internalServer(
+               'Невідома помилка при створені нового взуття ',
+            ),
+         );
       }
    }
 
-   async getAll(req: shoesGetRequest, res: Response) {
+   async getAll(req: shoesGetRequest, res: Response, next: NextFunction) {
       try {
          const {
             brandsId,
@@ -197,11 +202,15 @@ class shoesController {
          });
          return res.json(shoes);
       } catch (error) {
-         res.json('Shoes get all Error');
+         return next(
+            ApiError.internalServer(
+               'Невідома помилка при отриманні взуття з фільтрацією',
+            ),
+         );
       }
    }
 
-   async deleteOne(req: Request, res: Response) {
+   async deleteOne(req: Request, res: Response, next: NextFunction) {
       try {
          const { id } = req.params;
 
@@ -212,16 +221,18 @@ class shoesController {
             await promises.unlink(
                path.resolve(__dirname, '..', 'static', shoes.img),
             );
-            return res.json({ message: 'Shoes deleted', shoes });
+            return res.json({ message: 'Взуття успішно видалене' });
          } else {
-            return res.json({ message: "This Shoes doesn't exist" });
+            return next(ApiError.notFound(`Взуття з id = ${id} не існує`));
          }
       } catch (error) {
-         res.json('Delete shoes error');
+         return next(
+            ApiError.internalServer('Невідома помилка при видалені взуття'),
+         );
       }
    }
 
-   async getOne(req: Request, res: Response) {
+   async getOne(req: Request, res: Response, next: NextFunction) {
       try {
          const { id } = req.params;
 
@@ -240,17 +251,19 @@ class shoesController {
             ],
          });
          if (!shoes) {
-            return res
-               .status(403)
-               .json(`Shoes with this id = ${id} doesn't exist`);
+            return next(ApiError.notFound(`Взуття з id = ${id} не існує`));
          }
          return res.json(shoes);
       } catch (error) {
-         res.json('Getting One Error');
+         return next(
+            ApiError.internalServer(
+               'Невідома помилка при отриманні конкретного взуття',
+            ),
+         );
       }
    }
 
-   async update(req: shoesUpdateRequest, res: Response) {
+   async update(req: shoesUpdateRequest, res: Response, next: NextFunction) {
       try {
          const {
             id,
@@ -269,7 +282,7 @@ class shoesController {
          } = req.body;
          const shoes = await Shoes.findOne({ where: { id } });
          if (!shoes) {
-            return res.json(`Error: Shoes with id=${id} is not exist`);
+            return next(ApiError.notFound(`Взуття з id = ${id} не існує`));
          }
          const img = req.files?.file;
          const additionImages = req.files?.newAdditionImages;
@@ -383,9 +396,11 @@ class shoesController {
                await ShoesImage.create({ shoId: shoes.id, img: fileName });
             }
          }
-         return res.json({ message: 'Shoes is updated' });
+         return res.json({ message: 'Взуття успішно редаговано' });
       } catch (error) {
-         return res.json('Shoes updating Error ');
+         return next(
+            ApiError.internalServer('Невідома помилка при редагуванні взуття '),
+         );
       }
    }
 }

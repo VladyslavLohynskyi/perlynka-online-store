@@ -8,6 +8,7 @@ import {
    ISizeCategory,
    SexEnum,
 } from '../store/reducers/shoes/ShoesSlice';
+import { IBasicResponse } from './basket';
 
 export interface IFilter {
    brandsId: number[];
@@ -80,12 +81,17 @@ export const getShoesById = async (id: number) => {
    return shoes;
 };
 
-export const createShoesReq = (shoesData: FormData) =>
-   $authHost.post('/shoes', shoesData);
+export const createShoesReq = async (shoesData: FormData) => {
+   const { data } = await $authHost.post<IBasicResponse>('/shoes', shoesData);
+   return data;
+};
 
-export const updateShoesReq = (shoesData: FormData) =>
-   $authHost.put('/shoes', shoesData);
+export const updateShoesReq = async (shoesData: FormData) => {
+   const { data } = await $authHost.put<IBasicResponse>('/shoes', shoesData);
+   return data;
+};
 
 export const deleteShoesByIdReq = async (id: number) => {
-   await $authHost.delete<IShoesWithSizes>(`shoes/${id}`);
+   const { data } = await $authHost.delete<IBasicResponse>(`shoes/${id}`);
+   return data;
 };

@@ -43,6 +43,7 @@ export interface IShoesState {
    countOfShoesModels: number;
    isLoading: boolean;
    error: string;
+   message: string;
 }
 
 interface IPreloadList {
@@ -63,6 +64,7 @@ const initialState: IShoesState = {
    countOfShoesModels: 0,
    isLoading: true,
    error: '',
+   message: '',
 };
 
 export const shoesSlice = createSlice({
@@ -72,6 +74,7 @@ export const shoesSlice = createSlice({
       start(state) {
          state.isLoading = true;
          state.error = '';
+         state.message = '';
       },
 
       shoesPreloadListSuccess(state, action: PayloadAction<IPreloadList>) {
@@ -90,28 +93,42 @@ export const shoesSlice = createSlice({
 
       shoesCreateSuccess(
          state,
-         action: PayloadAction<{ count: number; rows: IShoesWithSizes[] }>,
+         action: PayloadAction<{
+            count: number;
+            rows: IShoesWithSizes[];
+            message: string;
+         }>,
       ) {
          state.isLoading = false;
          state.error = '';
          state.shoes = action.payload.rows;
          state.countOfShoesModels = action.payload.count;
+         state.message = action.payload.message;
       },
 
       shoesUpdateSuccess(
          state,
-         action: PayloadAction<{ count: number; rows: IShoesWithSizes[] }>,
+         action: PayloadAction<{
+            count: number;
+            rows: IShoesWithSizes[];
+            message: string;
+         }>,
       ) {
          state.isLoading = false;
          state.error = '';
          state.shoes = action.payload.rows;
          state.countOfShoesModels = action.payload.count;
+         state.message = action.payload.message;
       },
 
-      shoesDeleteSuccess(state, action: PayloadAction<number>) {
+      shoesDeleteSuccess(
+         state,
+         action: PayloadAction<{ id: number; message: string }>,
+      ) {
          state.isLoading = false;
          state.error = '';
-         state.shoes = state.shoes.filter((el) => el.id !== action.payload);
+         state.shoes = state.shoes.filter((el) => el.id !== action.payload.id);
+         state.message = action.payload.message;
       },
 
       brandCreateSuccess(state, action: PayloadAction<IBasicCategory>) {
@@ -269,6 +286,7 @@ export const shoesSlice = createSlice({
       error(state, action: PayloadAction<string>) {
          state.isLoading = false;
          state.error = action.payload;
+         state.message = '';
       },
    },
 });

@@ -293,8 +293,11 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                            required={false}
                         />
                      </div>
-                     {additionImages.map(({ img }) => (
-                        <div className='edit-shoes-modal__edit-img-container'>
+                     {additionImages.map(({ img, id }) => (
+                        <div
+                           key={id}
+                           className='edit-shoes-modal__edit-img-container'
+                        >
                            <div className='edit-shoes-modal__img-container'>
                               <img src={baseURL + img} alt='Взуття' />
                            </div>
