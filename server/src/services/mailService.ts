@@ -154,26 +154,8 @@ class MailService {
                    `,
       };
 
-      await this.transporter.sendMail(
-         mailOptionToCustomer,
-         function (error, info) {
-            if (error) {
-               console.log(error);
-            } else {
-               console.log('Email sent: ' + info.response);
-            }
-         },
-      );
-      await this.transporter.sendMail(
-         mailOptionToManager,
-         function (error, info) {
-            if (error) {
-               console.log(error);
-            } else {
-               console.log('Email sent: ' + info.response);
-            }
-         },
-      );
+      await this.transporter.sendMail(mailOptionToCustomer);
+      await this.transporter.sendMail(mailOptionToManager);
    }
 }
 

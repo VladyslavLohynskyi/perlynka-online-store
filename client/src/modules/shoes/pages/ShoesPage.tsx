@@ -2,11 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import './ShoesPage.scss';
 import { useParams } from 'react-router-dom';
-import {
-   IParticularShoes,
-   IShoesImage,
-   getShoesById,
-} from '../../../http/shoes';
+import ShoesReq, { IParticularShoes, IShoesImage } from '../../../http/shoes';
 import { baseURL } from '../../../utils/constants';
 import { Button } from '../../ui/Button';
 import { ButtonClassEnum } from '../../ui/Button/ButtonType';
@@ -39,7 +35,7 @@ export const ShoesPage: React.FC = () => {
 
    useEffect(() => {
       if (id)
-         getShoesById(+id).then((shoes) => {
+         ShoesReq.getShoesById(+id).then((shoes) => {
             setCurrentShoes(shoes);
             setSlides([
                { id: 0, img: shoes.img, shoId: shoes.id },

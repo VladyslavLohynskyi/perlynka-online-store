@@ -3,7 +3,7 @@ import { AppDispatch } from '../../store';
 import { IUser, userSlice } from './UserSlice';
 import UserReq from '../../../http/users';
 
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { synchronizeBaskets } from '../basket/BasketActionCreators';
 import { IAddShoes } from '../../../http/basket';
 
@@ -29,6 +29,7 @@ export const registrationUser =
             userSlice.actions.userRegistrationSuccess({
                user,
                token: data.token,
+               message: data.message,
             }),
          );
       } catch (error) {
@@ -97,6 +98,15 @@ export const logOutUser = () => async (dispatch: AppDispatch) => {
       await UserReq.logout();
       dispatch(userSlice.actions.userLogOut());
    } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+         dispatch(
+            userSlice.actions.userAuthError(error.response?.data.message),
+         );
+      } else
+         dispatch(
+            userSlice.actions.userAuthError(
+               'Невідома помилка під час виходу з аккаунту',
+            ),
+         );
    }
 };

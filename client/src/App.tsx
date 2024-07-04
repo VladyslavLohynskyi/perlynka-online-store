@@ -51,6 +51,14 @@ const App: FC = () => {
    }, [shoes.error, shoes.message]);
 
    useEffect(() => {
+      if (user.message) {
+         setShowAlertNotification(true);
+         setAlertNotificationMessage(user.message);
+         setIsErrorNotificationMessage(false);
+      }
+   }, [user.message]);
+
+   useEffect(() => {
       (async () => {
          await dispatch(preloadList());
          dispatch(preloadFilter());

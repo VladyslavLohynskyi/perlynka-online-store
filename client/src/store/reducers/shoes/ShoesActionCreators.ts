@@ -1,12 +1,6 @@
 import { AppDispatch } from '../../store';
 import { shoesSlice } from './ShoesSlice';
-import {
-   IFilter,
-   createShoesReq,
-   deleteShoesByIdReq,
-   getAllShoes,
-   updateShoesReq,
-} from '../../../http/shoes';
+import ShoesReq, { IFilter } from '../../../http/shoes';
 import BrandReq from '../../../http/brands';
 import TypeReq from '../../../http/types';
 import ColorReq from '../../../http/colors';
@@ -45,8 +39,8 @@ export const createShoes =
    (shoesData: FormData, filter: IFilter) => async (dispatch: AppDispatch) => {
       try {
          dispatch(shoesSlice.actions.start());
-         const { message } = await createShoesReq(shoesData);
-         const shoes = await getAllShoes(filter);
+         const { message } = await ShoesReq.createShoesReq(shoesData);
+         const shoes = await ShoesReq.getAllShoes(filter);
          dispatch(shoesSlice.actions.shoesCreateSuccess({ ...shoes, message }));
       } catch (error) {
          if (axios.isAxiosError(error)) {
@@ -62,8 +56,8 @@ export const updateShoes =
    (shoesData: FormData, filter: IFilter) => async (dispatch: AppDispatch) => {
       try {
          dispatch(shoesSlice.actions.start());
-         const { message } = await updateShoesReq(shoesData);
-         const shoes = await getAllShoes(filter);
+         const { message } = await ShoesReq.updateShoesReq(shoesData);
+         const shoes = await ShoesReq.getAllShoes(filter);
          dispatch(
             shoesSlice.actions.shoesUpdateSuccess({
                ...shoes,
@@ -85,7 +79,7 @@ export const updateShoes =
 export const deleteShoes = (id: number) => async (dispatch: AppDispatch) => {
    try {
       dispatch(shoesSlice.actions.start());
-      const { message } = await deleteShoesByIdReq(id);
+      const { message } = await ShoesReq.deleteShoesByIdReq(id);
       dispatch(shoesSlice.actions.shoesDeleteSuccess({ id, message }));
    } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -100,7 +94,7 @@ export const getAllShoesByFilter =
    (filter: IFilter) => async (dispatch: AppDispatch) => {
       try {
          dispatch(shoesSlice.actions.start());
-         const shoes = await getAllShoes(filter);
+         const shoes = await ShoesReq.getAllShoes(filter);
          dispatch(shoesSlice.actions.shoesGetAll(shoes));
       } catch (error) {
          if (axios.isAxiosError(error)) {
