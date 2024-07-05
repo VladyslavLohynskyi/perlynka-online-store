@@ -28,11 +28,14 @@ export const preloadList = () => async (dispatch: AppDispatch) => {
          }),
       );
    } catch (error) {
-      dispatch(
-         shoesSlice.actions.shoesPreloadListError(
-            'Помилка при отриманні початкової інформації',
-         ),
-      );
+      if (axios.isAxiosError(error)) {
+         dispatch(shoesSlice.actions.error(error.response?.data));
+      } else
+         dispatch(
+            shoesSlice.actions.shoesPreloadListError(
+               'Помилка при отриманні початкової інформації',
+            ),
+         );
    }
 };
 export const createShoes =
@@ -82,7 +85,8 @@ export const deleteShoes = (id: number) => async (dispatch: AppDispatch) => {
    } catch (error) {
       if (axios.isAxiosError(error)) {
          return dispatch(shoesSlice.actions.error(error.response?.data));
-      } else dispatch(shoesSlice.actions.error('Помилка при видалені  взуття'));
+      } else
+         dispatch(shoesSlice.actions.error('Помилка при видаленні  взуття'));
    }
 };
 

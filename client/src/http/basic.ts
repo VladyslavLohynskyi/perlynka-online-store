@@ -1,6 +1,13 @@
 import { $host, $authHost } from '.';
 import { IBasicCategory } from '../store/reducers/shoes/ShoesSlice';
+import { IBasicResponse } from './basket';
 type BasicUrl = '/brand' | '/season' | '/type' | '/color';
+
+export type BasicCategoryResponse = {
+   element: IBasicCategory;
+} & IBasicResponse;
+
+export type BasicCategoryDeleteResponse = { id: number } & IBasicResponse;
 export default class BasicReq {
    url: BasicUrl;
    constructor(url: BasicUrl) {
@@ -13,9 +20,12 @@ export default class BasicReq {
    };
 
    createElement = async (name: string) => {
-      const brandsResponse = await $authHost.post<IBasicCategory>(this.url, {
-         name,
-      });
+      const brandsResponse = await $authHost.post<BasicCategoryResponse>(
+         this.url,
+         {
+            name,
+         },
+      );
       const brand = brandsResponse.data;
       return brand;
    };
@@ -27,16 +37,15 @@ export default class BasicReq {
       return deletedId;
    };
 
-   updateElement = async (brand: IBasicCategory) => {
-      await $authHost.put(this.url, brand);
-      return brand;
+   updateElement = async (element: IBasicCategory) => {
+      const { data } = await $authHost.put<IBasicResponse>(this.url, element);
+      return { element, message: data.message };
    };
 
    deleteElementById = async (id: number) => {
-      const brandResponse = await $authHost.delete<IBasicCategory>(
+      const { data } = await $authHost.delete<BasicCategoryDeleteResponse>(
          this.url + '/' + id,
       );
-      const deletedId = brandResponse.data;
-      return deletedId;
+      return data;
    };
 }

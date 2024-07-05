@@ -1,4 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+   BasicCategoryDeleteResponse,
+   BasicCategoryResponse,
+} from '../../../http/basic';
 export enum SexEnum {
    GIRL = 'Дівчинка',
    BOY = 'Хлопчик',
@@ -131,122 +135,148 @@ export const shoesSlice = createSlice({
          state.message = action.payload.message;
       },
 
-      brandCreateSuccess(state, action: PayloadAction<IBasicCategory>) {
+      brandCreateSuccess(state, action: PayloadAction<BasicCategoryResponse>) {
          state.isLoading = false;
          if (state.brands) {
-            state.brands = [...state.brands, action.payload];
+            state.brands = [...state.brands, action.payload.element];
+            state.message = action.payload.message;
          }
       },
 
-      brandUpdateSuccess(state, action: PayloadAction<IBasicCategory>) {
+      brandUpdateSuccess(state, action: PayloadAction<BasicCategoryResponse>) {
          state.isLoading = false;
          if (state.brands) {
             state.brands = state.brands.map((brand) => {
-               if (brand.id === action.payload.id) {
-                  return { ...brand, name: action.payload.name };
+               if (brand.id === action.payload.element.id) {
+                  return { ...brand, name: action.payload.element.name };
                } else return brand;
             });
          }
+         state.message = action.payload.message;
       },
 
-      brandDeleteSuccess(state, action: PayloadAction<number>) {
+      brandDeleteSuccess(
+         state,
+         action: PayloadAction<BasicCategoryDeleteResponse>,
+      ) {
          state.isLoading = false;
          state.shoes = state.shoes.filter(
-            (el) => el.brandId !== action.payload,
+            (el) => el.brandId !== action.payload.id,
          );
          if (state.brands) {
             state.brands = state.brands.filter(
-               (brand) => +brand.id !== action.payload,
+               (brand) => +brand.id !== action.payload.id,
             );
          }
+         state.message = action.payload.message;
       },
 
-      typeCreateSuccess(state, action: PayloadAction<IBasicCategory>) {
+      typeCreateSuccess(state, action: PayloadAction<BasicCategoryResponse>) {
          state.isLoading = false;
          if (state.types) {
-            state.types = [...state.types, action.payload];
+            state.types = [...state.types, action.payload.element];
+            state.message = action.payload.message;
          }
       },
 
-      typeUpdateSuccess(state, action: PayloadAction<IBasicCategory>) {
+      typeUpdateSuccess(state, action: PayloadAction<BasicCategoryResponse>) {
          state.isLoading = false;
          if (state.types) {
             state.types = state.types.map((type) => {
-               if (type.id === action.payload.id) {
-                  return { ...type, name: action.payload.name };
+               if (type.id === action.payload.element.id) {
+                  return { ...type, name: action.payload.element.name };
                } else return type;
             });
          }
+         state.message = action.payload.message;
       },
 
-      typeDeleteSuccess(state, action: PayloadAction<number>) {
-         state.isLoading = false;
-         state.shoes = state.shoes.filter((el) => el.typeId !== action.payload);
-         if (state.types) {
-            state.types = state.types.filter(
-               (type) => +type.id !== action.payload,
-            );
-         }
-      },
-
-      seasonDeleteSuccess(state, action: PayloadAction<number>) {
+      typeDeleteSuccess(
+         state,
+         action: PayloadAction<BasicCategoryDeleteResponse>,
+      ) {
          state.isLoading = false;
          state.shoes = state.shoes.filter(
-            (el) => el.seasonId !== action.payload,
+            (el) => el.typeId !== action.payload.id,
+         );
+         if (state.types) {
+            state.types = state.types.filter(
+               (type) => +type.id !== action.payload.id,
+            );
+         }
+         state.message = action.payload.message;
+      },
+
+      seasonDeleteSuccess(
+         state,
+         action: PayloadAction<BasicCategoryDeleteResponse>,
+      ) {
+         state.isLoading = false;
+         state.shoes = state.shoes.filter(
+            (el) => el.seasonId !== action.payload.id,
          );
          if (state.seasons) {
             state.seasons = state.seasons.filter(
-               (season) => +season.id !== action.payload,
+               (season) => +season.id !== action.payload.id,
             );
          }
+         state.message = action.payload.message;
       },
 
-      seasonCreateSuccess(state, action: PayloadAction<IBasicCategory>) {
+      seasonCreateSuccess(state, action: PayloadAction<BasicCategoryResponse>) {
          state.isLoading = false;
          if (state.seasons) {
-            state.seasons = [...state.seasons, action.payload];
+            state.seasons = [...state.seasons, action.payload.element];
+            state.message = action.payload.message;
          }
       },
 
-      seasonUpdateSuccess(state, action: PayloadAction<IBasicCategory>) {
+      seasonUpdateSuccess(state, action: PayloadAction<BasicCategoryResponse>) {
          state.isLoading = false;
          if (state.seasons) {
             state.seasons = state.seasons.map((season) => {
-               if (season.id === action.payload.id) {
-                  return { ...season, name: action.payload.name };
+               if (season.id === action.payload.element.id) {
+                  return { ...season, name: action.payload.element.name };
                } else return season;
             });
          }
+         state.message = action.payload.message;
       },
 
-      colorDeleteSuccess(state, action: PayloadAction<number>) {
+      colorDeleteSuccess(
+         state,
+         action: PayloadAction<BasicCategoryDeleteResponse>,
+      ) {
          state.isLoading = false;
          state.shoes = state.shoes.filter(
-            (el) => el.colorId !== action.payload,
+            (el) => el.colorId !== action.payload.id,
          );
          if (state.colors) {
             state.colors = state.colors.filter(
-               (color) => +color.id !== action.payload,
+               (color) => +color.id !== action.payload.id,
             );
          }
+         state.message = action.payload.message;
       },
 
-      colorCreateSuccess(state, action: PayloadAction<IBasicCategory>) {
+      colorCreateSuccess(state, action: PayloadAction<BasicCategoryResponse>) {
          state.isLoading = false;
          if (state.colors) {
-            state.colors = [...state.colors, action.payload];
+            state.colors = [...state.colors, action.payload.element];
+            state.message = action.payload.message;
          }
       },
 
-      colorUpdateSuccess(state, action: PayloadAction<IBasicCategory>) {
+      colorUpdateSuccess(state, action: PayloadAction<BasicCategoryResponse>) {
          state.isLoading = false;
          if (state.colors) {
             state.colors = state.colors.map((color) => {
-               if (color.id === action.payload.id) {
-                  return { ...color, name: action.payload.name };
+               if (color.id === action.payload.element.id) {
+                  return { ...color, name: action.payload.element.name };
                } else return color;
             });
          }
+         state.message = action.payload.message;
       },
 
       sizeCreateSuccess(state, action: PayloadAction<ISizeCategory>) {
