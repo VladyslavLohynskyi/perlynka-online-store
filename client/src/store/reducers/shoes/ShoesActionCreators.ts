@@ -44,7 +44,7 @@ export const createShoes =
          dispatch(shoesSlice.actions.shoesCreateSuccess({ ...shoes, message }));
       } catch (error) {
          if (axios.isAxiosError(error)) {
-            dispatch(shoesSlice.actions.error(error.response?.data.message));
+            dispatch(shoesSlice.actions.error(error.response?.data));
          } else
             dispatch(
                shoesSlice.actions.error('Помилка при створенні нового взуття'),
@@ -66,9 +66,7 @@ export const updateShoes =
          );
       } catch (error) {
          if (axios.isAxiosError(error)) {
-            return dispatch(
-               shoesSlice.actions.error(error.response?.data.message),
-            );
+            return dispatch(shoesSlice.actions.error(error.response?.data));
          } else
             dispatch(
                shoesSlice.actions.error('Помилка при редагуванні взуття'),
@@ -83,9 +81,7 @@ export const deleteShoes = (id: number) => async (dispatch: AppDispatch) => {
       dispatch(shoesSlice.actions.shoesDeleteSuccess({ id, message }));
    } catch (error) {
       if (axios.isAxiosError(error)) {
-         return dispatch(
-            shoesSlice.actions.error(error.response?.data.message),
-         );
+         return dispatch(shoesSlice.actions.error(error.response?.data));
       } else dispatch(shoesSlice.actions.error('Помилка при видалені  взуття'));
    }
 };
@@ -98,9 +94,7 @@ export const getAllShoesByFilter =
          dispatch(shoesSlice.actions.shoesGetAll(shoes));
       } catch (error) {
          if (axios.isAxiosError(error)) {
-            return dispatch(
-               shoesSlice.actions.error(error.response?.data.message),
-            );
+            return dispatch(shoesSlice.actions.error(error.response?.data));
          } else
             dispatch(
                shoesSlice.actions.error('Помилка при взуття з фітрацією'),

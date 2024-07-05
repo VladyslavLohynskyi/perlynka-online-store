@@ -35,9 +35,7 @@ export const registrationUser =
       } catch (error) {
          if (axios.isAxiosError(error)) {
             dispatch(
-               userSlice.actions.userRegistrationError(
-                  error.response?.data.message,
-               ),
+               userSlice.actions.userRegistrationError(error.response?.data),
             );
          } else
             dispatch(
@@ -61,9 +59,7 @@ export const loginUser =
          dispatch(synchronizeBaskets(shoes));
       } catch (error) {
          if (axios.isAxiosError(error)) {
-            dispatch(
-               userSlice.actions.userLoginError(error.response?.data.message),
-            );
+            dispatch(userSlice.actions.userLoginError(error.response?.data));
          } else
             dispatch(
                userSlice.actions.userLoginError(
@@ -81,9 +77,7 @@ export const authUser = () => async (dispatch: AppDispatch) => {
       dispatch(userSlice.actions.userAuthSuccess({ user, token: data.token }));
    } catch (error) {
       if (axios.isAxiosError(error)) {
-         dispatch(
-            userSlice.actions.userAuthError(error.response?.data.message),
-         );
+         dispatch(userSlice.actions.userAuthError(error.response?.data));
       } else
          dispatch(
             userSlice.actions.userAuthError(
@@ -95,13 +89,11 @@ export const authUser = () => async (dispatch: AppDispatch) => {
 
 export const logOutUser = () => async (dispatch: AppDispatch) => {
    try {
-      await UserReq.logout();
-      dispatch(userSlice.actions.userLogOut());
+      const { data } = await UserReq.logout();
+      dispatch(userSlice.actions.userLogOut(data.message));
    } catch (error) {
       if (axios.isAxiosError(error)) {
-         dispatch(
-            userSlice.actions.userAuthError(error.response?.data.message),
-         );
+         dispatch(userSlice.actions.userAuthError(error.response?.data));
       } else
          dispatch(
             userSlice.actions.userAuthError(

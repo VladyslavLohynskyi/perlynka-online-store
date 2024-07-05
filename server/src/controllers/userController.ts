@@ -223,9 +223,9 @@ class userController {
    async logout(req: Request, res: Response, next: NextFunction) {
       try {
          const { refreshToken } = req.cookies;
-         const token = await tokenService.removeToken(refreshToken);
+         await tokenService.removeToken(refreshToken);
          res.clearCookie('refreshToken');
-         return res.json({ token });
+         return res.json({ message: 'Ви успішно вийшли з аккаунту' });
       } catch (error) {
          return next(
             ApiError.internalServer('Невідома помилка при виході з аккаунту'),

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { $host, $authHost } from '.';
 import { Role } from '../store/reducers/user/UserSlice';
 import { baseURL } from '../utils/constants';
+import { IBasicResponse } from './basket';
 export interface IUserRes {
    id: string;
    email: string;
@@ -63,7 +64,7 @@ class UserReq {
    };
 
    logout = async () => {
-      return $authHost.get('/user/logout');
+      return $authHost.get<IBasicResponse>('/user/logout');
    };
 
    sendForgotPasswordLink(email: string) {

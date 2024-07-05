@@ -91,10 +91,11 @@ export const userSlice = createSlice({
          state.error = '';
       },
 
-      userLogOut(state) {
+      userLogOut(state, action: PayloadAction<string>) {
          state.user = null;
          state.isAuth = false;
          document.cookie = 'token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
+         state.message = action.payload;
       },
    },
 });

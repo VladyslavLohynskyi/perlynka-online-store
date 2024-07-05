@@ -26,10 +26,14 @@ const Alert: React.FC<AlertType> = ({ show, onClose, type, message }) => {
                clearTimeout(timer);
             }}
          >
-            <h3>{message}</h3>
-            {type === AlertTypeEnum.DANGER && (
-               <p>Спробуйте перезавантажити сторінку і повторити дію ще раз</p>
-            )}
+            <div>
+               <h3>{message}</h3>
+               {type === AlertTypeEnum.DANGER && (
+                  <p>
+                     Спробуйте перезавантажити сторінку і повторити дію ще раз
+                  </p>
+               )}
+            </div>
             <IconButton icon={faClose} onClick={onClose} />
          </div>
       </div>

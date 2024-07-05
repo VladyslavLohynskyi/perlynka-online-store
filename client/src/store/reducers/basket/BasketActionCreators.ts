@@ -23,7 +23,7 @@ export const addShoesToBasket =
          );
       } catch (error) {
          if (axios.isAxiosError(error)) {
-            dispatch(basketSlice.actions.error(error.response?.data.message));
+            dispatch(basketSlice.actions.error(error.response?.data));
          } else
             dispatch(
                basketSlice.actions.error(
@@ -48,7 +48,7 @@ export const getTotalCountOfShoesInBasket =
          );
       } catch (error) {
          if (axios.isAxiosError(error)) {
-            dispatch(basketSlice.actions.error(error.response?.data.message));
+            dispatch(basketSlice.actions.error(error.response?.data));
          } else
             dispatch(
                basketSlice.actions.error(
@@ -72,7 +72,7 @@ export const getAllShoesOfBasket = () => async (dispatch: AppDispatch) => {
       dispatch(basketSlice.actions.getAllShoesOfBasketSuccess(basket));
    } catch (error) {
       if (axios.isAxiosError(error)) {
-         dispatch(basketSlice.actions.error(error.response?.data.message));
+         dispatch(basketSlice.actions.error(error.response?.data));
       } else
          dispatch(
             basketSlice.actions.error(
@@ -96,7 +96,7 @@ export const deleteOneShoesFromBasket =
          );
       } catch (error) {
          if (axios.isAxiosError(error)) {
-            dispatch(basketSlice.actions.error(error.response?.data.message));
+            dispatch(basketSlice.actions.error(error.response?.data));
          } else
             dispatch(
                basketSlice.actions.error(
@@ -117,7 +117,7 @@ export const deleteAllFromBasket = () => async (dispatch: AppDispatch) => {
       dispatch(basketSlice.actions.deleteAllFromBasketSuccess());
    } catch (error) {
       if (axios.isAxiosError(error)) {
-         dispatch(basketSlice.actions.error(error.response?.data.message));
+         dispatch(basketSlice.actions.error(error.response?.data));
       } else
          dispatch(basketSlice.actions.error('Помилка при очищенні  корзини'));
    }
@@ -139,7 +139,7 @@ export const incrementCountOfOneShoesInBasket =
          );
       } catch (error) {
          if (axios.isAxiosError(error)) {
-            dispatch(basketSlice.actions.error(error.response?.data.message));
+            dispatch(basketSlice.actions.error(error.response?.data));
          } else
             dispatch(
                basketSlice.actions.error(
@@ -168,7 +168,7 @@ export const decrementCountOfOneShoesInBasket =
          );
       } catch (error) {
          if (axios.isAxiosError(error)) {
-            dispatch(basketSlice.actions.error(error.response?.data.message));
+            dispatch(basketSlice.actions.error(error.response?.data));
          } else
             dispatch(
                basketSlice.actions.error(
