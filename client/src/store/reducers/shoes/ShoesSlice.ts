@@ -3,6 +3,7 @@ import {
    BasicCategoryDeleteResponse,
    BasicCategoryResponse,
 } from '../../../http/basic';
+import { BasicSizeResponse } from '../../../http/sizes';
 export enum SexEnum {
    GIRL = 'Дівчинка',
    BOY = 'Хлопчик',
@@ -279,29 +280,35 @@ export const shoesSlice = createSlice({
          state.message = action.payload.message;
       },
 
-      sizeCreateSuccess(state, action: PayloadAction<ISizeCategory>) {
+      sizeCreateSuccess(state, action: PayloadAction<BasicSizeResponse>) {
          state.isLoading = false;
          if (state.sizes) {
-            state.sizes = [...state.sizes, action.payload];
+            state.sizes = [...state.sizes, action.payload.size];
          }
+         state.message = action.payload.message;
       },
-      sizeUpdateSuccess(state, action: PayloadAction<ISizeCategory>) {
+      sizeUpdateSuccess(state, action: PayloadAction<BasicSizeResponse>) {
          state.isLoading = false;
          if (state.sizes) {
             state.sizes = state.sizes.map((size) => {
-               if (size.id === action.payload.id) {
-                  return { ...size, size: action.payload.size };
+               if (size.id === action.payload.size.id) {
+                  return { ...size, size: action.payload.size.size };
                } else return size;
             });
          }
+         state.message = action.payload.message;
       },
-      sizeDeleteSuccess(state, action: PayloadAction<number>) {
+      sizeDeleteSuccess(
+         state,
+         action: PayloadAction<{ id: number; message: string }>,
+      ) {
          state.isLoading = false;
          if (state.sizes) {
             state.sizes = state.sizes.filter(
-               (size) => +size.id !== action.payload,
+               (size) => +size.id !== action.payload.id,
             );
          }
+         state.message = action.payload.message;
       },
 
       shoesGetAll(

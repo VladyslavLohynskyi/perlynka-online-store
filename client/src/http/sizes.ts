@@ -1,11 +1,14 @@
 import { $host, $authHost } from '.';
 import { ISizeCategory } from '../store/reducers/shoes/ShoesSlice';
+import { IBasicResponse } from './basket';
 
 export const getAllSizes = async () => {
    const sizesResponse = await $host.get<ISizeCategory[]>('/size');
    const sizes = sizesResponse.data;
    return sizes;
 };
+
+export type BasicSizeResponse = { size: ISizeCategory; message: string };
 
 class SizeReq {
    getAllSizes = async () => {
@@ -15,11 +18,10 @@ class SizeReq {
    };
 
    createSize = async (size: number) => {
-      const brandsResponse = await $authHost.post<ISizeCategory>('/size', {
+      const { data } = await $authHost.post<BasicSizeResponse>('/size', {
          size,
       });
-      const newSize = brandsResponse.data;
-      return newSize;
+      return data;
    };
    getSizeById = async (id: number) => {
       const brandResponse = await $host.get<ISizeCategory>('/size/' + id);
@@ -28,13 +30,13 @@ class SizeReq {
    };
 
    updateSize = async (size: ISizeCategory) => {
-      await $authHost.put('/size', size);
-      return size;
+      const { data } = await $authHost.put<IBasicResponse>('/size', size);
+      return { size, message: data.message };
    };
 
    deleteSizeById = async (id: number) => {
-      await $authHost.delete<ISizeCategory>('/size/' + id);
-      return id;
+      const { data } = await $authHost.delete<BasicSizeResponse>('/size/' + id);
+      return { id, message: data.message };
    };
 }
 
