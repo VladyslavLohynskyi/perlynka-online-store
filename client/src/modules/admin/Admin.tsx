@@ -83,13 +83,13 @@ export const Admin: React.FC = () => {
       }
    }, [userInputValue]);
 
-   const handleClickDeleteAdmin = (id: string) => {
+   const handleClickDeleteAdmin = (id: number) => {
       dispatch(deleteAdmin(id)).then(() => {
          dispatch(getAllUsersByEmail(userInputValue));
       });
    };
 
-   const handleClickAddAdmin = (id: string) => {
+   const handleClickAddAdmin = (id: number) => {
       dispatch(addAdmin(id)).then(() => {
          dispatch(deleteFoundUser(id));
       });

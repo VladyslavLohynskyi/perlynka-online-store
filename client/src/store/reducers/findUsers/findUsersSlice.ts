@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IUserRes } from '../../../http/users';
+import { IUser } from '../user/UserSlice';
 
 interface IUserState {
-   foundUsers: IUserRes[];
+   foundUsers: IUser[];
    isLoading: boolean;
    error: string;
 }
@@ -21,12 +21,12 @@ export const findUsersSlice = createSlice({
          state.isLoading = true;
          state.error = '';
       },
-      getUsersSuccess(state, action: PayloadAction<IUserRes[]>) {
+      getUsersSuccess(state, action: PayloadAction<IUser[]>) {
          state.isLoading = false;
          state.error = '';
          state.foundUsers = [...action.payload];
       },
-      deleteFindUserSuccess(state, action: PayloadAction<string>) {
+      deleteFindUserSuccess(state, action: PayloadAction<number>) {
          state.isLoading = false;
          state.error = '';
          state.foundUsers = state.foundUsers.filter(

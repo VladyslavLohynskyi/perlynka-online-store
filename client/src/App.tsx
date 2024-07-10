@@ -17,6 +17,7 @@ const App: FC = () => {
    const shoes = useAppSelector((state) => state.shoesReducer);
    const filter = useAppSelector((state) => state.filterReducer);
    const basket = useAppSelector((state) => state.basketReducer);
+   const admin = useAppSelector((state) => state.adminsReducer);
    const [showAlertNotification, setShowAlertNotification] =
       useState<boolean>(false);
    const [alertNotificationMessage, setAlertNotificationMessage] =
@@ -57,6 +58,19 @@ const App: FC = () => {
          setIsErrorNotificationMessage(false);
       }
    }, [user.message]);
+
+   useEffect(() => {
+      if (admin.error) {
+         setShowAlertNotification(true);
+         setAlertNotificationMessage(admin.error);
+         setIsErrorNotificationMessage(true);
+      }
+      if (admin.message) {
+         setShowAlertNotification(true);
+         setAlertNotificationMessage(admin.message);
+         setIsErrorNotificationMessage(false);
+      }
+   }, [admin.error, admin.message]);
 
    useEffect(() => {
       (async () => {

@@ -188,7 +188,10 @@ class userController {
          const user = await User.findOne({ where: { id } });
          if (user) {
             await User.update({ role }, { where: { id } });
-            return res.json(user);
+            return res.json({
+               user,
+               message: 'Права користувача успішно зміненні',
+            });
          } else {
             return next(ApiError.notFound('Такого користувача не існує'));
          }

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import UserReq from '../../../http/users';
 import { AppDispatch } from '../../store';
 
@@ -10,27 +11,38 @@ export const getAllAdmins = () => async (dispatch: AppDispatch) => {
       const admins = await UserReq.getUsersByRole(Role.ADMIN);
       dispatch(adminsSlice.actions.getAdminsSuccess(admins));
    } catch (error) {
-      dispatch(adminsSlice.actions.error('Getting List OF Admins Error'));
+      if (axios.isAxiosError(error)) {
+         dispatch(adminsSlice.actions.error(error.response?.data));
+      } else
+         dispatch(
+            adminsSlice.actions.error('Помилка при отриманні списку адмінів'),
+         );
    }
 };
 
-export const deleteAdmin = (id: string) => async (dispatch: AppDispatch) => {
+export const deleteAdmin = (id: number) => async (dispatch: AppDispatch) => {
    try {
       dispatch(adminsSlice.actions.start());
       const admin = await UserReq.deleteAdmin(id);
       dispatch(adminsSlice.actions.deleteAdminSuccess(admin));
       return admin;
    } catch (error) {
-      dispatch(adminsSlice.actions.error('Deleting Admin Error'));
+      if (axios.isAxiosError(error)) {
+         dispatch(adminsSlice.actions.error(error.response?.data));
+      } else
+         dispatch(adminsSlice.actions.error('Помилка при видаленні адміна'));
    }
 };
 
-export const addAdmin = (id: string) => async (dispatch: AppDispatch) => {
+export const addAdmin = (id: number) => async (dispatch: AppDispatch) => {
    try {
       dispatch(adminsSlice.actions.start());
       const admin = await UserReq.addAdmin(id);
       dispatch(adminsSlice.actions.addAdminSuccess(admin));
    } catch (error) {
-      dispatch(adminsSlice.actions.error('Deleting Admin Error'));
+      if (axios.isAxiosError(error)) {
+         dispatch(adminsSlice.actions.error(error.response?.data));
+      } else
+         dispatch(adminsSlice.actions.error('Помилка при додаванні адміна'));
    }
 };
