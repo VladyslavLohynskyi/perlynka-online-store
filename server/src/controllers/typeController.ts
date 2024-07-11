@@ -1,6 +1,7 @@
+import ApiError from '../exceptions/ApiError';
 import Shoes from '../models/shoesModel';
 import Type from '../models/typeModel';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 interface typeCreateRequest extends Request {
    body: {
@@ -15,33 +16,57 @@ interface typeUpdateRequest extends Request {
    };
 }
 class TypeController {
-   async create(req: typeCreateRequest, res: Response) {
-      const { name } = req.body;
-      const type = await Type.create({ name });
-      return res.json(type);
+   async create(req: typeCreateRequest, res: Response, next: NextFunction) {
+      try {
+         const { name } = req.body;
+         const type = await Type.create({ name });
+         return res.json({
+            element: type,
+            message: 'Новий тип успішно створенний',
+         });
+      } catch (error) {
+         return next(
+            ApiError.internalServer('Невідома помилка при створенні типу '),
+         );
+      }
    }
-   async getAll(req: Request, res: Response) {
-      const types = await Type.findAll();
-      return res.json(types);
+   async getAll(req: Request, res: Response, next: NextFunction) {
+      try {
+         const types = await Type.findAll();
+         return res.json(types);
+      } catch (error) {
+         return next(
+            ApiError.internalServer('Помилка при отриманні всіх типів'),
+         );
+      }
    }
-   async delete(req: Request, res: Response) {
-      const { id } = req.params;
-      const type = await Type.findOne({ where: { id } });
-      if (type) {
+   async delete(req: Request, res: Response, next: NextFunction) {
+      try {
+         const { id } = req.params;
+         const type = await Type.findOne({ where: { id } });
+         if (!type) {
+            return next(ApiError.notFound('Такого типу не знайдено'));
+         }
+
          await Shoes.destroy({ where: { typeId: id } });
          await Type.destroy({ where: { id } });
-         return res.json(type);
+         return res.json({ id: type.id, message: 'Тип успішно видалено' });
+      } catch (error) {
+         return next(ApiError.internalServer('Помилка при видаленні типу'));
       }
-      return res.json({ message: 'Type with this id is not exist' });
    }
-   async update(req: typeUpdateRequest, res: Response) {
-      const { id, name } = req.body;
-      const type = await Type.findOne({ where: { id } });
-      if (type) {
-         const updatedType = await Type.update({ name }, { where: { id } });
-         return res.json({ updatedType });
+   async update(req: typeUpdateRequest, res: Response, next: NextFunction) {
+      try {
+         const { id, name } = req.body;
+         const type = await Type.findOne({ where: { id } });
+         if (!type) {
+            return next(ApiError.notFound('Такого типу не знайдено'));
+         }
+         await Type.update({ name }, { where: { id } });
+         return res.json({ message: 'Тип успішно оновлено' });
+      } catch (error) {
+         return next(ApiError.internalServer('Помилка при редагуванні типу'));
       }
-      return res.json({ message: 'Type with this id is not exist' });
    }
 }
 

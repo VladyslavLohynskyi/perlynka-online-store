@@ -1,5 +1,6 @@
+import ApiError from '../exceptions/ApiError';
 import Size from '../models/sizeModel';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 interface sizeCreateRequest extends Request {
    body: {
@@ -14,32 +15,56 @@ interface sizeUpdateRequest extends Request {
    };
 }
 class sizeController {
-   async create(req: sizeCreateRequest, res: Response) {
-      const { size } = req.body;
-      const sizeObj = await Size.create({ size });
-      return res.json(sizeObj);
+   async create(req: sizeCreateRequest, res: Response, next: NextFunction) {
+      try {
+         const { size } = req.body;
+         const sizeObj = await Size.create({ size });
+         return res.json({
+            size: sizeObj,
+            message: 'Розмір успішно створений',
+         });
+      } catch (error) {
+         return next(ApiError.internalServer('Помилка при створенні розміру'));
+      }
    }
-   async getAll(req: Request, res: Response) {
-      const sizes = await Size.findAll({ order: [['size', 'ASC']] });
-      return res.json(sizes);
+   async getAll(req: Request, res: Response, next: NextFunction) {
+      try {
+         const sizes = await Size.findAll({ order: [['size', 'ASC']] });
+         return res.json(sizes);
+      } catch (error) {
+         return next(
+            ApiError.internalServer('Помилка при отриманні всіх розмірів'),
+         );
+      }
    }
-   async delete(req: Request, res: Response) {
-      const { id } = req.params;
-      const sizeObj = await Size.findOne({ where: { id } });
-      if (sizeObj) {
+   async delete(req: Request, res: Response, next: NextFunction) {
+      try {
+         const { id } = req.params;
+         const sizeObj = await Size.findOne({ where: { id } });
+         if (!sizeObj) {
+            return next(ApiError.notFound('Такого розміру не знайдено'));
+         }
+
          await Size.destroy({ where: { id } });
-         return res.json(sizeObj);
+         return res.json({ message: 'Розмір успішно видалено' });
+      } catch (error) {
+         return next(ApiError.internalServer('Помилка при видаленні розміру'));
       }
-      return res.json({ message: 'Size with this id is not exist' });
    }
-   async update(req: sizeUpdateRequest, res: Response) {
-      const { id, size } = req.body;
-      const sizeObj = await Size.findOne({ where: { id } });
-      if (sizeObj) {
-         const updatedSize = await Size.update({ size }, { where: { id } });
-         return res.json({ updatedSize });
+   async update(req: sizeUpdateRequest, res: Response, next: NextFunction) {
+      try {
+         const { id, size } = req.body;
+         const sizeObj = await Size.findOne({ where: { id } });
+         if (!sizeObj) {
+            return next(ApiError.notFound('Такого розміру не знайдено'));
+         }
+         await Size.update({ size }, { where: { id } });
+         return res.json({ message: 'Бренд успішно оновлено' });
+      } catch (error) {
+         return next(
+            ApiError.internalServer('Помилка при редагуванні розміру'),
+         );
       }
-      return res.json({ message: 'Size with this id is not exist' });
    }
 }
 

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import ColorReq from '../../../http/colors';
 import { AppDispatch } from '../../store';
 import { IBasicCategory, shoesSlice } from './ShoesSlice';
@@ -8,7 +9,12 @@ export const createColor = (name: string) => async (dispatch: AppDispatch) => {
       const newColor = await ColorReq.createElement(name);
       dispatch(shoesSlice.actions.colorCreateSuccess(newColor));
    } catch (error) {
-      dispatch(shoesSlice.actions.error('Creating Color Error'));
+      if (axios.isAxiosError(error)) {
+         dispatch(shoesSlice.actions.error(error.response?.data));
+      } else
+         dispatch(
+            shoesSlice.actions.error('Невідома помилка при створенні кольору'),
+         );
    }
 };
 
@@ -19,17 +25,29 @@ export const updateColor =
          const color = await ColorReq.updateElement(newColor);
          dispatch(shoesSlice.actions.colorUpdateSuccess(color));
       } catch (error) {
-         dispatch(shoesSlice.actions.error('Updating Color Error'));
+         if (axios.isAxiosError(error)) {
+            dispatch(shoesSlice.actions.error(error.response?.data));
+         } else
+            dispatch(
+               shoesSlice.actions.error(
+                  'Невідома помилка при редагуванні кольору',
+               ),
+            );
       }
    };
 
 export const deleteColor = (id: number) => async (dispatch: AppDispatch) => {
    try {
       dispatch(shoesSlice.actions.start());
-      const color = await ColorReq.deleteElementById(id);
+      const data = await ColorReq.deleteElementById(id);
 
-      dispatch(shoesSlice.actions.colorDeleteSuccess(+color.id));
+      dispatch(shoesSlice.actions.colorDeleteSuccess(data));
    } catch (error) {
-      dispatch(shoesSlice.actions.error('Deleting Color Error'));
+      if (axios.isAxiosError(error)) {
+         dispatch(shoesSlice.actions.error(error.response?.data));
+      } else
+         dispatch(
+            shoesSlice.actions.error('Невідома помилка при видаленні кольору'),
+         );
    }
 };

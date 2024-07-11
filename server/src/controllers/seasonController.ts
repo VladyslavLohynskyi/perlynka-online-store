@@ -1,6 +1,7 @@
 import Season from '../models/seasonModel';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import Shoes from '../models/shoesModel';
+import ApiError from '../exceptions/ApiError';
 
 interface seasonCreateRequest extends Request {
    body: {
@@ -15,33 +16,57 @@ interface colorUpdateRequest extends Request {
    };
 }
 class seasonController {
-   async create(req: seasonCreateRequest, res: Response) {
-      const { name } = req.body;
-      const season = await Season.create({ name });
-      return res.json(season);
+   async create(req: seasonCreateRequest, res: Response, next: NextFunction) {
+      try {
+         const { name } = req.body;
+         const season = await Season.create({ name });
+         return res.json({
+            element: season,
+            message: 'Новий сезон успішно створенний',
+         });
+      } catch (error) {
+         return next(
+            ApiError.internalServer('Невідома помилка при створенні сезону'),
+         );
+      }
    }
-   async getAll(req: Request, res: Response) {
-      const seasons = await Season.findAll();
-      return res.json(seasons);
+   async getAll(req: Request, res: Response, next: NextFunction) {
+      try {
+         const seasons = await Season.findAll();
+         return res.json(seasons);
+      } catch (error) {
+         return next(
+            ApiError.internalServer('Помилка при отриманні всіх сезонів'),
+         );
+      }
    }
-   async delete(req: Request, res: Response) {
-      const { id } = req.params;
-      const season = await Season.findOne({ where: { id } });
-      if (season) {
+   async delete(req: Request, res: Response, next: NextFunction) {
+      try {
+         const { id } = req.params;
+         const season = await Season.findOne({ where: { id } });
+         if (!season) {
+            return next(ApiError.notFound('Такого сезону не знайдено'));
+         }
+
          await Shoes.destroy({ where: { seasonId: id } });
          await Season.destroy({ where: { id } });
-         return res.json(season);
+         return res.json({ id: season.id, message: 'Сезон успішно видалено' });
+      } catch (error) {
+         return next(ApiError.internalServer('Помилка при видаленні сезону'));
       }
-      return res.json({ message: 'Season with this id is not exist' });
    }
-   async update(req: colorUpdateRequest, res: Response) {
-      const { id, name } = req.body;
-      const season = await Season.findOne({ where: { id } });
-      if (season) {
-         const updatedSeason = await Season.update({ name }, { where: { id } });
-         return res.json({ updatedSeason });
+   async update(req: colorUpdateRequest, res: Response, next: NextFunction) {
+      try {
+         const { id, name } = req.body;
+         const season = await Season.findOne({ where: { id } });
+         if (!season) {
+            return next(ApiError.notFound('Такого сезону не знайдено'));
+         }
+         await Season.update({ name }, { where: { id } });
+         return res.json({ message: 'Сезон успішно оновлено' });
+      } catch (error) {
+         return next(ApiError.internalServer('Помилка при редагуванні ceзону'));
       }
-      return res.json({ message: 'Season with this id is not exist' });
    }
 }
 

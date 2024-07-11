@@ -1,15 +1,17 @@
 import axios from 'axios';
 import { $host, $authHost } from '.';
-import { Role } from '../store/reducers/user/UserSlice';
+import { IUser, Role } from '../store/reducers/user/UserSlice';
 import { baseURL } from '../utils/constants';
-export interface IUserRes {
-   id: string;
-   email: string;
-   role: Role;
+import { IBasicResponse } from './basket';
+
+export interface IUserResponse {
+   user: IUser;
+   message: string;
 }
-class UserReq {
+
+export class UserReq {
    registration = async (email: string, password: string) => {
-      const { data } = await $host.post<{ token: string }>(
+      const { data } = await $host.post<{ token: string; message: string }>(
          '/user/registration',
          {
             email,
@@ -35,27 +37,27 @@ class UserReq {
    };
 
    getUsersByRole = async (role: Role) => {
-      const { data } = await $authHost.get<IUserRes[]>('/user/users', {
+      const { data } = await $authHost.get<IUser[]>('/user/users', {
          params: { role },
       });
       return data;
    };
    getUserByEmailAndRole = async (role: Role, email: string) => {
-      const { data } = await $authHost.get<IUserRes[]>('/user/', {
+      const { data } = await $authHost.get<IUser[]>('/user/', {
          params: { role, email },
       });
       return data;
    };
-   deleteAdmin = async (id: string) => {
-      const { data } = await $authHost.put<IUserRes>('/user/role', {
+   deleteAdmin = async (id: number) => {
+      const { data } = await $authHost.put<IUserResponse>('/user/role', {
          id,
          role: Role.USER,
       });
       return data;
    };
 
-   addAdmin = async (id: string) => {
-      const { data } = await $authHost.put<IUserRes>('/user/role', {
+   addAdmin = async (id: number) => {
+      const { data } = await $authHost.put<IUserResponse>('/user/role', {
          id,
          role: Role.ADMIN,
       });
@@ -63,7 +65,7 @@ class UserReq {
    };
 
    logout = async () => {
-      return $authHost.get('/user/logout');
+      return $authHost.get<IBasicResponse>('/user/logout');
    };
 
    sendForgotPasswordLink(email: string) {

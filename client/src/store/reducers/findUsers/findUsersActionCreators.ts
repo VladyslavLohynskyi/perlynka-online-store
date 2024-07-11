@@ -1,3 +1,4 @@
+import axios from 'axios';
 import UserReq from '../../../http/users';
 import { AppDispatch } from '../../store';
 import { Role } from '../user/UserSlice';
@@ -13,10 +14,17 @@ export const getAllUsersByEmail =
          );
          dispatch(findUsersSlice.actions.getUsersSuccess(foundUsers));
       } catch (error) {
-         dispatch(findUsersSlice.actions.error('Getting List OF Users Error'));
+         if (axios.isAxiosError(error)) {
+            dispatch(findUsersSlice.actions.error(error.response?.data));
+         } else
+            dispatch(
+               findUsersSlice.actions.error(
+                  'Помилка при отриманні користувачів за адресою електронної пошти',
+               ),
+            );
       }
    };
 
-export const deleteFoundUser = (id: string) => (dispatch: AppDispatch) => {
+export const deleteFoundUser = (id: number) => (dispatch: AppDispatch) => {
    dispatch(findUsersSlice.actions.deleteFindUserSuccess(id));
 };

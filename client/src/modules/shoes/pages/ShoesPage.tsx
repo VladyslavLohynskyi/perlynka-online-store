@@ -2,11 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import './ShoesPage.scss';
 import { useParams } from 'react-router-dom';
-import {
-   IParticularShoes,
-   IShoesImage,
-   getShoesById,
-} from '../../../http/shoes';
+import ShoesReq, { IParticularShoes, IShoesImage } from '../../../http/shoes';
 import { baseURL } from '../../../utils/constants';
 import { Button } from '../../ui/Button';
 import { ButtonClassEnum } from '../../ui/Button/ButtonType';
@@ -19,6 +15,7 @@ import {
    addShoesToBasket,
    addShoesToBasketNotAuth,
 } from '../../../store/reducers/basket/BasketActionCreators';
+
 enum BuyButtonTextEnum {
    BUY = 'Купити',
    SIZE_ERROR = 'Виберіть Розмір',
@@ -35,9 +32,10 @@ export const ShoesPage: React.FC = () => {
    const [buyButtonText, setBuyButtonText] = useState<BuyButtonTextEnum>(
       BuyButtonTextEnum.BUY,
    );
+
    useEffect(() => {
       if (id)
-         getShoesById(+id).then((shoes) => {
+         ShoesReq.getShoesById(+id).then((shoes) => {
             setCurrentShoes(shoes);
             setSlides([
                { id: 0, img: shoes.img, shoId: shoes.id },
@@ -65,10 +63,12 @@ export const ShoesPage: React.FC = () => {
       }
    };
 
-   const handleClickBuyButton = () => {
+   const handleClickBuyButton = async () => {
       if (currentShoes && selectedSizeId) {
          if (isAuth) {
-            dispatch(addShoesToBasket(currentShoes.id, selectedSizeId, count));
+            await dispatch(
+               addShoesToBasket(currentShoes.id, selectedSizeId, count),
+            );
          } else {
             const {
                id,

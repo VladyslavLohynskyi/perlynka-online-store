@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './DeleteShoesModal.scss';
 import { DeleteShoesModalType } from './DeleteShoesModalType';
 import { ModalHeader } from '../../components/ModalHeader';
-import { getShoesById } from '../../../../../../http/shoes';
+import ShoesReq from '../../../../../../http/shoes';
 import { IShoes } from '../../../../../../store/reducers/shoes/ShoesSlice';
 import { baseURL } from '../../../../../../utils/constants';
 import { Button } from '../../../../../ui/Button';
@@ -23,7 +23,7 @@ export const DeleteShoesModal: React.FC<DeleteShoesModalType> = ({
    const handleSubmitId = async () => {
       setError('');
       setFoundShoes(null);
-      getShoesById(id)
+      ShoesReq.getShoesById(id)
          .then((data) => setFoundShoes(data))
          .catch((e) => setError(e.response.data));
    };

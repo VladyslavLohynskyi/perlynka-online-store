@@ -3,10 +3,9 @@ import { EditShoesModalType } from './EditShoesModalType';
 import './EditShoesModal.scss';
 import { ModalHeader } from '../../components/ModalHeader';
 import { ModalInput } from '../../components/ModalInput';
-import {
+import shoesReq, {
    IParticularShoes,
    IShoesImage,
-   getShoesById,
 } from '../../../../../../http/shoes';
 import {
    ISize,
@@ -22,7 +21,6 @@ import { ButtonClassEnum } from '../../../../../ui/Button/ButtonType';
 import { IShoesInfo, keyShoesInfoEnum } from '../AddShoesModal';
 import { IconButton } from '../../../../../ui/IconButton';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import Input from 'react-select/dist/declarations/src/components/Input';
 
 interface INewAdditionImages {
    id: number;
@@ -150,7 +148,8 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
    const handleSubmitId = async () => {
       setError('');
       setFoundShoes(null);
-      getShoesById(id)
+      shoesReq
+         .getShoesById(id)
          .then((data) => setFoundShoes(data))
          .catch((e) => setError(e.response.data));
    };
@@ -293,8 +292,11 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                            required={false}
                         />
                      </div>
-                     {additionImages.map(({ img }) => (
-                        <div className='edit-shoes-modal__edit-img-container'>
+                     {additionImages.map(({ img, id }) => (
+                        <div
+                           key={id}
+                           className='edit-shoes-modal__edit-img-container'
+                        >
                            <div className='edit-shoes-modal__img-container'>
                               <img src={baseURL + img} alt='Взуття' />
                            </div>

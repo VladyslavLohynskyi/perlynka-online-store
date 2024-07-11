@@ -5,6 +5,7 @@ interface IUserState {
    user: IUser | null;
    isLoading: boolean;
    error: string;
+   message: string;
 }
 
 export interface IAuthUser {
@@ -27,6 +28,7 @@ const initialState: IUserState = {
    user: null,
    isLoading: true,
    error: '',
+   message: '',
 };
 
 export const userSlice = createSlice({
@@ -36,12 +38,17 @@ export const userSlice = createSlice({
       userRegistration(state) {
          state.isLoading = true;
          state.error = '';
+         state.message = '';
       },
-      userRegistrationSuccess(state, action: PayloadAction<IAuthUser>) {
+      userRegistrationSuccess(
+         state,
+         action: PayloadAction<{ token: string; message: string; user: IUser }>,
+      ) {
          state.isLoading = false;
          state.error = '';
          state.user = action.payload.user;
          document.cookie = `token=${action.payload.token}`;
+         state.message = action.payload.message;
       },
       userRegistrationError(state, action: PayloadAction<string>) {
          state.isLoading = false;
@@ -84,10 +91,11 @@ export const userSlice = createSlice({
          state.error = '';
       },
 
-      userLogOut(state) {
+      userLogOut(state, action: PayloadAction<string>) {
          state.user = null;
          state.isAuth = false;
          document.cookie = 'token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
+         state.message = action.payload;
       },
    },
 });

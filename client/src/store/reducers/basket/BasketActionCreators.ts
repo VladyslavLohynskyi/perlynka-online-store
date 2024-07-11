@@ -2,25 +2,39 @@ import axios from 'axios';
 import BasketReq, { IAddShoes } from '../../../http/basket';
 import { AppDispatch } from '../../store';
 import { IBasketItem, basketSlice } from './BasketSlice';
-import { userSlice } from '../user/UserSlice';
-import UserReq from '../../../http/users';
+
 export const addShoesToBasket =
    (shoId: number, sizeId: number, count: number) =>
    async (dispatch: AppDispatch) => {
       try {
          dispatch(basketSlice.actions.start());
-         await BasketReq.addShoesToBasket(shoId, sizeId, count);
+         const { message } = await BasketReq.addShoesToBasket(
+            shoId,
+            sizeId,
+            count,
+         );
          const basketItems = await BasketReq.getAllInBasket();
          dispatch(
-            basketSlice.actions.addShoesToBasketSuccess({ basketItems, count }),
+            basketSlice.actions.addShoesToBasketSuccess({
+               basketItems,
+               count,
+               message,
+            }),
          );
       } catch (error) {
-         dispatch(basketSlice.actions.error('Adding Shoes to basket Error'));
+         if (axios.isAxiosError(error)) {
+            dispatch(basketSlice.actions.error(error.response?.data));
+         } else
+            dispatch(
+               basketSlice.actions.error(
+                  'Помилка при додаванні товарів до корзини',
+               ),
+            );
       }
    };
 
 export const addShoesToBasketNotAuth =
-   (basketItem: IBasketItem) => async (dispatch: AppDispatch) => {
+   (basketItem: IBasketItem) => (dispatch: AppDispatch) => {
       dispatch(basketSlice.actions.addShoesToBasketNotAuthSuccess(basketItem));
    };
 
@@ -33,16 +47,19 @@ export const getTotalCountOfShoesInBasket =
             basketSlice.actions.getTotalCountOfShoesInBasketSuccess(totalCount),
          );
       } catch (error) {
-         dispatch(
-            basketSlice.actions.error(
-               'Getting count of all Shoes from basket Error',
-            ),
-         );
+         if (axios.isAxiosError(error)) {
+            dispatch(basketSlice.actions.error(error.response?.data));
+         } else
+            dispatch(
+               basketSlice.actions.error(
+                  'Помилка отримання загальної кількості товарів в корзині',
+               ),
+            );
       }
    };
 
 export const getTotalCountOfShoesInBasketNotAuth =
-   () => async (dispatch: AppDispatch) => {
+   () => (dispatch: AppDispatch) => {
       dispatch(
          basketSlice.actions.getTotalCountOfShoesInBasketNotAuthSuccess(),
       );
@@ -54,14 +71,21 @@ export const getAllShoesOfBasket = () => async (dispatch: AppDispatch) => {
       const basket = await BasketReq.getAllInBasket();
       dispatch(basketSlice.actions.getAllShoesOfBasketSuccess(basket));
    } catch (error) {
-      dispatch(basketSlice.actions.error('Getting all Shoes of basket Error'));
+      if (axios.isAxiosError(error)) {
+         dispatch(basketSlice.actions.error(error.response?.data));
+      } else
+         dispatch(
+            basketSlice.actions.error(
+               'Помилка отримання всього взуття яке знаходиться в корзині',
+            ),
+         );
    }
 };
 
-export const getAllShoesOfBasketNotAuth =
-   () => async (dispatch: AppDispatch) => {
-      dispatch(basketSlice.actions.getAllShoesOfBasketNotAuthSuccess());
-   };
+export const getAllShoesOfBasketNotAuth = () => (dispatch: AppDispatch) => {
+   dispatch(basketSlice.actions.getAllShoesOfBasketNotAuthSuccess());
+};
+
 export const deleteOneShoesFromBasket =
    (id: number, sizeId: number) => async (dispatch: AppDispatch) => {
       try {
@@ -71,13 +95,18 @@ export const deleteOneShoesFromBasket =
             basketSlice.actions.deleteOneShoesFromBasketSuccess({ id, sizeId }),
          );
       } catch (error) {
-         dispatch(
-            basketSlice.actions.error('Deleting one Shoes from basket Error'),
-         );
+         if (axios.isAxiosError(error)) {
+            dispatch(basketSlice.actions.error(error.response?.data));
+         } else
+            dispatch(
+               basketSlice.actions.error(
+                  'Помилка при видалені товарів з корзини',
+               ),
+            );
       }
    };
 export const deleteOneShoesFromBasketNotAuth =
-   (id: string) => async (dispatch: AppDispatch) => {
+   (id: string) => (dispatch: AppDispatch) => {
       dispatch(basketSlice.actions.deleteOneShoesFromBasketNotAuthSuccess(id));
    };
 
@@ -87,7 +116,10 @@ export const deleteAllFromBasket = () => async (dispatch: AppDispatch) => {
       await BasketReq.deleteAllFromBasket();
       dispatch(basketSlice.actions.deleteAllFromBasketSuccess());
    } catch (error) {
-      dispatch(basketSlice.actions.error('Deleting All from basket Error'));
+      if (axios.isAxiosError(error)) {
+         dispatch(basketSlice.actions.error(error.response?.data));
+      } else
+         dispatch(basketSlice.actions.error('Помилка при очищенні  корзини'));
    }
 };
 export const deleteAllFromBasketNotAuth =
@@ -106,16 +138,19 @@ export const incrementCountOfOneShoesInBasket =
             ),
          );
       } catch (error) {
-         dispatch(
-            basketSlice.actions.error(
-               'Increment count of shoes in basket  Error',
-            ),
-         );
+         if (axios.isAxiosError(error)) {
+            dispatch(basketSlice.actions.error(error.response?.data));
+         } else
+            dispatch(
+               basketSlice.actions.error(
+                  'Помилка при збільшенні кількості товару в корзині',
+               ),
+            );
       }
    };
 
 export const incrementCountOfOneShoesInBasketNotAuth =
-   (id: string) => async (dispatch: AppDispatch) => {
+   (id: string) => (dispatch: AppDispatch) => {
       dispatch(
          basketSlice.actions.incrementCountOfOneShoesInBasketNotAuthSuccess(id),
       );
@@ -132,16 +167,19 @@ export const decrementCountOfOneShoesInBasket =
             ),
          );
       } catch (error) {
-         dispatch(
-            basketSlice.actions.error(
-               'Decrement count of shoes in basket  Error',
-            ),
-         );
+         if (axios.isAxiosError(error)) {
+            dispatch(basketSlice.actions.error(error.response?.data));
+         } else
+            dispatch(
+               basketSlice.actions.error(
+                  'Помилка при зменшені кількості товарів в корзині',
+               ),
+            );
       }
    };
 
 export const decrementCountOfOneShoesInBasketNotAuth =
-   (id: string) => async (dispatch: AppDispatch) => {
+   (id: string) => (dispatch: AppDispatch) => {
       dispatch(
          basketSlice.actions.decrementCountOfOneShoesInBasketNotAuthSuccess(id),
       );
@@ -156,10 +194,16 @@ export const synchronizeBaskets =
             basketSlice.actions.addShoesToBasketSuccess({
                basketItems,
                count: 0,
+               message: 'Корзина успішно синхронізована',
             }),
          );
       } catch (error) {
-         dispatch(basketSlice.actions.error('Synchronize baskets  Error'));
+         if (axios.isAxiosError(error)) {
+            dispatch(basketSlice.actions.error(error.response?.data.message));
+         } else
+            dispatch(
+               basketSlice.actions.error('Помилка при синхронізувані корзин'),
+            );
       }
    };
 export const clearBasketBeforeLogOut = () => (dispatch: AppDispatch) => {
