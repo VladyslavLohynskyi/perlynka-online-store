@@ -1,9 +1,23 @@
 @import 'nullStyles';
+@font-face {
+   font-family: 'Roboto';
+   src: url('./utils/fonts/Roboto-Regular.ttf') format('ttf');
+   font-weight: 400;
+   font-style: normal;
+   font-display: swap;
+}
+
+@font-face {
+   font-family: 'Roboto';
+   src: url('./utils/fonts/Roboto-Bold.ttf') format('ttf');
+   font-weight: 900;
+   font-style: normal;
+   font-display: swap;
+}
+
 body {
    margin: 0;
-   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
-      'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-      'Helvetica Neue', sans-serif;
+   font-family: 'Roboto', 'Ubuntu', sans-serif;
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
 }
@@ -11,4 +25,40 @@ body {
 code {
    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
       monospace;
+}
+
+:root {
+   --main-text-color: #000000;
+   --secondary-text-color: #333;
+   --main-background-color: #fff;
+   --footer-text-color: var(--main-background-color);
+   --secondary-background-color: #f9f9f9;
+   --footer-background-color: #303030;
+   --horizontal-line-color: #d9d7d7;
+   --icon-text-color: var(--main-background-color);
+   --icon-background-color: var(--main-text-color);
+   --pagination-btn-active-background-color: #eaeaea;
+   --nav-btn-border-color: transparent;
+   --nav-btn-border-hover-color: var(--secondary-text-color);
+}
+
+h1 {
+   cursor: pointer;
+   font-size: 33px;
+   font-weight: 900;
+   color: var(--main-text-color);
+   letter-spacing: -2px;
+   color: var(--main-text-color);
+}
+
+.icon-text {
+   font-size: 10px;
+   font-weight: 400;
+   color: var(--icon-text-color);
+}
+
+.nav-btn-text {
+   font-size: 14px;
+   color: var(--secondary-text-color);
+   font-weight: 400;
 }

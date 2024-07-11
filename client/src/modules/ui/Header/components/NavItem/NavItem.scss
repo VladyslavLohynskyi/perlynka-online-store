@@ -4,9 +4,9 @@
    border-radius: 20px;
    cursor: pointer;
    text-align: center;
-   border: 1px solid transparent;
+   border: 1px solid var(--nav-btn-border-color);
 
    &:hover {
-      border: 1px solid gray;
+      border: 1px solid var(--nav-btn-border-hover-color);
    }
 }

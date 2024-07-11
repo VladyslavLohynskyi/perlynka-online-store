@@ -4,15 +4,8 @@
    width: 100vw;
    height: 60px;
    align-items: center;
-   border-bottom: 1px solid gray;
+   border-bottom: 1px solid var(--horizontal-line-color);
    padding: 10px 20px;
-   &__logo-container h1 {
-      cursor: pointer;
-      font-size: 33px;
-      font-weight: 300;
-      color: black;
-      letter-spacing: -2px;
-   }
 }
 
 nav {
@@ -28,17 +21,15 @@ nav {
       height: 18px;
       & span {
          cursor: pointer;
-         background-color: black;
-         font-size: 10px;
-         color: white;
+         background-color: var(--icon-background-color);
          width: 20px;
          height: 20px;
          padding: 0px 1px;
-         border: 1px solid black;
+         border: 1px solid var(--icon-background-color);
          border-radius: 50px;
          position: relative;
-         left: 26px;
-         top: -28px;
+         left: 28px;
+         top: -30px;
       }
    }
 }

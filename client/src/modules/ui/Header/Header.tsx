@@ -71,7 +71,7 @@ export const Header: React.FC = () => {
                      icon={faCartShopping}
                      onClick={handleClickBasketIcon}
                   />
-                  <span>{totalCountOfShoesInBasket}</span>
+                  <span className='icon-text'>{totalCountOfShoesInBasket}</span>
                </div>
                <IconButton icon={faUser} onClick={handleClickUserIcon} />
             </div>
