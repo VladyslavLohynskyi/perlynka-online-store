@@ -1,4 +1,6 @@
 @import 'nullStyles';
+@import 'breakpoints';
+
 @font-face {
    font-family: 'Roboto';
    src: url('./utils/fonts/Roboto-Regular.ttf') format('ttf');
@@ -20,6 +22,7 @@ body {
    font-family: 'Roboto', 'Ubuntu', sans-serif;
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
+   overflow-x: hidden;
 }
 
 code {
@@ -30,6 +33,7 @@ code {
 :root {
    --main-text-color: #000000;
    --secondary-text-color: #333;
+   --footer-text-color: #fff;
    --main-background-color: #fff;
    --footer-text-color: var(--main-background-color);
    --secondary-background-color: #f9f9f9;
@@ -37,7 +41,7 @@ code {
    --horizontal-line-color: #d9d7d7;
    --icon-text-color: var(--main-background-color);
    --icon-background-color: var(--main-text-color);
-   --pagination-btn-active-background-color: #eaeaea;
+   --pagination-btn-active-background-color: #cccccc;
    --nav-btn-border-color: transparent;
    --nav-btn-border-hover-color: var(--secondary-text-color);
 }
@@ -61,4 +65,38 @@ h1 {
    font-size: 14px;
    color: var(--secondary-text-color);
    font-weight: 400;
+}
+
+.max-width {
+   max-width: 1200px;
+}
+
+.preview-shoes-item-model-text {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   font-size: 12px;
+   font-weight: 900;
+}
+
+.preview-shoes-item-price-text {
+   font-size: 16px;
+   font-weight: 900;
+}
+
+.sort-title-text {
+   font-size: 12px;
+   font-family: 'Roboto', 'Ubuntu', sans-serif;
+   font-weight: 900;
+}
+
+.filter-header {
+   font-size: 14px;
+   font-weight: 700;
+}
+
+.filter-title {
+   font-size: 14px;
+   font-weight: 400;
+   color: var(--secondary-text-color);
 }

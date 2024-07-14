@@ -1,11 +1,19 @@
 .header {
+   max-width: 1200px;
+   width: 100%;
    display: flex;
    justify-content: space-between;
-   width: 100vw;
    height: 60px;
    align-items: center;
-   border-bottom: 1px solid var(--horizontal-line-color);
-   padding: 10px 20px;
+   padding: 10px 10px;
+
+   &__container {
+      display: flex;
+      justify-content: center;
+      border-bottom: 1px solid var(--horizontal-line-color);
+      width: 100vw;
+      background-color: var(--main-background-color);
+   }
 }
 
 nav {

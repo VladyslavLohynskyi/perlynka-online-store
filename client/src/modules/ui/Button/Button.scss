@@ -91,28 +91,23 @@
    }
 
    &--pagination {
-      color: rgb(34, 33, 33);
-      background-color: transparent;
+      color: var(--secondary-text-color);
+      background-color: var(--nav-btn-border-color);
       border-color: transparent;
       border-radius: 50%;
-      height: 25px;
-      width: 25px;
-
-      &:hover {
-         border-color: rgb(34, 33, 33);
-      }
+      height: 35px;
+      width: 35px;
+      font-size: 14px;
    }
 
    &--active-pagination {
-      color: #fff;
-      background-color: gray;
-      border-color: gray;
+      color: var(--secondary-text-color);
+      background-color: var(--pagination-btn-active-background-color);
       border-radius: 50%;
-      height: 25px;
-      width: 25px;
-      &:hover {
-         background-color: rgb(34, 33, 33);
-      }
+      height: 35px;
+      width: 35px;
+      font-size: 14px;
+      cursor: default;
    }
 
    &--size {

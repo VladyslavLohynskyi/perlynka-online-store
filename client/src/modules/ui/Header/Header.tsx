@@ -48,34 +48,38 @@ export const Header: React.FC = () => {
    };
    return (
       <>
-         <header className='header'>
-            <div className='header__logo-container'>
-               <h1 onClick={() => navigate(RoutesEnum.SHOP)}>Перлинка</h1>
-            </div>
-            <nav>
-               <NavItem
-                  text={SexEnum.BOY}
-                  onClick={() => onClickSex(SexEnum.BOY)}
-               />
-               <NavItem
-                  text={SexEnum.GIRL}
-                  onClick={() => onClickSex(SexEnum.GIRL)}
-               />
-               <NavItem text='Бренди' />
-               <NavItem text='Контакти' />
-               <NavItem text='Доставка' />
-            </nav>
-            <div className='icon-menu'>
-               <div className='icon-menu__basket'>
-                  <IconButton
-                     icon={faCartShopping}
-                     onClick={handleClickBasketIcon}
-                  />
-                  <span className='icon-text'>{totalCountOfShoesInBasket}</span>
+         <div className='header__container'>
+            <header className='header'>
+               <div className='header__logo-container'>
+                  <h1 onClick={() => navigate(RoutesEnum.SHOP)}>Перлинка</h1>
                </div>
-               <IconButton icon={faUser} onClick={handleClickUserIcon} />
-            </div>
-         </header>
+               <nav>
+                  <NavItem
+                     text={SexEnum.BOY}
+                     onClick={() => onClickSex(SexEnum.BOY)}
+                  />
+                  <NavItem
+                     text={SexEnum.GIRL}
+                     onClick={() => onClickSex(SexEnum.GIRL)}
+                  />
+                  <NavItem text='Бренди' />
+                  <NavItem text='Контакти' />
+                  <NavItem text='Доставка' />
+               </nav>
+               <div className='icon-menu'>
+                  <div className='icon-menu__basket'>
+                     <IconButton
+                        icon={faCartShopping}
+                        onClick={handleClickBasketIcon}
+                     />
+                     <span className='icon-text'>
+                        {totalCountOfShoesInBasket}
+                     </span>
+                  </div>
+                  <IconButton icon={faUser} onClick={handleClickUserIcon} />
+               </div>
+            </header>
+         </div>
          <Modal
             isModalOpen={isHeaderDropdownOpen}
             onClose={() => setIsHeaderDropdownOpen(false)}

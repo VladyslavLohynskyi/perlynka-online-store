@@ -14,19 +14,25 @@ export const ShoesItem: React.FC<ShoesItemType> = ({ shoes }) => {
          className='shoes-item'
          onClick={() => navigate(RoutesEnum.SHOES + '/' + shoes.id)}
       >
-         <div className='shoes-item__id'>#{shoes.id}</div>
          <div className='shoes-item__img-container'>
             <img src={baseURL + shoes.img} alt='shoes' />
          </div>
          <div className='shoes-item__info'>
-            <p className='shoes-item__model'>
+            <p className='preview-shoes-item-model-text'>
                {brands?.length &&
                   brands.find((brand) => {
                      return Number(brand.id) === shoes.brandId;
                   })?.name}{' '}
                {shoes.model}
             </p>
-            <p className='shoes-item__price'>{shoes.price} грн</p>
+            <div>
+               <p className='preview-shoes-item-price-text'>
+                  {shoes.price} грн
+               </p>
+               <p className='shoes-item__id preview-shoes-item-price-text'>
+                  #{shoes.id}
+               </p>
+            </div>
          </div>
       </div>
    );

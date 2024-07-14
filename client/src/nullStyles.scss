@@ -2,6 +2,7 @@
    padding: 0;
    margin: 0;
    border: 0;
+   box-sizing: border-box;
 }
 *,
 *:before,
@@ -64,13 +65,4 @@ ul li {
 }
 img {
    vertical-align: top;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-   font-size: inherit;
-   font-weight: inherit;
 }

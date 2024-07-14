@@ -21,7 +21,7 @@ export const FilterCheckboxItem: React.FC<FilterCheckboxItemType> = ({
             checked={selectedValuesId.includes(+id)}
             onChange={() => {}}
          />
-         <span>{name}</span>
+         <span className='filter-title'>{name}</span>
       </div>
    );
 };
