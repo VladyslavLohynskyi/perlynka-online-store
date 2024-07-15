@@ -1,3 +1,4 @@
+@import '../../../breakpoints.scss';
 .header {
    max-width: 1200px;
    width: 100%;
@@ -14,17 +15,44 @@
       width: 100vw;
       background-color: var(--main-background-color);
    }
-}
 
-nav {
-   display: flex;
-   align-items: center;
-   justify-content: center;
+   &__logo-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+   }
+
+   &__burger-btn {
+      margin-right: 20px;
+      cursor: pointer;
+      padding: 0 10px;
+      color: --icon-background-color;
+      &:hover {
+         color: var(--icon-background-hover-color);
+      }
+   }
+   & nav {
+      display: none;
+   }
 }
 
 .icon-menu {
    display: flex;
-
+   height: 100%;
+   align-items: center;
+   &__dropdown-btn {
+      cursor: pointer;
+      color: var(--icon-background-color);
+      &:hover {
+         color: var(--icon-background-hover-color);
+      }
+      padding: 10px;
+   }
+   &__dropdown {
+      display: block;
+      width: 42px;
+      height: 100%;
+   }
    &__basket {
       height: 18px;
       & span {
@@ -40,4 +68,29 @@ nav {
          top: -30px;
       }
    }
+
+   &__dropdown-container {
+      position: relative;
+      z-index: 1;
+      padding: 16px 0;
+      width: 220px;
+      border: 1px solid var(--horizontal-line-color);
+      background-color: var(--main-background-color);
+      border-radius: 5px;
+      right: 190px;
+   }
 }
+
+@media #{$tablet-large} {
+   .header {
+      & nav {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+      }
+
+      &__burger-btn {
+         display: none;
+      }
+   }
+} ;

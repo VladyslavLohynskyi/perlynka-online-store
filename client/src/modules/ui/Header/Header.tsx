@@ -1,28 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NavItem } from './components/NavItem';
-import { faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons';
+import {
+   faCartShopping,
+   faUser,
+   faBars,
+} from '@fortawesome/free-solid-svg-icons';
 import './Header.scss';
 import { IconButton } from '../IconButton';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { useNavigate } from 'react-router-dom';
 import { RoutesEnum } from '../../../utils/constants';
-import { Modal } from '../../modal/pages';
-import { HeaderDropdown } from '../../modal/components/HeaderDropdown';
 import { SexEnum } from '../../../store/reducers/shoes/ShoesSlice';
 import { sexFilter } from '../../../store/reducers/filter/FilterActionCreators';
 import {
+   clearBasketBeforeLogOut,
    getTotalCountOfShoesInBasket,
    getTotalCountOfShoesInBasketNotAuth,
 } from '../../../store/reducers/basket/BasketActionCreators';
+import { logOutUser } from '../../../store/reducers/user/UserActionCreators';
+import { DropdownItem } from './components/DropdownItem';
 
 export const Header: React.FC = () => {
-   const { isAuth } = useAppSelector((state) => state.userReducer);
+   const { user, isAuth } = useAppSelector((state) => state.userReducer);
    const { totalCountOfShoesInBasket } = useAppSelector(
       (state) => state.basketReducer,
    );
    const dispatch = useAppDispatch();
    const [isHeaderDropdownOpen, setIsHeaderDropdownOpen] = useState(false);
    const navigate = useNavigate();
+
+   const dropdownRef = useRef<HTMLDivElement>(null);
 
    useEffect(() => {
       if (isAuth) {
@@ -32,9 +39,24 @@ export const Header: React.FC = () => {
       }
    }, []);
 
+   useEffect(() => {
+      document.addEventListener('mousedown', handleClickOutsideDropdown);
+      return () => {
+         document.removeEventListener('mousedown', handleClickOutsideDropdown);
+      };
+   }, []);
+
+   const handleClickOutsideDropdown = (event: MouseEvent) => {
+      if (
+         dropdownRef.current &&
+         !dropdownRef.current.contains(event?.target as Node)
+      ) {
+         setIsHeaderDropdownOpen(false);
+      }
+   };
    const handleClickUserIcon = () => {
       if (isAuth) {
-         return setIsHeaderDropdownOpen(true);
+         return setIsHeaderDropdownOpen((prev) => !prev);
       }
       return navigate(RoutesEnum.LOGIN);
    };
@@ -46,11 +68,17 @@ export const Header: React.FC = () => {
       dispatch(sexFilter(sex));
       navigate(RoutesEnum.SHOP);
    };
+
+   const handleClickLogoutButton = () => {
+      dispatch(clearBasketBeforeLogOut());
+      dispatch(logOutUser());
+   };
    return (
       <>
          <div className='header__container'>
             <header className='header'>
                <div className='header__logo-container'>
+                  <IconButton icon={faBars} className='header__burger-btn' />
                   <h1 onClick={() => navigate(RoutesEnum.SHOP)}>Перлинка</h1>
                </div>
                <nav>
@@ -76,17 +104,46 @@ export const Header: React.FC = () => {
                         {totalCountOfShoesInBasket}
                      </span>
                   </div>
-                  <IconButton icon={faUser} onClick={handleClickUserIcon} />
+                  <div className='icon-menu__dropdown' ref={dropdownRef}>
+                     <IconButton
+                        className='icon-menu__dropdown-btn'
+                        icon={faUser}
+                        onClick={handleClickUserIcon}
+                     />
+                     <div
+                        className='icon-menu__dropdown-container'
+                        style={{
+                           display: isHeaderDropdownOpen ? 'block' : 'none',
+                        }}
+                     >
+                        <DropdownItem
+                           text='Профіль'
+                           onClick={() => {
+                              navigate(RoutesEnum.PROFILE);
+                              setIsHeaderDropdownOpen(false);
+                           }}
+                        />
+                        {user?.role === 'ADMIN' && (
+                           <DropdownItem
+                              text='Адмін панель'
+                              onClick={() => {
+                                 navigate(RoutesEnum.ADMIN);
+                                 setIsHeaderDropdownOpen(false);
+                              }}
+                           />
+                        )}
+                        <DropdownItem
+                           text='Вихід'
+                           onClick={() => {
+                              handleClickLogoutButton();
+                              setIsHeaderDropdownOpen(false);
+                           }}
+                        />
+                     </div>
+                  </div>
                </div>
             </header>
          </div>
-         <Modal
-            isModalOpen={isHeaderDropdownOpen}
-            onClose={() => setIsHeaderDropdownOpen(false)}
-            modalPosition='header-dropdown-position'
-         >
-            <HeaderDropdown onClose={() => setIsHeaderDropdownOpen(false)} />
-         </Modal>
       </>
    );
 };

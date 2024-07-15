@@ -1,7 +1,8 @@
 .icon-button {
    cursor: pointer;
    padding: 0 10px;
+   color: var(--icon-background-color);
    &:hover {
-      color: gray;
+      color: var(--icon-background-hover-color);
    }
 }
