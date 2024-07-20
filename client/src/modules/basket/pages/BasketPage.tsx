@@ -48,7 +48,7 @@ export const BasketPage: React.FC = () => {
    return (
       <div className='basket'>
          <div className='basket__main'>
-            <h3 className='basket__page-header'>Корзина</h3>
+            <h2 className='basket__page-header'>Корзина</h2>
             <HorizontalLine />
             <div className='basket__names-columns-container'>
                <div> Фото</div>
