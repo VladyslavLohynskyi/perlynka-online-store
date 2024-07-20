@@ -1,38 +1,41 @@
+@import '../../../breakpoints.scss';
 .shoes-page {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   width: 100vw;
+   background-color: var(--secondary-background-color);
+
    &__main {
-      margin-top: 10px;
-      display: flex;
+      padding: 20px;
+      max-width: 1200px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
       justify-content: center;
+      width: 100%;
    }
    &__info-container {
-      width: 425px;
+      width: 100%;
    }
    &__img-container {
-      margin-right: 20px;
-      width: 420px;
-      height: 420px;
+      width: 100%;
 
       & img {
          width: 100%;
-         height: 100%;
-         object-fit: cover;
+         object-fit: contain;
       }
    }
 
    &__carousel-container {
       display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
-      max-width: 515px;
-      max-height: 420px;
+      flex-direction: column-reverse;
       width: 100%;
       height: 100%;
    }
-
    &__carousel-options {
-      display: flex;
-      flex-direction: column;
-      width: 75px;
+      display: none;
    }
 
    &__carousel-option-container {
@@ -47,21 +50,17 @@
       }
 
       &:hover {
-         border: 1px solid black;
+         border: 1px solid var(--main-text-color);
       }
    }
    &__model-name {
       margin: 10px 0 5px 0;
-      font-size: 20px;
-      font-weight: 600;
    }
    &__model-id {
       margin: 2px 0;
-      font-size: 12px;
    }
    &__model-price {
       margin: 20px 0;
-      font-size: 19px;
    }
    &__model-size {
       font-size: 12px;
@@ -80,9 +79,8 @@
    }
 
    &__buy-button {
-      max-width: 450px;
       width: 100%;
-      margin-bottom: 8px;
+      height: 48px;
    }
 
    &__buy-counter {
@@ -95,11 +93,12 @@
    &__buy-number {
       padding: 5px;
       border-radius: 50%;
-      background-color: lightgray;
+      background-color: var(--horizontal-line-color);
       & p {
          display: flex;
          align-self: center;
          justify-content: center;
+         font-size: 12px;
          width: 15px;
          height: 15px;
       }
@@ -107,12 +106,48 @@
 
    &__characteristics-container {
       margin: auto;
+      padding: 0px 20px 0px;
+      max-width: 1200px;
       width: 100%;
-      max-width: 865px;
-
       & h3 {
-         font-size: 18px;
+         font-size: 15px;
+         font-weight: 900;
          margin-bottom: 10px;
+      }
+      & p {
+         font-size: 14px;
+         font-weight: 400;
+      }
+   }
+}
+
+@media #{$tablet-middle} {
+   .shoes-page {
+      &__main {
+         display: grid;
+         grid-template-columns: 1.5fr 1fr;
+         justify-content: center;
+         width: 100%;
+      }
+      &__img-container {
+         margin-right: 20px;
+         max-width: 550px;
+         max-height: 550px;
+         width: 100%;
+      }
+      &__carousel-container {
+         display: flex;
+         flex-direction: row;
+
+         max-height: 550px;
+         width: 100%;
+         height: 100%;
+      }
+
+      &__carousel-options {
+         display: flex;
+         flex-direction: column;
+         width: 75px;
       }
    }
 }

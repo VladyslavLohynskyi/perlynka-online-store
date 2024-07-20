@@ -45,6 +45,9 @@ code {
    --pagination-btn-active-background-color: #cccccc;
    --nav-btn-border-color: transparent;
    --nav-btn-border-hover-color: var(--secondary-text-color);
+   --size-btn-text-color: #212529;
+   --size-btn-background-active-color: #8ce0e1;
+   --rating-btn-background-active-color: #b8811c;
 }
 
 .max-width {
@@ -106,4 +109,19 @@ h1 {
    color: var(--secondary-text-color);
    cursor: pointer;
    user-select: none;
+}
+
+.main-page-title {
+   font-size: 20px;
+   font-family: 900;
+}
+
+.label-text {
+   font-size: 12px;
+   font-weight: 400;
+}
+
+.subtitle {
+   font-size: 19px;
+   font-weight: 400;
 }

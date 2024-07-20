@@ -111,7 +111,7 @@ export const ShoesPage: React.FC = () => {
       }
    };
    return (
-      <div className='shoes-page__container'>
+      <div className='shoes-page'>
          {currentShoes && (
             <>
                <div className='shoes-page__main'>
@@ -142,16 +142,18 @@ export const ShoesPage: React.FC = () => {
                      </div>
                   </div>
                   <div className='shoes-page__info-container'>
-                     <h3 className='shoes-page__model-name'>
+                     <h3 className='shoes-page__model-name main-page-title'>
                         {currentShoes.brand.name} {currentShoes.model}
                      </h3>
-                     <p className='shoes-page__model-id'>
+                     <p className='shoes-page__model-id label-text'>
                         ID товару: #{currentShoes.id}
                      </p>
-                     <p className='shoes-page__model-price'>
+                     <p className='shoes-page__model-price subtitle'>
                         Ціна: {currentShoes.price} грн.
                      </p>
-                     <p className='shoes-page__model-size'>Розмір взуття:</p>
+                     <p className='shoes-page__model-size label-text'>
+                        Розмір взуття:
+                     </p>
                      <div className='shoes-page__sizes-buttons'>
                         {currentShoes.shoes_sizes.map(({ size, sizeId }) => (
                            <Button
@@ -199,12 +201,12 @@ export const ShoesPage: React.FC = () => {
                      <Rating shoId={currentShoes.id} />
                   </div>
                </div>
+               <HorizontalLine />
                <div className='shoes-page__characteristics-container'>
-                  <HorizontalLine />
                   <h3>Опис товару :</h3>
                   <p
                      style={{
-                        background: 'lightgray',
+                        background: '#d9d7d7',
                         padding: 10,
                      }}
                   >
@@ -221,7 +223,7 @@ export const ShoesPage: React.FC = () => {
 
                   <p
                      style={{
-                        background: 'lightgray',
+                        background: '#d9d7d7',
                         padding: 10,
                      }}
                   >
@@ -237,7 +239,7 @@ export const ShoesPage: React.FC = () => {
                   </p>
                   <p
                      style={{
-                        background: 'lightgray',
+                        background: '#d9d7d7',
                         padding: 10,
                      }}
                   >
@@ -248,15 +250,15 @@ export const ShoesPage: React.FC = () => {
                         key={info.id}
                         style={{
                            background:
-                              index % 2 === 0 ? 'transparent' : 'lightgray',
+                              index % 2 === 0 ? 'transparent' : '#d9d7d7',
                            padding: 10,
                         }}
                      >
                         {info.title} : {info.description}
                      </p>
                   ))}
-                  <HorizontalLine />
                </div>
+               <HorizontalLine />
             </>
          )}
       </div>
