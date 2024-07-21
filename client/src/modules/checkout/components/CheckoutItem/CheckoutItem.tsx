@@ -24,14 +24,9 @@ export const CheckoutItem: React.FC<CheckoutItemType> = ({
 }) => {
    const dispatch = useAppDispatch();
    const { isAuth } = useAppSelector((state) => state.userReducer);
-   const { brands, types, seasons } = useAppSelector(
-      (state) => state.shoesReducer,
-   );
+   const { brands, types } = useAppSelector((state) => state.shoesReducer);
    const type = types?.find((type) => +type.id === shoes.typeId)?.name;
    const brand = brands?.find((brand) => +brand.id === shoes.brandId)?.name;
-   const season = seasons?.find(
-      (season) => +season.id === shoes.seasonId,
-   )?.name;
    const navigate = useNavigate();
    const handleClickTrashButton = () => {
       if (isAuth) {
@@ -60,26 +55,30 @@ export const CheckoutItem: React.FC<CheckoutItemType> = ({
    };
    return (
       <div className='checkout-item__container'>
-         <div
-            className='checkout-item__img-container'
-            onClick={() => navigate(RoutesEnum.SHOES + '/' + shoes.id)}
-         >
-            <img src={baseURL + shoes.img} alt='shoes' />
-         </div>
-         <div>
-            <p
-               className='checkout-item__main-info'
+         <div className='checkout-item__info-shoes-container'>
+            <div
+               className='checkout-item__img-container'
                onClick={() => navigate(RoutesEnum.SHOES + '/' + shoes.id)}
             >
-               {type || ''} {brand || ''} {shoes.model} {season || ''}
-            </p>
-            <p className='checkout-item__size-text'>Розмір: {size.size} EU</p>
+               <img src={baseURL + shoes.img} alt='shoes' />
+            </div>
+            <div>
+               <p
+                  className='checkout-item__main-info sort-title-text'
+                  onClick={() => navigate(RoutesEnum.SHOES + '/' + shoes.id)}
+               >
+                  {type || ''} {brand || ''} {shoes.model}
+               </p>
+               <p className='checkout-item__size-text label-text'>
+                  Розмір: {size.size} EU
+               </p>
+            </div>
          </div>
          <div className='checkout-item__buy-counter'>
             <IconButton
                icon={faMinus}
                onClick={handleClickDecrementButton}
-               style={{ padding: '5px' }}
+               style={{ padding: '5px', fontSize: '12px' }}
             />
             <div className='checkout-item__buy-number'>
                <p>{count}</p>
@@ -87,16 +86,16 @@ export const CheckoutItem: React.FC<CheckoutItemType> = ({
             <IconButton
                icon={faPlus}
                onClick={handleClickIncrementButton}
-               style={{ padding: '5px' }}
+               style={{ padding: '5px', fontSize: '12px' }}
             />
             <IconButton
                icon={faXmark}
                onClick={handleClickTrashButton}
-               style={{ color: 'red', padding: '5px' }}
+               style={{ color: 'red', padding: '5px', fontSize: '12px' }}
             />
          </div>
-         <div>{shoes.price} грн.</div>
-         <div>{shoes.price * count} грн.</div>
+         <div className='label-text'>{shoes.price} грн.</div>
+         <div className='label-text'>{shoes.price * count} грн.</div>
       </div>
    );
 };

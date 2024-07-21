@@ -1,31 +1,37 @@
+@import '../../../breakpoints.scss';
+
 .checkout {
    display: flex;
    padding: 20px;
+   width: 100vw;
+   background-color: var(--secondary-background-color);
 
    justify-content: center;
+
+   &__names-columns-photo {
+      display: none;
+   }
    &__main {
       display: flex;
       flex-direction: column;
 
-      max-width: 1000px;
-      min-width: 620px;
+      max-width: 1200px;
    }
    &__page-header {
-      font-size: 24px;
       margin-bottom: 25px;
       margin-top: 15px;
    }
    &__names-columns-container {
       width: 100%;
       display: grid;
-      border: 1px solid gray;
+      border: 1px solid var(--horizontal-line-color);
       grid-template-columns:
-         100px minmax(200px, 350px) minmax(200px, 250px)
-         minmax(50px, 150px) minmax(50px, 150px);
+         minmax(100px, 500px) minmax(50px, 300px)
+         minmax(50px, 200px) minmax(50px, 200px);
 
       & div {
          font-size: 12px;
-         font-weight: 500;
+         font-weight: 400;
          padding: 8px;
       }
    }
@@ -33,7 +39,7 @@
       align-self: center;
       justify-self: center;
       font-size: 36px;
-      color: rgb(105, 104, 104);
+      color: var(--horizontal-line-color);
       margin-top: 100px;
    }
 
@@ -42,21 +48,25 @@
       display: grid;
       grid-template-columns: auto minmax(50px, 150px);
       justify-content: end;
-      border-left: 1px solid gray;
-      border-right: 1px solid gray;
-      border-bottom: 1px solid gray;
+      border-left: 1px solid var(--horizontal-line-color);
+      border-right: 1px solid var(--horizontal-line-color);
+      border-bottom: 1px solid var(--horizontal-line-color);
       &__header {
-         font-weight: 500;
+         font-size: 12px;
+         font-weight: 700;
       }
       &__text {
+         font-size: 12px;
+         font-weight: 400;
          padding-left: 10px;
       }
    }
 
    &__order-info {
-      margin-top: 10px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      margin-top: 10px;
+
+      grid-template-columns: 1fr;
    }
 
    &__customer-info {
@@ -66,21 +76,80 @@
 
       &__header {
          background-color: #f5f5f5;
-         border-bottom: 1px solid gray;
+         border-bottom: 1px solid var(--horizontal-line-color);
+         font-size: 14px;
+         font-weight: 400;
          padding: 10px 15px;
       }
 
       &__input-container {
          margin-top: 10px;
+         width: 100%;
          & label {
             padding: 5px;
-            display: grid;
-            grid-template-columns: 1fr 400px;
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+
             & span {
                cursor: pointer;
-               align-self: center;
             }
          }
+      }
+   }
+
+   &__submit-btn {
+      display: flex;
+      width: 100%;
+      justify-content: flex-end;
+      & button {
+         margin-top: 15px;
+         margin-right: 5px;
+         height: 48px;
+         width: 200px;
+      }
+   }
+}
+@media #{$tablet-small} {
+   .checkout {
+      &__customer-info {
+         &__input-container {
+            & label {
+               display: grid;
+               grid-template-columns: 1fr 400px;
+
+               & span {
+                  align-self: center;
+               }
+            }
+         }
+      }
+   }
+}
+@media #{$tablet-middle} {
+   .checkout {
+      &__customer-info {
+         &__input-container {
+            & label {
+               display: grid;
+               grid-template-columns: 1fr 2fr;
+            }
+         }
+      }
+      &__names-columns-photo {
+         display: block;
+      }
+      &__names-columns-container {
+         grid-template-columns:
+            100px minmax(200px, 400px) minmax(200px, 300px)
+            minmax(50px, 200px) minmax(50px, 200px);
+      }
+   }
+}
+@media #{$tablet-large} {
+   .checkout {
+      &__order-info {
+         grid-template-columns: 1fr 1fr;
       }
    }
 }

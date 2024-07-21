@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import './CheckoutPage.scss';
 import {
-   clearBasketBeforeLogOut,
    deleteAllFromBasket,
    deleteAllFromBasketNotAuth,
    getAllShoesOfBasket,
@@ -118,13 +117,15 @@ export const CheckoutPage: React.FC = () => {
    return (
       <div className='checkout'>
          <div className='checkout__main'>
-            <h3 className='checkout__page-header'>Оформлення замовлення</h3>
+            <h3 className='checkout__page-header main-page-title'>
+               Оформлення замовлення
+            </h3>
             {isCheckoutSuccess ? (
                <CheckoutSuccess />
             ) : (
                <>
                   <div className='checkout__names-columns-container'>
-                     <div> Фото</div>
+                     <div className='checkout__names-columns-photo'> Фото</div>
                      <div>Інформація</div>
                      <div>Кількість</div>
                      <div>Ціна</div>
@@ -144,7 +145,7 @@ export const CheckoutPage: React.FC = () => {
 
                         <div className='checkout__info'>
                            <p className='checkout__info__header'>
-                              Разом досплати:
+                              Разом до оплати:
                            </p>
                            <p className='checkout__info__text'>
                               {totalPrice} грн.
@@ -209,7 +210,10 @@ export const CheckoutPage: React.FC = () => {
                                        country={'ua'}
                                        onlyCountries={['ua']}
                                        inputClass='basic-input'
-                                       inputStyle={{ width: '100%' }}
+                                       inputStyle={{
+                                          width: '100%',
+                                          fontSize: '12px',
+                                       }}
                                        disableDropdown={true}
                                        countryCodeEditable={false}
                                        inputProps={{
@@ -298,12 +302,13 @@ export const CheckoutPage: React.FC = () => {
                                     )}
                                  </label>
                               </div>
-                              <Button
-                                 buttonClass={ButtonClassEnum.BUY}
-                                 buttonText='Оформити замовлення'
-                                 buttonClick={handleClickCheckoutBtn}
-                                 style={{ height: '35px' }}
-                              />
+                              <div className='checkout__submit-btn'>
+                                 <Button
+                                    buttonClass={ButtonClassEnum.BUY}
+                                    buttonText='Оформити замовлення'
+                                    buttonClick={handleClickCheckoutBtn}
+                                 />
+                              </div>
                            </div>
                         </form>
                      </div>
