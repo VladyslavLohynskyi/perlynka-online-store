@@ -1,11 +1,20 @@
+@import '../../breakpoints.scss';
+
 .admin {
-   &__main {
-      padding: 15px;
+   &__container {
       display: flex;
       flex-direction: column;
-      height: 100vh;
       width: 100%;
+      min-height: calc(100% - 61px);
       align-items: center;
+
+      background-color: var(--secondary-background-color);
+      align-items: center;
+   }
+   &__main {
+      max-width: 1200px;
+      padding: 20px;
+      width: 100%;
    }
 
    &__manage-shoes-container {
@@ -13,37 +22,51 @@
    }
 
    &__manage-shoes {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: 1fr;
       justify-content: center;
+      row-gap: 20px;
       min-width: 300px;
+      margin-bottom: 20px;
    }
    &__manage-user {
       &__container {
-         margin-top: 20px;
+         width: 100%;
          display: grid;
-         grid-template-columns: 1fr 1fr;
-         column-gap: 20px;
+         grid-template-columns: 1fr;
+         row-gap: 20px;
       }
       &__admins-info {
+         min-height: 175px;
          padding: 10px;
          border-radius: 5px;
-         border: 1px solid grey;
+         border: 1px solid var(--horizontal-line-color);
       }
       &__header {
-         font-size: 1.5em;
-         font-weight: 600;
+         font-size: 18;
+         font-weight: 400;
          padding: 5px;
-         border-bottom: 1px solid grey;
+         border-bottom: 1px solid var(--horizontal-line-color);
+      }
+
+      &__user-search {
+         min-height: 175px;
+         padding: 10px;
+         border-radius: 5px;
+         border: 1px solid var(--horizontal-line-color);
+
+         & input {
+            margin: 10px 0;
+            font-size: 14px;
+         }
       }
    }
    &__panel {
       min-width: 150px;
-      max-width: 300px;
-      border: 1.5px solid #ced4da;
+      width: 100%;
+      border: 1.5px solid var(--horizontal-line-color);
       border-radius: 5px;
       padding: 10px;
-      margin: 10px;
    }
 
    &__panel-title {
@@ -58,8 +81,36 @@
       flex-direction: column;
       & h2 {
          align-self: center;
-         font-size: 1.5em;
-         font-weight: 600;
+      }
+   }
+}
+
+@media #{$tablet-small} {
+   .admin {
+      &__manage-shoes {
+         grid-template-columns: 1fr 1fr;
+         column-gap: 20px;
+      }
+   }
+}
+
+@media #{$tablet-middle} {
+   .admin {
+      &__manage-user {
+         &__container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 20px;
+         }
+      }
+   }
+}
+
+@media #{$tablet-large} {
+   .admin {
+      &__manage-shoes {
+         grid-template-columns: 1fr 1fr 1fr;
+         column-gap: 20px;
       }
    }
 }

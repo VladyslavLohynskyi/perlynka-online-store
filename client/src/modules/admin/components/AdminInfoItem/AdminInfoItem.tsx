@@ -10,8 +10,8 @@ export const AdminInfoItem: React.FC<AdminInfoItemType> = ({
    onClickButton,
 }) => {
    return (
-      <div className='admin__container'>
-         <div className='admin__info'>
+      <div className='admin-info-item__container'>
+         <div className='admin-info-item__info'>
             #{admin.id} {admin.email}
          </div>
          <IconButton icon={icon} onClick={onClickButton} />
