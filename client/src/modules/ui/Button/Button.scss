@@ -134,14 +134,17 @@
    }
 
    &--link {
-      font-size: 14px;
+      font-size: 12px;
+      font-family: 'Roboto', 'Ubuntu', sans-serif;
+      font-weight: 900;
+      user-select: none;
       align-self: center;
       width: fit-content;
       background-color: transparent;
-      color: rgb(6, 79, 169);
+      color: var(--link-btn-background-color);
       text-decoration: underline;
       &:hover {
-         color: rgb(35, 117, 217);
+         color: var(--link-btn-hover-background-color);
       }
    }
 

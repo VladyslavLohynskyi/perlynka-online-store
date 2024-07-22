@@ -34,36 +34,43 @@ const Login = () => {
    return (
       <>
          <form className='auth__form' onSubmit={handleClickSubmitAuth}>
-            <h2 className='auth__header'>Login</h2>
+            <h2 className='auth__header'>Вхід в обліковий запис</h2>
             {error && <h3 className='auth__error'>{error}</h3>}
-            <BasicInput
-               className='auth__input'
-               autoFocus={true}
-               name={'email'}
-               type='email'
-               value={email}
-               onChange={(e) => setEmail(e.target.value)}
-               required={true}
-            />
-            <input
-               className='auth__input'
-               type='password'
-               value={password}
-               onChange={(e) => setPassword(e.target.value)}
-               minLength={8}
-            />
+            <div>
+               <BasicInput
+                  name={'email'}
+                  type='email'
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required={true}
+                  placeholder='Пошта'
+               />
+            </div>
+            <div>
+               <BasicInput
+                  type='password'
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  minLength={8}
+                  placeholder='Пароль'
+               />
+            </div>
             <Button
+               style={{ height: '38px' }}
                buttonText={'Увійти'}
-               buttonClass={
-                  error ? ButtonClassEnum.DELETE : ButtonClassEnum.PRIMARY
-               }
+               buttonClass={ButtonClassEnum.BUY}
             />
          </form>
-         <Button
-            buttonText={'Немає акаута?'}
-            buttonClass={ButtonClassEnum.LINK}
-            buttonClick={() => handleClickChangeAuth(RoutesEnum.REGISTRATION)}
-         />
+         <p className='label-text auth__switch-btn'>
+            Немає аккаунта -
+            <Button
+               buttonText={'зареєструйтеся'}
+               buttonClass={ButtonClassEnum.LINK}
+               buttonClick={() =>
+                  handleClickChangeAuth(RoutesEnum.REGISTRATION)
+               }
+            />
+         </p>
          <Button
             buttonText={'Забув пароль'}
             buttonClass={ButtonClassEnum.LINK}

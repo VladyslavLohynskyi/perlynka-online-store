@@ -1,76 +1,61 @@
+@import '../../breakpoints.scss';
 .auth {
-   width: 100vw;
-   height: calc(100vh - 60px);
    display: flex;
    flex-direction: column;
+   width: 100vw;
+   min-height: calc(100vh - 61px);
    align-items: center;
    justify-content: center;
+   background-color: var(--secondary-background-color);
    &__container {
-      max-width: 500px;
-      width: 50%;
+      background-color: var(--secondary-background-color);
+
+      width: 100%;
       height: fit-content;
-      padding: 15px 15px 40px 15px;
+      padding: 15px 20px 40px 20px;
       display: flex;
       flex-direction: column;
-      border: 1px solid gray;
-      border-radius: 5px;
    }
 
    &__form {
       display: flex;
       flex-direction: column;
+
+      & input {
+         margin-bottom: 15px;
+      }
    }
 
    &__header {
-      font-size: 24px;
       align-self: center;
-      margin-bottom: 30px;
+      margin: 15px 0 25px;
    }
 
-   &__input {
-      padding: 5px;
-      border: 1px solid gray;
-      border-radius: 5px;
-      margin-bottom: 15px;
-      &:focus {
-         border-color: #86b7fe;
-         box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
-      }
-   }
    &__error {
       text-align: center;
-      margin-bottom: 10px;
-      color: rgb(156, 5, 5);
-      font-size: 16px;
-      font-weight: 500;
+      margin-bottom: 15px;
+      color: var(--error-text-color);
+      font-size: 12px;
+      font-weight: 400;
    }
    &__message {
-      margin-top: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 15px;
       text-align: center;
+   }
+   &__switch-btn {
+      align-self: center;
    }
 }
 
-.button {
-   &--submit {
-      background-color: rgb(9, 170, 9);
-      border: 1px solid black;
-      padding: 5px;
-      border-radius: 5px;
-      color: white;
-      margin-bottom: 10px;
-      &:hover {
-         background-color: rgb(24, 199, 24);
-         border-color: gray;
-      }
-   }
-   &--link {
-      align-self: center;
-      width: fit-content;
-      background-color: transparent;
-      color: rgb(6, 79, 169);
-      text-decoration: underline;
-      &:hover {
-         color: rgb(35, 117, 217);
+@media #{$tablet-small} {
+   .auth {
+      &__container {
+         background-color: var(--main-background-color);
+         max-width: 500px;
+         border: 1px solid var(--horizontal-line-color);
+         border-radius: 5px;
       }
    }
 }

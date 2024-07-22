@@ -26,8 +26,8 @@ const ForgotPassword = () => {
       }
    };
 
-   const handleClickChangeAuth = async () => {
-      return navigate(RoutesEnum.LOGIN);
+   const handleClickChangeAuth = async (route: RoutesEnum) => {
+      return navigate(route);
    };
 
    return (
@@ -35,42 +35,54 @@ const ForgotPassword = () => {
          <form className='auth__form' onSubmit={handleClickSubmitAuth}>
             <h2 className='auth__header'>Забув Пароль</h2>
             {error && <h3 className='auth__error'>{error}</h3>}
-            <BasicInput
-               className='auth__input'
-               autoFocus={true}
-               name={'email'}
-               type='email'
-               value={email}
-               onChange={(e) => {
-                  setEmail(e.target.value);
-                  setError('');
-                  setIsSent(false);
-               }}
-               required={true}
-            />
+            {isSent && (
+               <p className='auth__message'>
+                  На вашу вказану електронну пошту надіслано посилання для зміни
+                  паролю
+               </p>
+            )}
+            <div>
+               <BasicInput
+                  name={'email'}
+                  type='email'
+                  value={email}
+                  onChange={(e) => {
+                     setEmail(e.target.value);
+                     setError('');
+                     setIsSent(false);
+                  }}
+                  required={true}
+                  placeholder='Пошта'
+               />
+            </div>
             <Button
+               style={{ height: '38px' }}
                buttonText={'Підтвердити'}
                buttonClass={
-                  error
-                     ? ButtonClassEnum.DELETE
-                     : isSent
-                     ? ButtonClassEnum.DISABLE
-                     : ButtonClassEnum.PRIMARY
+                  isSent ? ButtonClassEnum.DISABLE : ButtonClassEnum.BUY
                }
                disabled={isSent}
             />
          </form>
-         {isSent && (
-            <p className='auth__message'>
-               На вашу вказану електронну пошту надіслано посилання для зміни
-               паролю
-            </p>
-         )}
-         <Button
-            buttonText={'Є акаунт?'}
-            buttonClass={ButtonClassEnum.LINK}
-            buttonClick={handleClickChangeAuth}
-         />
+
+         <p className='label-text auth__switch-btn'>
+            Немає аккаунта -
+            <Button
+               buttonText={'зареєструйтеся'}
+               buttonClass={ButtonClassEnum.LINK}
+               buttonClick={() =>
+                  handleClickChangeAuth(RoutesEnum.REGISTRATION)
+               }
+            />
+         </p>
+         <p className='label-text auth__switch-btn'>
+            Є аккаунт -
+            <Button
+               buttonText={'увійдіть'}
+               buttonClass={ButtonClassEnum.LINK}
+               buttonClick={() => handleClickChangeAuth(RoutesEnum.LOGIN)}
+            />
+         </p>
       </>
    );
 };

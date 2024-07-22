@@ -48,6 +48,9 @@ code {
    --size-btn-text-color: #212529;
    --size-btn-background-active-color: #8ce0e1;
    --rating-btn-background-active-color: #b8811c;
+   --link-btn-background-color: var(--main-text-color);
+   --link-btn-hover-background-color: var(--icon-background-hover-color);
+   --error-text-color: rgb(156, 5, 5);
 }
 
 .max-width {
