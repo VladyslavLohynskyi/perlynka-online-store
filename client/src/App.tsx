@@ -108,7 +108,7 @@ const App: FC = () => {
       return <div>Loading...</div>;
    }
    return (
-      <div>
+      <div className='app'>
          <Main />
          <Alert
             type={
