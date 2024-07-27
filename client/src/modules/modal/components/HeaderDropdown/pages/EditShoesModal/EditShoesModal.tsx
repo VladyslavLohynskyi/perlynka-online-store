@@ -21,6 +21,7 @@ import { ButtonClassEnum } from '../../../../../ui/Button/ButtonType';
 import { IShoesInfo, keyShoesInfoEnum } from '../AddShoesModal';
 import { IconButton } from '../../../../../ui/IconButton';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { HorizontalLine } from '../../../../../ui/HorizontalLine';
 
 interface INewAdditionImages {
    id: number;
@@ -245,7 +246,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
    };
 
    return (
-      <div className='edit-shoes-modal__container'>
+      <div className='edit-shoes-modal__container  modal-container'>
          <ModalHeader text='Редагувати Взуття' onClose={onClose} />
          <div className='edit-shoes-modal__main'>
             <ModalSearch
@@ -257,6 +258,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                label='Індефікатор'
             />
             {error && <p className='modal__error'>{error}</p>}
+            <HorizontalLine />
             {foundShoes && (
                <form
                   onSubmit={(e) => {
@@ -286,7 +288,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                            <img src={baseURL + foundShoes.img} alt='Взуття' />
                         </div>
                         <ModalInput
-                           text='Змінити Титульне'
+                           text='Змінити'
                            onChange={handleChangeFile}
                            type='file'
                            required={false}
@@ -322,7 +324,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                               )}
                            </div>
                            <ModalInput
-                              text='Завантажити Фото'
+                              text='Завантажити'
                               onChange={(e) => handleChangeAdditionImage(e, id)}
                               type='file'
                               required={false}

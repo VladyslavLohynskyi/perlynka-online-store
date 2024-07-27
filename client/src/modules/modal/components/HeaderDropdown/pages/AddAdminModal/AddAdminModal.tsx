@@ -36,7 +36,7 @@ export const AddAdminModal: React.FC<AddAdminModalType> = ({
    };
 
    return (
-      <div className='add-admin-modal__container'>
+      <div className='add-admin-modal__container modal-container'>
          <ModalHeader text={`Створити ${nameValue}`} onClose={onClose} />
          <form
             className='add-admin-modal__main'
