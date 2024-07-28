@@ -1,0 +1,8 @@
+.burger-menu {
+   &__container {
+      display: flex;
+      flex-direction: column;
+      width: 100vw;
+      min-height: calc(100% - 61px);
+   }
+}
