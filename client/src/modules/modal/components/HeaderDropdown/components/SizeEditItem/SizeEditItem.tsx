@@ -15,7 +15,7 @@ export const SizeEditItem: React.FC<SizeEditItemType> = ({
    }, [count]);
    return (
       <div className='size-edit-item__container'>
-         <div className='size-edit-item__size'>{size}</div>
+         <div className='size-edit-item__size label-text'>{size}</div>
          <input
             value={count}
             onChange={(e) => setCount(Number(e.target.value))}

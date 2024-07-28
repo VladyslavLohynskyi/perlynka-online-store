@@ -48,8 +48,8 @@ export const DeleteShoesModal: React.FC<DeleteShoesModalType> = ({
             <HorizontalLine />
             {foundShoes && (
                <div className='delete-shoes-modal__shoes-view'>
-                  <div className='delete-shoes-modal___shoes-view-container'>
-                     <div className='delete-shoes-modal___shoes-view-img-container'>
+                  <div className='delete-shoes-modal__shoes-view-container'>
+                     <div className='delete-shoes-modal__shoes-view-img-container'>
                         <img
                            style={{ width: '100%' }}
                            src={baseURL + foundShoes.img}

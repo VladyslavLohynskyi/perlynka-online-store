@@ -49,6 +49,11 @@
       align-items: center;
       justify-content: center;
    }
+
+   &__edit-form {
+      width: 100%;
+      max-width: 500px;
+   }
 }
 
 @media #{$tablet-small} {

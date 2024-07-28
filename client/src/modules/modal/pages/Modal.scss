@@ -15,7 +15,8 @@
 
    &__error {
       margin: 10px;
-      color: --error-text-color;
+      color: var(--error-text-color);
+      font-size: 14px;
    }
 }
 
