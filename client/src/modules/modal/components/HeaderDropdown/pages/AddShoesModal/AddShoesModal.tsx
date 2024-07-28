@@ -170,7 +170,7 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
       }
    };
    return (
-      <div className='add-shoes-modal__container'>
+      <div className='add-shoes-modal__container modal-container'>
          <ModalHeader text='Додати нове взуття' onClose={onClose} />
          <form className='add-shoes-modal__main' onSubmit={handleSubmit}>
             <ModalInput

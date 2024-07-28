@@ -1,12 +1,12 @@
-.admin {
+.admin-info-item {
    &__container {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      border-bottom: 1px solid grey;
+      border-bottom: 1px solid var(--horizontal-line-color);
       padding: 5px;
    }
    &__info {
-      font-size: 1.2em;
+      font-size: 14px;
    }
 }

@@ -79,70 +79,76 @@ export const Shop: React.FC = () => {
       selectedSortFilter === SortEnum.PRICE_ASC;
 
    return (
-      <div className='shop'>
-         <div className='shop__top'>
-            <div className='shop__reset-filters'>
-               <Button
-                  buttonClass={
-                     !isFiltersEmpty
-                        ? ButtonClassEnum.BUY
-                        : ButtonClassEnum.DISABLE
-                  }
-                  buttonText='Скинути фільтри'
-                  disabled={isFiltersEmpty}
-                  buttonClick={handleClickResetButton}
-               />
-            </div>
-            <div className='shop__top-filters'>
-               <select
-                  name='filters'
-                  value={selectedSortFilter}
-                  onChange={handleClickSelectSort}
-               >
-                  {selectOptions.map((option) => (
-                     <option key={option.id} value={option.sort}>
-                        {option.text}
-                     </option>
-                  ))}
-               </select>
-            </div>
-         </div>
-         <div className='shop__container'>
-            <aside className='shop__aside-filters'>
-               <FilterCheckboxList
-                  selectedValuesId={selectedBrandsId}
-                  handleClickCheckbox={handleClickBrandCheckbox}
-                  list={brands}
-                  name='Виробник'
-               />
-               <FilterCheckboxList
-                  selectedValuesId={selectedTypesId}
-                  handleClickCheckbox={handleClickTypeCheckbox}
-                  list={types}
-                  name='Тип'
-               />
-               <FilterCheckboxList
-                  selectedValuesId={selectedSeasonsId}
-                  handleClickCheckbox={handleClickSeasonCheckbox}
-                  list={seasons}
-                  name='Сезон'
-               />
-               <FilterCheckboxList
-                  selectedValuesId={selectedColorsId}
-                  handleClickCheckbox={handleClickColorCheckbox}
-                  list={colors}
-                  name='Колір'
-               />
-               <FilterSizeCheckboxList />
-            </aside>
-            <div className='shop__right-side'>
-               <section className='shop__shoes-list'>
-                  {!!shoes.length &&
-                     shoes.map((shoes) => (
-                        <ShoesItem key={shoes.id} shoes={shoes} />
+      <div className='shop__container'>
+         <div className='shop'>
+            <div className='shop__top'>
+               <div className='shop__reset-filters'>
+                  <Button
+                     buttonClass={
+                        !isFiltersEmpty
+                           ? ButtonClassEnum.BUY
+                           : ButtonClassEnum.DISABLE
+                     }
+                     buttonText='Скинути фільтри'
+                     disabled={isFiltersEmpty}
+                     buttonClick={handleClickResetButton}
+                  />
+               </div>
+               <div className='shop__top-filters'>
+                  <p className='sort-title-text shop__top-filters__title '>
+                     Сортування:{' '}
+                  </p>
+                  <select
+                     className='sort-title-text shop__top-filters__select'
+                     name='filters'
+                     value={selectedSortFilter}
+                     onChange={handleClickSelectSort}
+                  >
+                     {selectOptions.map((option) => (
+                        <option key={option.id} value={option.sort}>
+                           {option.text}
+                        </option>
                      ))}
-               </section>
-               <Pagination />
+                  </select>
+               </div>
+            </div>
+            <div className='shop__main-container'>
+               <aside className='shop__aside-filters'>
+                  <FilterCheckboxList
+                     selectedValuesId={selectedBrandsId}
+                     handleClickCheckbox={handleClickBrandCheckbox}
+                     list={brands}
+                     name='Виробник'
+                  />
+                  <FilterCheckboxList
+                     selectedValuesId={selectedTypesId}
+                     handleClickCheckbox={handleClickTypeCheckbox}
+                     list={types}
+                     name='Тип'
+                  />
+                  <FilterCheckboxList
+                     selectedValuesId={selectedSeasonsId}
+                     handleClickCheckbox={handleClickSeasonCheckbox}
+                     list={seasons}
+                     name='Сезон'
+                  />
+                  <FilterCheckboxList
+                     selectedValuesId={selectedColorsId}
+                     handleClickCheckbox={handleClickColorCheckbox}
+                     list={colors}
+                     name='Колір'
+                  />
+                  <FilterSizeCheckboxList />
+               </aside>
+               <div className='shop__right-side'>
+                  <section className='shop__shoes-list'>
+                     {!!shoes.length &&
+                        shoes.map((shoes) => (
+                           <ShoesItem key={shoes.id} shoes={shoes} />
+                        ))}
+                  </section>
+                  <Pagination />
+               </div>
             </div>
          </div>
       </div>

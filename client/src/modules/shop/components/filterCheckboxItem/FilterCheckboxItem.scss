@@ -4,7 +4,10 @@
       align-items: center;
       padding: 2px 0;
       & input {
-         margin-right: 5px;
+         margin-right: 10px;
+      }
+      & span {
+         margin-top: 2px;
       }
    }
 }

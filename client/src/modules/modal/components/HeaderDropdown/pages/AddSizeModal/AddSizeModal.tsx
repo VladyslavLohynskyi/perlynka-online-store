@@ -30,7 +30,7 @@ export const AddSizeModal: React.FC<AddSizeModalType> = ({ onClose }) => {
    };
 
    return (
-      <div className='add-admin-modal__container'>
+      <div className='add-admin-modal__container modal-container'>
          <ModalHeader text={`Створити Розмір`} onClose={onClose} />
          <form
             className='add-admin-modal__main'

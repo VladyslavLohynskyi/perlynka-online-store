@@ -1,29 +1,30 @@
+@import '../../../breakpoints.scss';
+
 .basket {
-   & {
-      display: flex;
-      padding: 20px;
-      justify-content: center;
-   }
+   width: 100vw;
+   height: calc(100vh - 61px);
+   overflow: auto;
+   background-color: var(--secondary-background-color);
+   display: flex;
+   justify-content: center;
+
    &__main {
       display: flex;
+      padding: 20px;
       flex-direction: column;
-
-      max-width: 1000px;
-      min-width: 620px;
+      max-width: 1200px;
+      width: 100%;
    }
 
    &__page-header {
-      font-size: 24px;
       margin-bottom: 10px;
    }
+
    &__names-columns-container {
       margin: 5px;
       width: 100%;
       display: grid;
-      grid-template-columns:
-         100px minmax(100px, 300px) minmax(50px, 150px)
-         minmax(50px, 150px) minmax(50px, 150px) minmax(100px, 150px);
-
+      grid-template-columns: 100px auto auto auto auto;
       & div {
          font-size: 12px;
          font-weight: 500;
@@ -33,18 +34,16 @@
       align-self: center;
       justify-self: center;
       font-size: 36px;
-      color: rgb(105, 104, 104);
+      color: var(--horizontal-line-color);
       margin-top: 100px;
    }
 
    &__btn-clear-all {
-      cursor: pointer;
-      &:hover {
-         color: gray;
-      }
+      display: none;
    }
    &__order-menu {
       margin-top: 10px;
+      padding-bottom: 20px;
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 60px;
@@ -52,7 +51,34 @@
       &__price {
          justify-self: center;
          align-self: center;
-         font-weight: 500;
+         font-weight: 700;
+         font-size: 14px;
+      }
+   }
+}
+
+@media #{$tablet-middle} {
+   .basket {
+      &__names-columns-container {
+         margin: 5px;
+         width: 100%;
+         display: grid;
+         grid-template-columns:
+            100px minmax(100px, 340px) minmax(50px, 200px)
+            minmax(50px, 150px) minmax(50px, 200px) minmax(100px, 200px);
+
+         & div {
+            font-size: 12px;
+            font-weight: 500;
+         }
+      }
+
+      &__btn-clear-all {
+         display: block;
+         cursor: pointer;
+         &:hover {
+            color: var(--secondary-text-color);
+         }
       }
    }
 }

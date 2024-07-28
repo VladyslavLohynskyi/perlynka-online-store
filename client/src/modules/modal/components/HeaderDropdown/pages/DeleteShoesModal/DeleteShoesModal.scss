@@ -1,13 +1,8 @@
+@import '../../../../../../breakpoints.scss';
+
 .delete-shoes-modal {
    &__container {
-      background-color: #fff;
-      min-width: 300px;
-      width: 90vw;
-      max-width: 800px;
-      min-height: 150px;
-      border-radius: 8px;
-      box-shadow: 0 0 0 1px rgba(29, 28, 29, 0.13), 0 18px 48px 0 #00000059;
-      overflow: hidden;
+      overflow: auto;
    }
    &__main {
       margin: 20px 0 30px 0;
@@ -23,7 +18,7 @@
       width: 100%;
    }
 
-   &___main-delete-container {
+   &__shoes-view-img-container {
       display: flex;
       width: 100%;
       height: 200px;
@@ -44,7 +39,17 @@
    &___shoes-view-info-container {
       & p {
          margin: 10px;
-         font-size: 1.2em;
+         font-size: 14px;
+      }
+   }
+}
+
+@media #{$tablet-small} {
+   .delete-shoes-modal {
+      &__container {
+         & .horizontal-line {
+            display: none;
+         }
       }
    }
 }

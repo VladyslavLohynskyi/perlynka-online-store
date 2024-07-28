@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SexEnum } from '../shoes/ShoesSlice';
+import { limitGettingShoesFromDB } from '../../../utils/constants';
 
 export enum SortEnum {
    PRICE_ASC = 'price ASC',
@@ -30,7 +31,7 @@ const initialState: IFilterState = {
    selectedSortFilter: SortEnum.PRICE_ASC,
    selectedSex: SexEnum.UNISEX,
    page: 1,
-   limit: 6,
+   limit: limitGettingShoesFromDB,
    isLoading: true,
    error: '',
 };

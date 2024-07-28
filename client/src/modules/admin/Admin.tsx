@@ -95,7 +95,7 @@ export const Admin: React.FC = () => {
       });
    };
    return (
-      <>
+      <div className='admin__container'>
          <main className='admin__main'>
             <div className='admin__header-container'>
                <h2> Сторінка Керування Сайтом </h2>
@@ -138,12 +138,14 @@ export const Admin: React.FC = () => {
                   />
                   <AdminSizePanelSection />
                </div>
+            </div>
+            <div className='admin__header-container'>
+               <h2>Керування Адмінами</h2>
                <HorizontalLine />
             </div>
-
             <div className='admin__manage-user__container'>
                <div className='admin__manage-user__admins-info'>
-                  <h3 className='admin__manage-user__header'>Продавці:</h3>
+                  <h3 className='admin__manage-user__header'>Адміни</h3>
                   {!isLoading &&
                      admins.map((admin) => (
                         <AdminInfoItem
@@ -157,7 +159,12 @@ export const Admin: React.FC = () => {
                      ))}
                </div>
                <div className='admin__manage-user__user-search'>
-                  <BasicInput onChange={debounceChangeUserInputValueHandler} />
+                  <h3 className='admin__manage-user__header'>Додати адміна</h3>
+                  <BasicInput
+                     onChange={debounceChangeUserInputValueHandler}
+                     type='text'
+                     placeholder='Введіть пошту користувача'
+                  />
                   {foundUsers &&
                      foundUsers.map((user) => (
                         <AdminInfoItem
@@ -170,6 +177,6 @@ export const Admin: React.FC = () => {
                </div>
             </div>
          </main>
-      </>
+      </div>
    );
 };

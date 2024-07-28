@@ -42,7 +42,7 @@ export const DeleteSizeModal: React.FC<DeleteSizeModalType> = ({ onClose }) => {
    };
 
    return (
-      <div className='delete-admin-modal__container'>
+      <div className='delete-admin-modal__container  modal-container'>
          <ModalHeader text='Видалити розмір' onClose={onClose} />
          <div className='delete-admin-modal__main'>
             <ModalSearch

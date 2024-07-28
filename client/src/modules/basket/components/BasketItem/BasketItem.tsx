@@ -26,9 +26,7 @@ export const BasketItem: React.FC<BasketItemType> = ({
 }) => {
    const dispatch = useAppDispatch();
    const { isAuth } = useAppSelector((state) => state.userReducer);
-   const { brands, types, seasons } = useAppSelector(
-      (state) => state.shoesReducer,
-   );
+   const { brands, types } = useAppSelector((state) => state.shoesReducer);
    const navigate = useNavigate();
    const handleClickTrashButton = () => {
       if (isAuth) {
@@ -64,22 +62,20 @@ export const BasketItem: React.FC<BasketItemType> = ({
             >
                <img src={baseURL + shoes.img} alt='shoes' />
             </div>
-            <div>
+            <div className='basket-item__info-container'>
                <p
-                  className='basket-item__main-info'
+                  className='basket-item__main-info sort-title-text'
                   onClick={() => navigate(RoutesEnum.SHOES + '/' + shoes.id)}
                >
                   {types?.find((type) => +type.id === shoes.typeId)?.name}{' '}
                   {brands?.find((brand) => +brand.id === shoes.brandId)?.name}{' '}
                   {shoes.model}{' '}
-                  {
-                     seasons?.find((season) => +season.id === shoes.seasonId)
-                        ?.name
-                  }
                </p>
-               <p className='basket-item__size-text'>Розмір: {size.size} EU</p>
+               <p className='basket-item__size-text label-text'>
+                  Розмір взуття: {size.size} EU
+               </p>
             </div>
-            <div>{shoes.price} грн.</div>
+            <p className='label-text'>{shoes.price} грн.</p>
             <div className='basket-item__buy-counter'>
                <IconButton
                   icon={faChevronUp}
@@ -93,7 +89,7 @@ export const BasketItem: React.FC<BasketItemType> = ({
                   onClick={handleClickDecrementButton}
                />
             </div>
-            <div>{shoes.price * count} грн.</div>
+            <p className='label-text'>{shoes.price * count} грн.</p>
             <div className='basket-item__trash-button-container'>
                <IconButton icon={faTrash} onClick={handleClickTrashButton} />
             </div>

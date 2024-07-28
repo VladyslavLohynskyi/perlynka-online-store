@@ -14,12 +14,12 @@ export const FilterSizeCheckboxList: React.FC = () => {
    };
    return (
       <div className='checkbox-list__container'>
-         <h3 className='checkbox-list__header'>Розміри</h3>
+         <h3 className='checkbox-list__header filter-header'>Розміри</h3>
          <div className='checkbox-list__main'>
             {sizes?.map(({ id, size }) => (
                <FilterCheckboxItem
                   key={id}
-                  name={size}
+                  name={size + ' EU'}
                   id={id}
                   handleClickCheckbox={handleClickCheckbox}
                   selectedValuesId={selectedSizesId}

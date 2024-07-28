@@ -49,7 +49,7 @@ export const EditSizeModal: React.FC<EditSizeModalType> = ({ onClose }) => {
    };
 
    return (
-      <div className='edit-admin-modal__container'>
+      <div className='edit-admin-modal__container  modal-container'>
          <ModalHeader text={'Редагувати Розмір'} onClose={onClose} />
          <div className='edit-admin-modal__main'>
             <ModalSearch

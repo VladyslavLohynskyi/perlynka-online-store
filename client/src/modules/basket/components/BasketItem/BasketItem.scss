@@ -1,24 +1,27 @@
+@import '../../../../breakpoints.scss';
 .basket-item {
    &__container {
       display: grid;
-      grid-template-columns:
-         100px minmax(100px, 300px) minmax(50px, 150px)
-         minmax(50px, 150px) minmax(50px, 150px) minmax(100px, 150px);
-      grid-template-rows: 100px;
+      grid-template-columns: 100px auto auto auto auto;
+      grid-template-rows: 100px 30px;
       & div img {
          width: 100px;
          height: 100px;
          object-fit: cover;
       }
 
-      & div {
-         padding-left: 5px;
+      & div,
+      p {
          align-self: center;
       }
    }
 
+   &__info-container {
+      padding-left: 10px;
+   }
+
    &__buy-counter {
-      width: 31px;
+      width: 35px;
       -webkit-user-select: none;
       -webkit-touch-callout: none;
       -moz-user-select: none;
@@ -27,21 +30,19 @@
    }
 
    &__buy-number {
-      margin-left: 1px;
-      padding: 5px;
+      margin-left: 4px;
+      padding: 7px 8px;
       border-radius: 50%;
-      background-color: lightgray;
+      background-color: var(--horizontal-line-color);
       & p {
          display: flex;
          align-self: center;
          justify-content: center;
-         width: 15px;
-         height: 15px;
+         font-size: 12px;
       }
    }
    &__size-text {
-      font-size: 12px;
-      color: rgb(94, 93, 93);
+      color: var(--secondary-text-color);
       margin-top: 5px;
    }
    &__trash-button-container {
@@ -54,5 +55,17 @@
    }
    &__main-info {
       cursor: pointer;
+   }
+}
+
+@media #{$tablet-middle} {
+   .basket-item {
+      &__container {
+         display: grid;
+         grid-template-columns:
+            100px minmax(100px, 340px) minmax(50px, 200px)
+            minmax(50px, 150px) minmax(50px, 200px) minmax(100px, 200px);
+         grid-template-rows: 100px;
+      }
    }
 }

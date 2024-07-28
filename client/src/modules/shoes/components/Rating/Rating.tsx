@@ -48,8 +48,8 @@ export const Rating: React.FC<IRatingType> = ({ shoId }) => {
    };
    return (
       <>
-         {!isAuth && (
-            <div>
+         {!isAuth ? (
+            <p className='rating__help-text'>
                Щоб залишити відгук{' '}
                <Button
                   buttonText='увійдіть'
@@ -57,7 +57,11 @@ export const Rating: React.FC<IRatingType> = ({ shoId }) => {
                   buttonClick={() => navigate(RoutesEnum.LOGIN)}
                />{' '}
                в обліковий запис
-            </div>
+            </p>
+         ) : (
+            <p className='rating__help-text'>
+               Ви маєте можливіть залишити відгук нижче
+            </p>
          )}
          <div className='rating'>
             <div className='rating__container'>
@@ -81,9 +85,9 @@ export const Rating: React.FC<IRatingType> = ({ shoId }) => {
             </div>
             <p className='rating__reviews'>
                Оцінка: {(Math.round(rating * 10) / 10).toFixed(1)} (
-               {countRatings})
+               {countRatings} відгуків )
             </p>
-         </div>{' '}
+         </div>
       </>
    );
 };

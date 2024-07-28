@@ -1,44 +1,96 @@
+@import '../../../breakpoints.scss';
 .header {
+   max-width: 1200px;
+   width: 100%;
    display: flex;
    justify-content: space-between;
-   width: 100vw;
    height: 60px;
    align-items: center;
-   border-bottom: 1px solid gray;
-   padding: 10px 20px;
-   &__logo-container h1 {
-      cursor: pointer;
-      font-size: 33px;
-      font-weight: 300;
-      color: black;
-      letter-spacing: -2px;
-   }
-}
+   padding: 10px 10px;
 
-nav {
-   display: flex;
-   align-items: center;
-   justify-content: center;
+   &__container {
+      display: flex;
+      justify-content: center;
+      border-bottom: 1px solid var(--horizontal-line-color);
+      width: 100vw;
+      background-color: var(--main-background-color);
+   }
+
+   &__logo-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+   }
+
+   &__burger-btn {
+      margin-right: 20px;
+      cursor: pointer;
+      padding: 0 10px;
+      color: --icon-background-color;
+      &:hover {
+         color: var(--icon-background-hover-color);
+      }
+   }
+   & nav {
+      display: none;
+   }
 }
 
 .icon-menu {
    display: flex;
-
+   height: 100%;
+   align-items: center;
+   &__dropdown-btn {
+      cursor: pointer;
+      color: var(--icon-background-color);
+      &:hover {
+         color: var(--icon-background-hover-color);
+      }
+      padding: 10px;
+   }
+   &__dropdown {
+      display: block;
+      width: 42px;
+      height: 100%;
+   }
    &__basket {
       height: 18px;
       & span {
          cursor: pointer;
-         background-color: black;
-         font-size: 10px;
-         color: white;
+         background-color: var(--icon-background-color);
          width: 20px;
          height: 20px;
          padding: 0px 1px;
-         border: 1px solid black;
+         border: 1px solid var(--icon-background-color);
          border-radius: 50px;
          position: relative;
-         left: 26px;
-         top: -28px;
+         left: 28px;
+         top: -30px;
       }
    }
+
+   &__dropdown-container {
+      position: relative;
+      z-index: 1;
+      padding: 16px 0;
+      width: 220px;
+      border: 1px solid var(--horizontal-line-color);
+      background-color: var(--main-background-color);
+      border-radius: 5px;
+      right: 190px;
+   }
 }
+
+@media #{$tablet-large} {
+   .header {
+      & nav {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+      }
+
+      &__burger-btn {
+         display: none;
+      }
+   }
+} ;

@@ -29,36 +29,38 @@ const SignUp = () => {
    return (
       <>
          <form className='auth__form' onSubmit={handleClickSubmitAuth}>
-            <h2 className='auth__header'>Registration</h2>
+            <h2 className='auth__header'>Реєстрація</h2>
             {error && <h3 className='auth__error'>{error}</h3>}
             <BasicInput
-               className='auth__input'
-               autoFocus={true}
                name={'email'}
                type='email'
                value={email}
                onChange={(e) => setEmail(e.target.value)}
                required={true}
+               placeholder='Пошта'
             />
-            <input
-               className='auth__input'
+            <BasicInput
                type='password'
                value={password}
                onChange={(e) => setPassword(e.target.value)}
                minLength={8}
+               placeholder='Пароль'
             />
             <Button
+               style={{ height: '38px' }}
                buttonText={'Зареєструватись'}
-               buttonClass={
-                  error ? ButtonClassEnum.DELETE : ButtonClassEnum.PRIMARY
-               }
+               buttonClass={ButtonClassEnum.BUY}
             />
          </form>
-         <Button
-            buttonText={'Є акаунт?'}
-            buttonClass={ButtonClassEnum.LINK}
-            buttonClick={handleClickChangeAuth}
-         />
+
+         <p className='label-text auth__switch-btn'>
+            Є аккаунт -
+            <Button
+               buttonText={'увійдіть'}
+               buttonClass={ButtonClassEnum.LINK}
+               buttonClick={handleClickChangeAuth}
+            />
+         </p>
       </>
    );
 };

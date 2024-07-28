@@ -1,0 +1,13 @@
+.dropdown-item {
+   &__container {
+      padding: 8px 0;
+      cursor: pointer;
+      &:hover {
+         background-color: var(--secondary-background-color);
+      }
+      & p {
+         margin-left: 16px;
+         user-select: none;
+      }
+   }
+}

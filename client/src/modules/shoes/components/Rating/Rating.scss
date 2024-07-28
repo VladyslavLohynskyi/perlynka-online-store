@@ -1,26 +1,33 @@
 .rating {
    display: flex;
    align-items: center;
-   margin-top: 15px;
+   margin-top: 8px;
 
    &__container {
       display: flex;
    }
 
    &__star {
-      color: lightgrey;
+      font-size: 12px;
+      color: var(--horizontal-line-color);
       padding: 0;
       cursor: pointer;
    }
 
    &__star-active {
-      color: #b8811c;
+      font-size: 12px;
+      color: var(--rating-btn-background-active-color);
       padding: 0;
       cursor: pointer;
    }
 
    &__reviews {
       margin-left: 10px;
-      font-size: 16px;
+      font-weight: 400;
+      font-size: 13px;
+   }
+   &__help-text {
+      font-size: 13px;
+      font-weight: 400;
    }
 }

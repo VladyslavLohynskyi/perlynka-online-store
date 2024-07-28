@@ -10,6 +10,7 @@ import { deleteShoes } from '../../../../../../store/reducers/shoes/ShoesActionC
 import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
 import { ModalSearch } from '../../components/ModalSearch/';
 import { ButtonClassEnum } from '../../../../../ui/Button/ButtonType';
+import { HorizontalLine } from '../../../../../ui/HorizontalLine';
 export const DeleteShoesModal: React.FC<DeleteShoesModalType> = ({
    onClose,
 }) => {
@@ -32,8 +33,8 @@ export const DeleteShoesModal: React.FC<DeleteShoesModalType> = ({
       setId(Number(newId));
    };
    return (
-      <div className='delete-shoes-modal__container'>
-         <ModalHeader text='Видалити нове взуття' onClose={onClose} />
+      <div className='delete-shoes-modal__container  modal-container'>
+         <ModalHeader text='Видалити взуття' onClose={onClose} />
          <div className='edit-shoes-modal__main'>
             <ModalSearch
                label='Індефікатор'
@@ -44,10 +45,11 @@ export const DeleteShoesModal: React.FC<DeleteShoesModalType> = ({
                text='Введіть ID'
             />
             {error && <p className='modal__error'>{error}</p>}
+            <HorizontalLine />
             {foundShoes && (
                <div className='delete-shoes-modal__shoes-view'>
-                  <div className='delete-shoes-modal___shoes-view-container'>
-                     <div className='delete-shoes-modal___shoes-view-img-container'>
+                  <div className='delete-shoes-modal__shoes-view-container'>
+                     <div className='delete-shoes-modal__shoes-view-img-container'>
                         <img
                            style={{ width: '100%' }}
                            src={baseURL + foundShoes.img}

@@ -6,6 +6,7 @@ import { RoutesEnum } from '../../../../utils/constants';
 import userReq from '../../../../http/users';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { BasicInput } from '../../../ui/BasicInput';
 
 const ChangePassword = () => {
    const { id, token } = useParams();
@@ -44,23 +45,26 @@ const ChangePassword = () => {
             <form className='auth__form' onSubmit={handleClickSubmitAuth}>
                <h2 className='auth__header'>Форма зміни паролю</h2>
                {error && <h3 className='auth__error'>{error}</h3>}
-               <input
-                  className='auth__input'
-                  type='password'
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  minLength={8}
-               />
+               {isChanged && (
+                  <p className='auth__message'>Пароль було змінено успішно</p>
+               )}
+               <div>
+                  <BasicInput
+                     type='password'
+                     value={password}
+                     onChange={(e) => setPassword(e.target.value)}
+                     minLength={8}
+                     placeholder='Новий пароль'
+                  />
+               </div>
                <Button
+                  style={{ height: '38px' }}
                   buttonText={'Підтвердити'}
-                  buttonClass={ButtonClassEnum.PRIMARY}
+                  buttonClass={ButtonClassEnum.BUY}
                   buttonClick={handleClickMain}
                   disabled={isChanged}
                />
             </form>
-            {isChanged && (
-               <p className='auth__message'>Пароль було змінено успішно</p>
-            )}
             <Button
                buttonText={'На головну'}
                buttonClass={ButtonClassEnum.LINK}
