@@ -21,6 +21,7 @@ import {
 import { logOutUser } from '../../../store/reducers/user/UserActionCreators';
 import { DropdownItem } from './components/DropdownItem';
 import HeaderType from './HeaderType';
+import { NavItemEnum } from './components/NavItem/NavItemType';
 
 export const Header: React.FC<HeaderType> = ({
    isBurgerShowed,
@@ -94,14 +95,22 @@ export const Header: React.FC<HeaderType> = ({
                   <NavItem
                      text={SexEnum.BOY}
                      onClick={() => onClickSex(SexEnum.BOY)}
+                     type={NavItemEnum.DESKTOP_MENU_ITEM}
                   />
                   <NavItem
                      text={SexEnum.GIRL}
                      onClick={() => onClickSex(SexEnum.GIRL)}
+                     type={NavItemEnum.DESKTOP_MENU_ITEM}
                   />
-                  <NavItem text='Бренди' />
-                  <NavItem text='Контакти' />
-                  <NavItem text='Доставка' />
+                  <NavItem text='Бренди' type={NavItemEnum.DESKTOP_MENU_ITEM} />
+                  <NavItem
+                     text='Контакти'
+                     type={NavItemEnum.DESKTOP_MENU_ITEM}
+                  />
+                  <NavItem
+                     text='Доставка'
+                     type={NavItemEnum.DESKTOP_MENU_ITEM}
+                  />
                </nav>
                <div className='icon-menu'>
                   <div className='icon-menu__basket'>

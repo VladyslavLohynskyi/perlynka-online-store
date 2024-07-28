@@ -31,7 +31,7 @@ const AppRouter: React.FC<AppRouterType> = ({
                />
             </Routes>
          ) : (
-            <BurgerMenu />
+            <BurgerMenu handleSwitchBurgerShow={handleSwitchBurgerShow} />
          )}
       </>
    );
