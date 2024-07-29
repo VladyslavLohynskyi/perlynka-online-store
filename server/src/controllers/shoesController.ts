@@ -102,7 +102,7 @@ class shoesController {
          const fileMainName = uuidv4();
          if (!Array.isArray(img)) {
             await sharp(img.data.buffer)
-               .resize(250, 250)
+               .resize(300, 300)
                .webp()
                .toFile(
                   path.resolve(
@@ -125,7 +125,7 @@ class shoesController {
                );
          } else {
             await sharp(img[img.length - 1].data.buffer)
-               .resize(250, 250)
+               .resize(300, 300)
                .webp()
                .toFile(
                   path.resolve(
@@ -338,9 +338,33 @@ class shoesController {
          const additionImages = req.files?.newAdditionImages;
          if (!Array.isArray(img) && img) {
             await promises.unlink(
-               path.resolve(__dirname, '..', 'static', shoes.img),
+               path.resolve(__dirname, '..', 'static', shoes.img + '.webp'),
             );
-            img.mv(path.resolve(__dirname, '..', 'static', shoes.img));
+            await promises.unlink(
+               path.resolve(
+                  __dirname,
+                  '..',
+                  'static',
+                  shoes.img + '-preview.webp',
+               ),
+            );
+            await sharp(img.data.buffer)
+               .resize(300, 300)
+               .webp()
+               .toFile(
+                  path.resolve(
+                     __dirname,
+                     '..',
+                     'static',
+                     shoes.img + '-preview.webp',
+                  ),
+               );
+            await sharp(img.data.buffer)
+               .resize(1000, 1000)
+               .webp()
+               .toFile(
+                  path.resolve(__dirname, '..', 'static', shoes.img + '.webp'),
+               );
          }
          await Shoes.update(
             {
@@ -424,7 +448,7 @@ class shoesController {
             parsedDeletedImagesNames.forEach(async (element) => {
                await ShoesImage.destroy({ where: { img: element } });
                await promises.unlink(
-                  path.resolve(__dirname, '..', 'static', element),
+                  path.resolve(__dirname, '..', 'static', element + '.webp'),
                );
             });
          }
@@ -432,17 +456,33 @@ class shoesController {
          if (additionImages) {
             if (Array.isArray(additionImages)) {
                additionImages.forEach(async (el) => {
-                  const fileName = uuidv4() + '.jpg';
-                  await el.mv(
-                     path.resolve(__dirname, '..', 'static', fileName),
-                  );
+                  const fileName = uuidv4();
+                  await sharp(el.data.buffer)
+                     .resize(1000, 1000)
+                     .webp()
+                     .toFile(
+                        path.resolve(
+                           __dirname,
+                           '..',
+                           'static',
+                           fileName + '.webp',
+                        ),
+                     );
                   await ShoesImage.create({ shoId: shoes.id, img: fileName });
                });
             } else {
-               const fileName = uuidv4() + '.jpg';
-               await additionImages.mv(
-                  path.resolve(__dirname, '..', 'static', fileName),
-               );
+               const fileName = uuidv4();
+               await sharp(additionImages.data.buffer)
+                  .resize(1000, 1000)
+                  .webp()
+                  .toFile(
+                     path.resolve(
+                        __dirname,
+                        '..',
+                        'static',
+                        fileName + '.webp',
+                     ),
+                  );
                await ShoesImage.create({ shoId: shoes.id, img: fileName });
             }
          }
