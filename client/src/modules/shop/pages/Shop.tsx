@@ -82,18 +82,7 @@ export const Shop: React.FC = () => {
       <div className='shop__container'>
          <div className='shop'>
             <div className='shop__top'>
-               <div className='shop__reset-filters'>
-                  <Button
-                     buttonClass={
-                        !isFiltersEmpty
-                           ? ButtonClassEnum.BUY
-                           : ButtonClassEnum.DISABLE
-                     }
-                     buttonText='Скинути фільтри'
-                     disabled={isFiltersEmpty}
-                     buttonClick={handleClickResetButton}
-                  />
-               </div>
+               <div className='shop__reset-filters'></div>
                <div className='shop__top-filters'>
                   <p className='sort-title-text shop__top-filters__title '>
                      Сортування:{' '}
@@ -139,6 +128,17 @@ export const Shop: React.FC = () => {
                      name='Колір'
                   />
                   <FilterSizeCheckboxList />
+                  <Button
+                     buttonClass={
+                        !isFiltersEmpty
+                           ? ButtonClassEnum.BUY
+                           : ButtonClassEnum.DISABLE
+                     }
+                     buttonText='Скинути фільтри'
+                     disabled={isFiltersEmpty}
+                     buttonClick={handleClickResetButton}
+                     style={{ height: '30px', marginTop: '10px' }}
+                  />
                </aside>
                <div className='shop__right-side'>
                   <section className='shop__shoes-list'>
