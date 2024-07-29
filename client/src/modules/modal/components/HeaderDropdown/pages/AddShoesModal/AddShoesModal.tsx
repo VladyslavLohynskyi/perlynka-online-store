@@ -28,6 +28,12 @@ export enum keyShoesInfoEnum {
    DESCRIPTION = 'description',
    TITLE = 'title',
 }
+
+interface IAdditionImages {
+   id: number;
+   img: null | Blob;
+}
+
 export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
    const { brands, types, colors, seasons, sizes } = useAppSelector(
       (state) => state.shoesReducer,
@@ -50,11 +56,26 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
    const [type, setType] = useState(0);
    const [color, setColor] = useState(0);
    const [season, setSeason] = useState(0);
-   const [file, setFile] = useState<null | FileList>(null);
+   const [mainPhoto, setMainPhoto] = useState<null | Blob>(null);
    const [sex, setSex] = useState<string>(SexEnum.UNISEX);
    const [addSizes, setAddSizes] = useState<IEditSize[]>([]);
    const [error, setError] = useState('');
    const [infos, setInfos] = useState<IShoesInfo[]>([]);
+   const [additionImages, setAdditionImages] = useState<IAdditionImages[]>([
+      { id: 1, img: null },
+      { id: 2, img: null },
+   ]);
+
+   const handleChangeAdditionImage = (
+      e: React.ChangeEvent<HTMLInputElement>,
+      id: number,
+   ) => {
+      setAdditionImages((prev) =>
+         prev.map((el) =>
+            el.id === id ? { ...el, img: e.target.files![0] } : el,
+         ),
+      );
+   };
 
    const addInfo = () => {
       setInfos((prev) => {
@@ -104,7 +125,7 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
          setError('Виберіть кількість пар');
          return;
       }
-      if (!file || file.length > 3) {
+      if (!mainPhoto || additionImages.length > 2) {
          setError('Виберіть фотографії (до 3 включно)');
          return;
       }
@@ -125,9 +146,12 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
       formData.append('seasonId', String(season));
       formData.append('sizes', JSON.stringify(addSizes));
       formData.append('sex', String(sex));
-      for (let i = 0; i < file.length; i++) {
-         formData.append('images', file[i]);
+      for (let i = 0; i < additionImages.length; i++) {
+         if (additionImages[i].img) {
+            formData.append('images', additionImages[i].img!);
+         }
       }
+      formData.append('images', mainPhoto);
       formData.append('shoesInfos', JSON.stringify(infos));
       dispatch(
          createShoes(formData, {
@@ -159,14 +183,14 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
       setAddSizes((prev) => prev.filter((el) => el.sizeId !== sizeId));
    };
 
-   const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+   const handleChangeMainPhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
       setError('');
       if (e.target.files) {
          if (Array.from(e.target.files).length > 3) {
             setError('Забагато зображень, виберіть до 3 фотографій включно');
             return;
          }
-         setFile(e.target.files);
+         setMainPhoto(e.target.files[0]);
       }
    };
    return (
@@ -264,14 +288,51 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
                   <option value={SexEnum.BOY}>{SexEnum.BOY}</option>
                </select>
             </div>
-            <ModalInput
-               text='Фото'
-               onChange={handleChangeFile}
-               type='file'
-               required={true}
-               accept='image/*'
-               multiple={true}
-            />
+            <div className='add-shoes-modal__add-images-container'>
+               <div className='add-shoes-modal__add-img-container'>
+                  <div className='add-shoes-modal__img-container'>
+                     <img
+                        src={
+                           mainPhoto
+                              ? URL.createObjectURL(mainPhoto)
+                              : '/images/Noimg.webp'
+                        }
+                        alt='Взуття'
+                     />
+                  </div>
+                  <ModalInput
+                     text='Головне Фото'
+                     onChange={handleChangeMainPhoto}
+                     type='file'
+                     required={false}
+                     accept='image/*'
+                  />
+               </div>
+               {additionImages.map(({ id, img }) => (
+                  <div
+                     key={id}
+                     className='edit-shoes-modal__edit-img-container'
+                  >
+                     <div className='edit-shoes-modal__img-container'>
+                        <img
+                           src={
+                              img
+                                 ? URL.createObjectURL(img)
+                                 : '/images/Noimg.webp'
+                           }
+                           alt='Взуття'
+                        />
+                     </div>
+                     <ModalInput
+                        text='Фото'
+                        onChange={(e) => handleChangeAdditionImage(e, id)}
+                        type='file'
+                        required={false}
+                        accept='image/*'
+                     />
+                  </div>
+               ))}
+            </div>
             <div className='add-shoes-modal__sizes-container'>
                {sizes?.map((size) => (
                   <SizeEditItem

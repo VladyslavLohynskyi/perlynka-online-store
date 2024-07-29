@@ -52,7 +52,7 @@ export const DeleteShoesModal: React.FC<DeleteShoesModalType> = ({
                      <div className='delete-shoes-modal__shoes-view-img-container'>
                         <img
                            style={{ width: '100%' }}
-                           src={baseURL + foundShoes.img}
+                           src={baseURL + foundShoes.img + '.webp'}
                            alt='Взуття'
                         />
                      </div>

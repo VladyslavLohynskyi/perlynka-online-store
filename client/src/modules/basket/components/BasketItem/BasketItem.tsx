@@ -60,7 +60,7 @@ export const BasketItem: React.FC<BasketItemType> = ({
                className='basket-item__img-container'
                onClick={() => navigate(RoutesEnum.SHOES + '/' + shoes.id)}
             >
-               <img src={baseURL + shoes.img} alt='shoes' />
+               <img src={baseURL + shoes.img + '-preview.webp'} alt='shoes' />
             </div>
             <div className='basket-item__info-container'>
                <p

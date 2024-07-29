@@ -16,6 +16,8 @@ import Size from '../models/sizeModel';
 import ShoesInfo from '../models/shoesInfoModel';
 import ShoesImage from '../models/shoesImageModel';
 import ApiError from '../exceptions/ApiError';
+import sharp from 'sharp';
+import { error } from 'console';
 
 interface IParseSizes {
    sizeId: number;
@@ -97,13 +99,53 @@ class shoesController {
          if (!img) {
             return next(ApiError.badRequest('Зображень не знайдено'));
          }
-         const fileMainName = uuidv4() + '.jpg';
+         const fileMainName = uuidv4();
          if (!Array.isArray(img)) {
-            await img.mv(path.resolve(__dirname, '..', 'static', fileMainName));
+            await sharp(img.data.buffer)
+               .resize(300, 300)
+               .webp()
+               .toFile(
+                  path.resolve(
+                     __dirname,
+                     '..',
+                     'static',
+                     fileMainName + '-preview.webp',
+                  ),
+               );
+            await sharp(img.data.buffer)
+               .resize(1000, 1000)
+               .webp()
+               .toFile(
+                  path.resolve(
+                     __dirname,
+                     '..',
+                     'static',
+                     fileMainName + '.webp',
+                  ),
+               );
          } else {
-            await img[img.length - 1].mv(
-               path.resolve(__dirname, '..', 'static', fileMainName),
-            );
+            await sharp(img[img.length - 1].data.buffer)
+               .resize(300, 300)
+               .webp()
+               .toFile(
+                  path.resolve(
+                     __dirname,
+                     '..',
+                     'static',
+                     fileMainName + '-preview.webp',
+                  ),
+               );
+            await sharp(img[img.length - 1].data.buffer)
+               .resize(1000, 1000)
+               .webp()
+               .toFile(
+                  path.resolve(
+                     __dirname,
+                     '..',
+                     'static',
+                     fileMainName + '.webp',
+                  ),
+               );
          }
          const shoes = await Shoes.create({
             model,
@@ -118,10 +160,18 @@ class shoesController {
 
          if (Array.isArray(img)) {
             for (let i = img.length - 2; i >= 0; i--) {
-               const fileName = uuidv4() + '.jpg';
-               await img[i].mv(
-                  path.resolve(__dirname, '..', 'static', fileName),
-               );
+               const fileName = uuidv4();
+               await sharp(img[i].data.buffer)
+                  .resize(1000, 1000)
+                  .webp()
+                  .toFile(
+                     path.resolve(
+                        __dirname,
+                        '..',
+                        'static',
+                        fileName + '.webp',
+                     ),
+                  );
                await ShoesImage.create({ shoId: shoes.id, img: fileName });
             }
          }
@@ -219,7 +269,7 @@ class shoesController {
             await ShoesSize.destroy({ where: { shoId: id } });
             await Shoes.destroy({ where: { id: id } });
             await promises.unlink(
-               path.resolve(__dirname, '..', 'static', shoes.img),
+               path.resolve(__dirname, '..', 'static', shoes.img + '.webp'),
             );
             return res.json({ message: 'Взуття успішно видалене' });
          } else {
@@ -288,9 +338,33 @@ class shoesController {
          const additionImages = req.files?.newAdditionImages;
          if (!Array.isArray(img) && img) {
             await promises.unlink(
-               path.resolve(__dirname, '..', 'static', shoes.img),
+               path.resolve(__dirname, '..', 'static', shoes.img + '.webp'),
             );
-            img.mv(path.resolve(__dirname, '..', 'static', shoes.img));
+            await promises.unlink(
+               path.resolve(
+                  __dirname,
+                  '..',
+                  'static',
+                  shoes.img + '-preview.webp',
+               ),
+            );
+            await sharp(img.data.buffer)
+               .resize(300, 300)
+               .webp()
+               .toFile(
+                  path.resolve(
+                     __dirname,
+                     '..',
+                     'static',
+                     shoes.img + '-preview.webp',
+                  ),
+               );
+            await sharp(img.data.buffer)
+               .resize(1000, 1000)
+               .webp()
+               .toFile(
+                  path.resolve(__dirname, '..', 'static', shoes.img + '.webp'),
+               );
          }
          await Shoes.update(
             {
@@ -374,7 +448,7 @@ class shoesController {
             parsedDeletedImagesNames.forEach(async (element) => {
                await ShoesImage.destroy({ where: { img: element } });
                await promises.unlink(
-                  path.resolve(__dirname, '..', 'static', element),
+                  path.resolve(__dirname, '..', 'static', element + '.webp'),
                );
             });
          }
@@ -382,17 +456,33 @@ class shoesController {
          if (additionImages) {
             if (Array.isArray(additionImages)) {
                additionImages.forEach(async (el) => {
-                  const fileName = uuidv4() + '.jpg';
-                  await el.mv(
-                     path.resolve(__dirname, '..', 'static', fileName),
-                  );
+                  const fileName = uuidv4();
+                  await sharp(el.data.buffer)
+                     .resize(1000, 1000)
+                     .webp()
+                     .toFile(
+                        path.resolve(
+                           __dirname,
+                           '..',
+                           'static',
+                           fileName + '.webp',
+                        ),
+                     );
                   await ShoesImage.create({ shoId: shoes.id, img: fileName });
                });
             } else {
-               const fileName = uuidv4() + '.jpg';
-               await additionImages.mv(
-                  path.resolve(__dirname, '..', 'static', fileName),
-               );
+               const fileName = uuidv4();
+               await sharp(additionImages.data.buffer)
+                  .resize(1000, 1000)
+                  .webp()
+                  .toFile(
+                     path.resolve(
+                        __dirname,
+                        '..',
+                        'static',
+                        fileName + '.webp',
+                     ),
+                  );
                await ShoesImage.create({ shoId: shoes.id, img: fileName });
             }
          }

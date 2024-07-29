@@ -1,7 +1,9 @@
+@import '../../../../breakpoints.scss';
 .shoes-item {
    width: 100%;
-   min-height: 300px;
-   max-height: 310px;
+   height: 100%;
+   min-height: 270px;
+   max-height: 270px;
 
    border: 1px solid var(--horizontal-line-color);
    background-color: var(--secondary-background-color);
@@ -13,21 +15,24 @@
    }
    &__img-container {
       width: 100%;
-      height: 70%;
+      display: flex;
+      justify-content: center;
 
       & img {
          object-fit: cover;
          min-width: 120px;
          min-height: 120px;
+         max-width: 250px;
          width: 100%;
          height: 100%;
       }
    }
    &__info {
       display: grid;
-      grid-column: 1fr;
-      padding: 20px 0px 20px;
-      height: 30%;
+      grid-template-columns: 1fr;
+      grid-template-columns: auto;
+      row-gap: 20px;
+      padding-top: 20px;
 
       & div {
          display: grid;
@@ -38,5 +43,16 @@
    &__id {
       justify-self: end;
       padding-right: 5px;
+   }
+}
+
+@media #{$mobile-large} {
+   .shoes-item {
+      min-height: 270px;
+      max-height: 370px;
+      &__info {
+         row-gap: 15px;
+         padding-bottom: 20px;
+      }
    }
 }
