@@ -5,14 +5,18 @@ import { RoutesEnum } from '../../utils/constants';
 import React from 'react';
 import AppRouterType from './AppRouterType';
 import { BurgerMenu } from '../ui/BurgerMenu';
+import useWindowSize from '../../hooks/useWindowSize';
 const AppRouter: React.FC<AppRouterType> = ({
    isBurgerShowed,
    handleSwitchBurgerShow,
 }) => {
    const { isAuth, user } = useAppSelector((state) => state.userReducer);
+   const { width } = useWindowSize();
    return (
       <>
-         {!isBurgerShowed ? (
+         {isBurgerShowed && width < 992 ? (
+            <BurgerMenu handleSwitchBurgerShow={handleSwitchBurgerShow} />
+         ) : (
             <Routes>
                {isAuth
                   ? authRoutes.map(({ path, Component }) => (
@@ -30,8 +34,6 @@ const AppRouter: React.FC<AppRouterType> = ({
                   element={<Navigate to={RoutesEnum.SHOP} replace />}
                />
             </Routes>
-         ) : (
-            <BurgerMenu handleSwitchBurgerShow={handleSwitchBurgerShow} />
          )}
       </>
    );
