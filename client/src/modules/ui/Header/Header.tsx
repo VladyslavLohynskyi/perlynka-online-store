@@ -4,6 +4,7 @@ import {
    faCartShopping,
    faUser,
    faBars,
+   faClose,
 } from '@fortawesome/free-solid-svg-icons';
 import './Header.scss';
 import { IconButton } from '../IconButton';
@@ -19,8 +20,13 @@ import {
 } from '../../../store/reducers/basket/BasketActionCreators';
 import { logOutUser } from '../../../store/reducers/user/UserActionCreators';
 import { DropdownItem } from './components/DropdownItem';
+import HeaderType from './HeaderType';
+import { NavItemEnum } from './components/NavItem/NavItemType';
 
-export const Header: React.FC = () => {
+export const Header: React.FC<HeaderType> = ({
+   isBurgerShowed,
+   handleSwitchBurgerShow,
+}) => {
    const { user, isAuth } = useAppSelector((state) => state.userReducer);
    const { totalCountOfShoesInBasket } = useAppSelector(
       (state) => state.basketReducer,
@@ -78,21 +84,33 @@ export const Header: React.FC = () => {
          <div className='header__container'>
             <header className='header'>
                <div className='header__logo-container'>
-                  <IconButton icon={faBars} className='header__burger-btn' />
+                  <IconButton
+                     icon={isBurgerShowed ? faClose : faBars}
+                     className='header__burger-btn'
+                     onClick={() => handleSwitchBurgerShow()}
+                  />
                   <h1 onClick={() => navigate(RoutesEnum.SHOP)}>Перлинка</h1>
                </div>
                <nav>
                   <NavItem
                      text={SexEnum.BOY}
                      onClick={() => onClickSex(SexEnum.BOY)}
+                     type={NavItemEnum.DESKTOP_MENU_ITEM}
                   />
                   <NavItem
                      text={SexEnum.GIRL}
                      onClick={() => onClickSex(SexEnum.GIRL)}
+                     type={NavItemEnum.DESKTOP_MENU_ITEM}
                   />
-                  <NavItem text='Бренди' />
-                  <NavItem text='Контакти' />
-                  <NavItem text='Доставка' />
+                  <NavItem text='Бренди' type={NavItemEnum.DESKTOP_MENU_ITEM} />
+                  <NavItem
+                     text='Контакти'
+                     type={NavItemEnum.DESKTOP_MENU_ITEM}
+                  />
+                  <NavItem
+                     text='Доставка'
+                     type={NavItemEnum.DESKTOP_MENU_ITEM}
+                  />
                </nav>
                <div className='icon-menu'>
                   <div className='icon-menu__basket'>

@@ -1,0 +1,12 @@
+.burger-menu {
+   &__container {
+      display: flex;
+      flex-direction: column;
+      width: 100vw;
+      min-height: calc(100% - 61px);
+      background-color: var(--secondary-background-color);
+   }
+   &__footer {
+      margin: 15px;
+   }
+}
