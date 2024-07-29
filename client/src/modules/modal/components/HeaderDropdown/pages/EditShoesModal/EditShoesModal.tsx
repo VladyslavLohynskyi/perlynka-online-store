@@ -285,7 +285,10 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                   <div className='edit-shoes-modal__edit-images-container'>
                      <div className='edit-shoes-modal__edit-img-container'>
                         <div className='edit-shoes-modal__img-container'>
-                           <img src={baseURL + foundShoes.img} alt='Взуття' />
+                           <img
+                              src={baseURL + foundShoes.img + '.webp'}
+                              alt='Взуття'
+                           />
                         </div>
                         <ModalInput
                            text='Змінити'
@@ -300,7 +303,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                            className='edit-shoes-modal__edit-img-container'
                         >
                            <div className='edit-shoes-modal__img-container'>
-                              <img src={baseURL + img} alt='Взуття' />
+                              <img src={baseURL + img + '.webp'} alt='Взуття' />
                            </div>
                            <div className='edit-shoes-modal__trash-button-container'>
                               <IconButton

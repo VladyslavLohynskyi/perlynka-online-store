@@ -60,7 +60,7 @@ export const CheckoutItem: React.FC<CheckoutItemType> = ({
                className='checkout-item__img-container'
                onClick={() => navigate(RoutesEnum.SHOES + '/' + shoes.id)}
             >
-               <img src={baseURL + shoes.img} alt='shoes' />
+               <img src={baseURL + shoes.img + '-preview.webp'} alt='shoes' />
             </div>
             <div>
                <p

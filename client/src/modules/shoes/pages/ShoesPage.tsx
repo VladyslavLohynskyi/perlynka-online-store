@@ -128,7 +128,10 @@ export const ShoesPage: React.FC = () => {
                                        key={id}
                                        className='shoes-page__carousel-option-container'
                                     >
-                                       <img src={baseURL + img} alt='Взуття' />
+                                       <img
+                                          src={baseURL + img + '.webp'}
+                                          alt='Взуття'
+                                       />
                                     </div>
                                  ),
                            )}
@@ -136,7 +139,9 @@ export const ShoesPage: React.FC = () => {
                      )}
                      <div className='shoes-page__img-container'>
                         <img
-                           src={baseURL + slides[currentSlideIndex].img}
+                           src={
+                              baseURL + slides[currentSlideIndex].img + '.webp'
+                           }
                            alt='Взуття'
                         />
                      </div>

@@ -15,7 +15,7 @@ export const ShoesItem: React.FC<ShoesItemType> = ({ shoes }) => {
          onClick={() => navigate(RoutesEnum.SHOES + '/' + shoes.id)}
       >
          <div className='shoes-item__img-container'>
-            <img src={baseURL + shoes.img} alt='shoes' />
+            <img src={baseURL + shoes.img + '-preview.webp'} alt='shoes' />
          </div>
          <div className='shoes-item__info'>
             <p className='preview-shoes-item-model-text'>
