@@ -286,7 +286,11 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                      <div className='edit-shoes-modal__edit-img-container'>
                         <div className='edit-shoes-modal__img-container'>
                            <img
-                              src={baseURL + foundShoes.img + '.webp'}
+                              src={
+                                 file
+                                    ? URL.createObjectURL(file)
+                                    : baseURL + foundShoes.img + '.webp'
+                              }
                               alt='Взуття'
                            />
                         </div>
@@ -319,12 +323,14 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                            className='edit-shoes-modal__edit-img-container'
                         >
                            <div className='edit-shoes-modal__img-container'>
-                              {img && (
-                                 <img
-                                    src={URL.createObjectURL(img)}
-                                    alt='Взуття'
-                                 />
-                              )}
+                              <img
+                                 src={
+                                    img
+                                       ? URL.createObjectURL(img)
+                                       : '/images/Noimg.webp'
+                                 }
+                                 alt='Взуття'
+                              />
                            </div>
                            <ModalInput
                               text='Завантажити'
