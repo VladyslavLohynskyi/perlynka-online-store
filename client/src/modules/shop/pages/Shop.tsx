@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
 import { ShoesItem } from '../components/shoesItem';
@@ -21,6 +21,7 @@ import { SortEnum } from '../../../store/reducers/filter/FilterSlice';
 import { Pagination } from '../components/Pagination';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSliders } from '@fortawesome/free-solid-svg-icons';
+import { Modal } from '../../modal/pages';
 
 interface ISelectFilterOption {
    id: number;
@@ -30,6 +31,8 @@ interface ISelectFilterOption {
 
 export const Shop: React.FC = () => {
    const dispatch = useAppDispatch();
+   const [isMobileAsideFiltersShowed, setIsMobileAsideFiltersShowed] =
+      useState<boolean>(false);
    const { shoes, brands, types, seasons, colors } = useAppSelector(
       (state) => state.shoesReducer,
    );
@@ -160,10 +163,19 @@ export const Shop: React.FC = () => {
             <Button
                buttonClass={ButtonClassEnum.MOBILE_FILTER}
                buttonText='Фільтр'
+               buttonClick={() => setIsMobileAsideFiltersShowed(true)}
             >
                <FontAwesomeIcon icon={faSliders} className='fa-lg' />
             </Button>
          </div>
+         <Modal
+            modalPosition='mobile-aside-filter'
+            isModalOpen={isMobileAsideFiltersShowed}
+            onClose={() => setIsMobileAsideFiltersShowed(false)}
+            onBlur={true}
+         >
+            <div></div>
+         </Modal>
       </>
    );
 };
