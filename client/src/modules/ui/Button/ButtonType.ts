@@ -11,6 +11,7 @@ export enum ButtonClassEnum {
    ACTIVE_SIZE_BUTTON = 'active-size',
    LINK = 'link',
    BUY = 'buy',
+   MOBILE_FILTER = 'mobile-filter',
 }
 export interface ButtonPropsType
    extends React.HTMLAttributes<HTMLButtonElement> {

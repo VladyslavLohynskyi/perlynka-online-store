@@ -157,6 +157,13 @@
          background-color: var(--secondary-text-color);
       }
    }
+
+   &--mobile-filter {
+      background-color: #c31929d9;
+      color: #fff;
+      opacity: 0.9;
+      padding: 4px;
+   }
 }
 
 .admin-modal-accept-btn {
