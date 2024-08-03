@@ -23,6 +23,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSliders } from '@fortawesome/free-solid-svg-icons';
 import { Modal } from '../../modal/pages';
 import useWindowSize from '../../../hooks/useWindowSize';
+import { AsideMobileFiltersModal } from '../../modal/components/HeaderDropdown/pages/AsideMobileFiltersModal';
 
 interface ISelectFilterOption {
    id: number;
@@ -181,7 +182,9 @@ export const Shop: React.FC = () => {
             onClose={() => setIsMobileAsideFiltersShowed(false)}
             onBlur={true}
          >
-            <div></div>
+            <AsideMobileFiltersModal
+               onClose={() => setIsMobileAsideFiltersShowed(false)}
+            />
          </Modal>
       </>
    );
