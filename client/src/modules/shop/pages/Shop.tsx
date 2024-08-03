@@ -9,14 +9,12 @@ import {
    typeFilter,
    seasonFilter,
    colorFilter,
-   resetFilters,
    sortFilter,
 } from '../../../store/reducers/filter/FilterActionCreators';
 import { FilterCheckboxList } from '../components/filterCheckboxList';
 import { FilterSizeCheckboxList } from '../components/filterSizeCheckboxList';
 import { Button } from '../../ui/Button';
 import { ButtonClassEnum } from '../../ui/Button/ButtonType';
-import { SexEnum } from '../../../store/reducers/shoes/ShoesSlice';
 import { SortEnum } from '../../../store/reducers/filter/FilterSlice';
 import { Pagination } from '../components/Pagination';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -24,6 +22,7 @@ import { faSliders } from '@fortawesome/free-solid-svg-icons';
 import { Modal } from '../../modal/pages';
 import useWindowSize from '../../../hooks/useWindowSize';
 import { AsideMobileFiltersModal } from '../../modal/components/HeaderDropdown/pages/AsideMobileFiltersModal';
+import { ResetFiltersButton } from '../../ui/ResetButton';
 
 interface ISelectFilterOption {
    id: number;
@@ -44,8 +43,6 @@ export const Shop: React.FC = () => {
       selectedTypesId,
       selectedSeasonsId,
       selectedColorsId,
-      selectedSex,
-      selectedSizesId,
       selectedSortFilter,
    } = useAppSelector((state) => state.filterReducer);
 
@@ -75,21 +72,10 @@ export const Shop: React.FC = () => {
    const handleClickColorCheckbox = (id: number) => {
       dispatch(colorFilter(id));
    };
-   const handleClickResetButton = () => {
-      dispatch(resetFilters());
-   };
 
    const handleClickSelectSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
       dispatch(sortFilter(e.target.value as SortEnum));
    };
-   const isFiltersEmpty =
-      !selectedBrandsId.length &&
-      !selectedTypesId.length &&
-      !selectedSeasonsId.length &&
-      !selectedSizesId.length &&
-      !selectedColorsId.length &&
-      selectedSex === SexEnum.UNISEX &&
-      selectedSortFilter === SortEnum.PRICE_ASC;
 
    return (
       <>
@@ -142,15 +128,7 @@ export const Shop: React.FC = () => {
                         name='Колір'
                      />
                      <FilterSizeCheckboxList />
-                     <Button
-                        buttonClass={
-                           !isFiltersEmpty
-                              ? ButtonClassEnum.BUY
-                              : ButtonClassEnum.DISABLE
-                        }
-                        buttonText='Скинути фільтри'
-                        disabled={isFiltersEmpty}
-                        buttonClick={handleClickResetButton}
+                     <ResetFiltersButton
                         style={{ height: '30px', marginTop: '10px' }}
                      />
                   </aside>
