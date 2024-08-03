@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
 import { ShoesItem } from '../components/shoesItem';
@@ -22,6 +22,7 @@ import { Pagination } from '../components/Pagination';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSliders } from '@fortawesome/free-solid-svg-icons';
 import { Modal } from '../../modal/pages';
+import useWindowSize from '../../../hooks/useWindowSize';
 
 interface ISelectFilterOption {
    id: number;
@@ -30,6 +31,7 @@ interface ISelectFilterOption {
 }
 
 export const Shop: React.FC = () => {
+   const { width } = useWindowSize();
    const dispatch = useAppDispatch();
    const [isMobileAsideFiltersShowed, setIsMobileAsideFiltersShowed] =
       useState<boolean>(false);
@@ -52,6 +54,11 @@ export const Shop: React.FC = () => {
       { id: 3, text: 'Від новіших моделей', sort: SortEnum.CREATED_AT_ASC },
       { id: 4, text: 'Від давніших моделей', sort: SortEnum.CREATED_AT_DESC },
    ];
+   useEffect(() => {
+      if (width > 767 && isMobileAsideFiltersShowed) {
+         setIsMobileAsideFiltersShowed(false);
+      }
+   }, [width]);
    const handleClickBrandCheckbox = (id: number) => {
       dispatch(brandFilter(id));
    };
