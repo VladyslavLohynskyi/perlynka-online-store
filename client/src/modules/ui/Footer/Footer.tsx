@@ -1,5 +1,6 @@
 import React from 'react';
 import './Footer.scss';
+import { FooterInfoItem } from './components/FooterInfoItem';
 
 export const Footer: React.FC = () => {
    return (
@@ -12,6 +13,13 @@ export const Footer: React.FC = () => {
                   представлене лікувальне, профілактичне та звичайне взуття від
                   світових: SuperFit, GEOX, IMac, Tutubi, Tiflani та інші
                </p>
+            </div>
+            <div className='footer__info-container'>
+               <h3>Інформація</h3>
+               <FooterInfoItem text='Про нас' onClick={() => {}} />
+               <FooterInfoItem text='Оплата і доставка' onClick={() => {}} />
+               <FooterInfoItem text='Повернення та обмін' onClick={() => {}} />
+               <FooterInfoItem text='Контакти' onClick={() => {}} />
             </div>
          </div>
       </footer>

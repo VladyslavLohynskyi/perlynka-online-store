@@ -19,5 +19,18 @@
    &__logo-container {
       display: flex;
       flex-direction: column;
+      margin-bottom: 15px;
+
+      & p {
+         line-height: 20px;
+      }
+   }
+
+   &__info-container {
+      display: flex;
+      flex-direction: column;
+      & h3 {
+         padding-bottom: 15px;
+      }
    }
 }
