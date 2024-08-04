@@ -1,0 +1,23 @@
+.footer {
+   width: 100vw;
+   background-color: var(--footer-background-color);
+   display: flex;
+   justify-content: center;
+   &__container {
+      max-width: 1200px;
+      min-height: 300px;
+      width: 100%;
+      color: var(--footer-text-color);
+      padding: 40px 20px;
+   }
+
+   &__logo {
+      font-size: 33px;
+      margin-bottom: 5px;
+   }
+
+   &__logo-container {
+      display: flex;
+      flex-direction: column;
+   }
+}

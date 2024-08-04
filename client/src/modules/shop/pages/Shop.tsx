@@ -23,6 +23,7 @@ import { Modal } from '../../modal/pages';
 import useWindowSize from '../../../hooks/useWindowSize';
 import { AsideMobileFiltersModal } from '../../modal/components/HeaderDropdown/pages/AsideMobileFiltersModal';
 import { ResetFiltersButton } from '../../ui/ResetFiltersButton';
+import { Footer } from '../../ui/Footer';
 
 interface ISelectFilterOption {
    id: number;
@@ -149,6 +150,7 @@ export const Shop: React.FC = () => {
                   </div>
                </div>
             </div>
+            <Footer />
          </div>
 
          <div className='shop__mobile-filter-button-container'>
