@@ -9,8 +9,7 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { HorizontalLine } from '../HorizontalLine';
+
 export const Footer: React.FC = () => {
    return (
       <footer className='footer'>

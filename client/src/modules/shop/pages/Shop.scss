@@ -84,6 +84,7 @@
 @media #{$tablet-middle} {
    .shop {
       padding: 25px;
+      min-height: calc(100% - 60px - 273px);
       &__main-container {
          grid-template-columns: minmax(180px, 235px) 1fr;
       }

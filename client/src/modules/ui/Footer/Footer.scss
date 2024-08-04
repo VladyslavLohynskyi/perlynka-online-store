@@ -1,3 +1,5 @@
+@import '../../../breakpoints.scss';
+
 .footer {
    width: 100vw;
    background-color: var(--footer-background-color);
@@ -6,7 +8,6 @@
    align-items: center;
    &__container {
       max-width: 1200px;
-      min-height: 300px;
       width: 100%;
       color: var(--footer-text-color);
       padding: 40px 20px;
@@ -81,6 +82,22 @@
 
       & p {
          margin: 0 20px;
+      }
+   }
+}
+
+@media #{$tablet-middle} {
+   .footer {
+      &__container {
+         display: grid;
+         justify-content: space-between;
+         grid-template-columns: 1fr 0.5fr 0.5fr;
+         column-gap: 20px;
+      }
+      &__copyright-container {
+         display: flex;
+         justify-content: end;
+         margin: 5px 0 15px 0;
       }
    }
 }
