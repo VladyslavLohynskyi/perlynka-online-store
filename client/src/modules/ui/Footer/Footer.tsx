@@ -9,6 +9,8 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { HorizontalLine } from '../HorizontalLine';
 export const Footer: React.FC = () => {
    return (
       <footer className='footer'>
@@ -36,6 +38,7 @@ export const Footer: React.FC = () => {
                <a
                   className='label-text'
                   href='mailto:perlynka.shoes.store@gmail.com'
+                  target='_blank'
                >
                   perlynka.shoes.store@gmail.com
                </a>
@@ -44,24 +47,48 @@ export const Footer: React.FC = () => {
                </a>
                <p className='label-text'>Працюємо: ПН-НД: 10:00-19:00</p>
                <div className='footer__contact-icons-container'>
-                  <IconButton
-                     icon={faInstagram as IconDefinition}
-                     className='footer__icon'
-                  />
-                  <IconButton
-                     icon={faTelegram as IconDefinition}
-                     className='footer__icon'
-                  />
-                  <IconButton
-                     icon={faViber as IconDefinition}
-                     className='footer__icon'
-                  />
-                  <IconButton
-                     icon={faEnvelope as IconDefinition}
-                     className='footer__icon'
-                  />
+                  <a
+                     href='https://www.instagram.com/perlynka_shoes'
+                     target='_blank'
+                  >
+                     <IconButton
+                        icon={faInstagram as IconDefinition}
+                        className='footer__icon'
+                     />
+                  </a>
+                  <a href='https://t.me/KolyaMaseratti' target='_blank'>
+                     <IconButton
+                        icon={faTelegram as IconDefinition}
+                        className='footer__icon'
+                     />
+                  </a>
+                  <a
+                     href='https://invite.viber.com/?g2=AQAvW%2F8r5XFDNU0ZYEQxJ9E4nY6HIa5ypojA4YoGXCs7oQJZjm7MtD7tnDlaw0Sl'
+                     target='_blank'
+                  >
+                     <IconButton
+                        icon={faViber as IconDefinition}
+                        className='footer__icon'
+                     />
+                  </a>
+                  <a
+                     href='mailto:perlynka.shoes.store@gmail.com'
+                     target='_blank'
+                  >
+                     <IconButton
+                        icon={faEnvelope as IconDefinition}
+                        className='footer__icon'
+                     />
+                  </a>
                </div>
             </div>
+         </div>
+         <div className='horizontal-line footer__horizontal-line'> </div>
+         <div className='footer__copyright-container'>
+            <p className='label-text'>
+               © 2024 Мультибрендовий магазин дитячого-підліткового взуття —
+               "Перлинка"
+            </p>
          </div>
       </footer>
    );
