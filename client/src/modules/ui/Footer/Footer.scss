@@ -32,5 +32,41 @@
       & h3 {
          padding-bottom: 15px;
       }
+      padding-bottom: 15px;
+   }
+
+   &__contact-container {
+      display: flex;
+      flex-direction: column;
+      & p {
+         padding-bottom: 6px;
+         width: fit-content;
+      }
+      & a {
+         color: var(--footer-text-color);
+         padding-bottom: 6px;
+         width: fit-content;
+
+         &:hover {
+            color: var(--horizontal-line-color);
+         }
+      }
+   }
+   &__contact-icons-container {
+      margin-top: 5px;
+      display: flex;
+   }
+   &__icon {
+      cursor: pointer;
+      color: var(--footer-text-color);
+      font-size: 16px;
+      background-color: #252525;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 4px 10px 0 0;
+
+      &:hover {
+         background-color: var(--main-text-color);
+      }
    }
 }
