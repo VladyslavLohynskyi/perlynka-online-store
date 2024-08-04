@@ -1,0 +1,21 @@
+.mobile-filter-item {
+   &__container {
+      display: flex;
+      justify-content: space-between;
+      margin: 0 20px;
+      padding: 15px 0;
+      border-bottom: 1px solid var(--horizontal-line-color);
+      align-items: center;
+      color: var(--secondary-text-color);
+      cursor: pointer;
+      & h3 {
+         font-size: 16px;
+         font-weight: 400;
+      }
+
+      & svg {
+         font-size: 14px;
+         font-weight: 400;
+      }
+   }
+}

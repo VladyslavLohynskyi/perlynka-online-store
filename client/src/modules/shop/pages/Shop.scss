@@ -57,6 +57,18 @@
       width: 100%;
       height: 100%;
    }
+
+   &__mobile-filter-button-container {
+      position: fixed;
+      width: 90px;
+      transform: rotate(-90deg) translate(-40%, 50%);
+      top: 40%;
+      left: -55px;
+      z-index: 2;
+      & svg {
+         font-size: 16px;
+      }
+   }
 }
 
 @media #{$tablet-small} {
@@ -82,6 +94,9 @@
 
       &__right-side {
          width: 100%;
+      }
+      &__mobile-filter-button-container {
+         display: none;
       }
    }
 }

@@ -69,14 +69,9 @@
       }
    }
    &--disable {
-      color: lightgray;
-      border-color: lightgray;
-
-      &:hover {
-         color: #fff;
-         background-color: lightgray;
-         border-color: lightgray;
-      }
+      color: var(--horizontal-line-color);
+      border-color: var(--horizontal-line-color);
+      cursor: default;
    }
 
    &--profile {
@@ -161,6 +156,13 @@
          border-color: var(--secondary-text-color);
          background-color: var(--secondary-text-color);
       }
+   }
+
+   &--mobile-filter {
+      background-color: #c31929d9;
+      color: #fff;
+      opacity: 0.9;
+      padding: 4px;
    }
 }
 
