@@ -22,14 +22,20 @@ import { faSliders } from '@fortawesome/free-solid-svg-icons';
 import { Modal } from '../../modal/pages';
 import useWindowSize from '../../../hooks/useWindowSize';
 import { AsideMobileFiltersModal } from '../../modal/components/HeaderDropdown/pages/AsideMobileFiltersModal';
-import { ResetFiltersButton } from '../../ui/ResetButton';
+import { ResetFiltersButton } from '../../ui/ResetFiltersButton';
 
 interface ISelectFilterOption {
    id: number;
    text: string;
    sort: string;
 }
-
+export enum NameOfCategoriesEnum {
+   BRAND = 'Виробник',
+   TYPE = 'Tип',
+   SEASON = 'Сезон',
+   COLOR = 'Колір',
+   SIZE = 'Розмір',
+}
 export const Shop: React.FC = () => {
    const { width } = useWindowSize();
    const dispatch = useAppDispatch();
@@ -107,25 +113,25 @@ export const Shop: React.FC = () => {
                         selectedValuesId={selectedBrandsId}
                         handleClickCheckbox={handleClickBrandCheckbox}
                         list={brands}
-                        name='Виробник'
+                        name={NameOfCategoriesEnum.BRAND}
                      />
                      <FilterCheckboxList
                         selectedValuesId={selectedTypesId}
                         handleClickCheckbox={handleClickTypeCheckbox}
                         list={types}
-                        name='Тип'
+                        name={NameOfCategoriesEnum.TYPE}
                      />
                      <FilterCheckboxList
                         selectedValuesId={selectedSeasonsId}
                         handleClickCheckbox={handleClickSeasonCheckbox}
                         list={seasons}
-                        name='Сезон'
+                        name={NameOfCategoriesEnum.SEASON}
                      />
                      <FilterCheckboxList
                         selectedValuesId={selectedColorsId}
                         handleClickCheckbox={handleClickColorCheckbox}
                         list={colors}
-                        name='Колір'
+                        name={NameOfCategoriesEnum.COLOR}
                      />
                      <FilterSizeCheckboxList />
                      <ResetFiltersButton

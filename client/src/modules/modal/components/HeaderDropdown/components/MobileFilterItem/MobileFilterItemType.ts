@@ -1,4 +1,6 @@
+import { NameOfCategoriesEnum } from '../../../../../shop/pages';
+
 export interface MobileFilterItemType {
-   text: string;
+   text: NameOfCategoriesEnum;
    onClick: () => void;
 }

@@ -104,7 +104,7 @@ const App: FC = () => {
       filter.page,
    ]);
 
-   if (user.isLoading || shoes.isLoading) {
+   if (user.isLoading) {
       return <div>Loading...</div>;
    }
    return (
