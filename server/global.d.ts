@@ -14,5 +14,6 @@ namespace NodeJS {
       SMTP_PASSWORD: string;
       API_URL: string;
       CLIENT_URL: string;
+      MODE: string;
    }
 }
