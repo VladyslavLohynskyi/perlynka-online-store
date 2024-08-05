@@ -62,10 +62,33 @@ class userController {
             );
          }
          const candidate = await User.findOne({ where: { email } });
-         if (candidate) {
+         if (candidate?.isActivated) {
             return next(
                ApiError.badRequest('Користувач з таким email вже існує'),
             );
+         }
+         if (candidate && !candidate.isActivated) {
+            await mailService.sendActivationMail(
+               email,
+               process.env.API_URL +
+                  '/api/user/activate/' +
+                  candidate.activationLink,
+            );
+            const tokens = tokenService.generateTokens({
+               id: candidate.id,
+               email,
+               role: candidate.role,
+            });
+            await tokenService.saveToken(candidate.id, tokens.refreshToken);
+            res.cookie('refreshToken', tokens.refreshToken, {
+               maxAge: 30 * 24 * 60 * 60 * 1000,
+               httpOnly: true,
+            });
+            return res.json({
+               token: tokens.accessToken,
+               message:
+                  'На вашу електронну адресу надіслано лист для підтвердження пошти',
+            });
          }
          const hashPassword = await bcrypt.hash(password, 5);
          const activationLink = uuidv4();
