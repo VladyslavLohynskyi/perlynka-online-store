@@ -1,0 +1,9 @@
+.footer-info-item {
+   &__container {
+      padding-bottom: 6px;
+      & p {
+         width: fit-content;
+         cursor: pointer;
+      }
+   }
+}

@@ -23,6 +23,7 @@ import { Modal } from '../../modal/pages';
 import useWindowSize from '../../../hooks/useWindowSize';
 import { AsideMobileFiltersModal } from '../../modal/components/HeaderDropdown/pages/AsideMobileFiltersModal';
 import { ResetFiltersButton } from '../../ui/ResetFiltersButton';
+import { Footer } from '../../ui/Footer';
 
 interface ISelectFilterOption {
    id: number;
@@ -149,16 +150,15 @@ export const Shop: React.FC = () => {
                   </div>
                </div>
             </div>
-         </div>
-
-         <div className='shop__mobile-filter-button-container'>
-            <Button
-               buttonClass={ButtonClassEnum.MOBILE_FILTER}
-               buttonText='Фільтр'
-               buttonClick={() => setIsMobileAsideFiltersShowed(true)}
-            >
-               <FontAwesomeIcon icon={faSliders} className='fa-lg' />
-            </Button>
+            <div className='shop__mobile-filter-button-container'>
+               <Button
+                  buttonClass={ButtonClassEnum.MOBILE_FILTER}
+                  buttonText='Фільтр'
+                  buttonClick={() => setIsMobileAsideFiltersShowed(true)}
+               >
+                  <FontAwesomeIcon icon={faSliders} className='fa-lg' />
+               </Button>
+            </div>
          </div>
          <Modal
             modalPosition='mobile-aside-filter'
