@@ -193,7 +193,11 @@ class userController {
       try {
          const { role, email } = req.query;
          const users = await User.findAll({
-            where: { role, email: { [Op.startsWith]: email } },
+            where: {
+               role,
+               email: { [Op.startsWith]: email },
+               isActivated: true,
+            },
          });
          return res.json(users);
       } catch (error) {
