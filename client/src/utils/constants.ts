@@ -1,4 +1,4 @@
-export const baseURL = 'http://localhost:8881/';
+export const baseURL = '/';
 export enum RoutesEnum {
    SHOP = '/shop',
    LOGIN = '/login',

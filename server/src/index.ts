@@ -13,13 +13,20 @@ import errorMiddleware from './middleware/errorMiddleware';
 const app: Application = express();
 const port: number = Number(process.env.PORT) || 8888;
 
-app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.resolve(__dirname, 'static')));
 app.use(fileUpload({}));
 app.use('/api', router);
 app.use(errorMiddleware);
+
+if (process.env.MODE === 'production') {
+   app.use(express.static(path.join(__dirname, '../../client/build')));
+
+   app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
+   });
+}
 
 const start = async () => {
    try {

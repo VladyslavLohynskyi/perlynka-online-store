@@ -76,7 +76,7 @@ export const basketSlice = createSlice({
          }
          state.totalCountOfShoesInBasket =
             state.totalCountOfShoesInBasket + action.payload.count;
-         document.cookie = `basket=${JSON.stringify(state.basket)}; path=/;`;
+         localStorage.setItem('basket', JSON.stringify(state.basket));
          document.cookie = `totalCountOfShoesInBasket=${state.totalCountOfShoesInBasket}; path=/;`;
          state.message = 'Товар успішно додано в корзину';
       },
@@ -103,7 +103,7 @@ export const basketSlice = createSlice({
          state.basket = [...action.payload];
       },
       getAllShoesOfBasketNotAuthSuccess(state) {
-         const basket = JSON.parse(getCookieValue('basket') || '[]');
+         const basket = JSON.parse(localStorage.getItem('basket') || '[]');
          state.basket = [...basket];
          const totalCount = getCookieValue('totalCountOfShoesInBasket');
          if (totalCount) {
@@ -139,7 +139,7 @@ export const basketSlice = createSlice({
             state.totalCountOfShoesInBasket =
                state.totalCountOfShoesInBasket - +deleteItem.count;
          }
-         document.cookie = `basket=${JSON.stringify(state.basket)}; path=/;`;
+         localStorage.setItem('basket', JSON.stringify(state.basket));
          document.cookie = `totalCountOfShoesInBasket=${state.totalCountOfShoesInBasket}; path=/;`;
       },
 
@@ -153,7 +153,7 @@ export const basketSlice = createSlice({
       deleteAllFromBasketNotAuthSuccess(state) {
          state.basket = [];
          state.totalCountOfShoesInBasket = 0;
-         document.cookie = `basket=[]; path=/;`;
+         localStorage.setItem('basket', '[]');
          document.cookie = `totalCountOfShoesInBasket=0; path=/;`;
       },
 
@@ -177,7 +177,7 @@ export const basketSlice = createSlice({
             el.id === action.payload ? { ...el, count: el.count + 1 } : el,
          );
          state.totalCountOfShoesInBasket += 1;
-         document.cookie = `basket=${JSON.stringify(state.basket)}; path=/;`;
+         localStorage.setItem('basket', JSON.stringify(state.basket));
          document.cookie = `totalCountOfShoesInBasket=${state.totalCountOfShoesInBasket}; path=/;`;
       },
 
@@ -200,13 +200,13 @@ export const basketSlice = createSlice({
             el.id === action.payload ? { ...el, count: +el.count - 1 } : el,
          );
          state.totalCountOfShoesInBasket -= 1;
-         document.cookie = `basket=${JSON.stringify(state.basket)}; path=/;`;
+         localStorage.setItem('basket', JSON.stringify(state.basket));
          document.cookie = `totalCountOfShoesInBasket=${state.totalCountOfShoesInBasket}; path=/;`;
       },
 
       clearBasketBeforeLogOut(state) {
          state.basket = [];
-         document.cookie = 'basket= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
+         localStorage.removeItem('basket');
          state.totalCountOfShoesInBasket = 0;
          document.cookie =
             'totalCountOfShoesInBasket= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
