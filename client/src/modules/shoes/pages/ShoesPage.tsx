@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import './ShoesPage.scss';
 import { useParams } from 'react-router-dom';
@@ -32,7 +32,7 @@ export const ShoesPage: React.FC = () => {
    const [buyButtonText, setBuyButtonText] = useState<BuyButtonTextEnum>(
       BuyButtonTextEnum.BUY,
    );
-
+   const mainImageRef = useRef<HTMLImageElement>(null);
    useEffect(() => {
       if (id)
          ShoesReq.getShoesById(+id).then((shoes) => {
@@ -139,10 +139,12 @@ export const ShoesPage: React.FC = () => {
                      )}
                      <div className='shoes-page__img-container'>
                         <img
+                           ref={mainImageRef}
                            src={
                               baseURL + slides[currentSlideIndex].img + '.webp'
                            }
                            alt='Взуття'
+                           style={{ height: mainImageRef.current?.clientWidth }}
                         />
                      </div>
                   </div>
