@@ -31,9 +31,7 @@ export const Footer: React.FC = () => {
             </div>
 
             <div className='footer__contact-container'>
-               <p className='label-text'>
-                  м. Львів, вул. Щирецька 36, ТВК "Південний"
-               </p>
+               <p className='label-text'>м. Львів, вул. Щирецька 36</p>
                <a
                   className='label-text'
                   href='mailto:perlynka.shoes.store@gmail.com'
@@ -85,8 +83,7 @@ export const Footer: React.FC = () => {
          <div className='horizontal-line footer__horizontal-line'> </div>
          <div className='footer__copyright-container'>
             <p className='label-text'>
-               © 2024 Мультибрендовий магазин дитячого-підліткового взуття —
-               "Перлинка"
+               © 2024 магазин дитячого-підліткового взуття — "Перлинка"
             </p>
          </div>
       </footer>

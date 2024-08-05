@@ -10,6 +10,7 @@
 
    &__container {
       display: flex;
+      height: 60px;
       justify-content: center;
       border-bottom: 1px solid var(--horizontal-line-color);
       width: 100vw;

@@ -2,12 +2,9 @@
 
 .basket {
    width: 100vw;
-   height: calc(100vh - 61px);
-   overflow: auto;
    background-color: var(--secondary-background-color);
    display: flex;
    justify-content: center;
-
    &__main {
       display: flex;
       padding: 20px;

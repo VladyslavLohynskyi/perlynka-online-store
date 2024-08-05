@@ -150,17 +150,15 @@ export const Shop: React.FC = () => {
                   </div>
                </div>
             </div>
-            <Footer />
-         </div>
-
-         <div className='shop__mobile-filter-button-container'>
-            <Button
-               buttonClass={ButtonClassEnum.MOBILE_FILTER}
-               buttonText='Фільтр'
-               buttonClick={() => setIsMobileAsideFiltersShowed(true)}
-            >
-               <FontAwesomeIcon icon={faSliders} className='fa-lg' />
-            </Button>
+            <div className='shop__mobile-filter-button-container'>
+               <Button
+                  buttonClass={ButtonClassEnum.MOBILE_FILTER}
+                  buttonText='Фільтр'
+                  buttonClick={() => setIsMobileAsideFiltersShowed(true)}
+               >
+                  <FontAwesomeIcon icon={faSliders} className='fa-lg' />
+               </Button>
+            </div>
          </div>
          <Modal
             modalPosition='mobile-aside-filter'
