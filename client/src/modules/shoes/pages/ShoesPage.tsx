@@ -15,6 +15,7 @@ import {
    addShoesToBasket,
    addShoesToBasketNotAuth,
 } from '../../../store/reducers/basket/BasketActionCreators';
+import useSwipe from '../../../hooks/useSwipe';
 
 enum BuyButtonTextEnum {
    BUY = 'Купити',
@@ -33,6 +34,23 @@ export const ShoesPage: React.FC = () => {
       BuyButtonTextEnum.BUY,
    );
    const mainImageRef = useRef<HTMLImageElement>(null);
+
+   const carouselSwipeHandler = useSwipe({
+      onSwipedLeft: () => {
+         console.log('swipedleft');
+         console.log(currentSlideIndex);
+         currentSlideIndex === slides.length - 1
+            ? setCurrentSlideIndex(0)
+            : setCurrentSlideIndex(currentSlideIndex + 1);
+      },
+      onSwipedRight: () => {
+         console.log('swipedright');
+         console.log(currentSlideIndex);
+         currentSlideIndex === 0
+            ? setCurrentSlideIndex(slides.length - 1)
+            : setCurrentSlideIndex(currentSlideIndex - 1);
+      },
+   });
    useEffect(() => {
       if (id)
          ShoesReq.getShoesById(+id).then((shoes) => {
@@ -118,28 +136,25 @@ export const ShoesPage: React.FC = () => {
                   <div className='shoes-page__carousel-container'>
                      {slides.length > 1 && (
                         <div className='shoes-page__carousel-options'>
-                           {slides.map(
-                              ({ img, id }, index) =>
-                                 index !== currentSlideIndex && (
-                                    <div
-                                       onClick={() =>
-                                          setCurrentSlideIndex(index)
-                                       }
-                                       key={id}
-                                       className='shoes-page__carousel-option-container'
-                                    >
-                                       <img
-                                          src={baseURL + img + '.webp'}
-                                          alt='Взуття'
-                                       />
-                                    </div>
-                                 ),
-                           )}
+                           {slides.map(({ img, id }, index) => (
+                              <div
+                                 onClick={() => setCurrentSlideIndex(index)}
+                                 key={id}
+                                 className='shoes-page__carousel-option-container'
+                              >
+                                 <img
+                                    src={baseURL + img + '.webp'}
+                                    alt='Взуття'
+                                 />
+                              </div>
+                           ))}
                         </div>
                      )}
                      <div className='shoes-page__img-container'>
                         <img
+                           {...carouselSwipeHandler}
                            ref={mainImageRef}
+                           draggable={false}
                            src={
                               baseURL + slides[currentSlideIndex].img + '.webp'
                            }
