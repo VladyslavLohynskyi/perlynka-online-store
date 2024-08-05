@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useAppSelector } from '../../../../hooks/redux';
 import { RoutesEnum, baseURL } from '../../../../utils/constants';
 
@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const ShoesItem: React.FC<ShoesItemType> = ({ shoes }) => {
    const { brands } = useAppSelector((state) => state.shoesReducer);
+   const ref = useRef<HTMLImageElement>(null);
    const navigate = useNavigate();
    return (
       <div
@@ -15,7 +16,13 @@ export const ShoesItem: React.FC<ShoesItemType> = ({ shoes }) => {
          onClick={() => navigate(RoutesEnum.SHOES + '/' + shoes.id)}
       >
          <div className='shoes-item__img-container'>
-            <img src={baseURL + shoes.img + '-preview.webp'} alt='shoes' />
+            <img
+               src={baseURL + shoes.img + '-preview.webp'}
+               loading='lazy'
+               alt='shoes'
+               ref={ref}
+               style={{ height: ref.current?.clientWidth }}
+            />
          </div>
          <div className='shoes-item__info'>
             <p className='preview-shoes-item-model-text'>
