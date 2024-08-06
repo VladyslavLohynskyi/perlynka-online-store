@@ -37,15 +37,11 @@ export const ShoesPage: React.FC = () => {
 
    const carouselSwipeHandler = useSwipe({
       onSwipedLeft: () => {
-         console.log('swipedleft');
-         console.log(currentSlideIndex);
          currentSlideIndex === slides.length - 1
             ? setCurrentSlideIndex(0)
             : setCurrentSlideIndex(currentSlideIndex + 1);
       },
       onSwipedRight: () => {
-         console.log('swipedright');
-         console.log(currentSlideIndex);
          currentSlideIndex === 0
             ? setCurrentSlideIndex(slides.length - 1)
             : setCurrentSlideIndex(currentSlideIndex - 1);
@@ -145,6 +141,7 @@ export const ShoesPage: React.FC = () => {
                                  <img
                                     src={baseURL + img + '.webp'}
                                     alt='Взуття'
+                                    draggable={false}
                                  />
                               </div>
                            ))}
@@ -161,6 +158,20 @@ export const ShoesPage: React.FC = () => {
                            alt='Взуття'
                            style={{ height: mainImageRef.current?.clientWidth }}
                         />
+                     </div>
+                     <div className='shoes-page__carousel-dots-container'>
+                        {slides.map(({ id }, index) => (
+                           <div
+                              key={id}
+                              className={`shoes-page__carousel-dot ${
+                                 currentSlideIndex === index &&
+                                 'shoes-page__carousel-dot-active'
+                              }`}
+                              onClick={() => {
+                                 setCurrentSlideIndex(index);
+                              }}
+                           ></div>
+                        ))}
                      </div>
                   </div>
                   <div className='shoes-page__info-container'>
