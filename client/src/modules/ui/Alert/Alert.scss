@@ -10,6 +10,7 @@
       height: 100px;
       align-items: center;
       justify-content: center;
+      z-index: 33333;
    }
 
    &__content {
@@ -39,8 +40,12 @@
 
 @media #{$tablet-middle} {
    .modal-alert {
+      &__container {
+         top: 53px;
+      }
       &__content {
          width: 45%;
+         max-width: 350px;
       }
    }
 }

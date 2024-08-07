@@ -19,7 +19,8 @@ export const Footer: React.FC = () => {
                <p className='label-text'>
                   - це мультибрендовий магазин дитячого-підліткового взуття, де
                   представлене лікувальне, профілактичне та звичайне взуття від
-                  світових: SuperFit, GEOX, IMac, Tutubi, Tiflani та інші
+                  світових брендів: SuperFit, GEOX, IMac, Tutubi, Tiflani та
+                  інші
                </p>
             </div>
             <div className='footer__info-container'>
