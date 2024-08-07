@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { StyleHTMLAttributes, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import './ShoesPage.scss';
 import { useParams } from 'react-router-dom';
@@ -15,7 +15,9 @@ import {
    addShoesToBasket,
    addShoesToBasketNotAuth,
 } from '../../../store/reducers/basket/BasketActionCreators';
-import useSwipe from '../../../hooks/useSwipe';
+
+import { Swiper, SwiperSlide, SwiperRef } from 'swiper/react';
+import 'swiper/css';
 
 enum BuyButtonTextEnum {
    BUY = 'Купити',
@@ -34,19 +36,7 @@ export const ShoesPage: React.FC = () => {
       BuyButtonTextEnum.BUY,
    );
    const mainImageRef = useRef<HTMLImageElement>(null);
-
-   const carouselSwipeHandler = useSwipe({
-      onSwipedLeft: () => {
-         currentSlideIndex === slides.length - 1
-            ? setCurrentSlideIndex(0)
-            : setCurrentSlideIndex(currentSlideIndex + 1);
-      },
-      onSwipedRight: () => {
-         currentSlideIndex === 0
-            ? setCurrentSlideIndex(slides.length - 1)
-            : setCurrentSlideIndex(currentSlideIndex - 1);
-      },
-   });
+   const swiperRef = useRef<SwiperRef>(null);
    useEffect(() => {
       if (id)
          ShoesReq.getShoesById(+id).then((shoes) => {
@@ -124,6 +114,7 @@ export const ShoesPage: React.FC = () => {
          setBuyButtonText(BuyButtonTextEnum.SIZE_ERROR);
       }
    };
+
    return (
       <div className='shoes-page'>
          {currentShoes && (
@@ -134,7 +125,10 @@ export const ShoesPage: React.FC = () => {
                         <div className='shoes-page__carousel-options'>
                            {slides.map(({ img, id }, index) => (
                               <div
-                                 onClick={() => setCurrentSlideIndex(index)}
+                                 onClick={() => {
+                                    setCurrentSlideIndex(index);
+                                    swiperRef.current?.swiper.slideTo(index);
+                                 }}
                                  key={id}
                                  className='shoes-page__carousel-option-container'
                               >
@@ -147,17 +141,34 @@ export const ShoesPage: React.FC = () => {
                            ))}
                         </div>
                      )}
-                     <div className='shoes-page__img-container'>
-                        <img
-                           {...carouselSwipeHandler}
-                           ref={mainImageRef}
-                           draggable={false}
-                           src={
-                              baseURL + slides[currentSlideIndex].img + '.webp'
-                           }
-                           alt='Взуття'
-                           style={{ height: mainImageRef.current?.clientWidth }}
-                        />
+                     <div className='shoes-page__swiper-container'>
+                        <Swiper
+                           ref={swiperRef}
+                           onSlideChange={() => {
+                              setCurrentSlideIndex(
+                                 swiperRef.current!.swiper.activeIndex,
+                              );
+                           }}
+                        >
+                           {slides.map(({ img, id }) => (
+                              <SwiperSlide key={id}>
+                                 <div
+                                    className='shoes-page__img-container'
+                                    style={{
+                                       height:
+                                          mainImageRef.current?.clientWidth,
+                                    }}
+                                 >
+                                    <img
+                                       ref={mainImageRef}
+                                       draggable={false}
+                                       src={baseURL + img + '.webp'}
+                                       alt='Взуття'
+                                    />
+                                 </div>
+                              </SwiperSlide>
+                           ))}
+                        </Swiper>
                      </div>
                      <div className='shoes-page__carousel-dots-container'>
                         {slides.map(({ id }, index) => (
@@ -169,6 +180,7 @@ export const ShoesPage: React.FC = () => {
                               }`}
                               onClick={() => {
                                  setCurrentSlideIndex(index);
+                                 swiperRef.current?.swiper.slideTo(index);
                               }}
                            ></div>
                         ))}
