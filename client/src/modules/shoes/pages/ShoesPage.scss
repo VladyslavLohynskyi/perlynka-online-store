@@ -13,60 +13,6 @@
       display: flex;
       flex-direction: column;
    }
-   &__info-container {
-      width: 100%;
-   }
-
-   &__model-name {
-      margin: 10px 0 5px 0;
-   }
-   &__model-id {
-      margin: 2px 0;
-   }
-   &__model-price {
-      margin: 20px 0;
-   }
-   &__model-size {
-      font-size: 12px;
-   }
-   &__sizes-buttons {
-      margin: 10px 0 20px 0;
-      & button {
-         margin-right: 5px;
-      }
-   }
-
-   &__buy-container {
-      margin: 15px 0;
-      display: flex;
-      align-items: center;
-   }
-
-   &__buy-button {
-      width: 100%;
-      height: 48px;
-   }
-
-   &__buy-counter {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-right: 5px;
-   }
-
-   &__buy-number {
-      padding: 5px;
-      border-radius: 50%;
-      background-color: var(--horizontal-line-color);
-      & p {
-         display: flex;
-         align-self: center;
-         justify-content: center;
-         font-size: 12px;
-         width: 15px;
-         height: 15px;
-      }
-   }
 
    &__characteristics-container {
       margin: 10px 0;
@@ -89,17 +35,10 @@
    .shoes-page {
       &__main {
          max-width: 1200px;
-         flex-direction: row;
-      }
-
-      &__main {
          display: flex;
+         flex-direction: row;
          justify-content: center;
          width: 100%;
-      }
-
-      &__info-container {
-         width: 40%;
       }
    }
 }
