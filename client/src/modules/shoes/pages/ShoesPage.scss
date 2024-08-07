@@ -15,8 +15,7 @@
    }
 
    &__characteristics-container {
-      margin: 10px 0;
-      padding: 0px 20px 0px;
+      padding: 0 15px 15px 15px;
       max-width: 1200px;
       width: 100%;
       & h3 {
@@ -24,9 +23,36 @@
          font-weight: 900;
          margin-bottom: 10px;
       }
-      & p {
-         font-size: 14px;
+      & p,
+      li {
+         font-size: 12px;
          font-weight: 400;
+         line-height: 20px;
+      }
+      & p {
+         padding-bottom: 10px;
+      }
+      & li {
+         display: list-item;
+         text-align: -webkit-match-parent;
+         unicode-bidi: isolate;
+         list-style: none;
+         list-style-type: circle;
+      }
+      & ul {
+         padding-left: 40px;
+         list-style-type: circle;
+      }
+   }
+}
+.characteristics {
+   &__description-title-mobile {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      & h3 {
+         margin: 0;
       }
    }
 }
