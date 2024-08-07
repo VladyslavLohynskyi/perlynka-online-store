@@ -1,9 +1,9 @@
-import React, { StyleHTMLAttributes, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import './ShoesPage.scss';
 import { useParams } from 'react-router-dom';
 import ShoesReq, { IParticularShoes, IShoesImage } from '../../../http/shoes';
-import { baseURL } from '../../../utils/constants';
+
 import { Button } from '../../ui/Button';
 import { ButtonClassEnum } from '../../ui/Button/ButtonType';
 import { HorizontalLine } from '../../ui/HorizontalLine';
@@ -16,8 +16,8 @@ import {
    addShoesToBasketNotAuth,
 } from '../../../store/reducers/basket/BasketActionCreators';
 
-import { Swiper, SwiperSlide, SwiperRef } from 'swiper/react';
 import 'swiper/css';
+import ShoesCarousel from '../components/ShoesCarousel/ShoesCarousel';
 
 enum BuyButtonTextEnum {
    BUY = 'Купити',
@@ -30,13 +30,10 @@ export const ShoesPage: React.FC = () => {
    const [currentShoes, setCurrentShoes] = useState<IParticularShoes>();
    const [selectedSizeId, setSelectedSizeId] = useState<number>(0);
    const [count, setCount] = useState<number>(1);
-   const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
    const [slides, setSlides] = useState<IShoesImage[]>([]);
    const [buyButtonText, setBuyButtonText] = useState<BuyButtonTextEnum>(
       BuyButtonTextEnum.BUY,
    );
-   const mainImageRef = useRef<HTMLImageElement>(null);
-   const swiperRef = useRef<SwiperRef>(null);
    useEffect(() => {
       if (id)
          ShoesReq.getShoesById(+id).then((shoes) => {
@@ -120,72 +117,7 @@ export const ShoesPage: React.FC = () => {
          {currentShoes && (
             <>
                <div className='shoes-page__main'>
-                  <div className='shoes-page__carousel-container'>
-                     {slides.length > 1 && (
-                        <div className='shoes-page__carousel-options'>
-                           {slides.map(({ img, id }, index) => (
-                              <div
-                                 onClick={() => {
-                                    setCurrentSlideIndex(index);
-                                    swiperRef.current?.swiper.slideTo(index);
-                                 }}
-                                 key={id}
-                                 className='shoes-page__carousel-option-container'
-                              >
-                                 <img
-                                    src={baseURL + img + '.webp'}
-                                    alt='Взуття'
-                                    draggable={false}
-                                 />
-                              </div>
-                           ))}
-                        </div>
-                     )}
-                     <div className='shoes-page__swiper-container'>
-                        <Swiper
-                           ref={swiperRef}
-                           onSlideChange={() => {
-                              setCurrentSlideIndex(
-                                 swiperRef.current!.swiper.activeIndex,
-                              );
-                           }}
-                        >
-                           {slides.map(({ img, id }) => (
-                              <SwiperSlide key={id}>
-                                 <div
-                                    className='shoes-page__img-container'
-                                    style={{
-                                       height:
-                                          mainImageRef.current?.clientWidth,
-                                    }}
-                                 >
-                                    <img
-                                       ref={mainImageRef}
-                                       draggable={false}
-                                       src={baseURL + img + '.webp'}
-                                       alt='Взуття'
-                                    />
-                                 </div>
-                              </SwiperSlide>
-                           ))}
-                        </Swiper>
-                     </div>
-                     <div className='shoes-page__carousel-dots-container'>
-                        {slides.map(({ id }, index) => (
-                           <div
-                              key={id}
-                              className={`shoes-page__carousel-dot ${
-                                 currentSlideIndex === index &&
-                                 'shoes-page__carousel-dot-active'
-                              }`}
-                              onClick={() => {
-                                 setCurrentSlideIndex(index);
-                                 swiperRef.current?.swiper.slideTo(index);
-                              }}
-                           ></div>
-                        ))}
-                     </div>
-                  </div>
+                  <ShoesCarousel slides={slides} />
                   <div className='shoes-page__info-container'>
                      <h3 className='shoes-page__model-name main-page-title'>
                         {currentShoes.brand.name} {currentShoes.model}
