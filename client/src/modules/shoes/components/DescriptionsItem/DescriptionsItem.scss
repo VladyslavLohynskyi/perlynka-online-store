@@ -1,8 +1,48 @@
+@import '../../../../breakpoints.scss';
+
 .characteristics {
    &__description-container {
+      background-color: #f2f2f2;
       margin-bottom: 10px;
+      width: 100%;
    }
    &__description-title-mobile {
       padding: 5px 0 5px 0;
+   }
+   &__description-title-desktop-container {
+      display: none;
+   }
+   &__description {
+      margin-top: 10px;
+   }
+}
+
+@media #{$tablet-middle} {
+   .characteristics {
+      &__description-title-mobile-container {
+         display: none;
+      }
+      &__description-title-desktop-container {
+         width: 100vw;
+         padding: 0 20px;
+         background-color: var(--secondary-background-color);
+         display: flex;
+         justify-content: center;
+      }
+      &__description-title-desktop {
+         display: flex;
+         justify-content: space-between;
+         width: 100%;
+         & p {
+            cursor: pointer;
+            line-height: 50px;
+            font-size: 15px;
+            font-weight: 900;
+            padding: 0;
+         }
+      }
+      &__description-title-desktop-active {
+         border-top: 4px solid var(--main-text-color);
+      }
    }
 }

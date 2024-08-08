@@ -3,9 +3,10 @@ import React from 'react';
 import { DescriptionsItemType } from './DescriptionsItemType';
 
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { DescriptionAccordionNamesEnum } from '../../pages';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { HorizontalLine } from '../../../ui/HorizontalLine';
+import useWindowSize from '../../../../hooks/useWindowSize';
 
 const DescriptionsItem: React.FC<DescriptionsItemType> = ({
    setDescriptionAccordionActiveName,
@@ -14,22 +15,32 @@ const DescriptionsItem: React.FC<DescriptionsItemType> = ({
    descriptionAccordionActiveName,
    children,
 }) => {
+   const { width } = useWindowSize();
    return (
-      <div className='characteristics__description-container'>
+      <div
+         className={`characteristics__description-container max-width ${
+            width > 767 && descriptionAccordionActiveName !== value
+               ? 'display-none'
+               : ''
+         }`}
+      >
          <div
-            className='characteristics__description-title-mobile'
+            className='characteristics__description-title-mobile-container'
             onClick={() => {
                setDescriptionAccordionActiveName(value);
             }}
          >
-            <h3>{title}</h3>
-            <FontAwesomeIcon
-               icon={
-                  descriptionAccordionActiveName === value ? faMinus : faPlus
-               }
-            />
+            <div className='characteristics__description-title-mobile'>
+               <h3>{title}</h3>
+               <FontAwesomeIcon
+                  icon={
+                     descriptionAccordionActiveName === value ? faMinus : faPlus
+                  }
+               />
+            </div>
+            <HorizontalLine style={{ marginBottom: 0 }} />
          </div>
-         <HorizontalLine />
+
          <div
             className={`characteristics__description ${
                descriptionAccordionActiveName !== value ? 'display-none' : ''
