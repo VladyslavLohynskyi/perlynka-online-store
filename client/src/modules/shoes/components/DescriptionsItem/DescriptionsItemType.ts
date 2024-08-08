@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { DescriptionAccordionNamesEnum } from '../../pages';
+import { DescriptionAccordionNamesEnum } from '../Descriptions/Descriptions';
 
 export interface DescriptionsItemType {
    children: ReactNode;

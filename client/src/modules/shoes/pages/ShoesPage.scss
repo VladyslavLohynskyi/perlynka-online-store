@@ -13,52 +13,6 @@
       display: flex;
       flex-direction: column;
    }
-
-   &__characteristics-container {
-      background-color: #f2f2f2;
-      padding: 0 15px 15px 15px;
-      width: 100vw;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      & h3 {
-         font-size: 15px;
-         font-weight: 900;
-         margin-bottom: 10px;
-      }
-      & p,
-      li {
-         font-size: 12px;
-         font-weight: 400;
-         line-height: 20px;
-      }
-      & p {
-         padding-bottom: 10px;
-      }
-      & li {
-         display: list-item;
-         text-align: -webkit-match-parent;
-         unicode-bidi: isolate;
-         list-style: none;
-         list-style-type: circle;
-      }
-      & ul {
-         padding-left: 40px;
-         list-style-type: circle;
-      }
-   }
-}
-.characteristics {
-   &__description-title-mobile {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      & h3 {
-         margin: 0;
-      }
-   }
 }
 
 @media #{$tablet-middle} {

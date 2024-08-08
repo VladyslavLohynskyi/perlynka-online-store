@@ -1,9 +1,7 @@
 import './DescriptionsItem.scss';
 import React from 'react';
 import { DescriptionsItemType } from './DescriptionsItemType';
-
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { HorizontalLine } from '../../../ui/HorizontalLine';
 import useWindowSize from '../../../../hooks/useWindowSize';
