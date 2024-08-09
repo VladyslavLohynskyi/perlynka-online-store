@@ -9,6 +9,7 @@ export interface ICustomerInfo {
    name: string;
    surname: string;
    phone: string;
+   PaymentOption: PaymentOptionsEnum;
    DeliveryOption: DeliveryOptionsEnum;
    Description: string;
    SettlementAreaDescription: string;
@@ -20,6 +21,12 @@ enum DeliveryOptionsEnum {
    NOVA_POST = 'У відділення Нової пошти',
    SELF_DELIVERY = 'Самовивіз з магазину',
 }
+
+enum PaymentOptionsEnum {
+   CARD_DETAILS = 'Онлайн оплата по реквізитах',
+   POSTPAID = 'Оплата при доставці (передоплата 100грн.)',
+}
+
 export interface IBasketCheckoutItem {
    modelId: number;
    count: number;
@@ -105,7 +112,7 @@ class MailService {
       const deliveryInfoHTML = `
          <h3>Деталі замовлення:</h3>
          <p>Cпосіб доставки: ${customerInfo.DeliveryOption}</p>
-         <p>Спосіб оплати:	Післяплата</p>
+         <p>Спосіб оплати:	${customerInfo.PaymentOption}</p>
          ${
             customerInfo.DeliveryOption === DeliveryOptionsEnum.NOVA_POST
                ? `<p>Адреса доставки:	${customerInfo.SettlementAreaDescription} обл., ${customerInfo.SettlementTypeDescription}. ${customerInfo.SettlementDescription}, ${customerInfo.Description}</p>`

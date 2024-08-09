@@ -109,6 +109,7 @@ export const CheckoutPage: React.FC = () => {
          surname: surname!,
          email: email!,
          phone: phone!,
+         PaymentOption: paymentActiveOption,
          DeliveryOption: deliveryActiveOption,
          SettlementAreaDescription: warehouse?.SettlementAreaDescription,
          SettlementDescription: warehouse?.SettlementDescription,

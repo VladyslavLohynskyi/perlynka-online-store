@@ -1,5 +1,8 @@
 import { $host } from '.';
-import { DeliveryOptionsEnum } from '../modules/checkout/pages';
+import {
+   DeliveryOptionsEnum,
+   PaymentOptionsEnum,
+} from '../modules/checkout/pages';
 import { ISizeCategory } from '../store/reducers/shoes/ShoesSlice';
 
 export interface ICustomerInfo {
@@ -7,6 +10,7 @@ export interface ICustomerInfo {
    name: string;
    surname: string;
    phone: string;
+   PaymentOption: PaymentOptionsEnum;
    DeliveryOption: DeliveryOptionsEnum;
    Description?: string;
    SettlementAreaDescription?: string;
