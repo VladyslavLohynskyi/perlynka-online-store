@@ -40,7 +40,7 @@ export const Footer: React.FC = () => {
                >
                   perlynka.shoes.store@gmail.com
                </a>
-               <a className='label-text' href='href="tel:+380964668757'>
+               <a className='label-text' href='tel:+380964668757'>
                   +38 (096) 466-87-57
                </a>
                <p className='label-text'>Працюємо: ПН-НД: 10:00-19:00</p>

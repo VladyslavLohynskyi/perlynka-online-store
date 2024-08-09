@@ -145,6 +145,38 @@ const ShoesInfos: React.FC<ShoesInfosType> = ({ currentShoes }) => {
             </div>
          </div>
          <HorizontalLine />
+         <div className='shoes-page-info__communication-container'>
+            <div className='shoes-page-info__communication-wrapper'>
+               <a
+                  href='https://invite.viber.com/?g2=AQAvW%2F8r5XFDNU0ZYEQxJ9E4nY6HIa5ypojA4YoGXCs7oQJZjm7MtD7tnDlaw0Sl'
+                  target='_blank'
+               >
+                  <Button buttonClass={ButtonClassEnum.COMMUNICATION}>
+                     Viber
+                  </Button>
+               </a>
+               <a href='https://t.me/KolyaMaseratti' target='_blank'>
+                  <Button buttonClass={ButtonClassEnum.COMMUNICATION}>
+                     Telegram
+                  </Button>
+               </a>
+            </div>
+            <div className='shoes-page-info__communication-wrapper'>
+               <a href='tel:+380964668757' target='_blank'>
+                  <Button buttonClass={ButtonClassEnum.COMMUNICATION}>
+                     +380964668757
+                  </Button>
+               </a>
+               <a
+                  href='https://www.instagram.com/perlynka_shoes'
+                  target='_blank'
+               >
+                  <Button buttonClass={ButtonClassEnum.COMMUNICATION}>
+                     Instagram
+                  </Button>
+               </a>
+            </div>
+         </div>
          <Rating shoId={currentShoes.id} />
       </div>
    );
