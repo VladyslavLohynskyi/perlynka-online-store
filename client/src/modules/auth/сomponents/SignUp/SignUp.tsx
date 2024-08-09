@@ -12,13 +12,15 @@ const SignUp = () => {
    const dispatch = useAppDispatch();
    const navigate = useNavigate();
    const { error } = useAppSelector((state) => state.userReducer);
+   const [name, setName] = useState('');
+   const [surname, setSurname] = useState('');
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
    const handleClickSubmitAuth = async (
       e: React.FormEvent<HTMLFormElement>,
    ) => {
       e.preventDefault();
-      await dispatch(registrationUser({ email, password }));
+      await dispatch(registrationUser({ email, password, surname, name }));
    };
 
    const handleClickChangeAuth = () => {
@@ -31,6 +33,22 @@ const SignUp = () => {
          <form className='auth__form' onSubmit={handleClickSubmitAuth}>
             <h2 className='auth__header'>Реєстрація</h2>
             {error && <h3 className='auth__error'>{error}</h3>}
+            <BasicInput
+               name={'name'}
+               type='text'
+               value={name}
+               onChange={(e) => setName(e.target.value)}
+               required={true}
+               placeholder="Ім'я"
+            />
+            <BasicInput
+               name={'surname'}
+               type='text'
+               value={surname}
+               onChange={(e) => setSurname(e.target.value)}
+               required={true}
+               placeholder='Прізвище'
+            />
             <BasicInput
                name={'email'}
                type='email'
