@@ -22,20 +22,33 @@ import CheckoutReq, {
    IOrderInfo,
 } from '../../../http/checkout';
 import { CheckoutSuccess } from '../components/CheckoutSuccess';
+export enum DeliveryOptionsEnum {
+   NOVA_POST = 'У відділення Нової пошти',
+   SELF_DELIVERY = 'Самовивіз з магазину',
+}
+
+export enum PaymentOptionsEnum {
+   CARD_DETAILS = 'Онлайн оплата по реквізитах',
+   POSTPAID = 'Оплата при доставці (передоплата 100грн.)',
+}
 
 export const CheckoutPage: React.FC = () => {
    const dispatch = useAppDispatch();
-   const { isAuth } = useAppSelector((state) => state.userReducer);
+   const { isAuth, user } = useAppSelector((state) => state.userReducer);
    const { basket, totalCountOfShoesInBasket } = useAppSelector(
       (state) => state.basketReducer,
    );
    const [isCheckoutSuccess, setIsCheckoutSuccess] = useState(false);
    const [areaRef, setAreaRef] = useState<string>('');
    const [areas, setAreas] = useState<IArea[]>();
-   const [email, setEmail] = useState<string>();
-   const [phone, setPhone] = useState<string>();
-   const [name, setName] = useState<string>();
-   const [surname, setSurname] = useState<string>();
+   const [email, setEmail] = useState<string>(user ? user.email : '');
+   const [phone, setPhone] = useState<string>('');
+   const [deliveryActiveOption, setDeliveryActiveOption] =
+      useState<DeliveryOptionsEnum>(DeliveryOptionsEnum.NOVA_POST);
+   const [paymentActiveOption, setPaymentActiveOption] =
+      useState<PaymentOptionsEnum>(PaymentOptionsEnum.CARD_DETAILS);
+   const [name, setName] = useState<string>('');
+   const [surname, setSurname] = useState<string>('');
    const [totalPrice, setTotalPrice] = useState<number>(0);
    const [settlementRef, setSettlementRef] = useState<string>('');
    const [warehouse, setWarehouse] = useState<IWarehouse>();
@@ -88,15 +101,20 @@ export const CheckoutPage: React.FC = () => {
    };
 
    const handleClickCheckoutBtn = () => {
+      if (!name || !surname || !email || !phone) {
+         return;
+      }
       const customerInfo: ICustomerInfo = {
          name: name!,
          surname: surname!,
          email: email!,
          phone: phone!,
-         SettlementAreaDescription: warehouse!.SettlementAreaDescription,
-         SettlementDescription: warehouse!.SettlementDescription,
-         SettlementTypeDescription: warehouse!.SettlementTypeDescription,
-         Description: warehouse!.Description,
+         PaymentOption: paymentActiveOption,
+         DeliveryOption: deliveryActiveOption,
+         SettlementAreaDescription: warehouse?.SettlementAreaDescription,
+         SettlementDescription: warehouse?.SettlementDescription,
+         SettlementTypeDescription: warehouse?.SettlementTypeDescription,
+         Description: warehouse?.Description,
       };
       const basketOrder: IBasketCheckoutItem[] = basket.map((item) => {
          return {
@@ -230,78 +248,181 @@ export const CheckoutPage: React.FC = () => {
                            </div>
                            <div className='checkout__customer-info__container'>
                               <div className='checkout__customer-info__header'>
-                                 <p>Адреса доставки</p>
+                                 <p>Спосіб оплати</p>
                               </div>
-                              <div className='checkout__customer-info__input-container'>
-                                 <label>
-                                    <span>Область</span>
-                                    <Select
-                                       name='area'
-                                       onChange={(e) => {
-                                          setAreaRef(e!.value);
-                                       }}
-                                       placeholder=''
-                                       required={true}
-                                       options={areas?.map((el) => {
-                                          return {
-                                             value: el.Ref,
-                                             label:
-                                                el.Description +
-                                                ' ' +
-                                                el.RegionType,
-                                          };
-                                       })}
-                                    />
-                                 </label>
-                              </div>
-                              <div className='checkout__customer-info__input-container'>
-                                 <label>
-                                    <span>Місто</span>
-                                    {areaRef.length <= 0 ? (
-                                       <Select
-                                          name={'settlement'}
-                                          isDisabled={areaRef.length <= 0}
-                                          placeholder=''
-                                       />
-                                    ) : (
-                                       <ReactSelectAsync
-                                          name={'settlement'}
-                                          required={true}
-                                          cacheOptions
-                                          defaultOptions
-                                          onChange={(e) =>
-                                             setSettlementRef(e!.value)
+                              <div className='checkout__customer-info__radio-container'>
+                                 <div className='checkout__customer-info__radio'>
+                                    <label>
+                                       <input
+                                          type='radio'
+                                          id='card-details'
+                                          name='payment'
+                                          checked={
+                                             PaymentOptionsEnum.CARD_DETAILS ===
+                                             paymentActiveOption
                                           }
-                                          placeholder='Введіть назву населеного пункту'
-                                          loadOptions={promiseCityOptions}
+                                          onChange={() =>
+                                             setPaymentActiveOption(
+                                                PaymentOptionsEnum.CARD_DETAILS,
+                                             )
+                                          }
                                        />
-                                    )}
-                                 </label>
+                                       <span className='label-text'>
+                                          {PaymentOptionsEnum.CARD_DETAILS}
+                                       </span>
+                                    </label>
+                                 </div>
+                                 <div className='checkout__customer-info__radio'>
+                                    <label>
+                                       <input
+                                          type='radio'
+                                          id='postpaid'
+                                          name='payment'
+                                          checked={
+                                             PaymentOptionsEnum.POSTPAID ===
+                                             paymentActiveOption
+                                          }
+                                          onChange={() =>
+                                             setPaymentActiveOption(
+                                                PaymentOptionsEnum.POSTPAID,
+                                             )
+                                          }
+                                       />
+                                       <span className='label-text'>
+                                          {PaymentOptionsEnum.POSTPAID}
+                                       </span>
+                                    </label>
+                                 </div>
                               </div>
-                              <div className='checkout__customer-info__input-container'>
-                                 <label>
-                                    <span>Відділення</span>
-                                    {settlementRef.length <= 0 ? (
-                                       <Select
-                                          name={'warehouse'}
-                                          isDisabled={settlementRef.length <= 0}
-                                          placeholder=''
-                                       />
-                                    ) : (
-                                       <ReactSelectAsync
-                                          name={'warehouse'}
-                                          cacheOptions
-                                          defaultOptions
-                                          required={true}
-                                          onChange={(e) => {
-                                             setWarehouse(e!.data);
-                                          }}
-                                          placeholder='Введіть номер відділення'
-                                          loadOptions={promiseWarehouseOptions}
-                                       />
-                                    )}
-                                 </label>
+                              <div className='checkout__customer-info__header'>
+                                 <p>Спосіб доставки</p>
                               </div>
+                              <div className='checkout__customer-info__radio-container'>
+                                 <div className='checkout__customer-info__radio'>
+                                    <label>
+                                       <input
+                                          type='radio'
+                                          id='post'
+                                          name='delivery'
+                                          checked={
+                                             DeliveryOptionsEnum.NOVA_POST ===
+                                             deliveryActiveOption
+                                          }
+                                          onChange={() =>
+                                             setDeliveryActiveOption(
+                                                DeliveryOptionsEnum.NOVA_POST,
+                                             )
+                                          }
+                                       />
+                                       <span className='label-text'>
+                                          {DeliveryOptionsEnum.NOVA_POST}
+                                       </span>
+                                    </label>
+                                 </div>
+                                 <div className='checkout__customer-info__radio'>
+                                    <label>
+                                       <input
+                                          type='radio'
+                                          id='self-delivery'
+                                          name='delivery'
+                                          checked={
+                                             DeliveryOptionsEnum.SELF_DELIVERY ===
+                                             deliveryActiveOption
+                                          }
+                                          onChange={() =>
+                                             setDeliveryActiveOption(
+                                                DeliveryOptionsEnum.SELF_DELIVERY,
+                                             )
+                                          }
+                                       />
+                                       <span className='label-text'>
+                                          {DeliveryOptionsEnum.SELF_DELIVERY}
+                                       </span>
+                                    </label>
+                                 </div>
+                              </div>
+                              {deliveryActiveOption ===
+                                 DeliveryOptionsEnum.NOVA_POST && (
+                                 <>
+                                    <div className='checkout__customer-info__header'>
+                                       <p>Адреса доставки</p>
+                                    </div>
+                                    <div className='checkout__customer-info__input-container'>
+                                       <label>
+                                          <span>Область</span>
+                                          <Select
+                                             name='area'
+                                             onChange={(e) => {
+                                                setAreaRef(e!.value);
+                                             }}
+                                             placeholder=''
+                                             required={true}
+                                             options={areas?.map((el) => {
+                                                return {
+                                                   value: el.Ref,
+                                                   label:
+                                                      el.Description +
+                                                      ' ' +
+                                                      el.RegionType,
+                                                };
+                                             })}
+                                          />
+                                       </label>
+                                    </div>
+                                    <div className='checkout__customer-info__input-container'>
+                                       <label>
+                                          <span>Місто</span>
+                                          {areaRef.length <= 0 ? (
+                                             <Select
+                                                name={'settlement'}
+                                                isDisabled={areaRef.length <= 0}
+                                                placeholder=''
+                                             />
+                                          ) : (
+                                             <ReactSelectAsync
+                                                name={'settlement'}
+                                                required={true}
+                                                cacheOptions
+                                                defaultOptions
+                                                onChange={(e) =>
+                                                   setSettlementRef(e!.value)
+                                                }
+                                                placeholder='Введіть назву населеного пункту'
+                                                loadOptions={promiseCityOptions}
+                                             />
+                                          )}
+                                       </label>
+                                    </div>
+                                    <div className='checkout__customer-info__input-container'>
+                                       <label>
+                                          <span>Відділення</span>
+                                          {settlementRef.length <= 0 ? (
+                                             <Select
+                                                name={'warehouse'}
+                                                isDisabled={
+                                                   settlementRef.length <= 0
+                                                }
+                                                placeholder=''
+                                             />
+                                          ) : (
+                                             <ReactSelectAsync
+                                                name={'warehouse'}
+                                                cacheOptions
+                                                defaultOptions
+                                                required={true}
+                                                onChange={(e) => {
+                                                   setWarehouse(e!.data);
+                                                }}
+                                                placeholder='Введіть номер відділення'
+                                                loadOptions={
+                                                   promiseWarehouseOptions
+                                                }
+                                             />
+                                          )}
+                                       </label>
+                                    </div>
+                                 </>
+                              )}
                               <div className='checkout__submit-btn'>
                                  <Button
                                     buttonClass={ButtonClassEnum.BUY}
