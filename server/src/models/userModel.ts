@@ -9,6 +9,8 @@ export enum Role {
 interface userAttributes {
    id: number;
    email: string;
+   name: string;
+   surname: string;
    password: string;
    role: Role;
    isActivated: boolean;
@@ -27,6 +29,8 @@ interface userInstance
 const User = sequelize.define<userInstance>('user', {
    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
    email: { type: DataTypes.STRING, unique: true },
+   name: { type: DataTypes.STRING },
+   surname: { type: DataTypes.STRING },
    password: { type: DataTypes.STRING },
    role: { type: DataTypes.STRING, defaultValue: 'USER' },
    isActivated: { type: DataTypes.BOOLEAN, defaultValue: false },

@@ -15,6 +15,8 @@ interface ILoginUserProps {
 
 interface ISignUpUserProps {
    email: string;
+   surname: string;
+   name: string;
    password: string;
 }
 

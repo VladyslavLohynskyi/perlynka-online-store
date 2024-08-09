@@ -8,6 +8,8 @@ import ForgotToken from '../models/forgotTokenModel';
 export interface IJwtPayload {
    id: number;
    email: string;
+   name: string;
+   surname: string;
    role: string;
 }
 class TokenService {
