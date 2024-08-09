@@ -27,6 +27,11 @@ export enum DeliveryOptionsEnum {
    SELF_DELIVERY = 'Самовивіз з магазину',
 }
 
+export enum PaymentOptionsEnum {
+   CARD_DETAILS = 'Онлайн оплата по реквізитах',
+   POSTPAID = 'Оплата при доставці (передоплата 100грн.)',
+}
+
 export const CheckoutPage: React.FC = () => {
    const dispatch = useAppDispatch();
    const { isAuth, user } = useAppSelector((state) => state.userReducer);
@@ -40,6 +45,8 @@ export const CheckoutPage: React.FC = () => {
    const [phone, setPhone] = useState<string>('');
    const [deliveryActiveOption, setDeliveryActiveOption] =
       useState<DeliveryOptionsEnum>(DeliveryOptionsEnum.NOVA_POST);
+   const [paymentActiveOption, setPaymentActiveOption] =
+      useState<PaymentOptionsEnum>(PaymentOptionsEnum.CARD_DETAILS);
    const [name, setName] = useState<string>('');
    const [surname, setSurname] = useState<string>('');
    const [totalPrice, setTotalPrice] = useState<number>(0);
@@ -239,6 +246,53 @@ export const CheckoutPage: React.FC = () => {
                               </div>
                            </div>
                            <div className='checkout__customer-info__container'>
+                              <div className='checkout__customer-info__header'>
+                                 <p>Спосіб оплати</p>
+                              </div>
+                              <div className='checkout__customer-info__radio-container'>
+                                 <div className='checkout__customer-info__radio'>
+                                    <label>
+                                       <input
+                                          type='radio'
+                                          id='card-details'
+                                          name='payment'
+                                          checked={
+                                             PaymentOptionsEnum.CARD_DETAILS ===
+                                             paymentActiveOption
+                                          }
+                                          onChange={() =>
+                                             setPaymentActiveOption(
+                                                PaymentOptionsEnum.CARD_DETAILS,
+                                             )
+                                          }
+                                       />
+                                       <span className='label-text'>
+                                          {PaymentOptionsEnum.CARD_DETAILS}
+                                       </span>
+                                    </label>
+                                 </div>
+                                 <div className='checkout__customer-info__radio'>
+                                    <label>
+                                       <input
+                                          type='radio'
+                                          id='postpaid'
+                                          name='payment'
+                                          checked={
+                                             PaymentOptionsEnum.POSTPAID ===
+                                             paymentActiveOption
+                                          }
+                                          onChange={() =>
+                                             setPaymentActiveOption(
+                                                PaymentOptionsEnum.POSTPAID,
+                                             )
+                                          }
+                                       />
+                                       <span className='label-text'>
+                                          {PaymentOptionsEnum.POSTPAID}
+                                       </span>
+                                    </label>
+                                 </div>
+                              </div>
                               <div className='checkout__customer-info__header'>
                                  <p>Спосіб доставки</p>
                               </div>
