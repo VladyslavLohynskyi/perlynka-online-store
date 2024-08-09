@@ -9,9 +9,17 @@ import tokenService from '../services/tokenService';
 import ApiError from '../exceptions/ApiError';
 import ForgotToken from '../models/forgotTokenModel';
 
-interface userRegistrationLoginRequest extends Request {
+interface userLoginRequest extends Request {
    body: {
       email: string;
+      password: string;
+   };
+}
+interface userRegistrationRequest extends Request {
+   body: {
+      email: string;
+      name: string;
+      surname: string;
       password: string;
    };
 }
@@ -50,12 +58,12 @@ interface IChangeRole extends Request {
 
 class userController {
    async registration(
-      req: userRegistrationLoginRequest,
+      req: userRegistrationRequest,
       res: Response,
       next: NextFunction,
    ) {
       try {
-         const { email, password } = req.body;
+         const { email, password, name, surname } = req.body;
          if (!email || !password) {
             return next(
                ApiError.badRequest('Неправильно введенно пароль або email'),
@@ -75,6 +83,8 @@ class userController {
                   candidate.activationLink,
             );
             const tokens = tokenService.generateTokens({
+               name,
+               surname,
                id: candidate.id,
                email,
                role: candidate.role,
@@ -95,6 +105,8 @@ class userController {
          const users = await User.findAll();
          const user = await User.create({
             email,
+            name,
+            surname,
             role: users.length ? Role.USER : Role.ADMIN,
             password: hashPassword,
             isActivated: false,
@@ -108,6 +120,8 @@ class userController {
          const tokens = tokenService.generateTokens({
             id: user.id,
             email,
+            surname,
+            name,
             role: user.role,
          });
          await tokenService.saveToken(user.id, tokens.refreshToken);
@@ -127,11 +141,7 @@ class userController {
       }
    }
 
-   async login(
-      req: userRegistrationLoginRequest,
-      res: Response,
-      next: NextFunction,
-   ) {
+   async login(req: userLoginRequest, res: Response, next: NextFunction) {
       try {
          const { email, password } = req.body;
          const user = await User.findOne({ where: { email } });
@@ -151,6 +161,8 @@ class userController {
          }
          const tokens = tokenService.generateTokens({
             id: user.id,
+            name: user.name,
+            surname: user.surname,
             email: user.email,
             role: user.role,
          });
@@ -278,6 +290,8 @@ class userController {
 
          const tokens = tokenService.generateTokens({
             id: user!.id,
+            name: user!.name,
+            surname: user!.surname,
             email: user!.email,
             role: user!.role,
          });
