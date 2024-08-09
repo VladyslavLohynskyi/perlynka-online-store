@@ -25,14 +25,14 @@ import { CheckoutSuccess } from '../components/CheckoutSuccess';
 
 export const CheckoutPage: React.FC = () => {
    const dispatch = useAppDispatch();
-   const { isAuth } = useAppSelector((state) => state.userReducer);
+   const { isAuth, user } = useAppSelector((state) => state.userReducer);
    const { basket, totalCountOfShoesInBasket } = useAppSelector(
       (state) => state.basketReducer,
    );
    const [isCheckoutSuccess, setIsCheckoutSuccess] = useState(false);
    const [areaRef, setAreaRef] = useState<string>('');
    const [areas, setAreas] = useState<IArea[]>();
-   const [email, setEmail] = useState<string>();
+   const [email, setEmail] = useState<string>(user ? user.email : '');
    const [phone, setPhone] = useState<string>();
    const [name, setName] = useState<string>();
    const [surname, setSurname] = useState<string>();
