@@ -1,4 +1,5 @@
 import { $host } from '.';
+import { DeliveryOptionsEnum } from '../modules/checkout/pages';
 import { ISizeCategory } from '../store/reducers/shoes/ShoesSlice';
 
 export interface ICustomerInfo {
@@ -6,10 +7,11 @@ export interface ICustomerInfo {
    name: string;
    surname: string;
    phone: string;
-   Description: string;
-   SettlementAreaDescription: string;
-   SettlementDescription: string;
-   SettlementTypeDescription: string;
+   DeliveryOption: DeliveryOptionsEnum;
+   Description?: string;
+   SettlementAreaDescription?: string;
+   SettlementDescription?: string;
+   SettlementTypeDescription?: string;
 }
 export interface IBasketCheckoutItem {
    modelId: number;

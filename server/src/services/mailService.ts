@@ -9,10 +9,16 @@ export interface ICustomerInfo {
    name: string;
    surname: string;
    phone: string;
+   DeliveryOption: DeliveryOptionsEnum;
    Description: string;
    SettlementAreaDescription: string;
    SettlementDescription: string;
    SettlementTypeDescription: string;
+}
+
+enum DeliveryOptionsEnum {
+   NOVA_POST = 'У відділення Нової пошти',
+   SELF_DELIVERY = 'Самовивіз з магазину',
 }
 export interface IBasketCheckoutItem {
    modelId: number;
@@ -98,11 +104,13 @@ class MailService {
 
       const deliveryInfoHTML = `
          <h3>Деталі замовлення:</h3>
-         <p>Вид доставки: Відділення Нової Пошти</p>
+         <p>Cпосіб доставки: ${customerInfo.DeliveryOption}</p>
          <p>Спосіб оплати:	Післяплата</p>
-         <p>Адреса доставки:	${customerInfo.SettlementAreaDescription}, ${
-         customerInfo.SettlementTypeDescription
-      }. ${customerInfo.SettlementDescription}, ${customerInfo.Description}</p>
+         ${
+            customerInfo.DeliveryOption === DeliveryOptionsEnum.NOVA_POST
+               ? `<p>Адреса доставки:	${customerInfo.SettlementAreaDescription} обл., ${customerInfo.SettlementTypeDescription}. ${customerInfo.SettlementDescription}, ${customerInfo.Description}</p>`
+               : ''
+         }
          <table style="border:1.5px solid gray;">
             <thead>
                <tr>

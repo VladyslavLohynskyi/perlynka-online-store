@@ -22,7 +22,7 @@ import CheckoutReq, {
    IOrderInfo,
 } from '../../../http/checkout';
 import { CheckoutSuccess } from '../components/CheckoutSuccess';
-enum DeliveryOptionsEnum {
+export enum DeliveryOptionsEnum {
    NOVA_POST = 'У відділення Нової пошти',
    SELF_DELIVERY = 'Самовивіз з магазину',
 }
@@ -37,11 +37,11 @@ export const CheckoutPage: React.FC = () => {
    const [areaRef, setAreaRef] = useState<string>('');
    const [areas, setAreas] = useState<IArea[]>();
    const [email, setEmail] = useState<string>(user ? user.email : '');
-   const [phone, setPhone] = useState<string>();
+   const [phone, setPhone] = useState<string>('');
    const [deliveryActiveOption, setDeliveryActiveOption] =
       useState<DeliveryOptionsEnum>(DeliveryOptionsEnum.NOVA_POST);
-   const [name, setName] = useState<string>();
-   const [surname, setSurname] = useState<string>();
+   const [name, setName] = useState<string>('');
+   const [surname, setSurname] = useState<string>('');
    const [totalPrice, setTotalPrice] = useState<number>(0);
    const [settlementRef, setSettlementRef] = useState<string>('');
    const [warehouse, setWarehouse] = useState<IWarehouse>();
@@ -94,15 +94,19 @@ export const CheckoutPage: React.FC = () => {
    };
 
    const handleClickCheckoutBtn = () => {
+      if (!name || !surname || !email || !phone) {
+         return;
+      }
       const customerInfo: ICustomerInfo = {
          name: name!,
          surname: surname!,
          email: email!,
          phone: phone!,
-         SettlementAreaDescription: warehouse!.SettlementAreaDescription,
-         SettlementDescription: warehouse!.SettlementDescription,
-         SettlementTypeDescription: warehouse!.SettlementTypeDescription,
-         Description: warehouse!.Description,
+         DeliveryOption: deliveryActiveOption,
+         SettlementAreaDescription: warehouse?.SettlementAreaDescription,
+         SettlementDescription: warehouse?.SettlementDescription,
+         SettlementTypeDescription: warehouse?.SettlementTypeDescription,
+         Description: warehouse?.Description,
       };
       const basketOrder: IBasketCheckoutItem[] = basket.map((item) => {
          return {
