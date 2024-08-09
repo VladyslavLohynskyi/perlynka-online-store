@@ -249,7 +249,7 @@ export const CheckoutPage: React.FC = () => {
                                              DeliveryOptionsEnum.NOVA_POST ===
                                              deliveryActiveOption
                                           }
-                                          onClick={() =>
+                                          onChange={() =>
                                              setDeliveryActiveOption(
                                                 DeliveryOptionsEnum.NOVA_POST,
                                              )
@@ -270,7 +270,7 @@ export const CheckoutPage: React.FC = () => {
                                              DeliveryOptionsEnum.SELF_DELIVERY ===
                                              deliveryActiveOption
                                           }
-                                          onClick={() =>
+                                          onChange={() =>
                                              setDeliveryActiveOption(
                                                 DeliveryOptionsEnum.SELF_DELIVERY,
                                              )
@@ -282,79 +282,88 @@ export const CheckoutPage: React.FC = () => {
                                     </label>
                                  </div>
                               </div>
-                              <div className='checkout__customer-info__header'>
-                                 <p>Адреса доставки</p>
-                              </div>
-                              <div className='checkout__customer-info__input-container'>
-                                 <label>
-                                    <span>Область</span>
-                                    <Select
-                                       name='area'
-                                       onChange={(e) => {
-                                          setAreaRef(e!.value);
-                                       }}
-                                       placeholder=''
-                                       required={true}
-                                       options={areas?.map((el) => {
-                                          return {
-                                             value: el.Ref,
-                                             label:
-                                                el.Description +
-                                                ' ' +
-                                                el.RegionType,
-                                          };
-                                       })}
-                                    />
-                                 </label>
-                              </div>
-                              <div className='checkout__customer-info__input-container'>
-                                 <label>
-                                    <span>Місто</span>
-                                    {areaRef.length <= 0 ? (
-                                       <Select
-                                          name={'settlement'}
-                                          isDisabled={areaRef.length <= 0}
-                                          placeholder=''
-                                       />
-                                    ) : (
-                                       <ReactSelectAsync
-                                          name={'settlement'}
-                                          required={true}
-                                          cacheOptions
-                                          defaultOptions
-                                          onChange={(e) =>
-                                             setSettlementRef(e!.value)
-                                          }
-                                          placeholder='Введіть назву населеного пункту'
-                                          loadOptions={promiseCityOptions}
-                                       />
-                                    )}
-                                 </label>
-                              </div>
-                              <div className='checkout__customer-info__input-container'>
-                                 <label>
-                                    <span>Відділення</span>
-                                    {settlementRef.length <= 0 ? (
-                                       <Select
-                                          name={'warehouse'}
-                                          isDisabled={settlementRef.length <= 0}
-                                          placeholder=''
-                                       />
-                                    ) : (
-                                       <ReactSelectAsync
-                                          name={'warehouse'}
-                                          cacheOptions
-                                          defaultOptions
-                                          required={true}
-                                          onChange={(e) => {
-                                             setWarehouse(e!.data);
-                                          }}
-                                          placeholder='Введіть номер відділення'
-                                          loadOptions={promiseWarehouseOptions}
-                                       />
-                                    )}
-                                 </label>
-                              </div>
+                              {deliveryActiveOption ===
+                                 DeliveryOptionsEnum.NOVA_POST && (
+                                 <>
+                                    <div className='checkout__customer-info__header'>
+                                       <p>Адреса доставки</p>
+                                    </div>
+                                    <div className='checkout__customer-info__input-container'>
+                                       <label>
+                                          <span>Область</span>
+                                          <Select
+                                             name='area'
+                                             onChange={(e) => {
+                                                setAreaRef(e!.value);
+                                             }}
+                                             placeholder=''
+                                             required={true}
+                                             options={areas?.map((el) => {
+                                                return {
+                                                   value: el.Ref,
+                                                   label:
+                                                      el.Description +
+                                                      ' ' +
+                                                      el.RegionType,
+                                                };
+                                             })}
+                                          />
+                                       </label>
+                                    </div>
+                                    <div className='checkout__customer-info__input-container'>
+                                       <label>
+                                          <span>Місто</span>
+                                          {areaRef.length <= 0 ? (
+                                             <Select
+                                                name={'settlement'}
+                                                isDisabled={areaRef.length <= 0}
+                                                placeholder=''
+                                             />
+                                          ) : (
+                                             <ReactSelectAsync
+                                                name={'settlement'}
+                                                required={true}
+                                                cacheOptions
+                                                defaultOptions
+                                                onChange={(e) =>
+                                                   setSettlementRef(e!.value)
+                                                }
+                                                placeholder='Введіть назву населеного пункту'
+                                                loadOptions={promiseCityOptions}
+                                             />
+                                          )}
+                                       </label>
+                                    </div>
+                                    <div className='checkout__customer-info__input-container'>
+                                       <label>
+                                          <span>Відділення</span>
+                                          {settlementRef.length <= 0 ? (
+                                             <Select
+                                                name={'warehouse'}
+                                                isDisabled={
+                                                   settlementRef.length <= 0
+                                                }
+                                                placeholder=''
+                                             />
+                                          ) : (
+                                             <ReactSelectAsync
+                                                name={'warehouse'}
+                                                cacheOptions
+                                                defaultOptions
+                                                required={true}
+                                                onChange={(e) => {
+                                                   setWarehouse(e!.data);
+                                                }}
+                                                placeholder='Введіть номер відділення'
+                                                loadOptions={
+                                                   promiseWarehouseOptions
+                                                }
+                                             />
+                                          )}
+                                       </label>
+                                    </div>
+                                 </>
+                              )}
                               <div className='checkout__submit-btn'>
                                  <Button
                                     buttonClass={ButtonClassEnum.BUY}
