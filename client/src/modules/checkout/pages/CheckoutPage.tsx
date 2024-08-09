@@ -22,6 +22,10 @@ import CheckoutReq, {
    IOrderInfo,
 } from '../../../http/checkout';
 import { CheckoutSuccess } from '../components/CheckoutSuccess';
+enum DeliveryOptionsEnum {
+   NOVA_POST = 'У відділення Нової пошти',
+   SELF_DELIVERY = 'Самовивіз з магазину',
+}
 
 export const CheckoutPage: React.FC = () => {
    const dispatch = useAppDispatch();
@@ -34,6 +38,8 @@ export const CheckoutPage: React.FC = () => {
    const [areas, setAreas] = useState<IArea[]>();
    const [email, setEmail] = useState<string>(user ? user.email : '');
    const [phone, setPhone] = useState<string>();
+   const [deliveryActiveOption, setDeliveryActiveOption] =
+      useState<DeliveryOptionsEnum>(DeliveryOptionsEnum.NOVA_POST);
    const [name, setName] = useState<string>();
    const [surname, setSurname] = useState<string>();
    const [totalPrice, setTotalPrice] = useState<number>(0);
@@ -229,6 +235,53 @@ export const CheckoutPage: React.FC = () => {
                               </div>
                            </div>
                            <div className='checkout__customer-info__container'>
+                              <div className='checkout__customer-info__header'>
+                                 <p>Спосіб доставки</p>
+                              </div>
+                              <div className='checkout__customer-info__radio-container'>
+                                 <div className='checkout__customer-info__radio'>
+                                    <label>
+                                       <input
+                                          type='radio'
+                                          id='post'
+                                          name='delivery'
+                                          checked={
+                                             DeliveryOptionsEnum.NOVA_POST ===
+                                             deliveryActiveOption
+                                          }
+                                          onClick={() =>
+                                             setDeliveryActiveOption(
+                                                DeliveryOptionsEnum.NOVA_POST,
+                                             )
+                                          }
+                                       />
+                                       <span className='label-text'>
+                                          {DeliveryOptionsEnum.NOVA_POST}
+                                       </span>
+                                    </label>
+                                 </div>
+                                 <div className='checkout__customer-info__radio'>
+                                    <label>
+                                       <input
+                                          type='radio'
+                                          id='self-delivery'
+                                          name='delivery'
+                                          checked={
+                                             DeliveryOptionsEnum.SELF_DELIVERY ===
+                                             deliveryActiveOption
+                                          }
+                                          onClick={() =>
+                                             setDeliveryActiveOption(
+                                                DeliveryOptionsEnum.SELF_DELIVERY,
+                                             )
+                                          }
+                                       />
+                                       <span className='label-text'>
+                                          {DeliveryOptionsEnum.SELF_DELIVERY}
+                                       </span>
+                                    </label>
+                                 </div>
+                              </div>
                               <div className='checkout__customer-info__header'>
                                  <p>Адреса доставки</p>
                               </div>

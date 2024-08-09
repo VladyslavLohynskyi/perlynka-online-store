@@ -96,6 +96,24 @@
             }
          }
       }
+      &__radio-container {
+         margin-top: 15px;
+      }
+      &__radio {
+         margin: 0 0 5px 15px;
+         & label {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            & input {
+               cursor: pointer;
+            }
+            & span {
+               line-height: 20px;
+               padding-left: 10px;
+            }
+         }
+      }
    }
 
    &__submit-btn {
