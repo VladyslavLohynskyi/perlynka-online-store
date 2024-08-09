@@ -164,6 +164,20 @@
       opacity: 0.9;
       padding: 4px;
    }
+
+   &--communication {
+      color: black;
+      border-color: black;
+      background-color: #fff;
+      border-radius: 0;
+      padding: 15px 0;
+
+      &:hover {
+         color: #fff;
+         border-color: black;
+         background-color: black;
+      }
+   }
 }
 
 .admin-modal-accept-btn {
