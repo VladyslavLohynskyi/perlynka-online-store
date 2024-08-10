@@ -8,8 +8,6 @@ import ForgotToken from '../models/forgotTokenModel';
 export interface IJwtPayload {
    id: number;
    email: string;
-   name: string;
-   surname: string;
    role: string;
 }
 class TokenService {
@@ -28,6 +26,7 @@ class TokenService {
       if (tokenData) {
          return Token.update({ refreshToken }, { where: { userId } });
       }
+
       const token = await Token.create({
          userId,
          refreshToken,

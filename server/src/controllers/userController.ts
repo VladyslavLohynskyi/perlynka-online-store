@@ -76,15 +76,17 @@ class userController {
             );
          }
          if (candidate && !candidate.isActivated) {
+            const hashPassword = await bcrypt.hash(password, 5);
+            const activationLink = uuidv4();
+            await User.update(
+               { name, surname, password: hashPassword, activationLink },
+               { where: { id: candidate.id } },
+            );
             await mailService.sendActivationMail(
                email,
-               process.env.API_URL +
-                  '/api/user/activate/' +
-                  candidate.activationLink,
+               process.env.API_URL + '/api/user/activate/' + activationLink,
             );
             const tokens = tokenService.generateTokens({
-               name,
-               surname,
                id: candidate.id,
                email,
                role: candidate.role,
@@ -120,8 +122,6 @@ class userController {
          const tokens = tokenService.generateTokens({
             id: user.id,
             email,
-            surname,
-            name,
             role: user.role,
          });
          await tokenService.saveToken(user.id, tokens.refreshToken);
@@ -161,8 +161,6 @@ class userController {
          }
          const tokens = tokenService.generateTokens({
             id: user.id,
-            name: user.name,
-            surname: user.surname,
             email: user.email,
             role: user.role,
          });
@@ -290,8 +288,6 @@ class userController {
 
          const tokens = tokenService.generateTokens({
             id: user!.id,
-            name: user!.name,
-            surname: user!.surname,
             email: user!.email,
             role: user!.role,
          });
