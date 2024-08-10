@@ -21,11 +21,16 @@ interface ISignUpUserProps {
 }
 
 export const registrationUser =
-   ({ email, password }: ISignUpUserProps) =>
+   ({ email, password, name, surname }: ISignUpUserProps) =>
    async (dispatch: AppDispatch) => {
       try {
          dispatch(userSlice.actions.userRegistration());
-         const data = await UserReq.registration(email, password);
+         const data = await UserReq.registration(
+            email,
+            password,
+            name,
+            surname,
+         );
          const user = jwt_decode<IUser>(data.token);
          dispatch(
             userSlice.actions.userRegistrationSuccess({
@@ -80,6 +85,23 @@ export const authUser = () => async (dispatch: AppDispatch) => {
    } catch (error) {
       if (axios.isAxiosError(error)) {
          dispatch(userSlice.actions.userAuthError(error.response?.data));
+      } else
+         dispatch(
+            userSlice.actions.userAuthError(
+               'Невідома помилка під час аунтефікації',
+            ),
+         );
+   }
+};
+
+export const getFullInfoOfUser = () => async (dispatch: AppDispatch) => {
+   try {
+      dispatch(userSlice.actions.userGetFullInfo());
+      const data = await UserReq.getUserFullInfo();
+      dispatch(userSlice.actions.userGetFullInfoSuccess(data.user));
+   } catch (error) {
+      if (axios.isAxiosError(error)) {
+         dispatch(userSlice.actions.userGetFullInfoError(error.response?.data));
       } else
          dispatch(
             userSlice.actions.userAuthError(

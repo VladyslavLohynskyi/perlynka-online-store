@@ -10,12 +10,19 @@ export interface IUserResponse {
 }
 
 export class UserReq {
-   registration = async (email: string, password: string) => {
+   registration = async (
+      email: string,
+      password: string,
+      name: string,
+      surname: string,
+   ) => {
       const { data } = await $host.post<{ token: string; message: string }>(
          '/user/registration',
          {
             email,
             password,
+            name,
+            surname,
          },
       );
       return data;
@@ -81,6 +88,10 @@ export class UserReq {
          token,
       });
    }
+   getUserFullInfo = async () => {
+      const { data } = await $authHost.get<IUserResponse>('/user/user-info');
+      return data;
+   };
 }
 
 export default new UserReq();

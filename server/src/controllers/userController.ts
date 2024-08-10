@@ -76,15 +76,17 @@ class userController {
             );
          }
          if (candidate && !candidate.isActivated) {
+            const hashPassword = await bcrypt.hash(password, 5);
+            const activationLink = uuidv4();
+            await User.update(
+               { name, surname, password: hashPassword, activationLink },
+               { where: { id: candidate.id } },
+            );
             await mailService.sendActivationMail(
                email,
-               process.env.API_URL +
-                  '/api/user/activate/' +
-                  candidate.activationLink,
+               process.env.API_URL + '/api/user/activate/' + activationLink,
             );
             const tokens = tokenService.generateTokens({
-               name,
-               surname,
                id: candidate.id,
                email,
                role: candidate.role,
@@ -120,8 +122,6 @@ class userController {
          const tokens = tokenService.generateTokens({
             id: user.id,
             email,
-            surname,
-            name,
             role: user.role,
          });
          await tokenService.saveToken(user.id, tokens.refreshToken);
@@ -161,8 +161,6 @@ class userController {
          }
          const tokens = tokenService.generateTokens({
             id: user.id,
-            name: user.name,
-            surname: user.surname,
             email: user.email,
             role: user.role,
          });
@@ -192,6 +190,28 @@ class userController {
          return next(
             ApiError.internalServer(
                'Невідома помилка при отримані ролі користувача',
+            ),
+         );
+      }
+   }
+
+   async getUserByJWT(req: Request, res: Response, next: NextFunction) {
+      try {
+         const { refreshToken } = req.cookies;
+         if (!refreshToken) {
+            return next(ApiError.Unauthorized('Не авторизований користувач'));
+         }
+         const userData = await tokenService.validateRefreshToken(refreshToken);
+         const tokenFromDB = await tokenService.findToken(refreshToken);
+         if (!userData || !tokenFromDB) {
+            return next(ApiError.Unauthorized('Не авторизований користувач'));
+         }
+         const user = await User.findOne({ where: { id: userData.id } });
+         return res.json({ message: 'Користувача знайденно', user });
+      } catch (error) {
+         return next(
+            ApiError.internalServer(
+               'Невідома помилка при отримані користувача',
             ),
          );
       }
@@ -290,8 +310,6 @@ class userController {
 
          const tokens = tokenService.generateTokens({
             id: user!.id,
-            name: user!.name,
-            surname: user!.surname,
             email: user!.email,
             role: user!.role,
          });

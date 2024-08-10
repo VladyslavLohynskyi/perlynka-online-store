@@ -17,3 +17,4 @@ userRouter.get(
    userController.checkForgotToken,
 );
 userRouter.post('/forgot-password/change', userController.forgotPasswordChange);
+userRouter.get('/user-info', authMiddleware, userController.getUserByJWT);

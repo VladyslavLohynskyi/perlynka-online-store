@@ -68,93 +68,10 @@
 
       grid-template-columns: 1fr;
    }
-
-   &__customer-info {
-      &__container {
-         width: 100%;
-      }
-
-      &__header {
-         background-color: #f5f5f5;
-         border-bottom: 1px solid var(--horizontal-line-color);
-         font-size: 14px;
-         font-weight: 400;
-         padding: 10px 15px;
-      }
-
-      &__input-container {
-         margin-top: 10px;
-         width: 100%;
-         & label {
-            padding: 5px;
-            font-size: 12px;
-            display: flex;
-            flex-direction: column;
-
-            & span {
-               cursor: pointer;
-            }
-         }
-      }
-      &__radio-container {
-         margin-top: 15px;
-         margin-bottom: 15px;
-      }
-      &__radio {
-         margin: 0 0 5px 15px;
-         & label {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            & input {
-               cursor: pointer;
-            }
-            & span {
-               line-height: 20px;
-               padding-left: 10px;
-            }
-         }
-      }
-   }
-
-   &__submit-btn {
-      display: flex;
-      width: 100%;
-      justify-content: flex-end;
-      & button {
-         margin-top: 15px;
-         margin-right: 5px;
-         height: 48px;
-         width: 200px;
-      }
-   }
 }
-@media #{$tablet-small} {
-   .checkout {
-      &__customer-info {
-         &__input-container {
-            & label {
-               display: grid;
-               grid-template-columns: 1fr 400px;
 
-               & span {
-                  align-self: center;
-               }
-            }
-         }
-      }
-   }
-}
 @media #{$tablet-middle} {
    .checkout {
-      &__customer-info {
-         &__input-container {
-            & label {
-               display: grid;
-               grid-template-columns: 1fr 2fr;
-            }
-         }
-      }
       &__names-columns-photo {
          display: block;
       }
