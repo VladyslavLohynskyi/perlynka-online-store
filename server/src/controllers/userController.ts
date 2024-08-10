@@ -195,6 +195,28 @@ class userController {
       }
    }
 
+   async getUserByJWT(req: Request, res: Response, next: NextFunction) {
+      try {
+         const { refreshToken } = req.cookies;
+         if (!refreshToken) {
+            return next(ApiError.Unauthorized('Не авторизований користувач'));
+         }
+         const userData = await tokenService.validateRefreshToken(refreshToken);
+         const tokenFromDB = await tokenService.findToken(refreshToken);
+         if (!userData || !tokenFromDB) {
+            return next(ApiError.Unauthorized('Не авторизований користувач'));
+         }
+         const user = await User.findOne({ where: { id: userData.id } });
+         return res.json({ message: 'Користувача знайденно', user });
+      } catch (error) {
+         return next(
+            ApiError.internalServer(
+               'Невідома помилка при отримані користувача',
+            ),
+         );
+      }
+   }
+
    async getUserByEmail(
       req: IGetUserByEmail,
       res: Response,
