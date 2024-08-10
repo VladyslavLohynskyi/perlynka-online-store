@@ -4,6 +4,7 @@ interface IUserState {
    isAuth: boolean;
    user: IUser | null;
    isLoading: boolean;
+   isLoadingFullUserInfo: boolean;
    error: string;
    message: string;
 }
@@ -20,15 +21,16 @@ export enum Role {
 export interface IUser {
    id: number;
    email: string;
-   surname: string;
-   name: string;
    role: Role;
+   name?: string;
+   surname?: string;
 }
 
 const initialState: IUserState = {
    isAuth: false,
    user: null,
    isLoading: true,
+   isLoadingFullUserInfo: false,
    error: '',
    message: '',
 };
@@ -56,7 +58,6 @@ export const userSlice = createSlice({
          state.isLoading = false;
          state.error = action.payload;
       },
-
       userLogin(state) {
          state.isLoading = true;
          state.error = '';
@@ -88,7 +89,20 @@ export const userSlice = createSlice({
          state.user = null;
          state.isAuth = false;
       },
-
+      userGetFullInfo(state) {
+         state.isLoadingFullUserInfo = true;
+         state.error = '';
+         state.message = '';
+      },
+      userGetFullInfoSuccess(state, action: PayloadAction<IUser>) {
+         state.isLoadingFullUserInfo = false;
+         state.user = action.payload;
+      },
+      userGetFullInfoError(state, action: PayloadAction<string>) {
+         state.isLoadingFullUserInfo = false;
+         state.user = null;
+         state.isAuth = false;
+      },
       userClearError(state) {
          state.error = '';
       },
