@@ -6,6 +6,8 @@ import { BasketPage } from '../basket/pages';
 import { CheckoutPage } from '../checkout/pages';
 import Contact from '../contact/pages/Contact';
 import PaymentAndDelivery from '../PaymentAndDelivery/pages/PaymentAndDelivery';
+import ReturnAndExchange from '../returnAndExchange/pages/ReturnAndExchange';
+
 import { ShoesPage } from '../shoes/pages';
 import { Shop } from '../shop/pages';
 interface IRoutes {
@@ -40,6 +42,10 @@ export const authRoutes: IRoutes[] = [
    {
       path: RoutesEnum.PAYMENT_AND_DELIVERY,
       Component: PaymentAndDelivery,
+   },
+   {
+      path: RoutesEnum.RETURN_AND_EXCHANGE,
+      Component: ReturnAndExchange,
    },
 ];
 
@@ -84,6 +90,10 @@ export const publicRoutes: IRoutes[] = [
    {
       path: RoutesEnum.PAYMENT_AND_DELIVERY,
       Component: PaymentAndDelivery,
+   },
+   {
+      path: RoutesEnum.RETURN_AND_EXCHANGE,
+      Component: ReturnAndExchange,
    },
 ];
 
