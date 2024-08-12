@@ -29,15 +29,10 @@
          text-align: -webkit-match-parent;
          unicode-bidi: isolate;
          list-style: none;
-         list-style-type: circle;
+         list-style-type: disc;
          font-size: 14px;
          margin-bottom: 10px;
          line-height: 22px;
-
-         &::marker {
-            color: black;
-            background-color: black;
-         }
       }
    }
 }
