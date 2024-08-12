@@ -9,8 +9,11 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
+import { RoutesEnum } from '../../../utils/constants';
 
 export const Footer: React.FC = () => {
+   const navigate = useNavigate();
    return (
       <footer className='footer'>
          <div className='footer__container'>
@@ -28,7 +31,12 @@ export const Footer: React.FC = () => {
                <FooterInfoItem text='Про нас' onClick={() => {}} />
                <FooterInfoItem text='Оплата і доставка' onClick={() => {}} />
                <FooterInfoItem text='Повернення та обмін' onClick={() => {}} />
-               <FooterInfoItem text='Контакти' onClick={() => {}} />
+               <FooterInfoItem
+                  text='Контакти'
+                  onClick={() => {
+                     navigate(RoutesEnum.CONTACT);
+                  }}
+               />
             </div>
 
             <div className='footer__contact-container'>

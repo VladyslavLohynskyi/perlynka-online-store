@@ -1,0 +1,16 @@
+@import '../../../../breakpoints.scss';
+
+.map {
+   &__container {
+      height: 350px;
+      width: 100%;
+   }
+}
+
+@media #{$tablet-middle} {
+   .map {
+      &__container {
+         height: 400px;
+      }
+   }
+}
