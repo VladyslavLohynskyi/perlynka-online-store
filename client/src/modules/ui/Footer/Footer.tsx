@@ -35,7 +35,12 @@ export const Footer: React.FC = () => {
                      navigate(RoutesEnum.PAYMENT_AND_DELIVERY);
                   }}
                />
-               <FooterInfoItem text='Повернення та обмін' onClick={() => {}} />
+               <FooterInfoItem
+                  text='Повернення та обмін'
+                  onClick={() => {
+                     navigate(RoutesEnum.RETURN_AND_EXCHANGE);
+                  }}
+               />
                <FooterInfoItem
                   text='Контакти'
                   onClick={() => {
