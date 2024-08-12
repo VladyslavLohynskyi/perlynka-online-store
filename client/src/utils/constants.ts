@@ -12,6 +12,7 @@ export enum RoutesEnum {
    FORGOT_FORM = '/forgot-form',
    CONTACT = '/contact',
    PAYMENT_AND_DELIVERY = '/payment-and-delivery',
+   RETURN_AND_EXCHANGE = '/return-and-exchange',
 }
 
 export const limitGettingShoesFromDB = 16;
