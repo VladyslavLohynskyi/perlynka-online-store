@@ -26,7 +26,7 @@ const CustomMap: React.FC = () => {
       <div className='map__container'>
          <Map
             defaultZoom={17}
-            defaultCenter={markersLocation[0]}
+            defaultCenter={{ lat: 49.81156505739717, lng: 23.974355648327954 }}
             gestureHandling={'greedy'}
             disableDefaultUI={true}
          >
