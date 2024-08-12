@@ -105,6 +105,7 @@ export const Header: React.FC<HeaderType> = ({
                   <NavItem text='Бренди' type={NavItemEnum.DESKTOP_MENU_ITEM} />
                   <NavItem
                      text='Контакти'
+                     onClick={() => navigate(RoutesEnum.CONTACT)}
                      type={NavItemEnum.DESKTOP_MENU_ITEM}
                   />
                   <NavItem
