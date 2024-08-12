@@ -1,3 +1,5 @@
+import { APIProvider } from '@vis.gl/react-google-maps';
+import CustomMap from '../components/CustomMap/CustomMap';
 import './Contact.scss';
 
 const Contact = () => {
@@ -80,7 +82,9 @@ const Contact = () => {
                   </p>
                </div>
             </div>
-            <div className='contact__map-container'>map</div>
+            <div className='contact__map-container'>
+               <CustomMap />
+            </div>
          </div>
       </div>
    );

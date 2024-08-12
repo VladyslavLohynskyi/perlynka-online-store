@@ -1,3 +1,4 @@
+@import '../../../breakpoints.scss';
 .contact {
    display: flex;
    flex-direction: column;
@@ -27,6 +28,22 @@
          color: #000000;
          text-decoration: none;
          outline: none;
+      }
+   }
+}
+
+@media #{$tablet-middle} {
+   .contact {
+      &__container {
+         flex-direction: row;
+         margin-top: 20px;
+      }
+      &__info-container {
+         width: 50%;
+         margin-right: 20px;
+      }
+      &__map-container {
+         width: 50%;
       }
    }
 }
