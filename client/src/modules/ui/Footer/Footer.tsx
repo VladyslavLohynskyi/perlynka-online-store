@@ -29,7 +29,12 @@ export const Footer: React.FC = () => {
             <div className='footer__info-container'>
                <h3>Інформація</h3>
                <FooterInfoItem text='Про нас' onClick={() => {}} />
-               <FooterInfoItem text='Оплата і доставка' onClick={() => {}} />
+               <FooterInfoItem
+                  text='Оплата і доставка'
+                  onClick={() => {
+                     navigate(RoutesEnum.PAYMENT_AND_DELIVERY);
+                  }}
+               />
                <FooterInfoItem text='Повернення та обмін' onClick={() => {}} />
                <FooterInfoItem
                   text='Контакти'
