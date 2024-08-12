@@ -87,7 +87,10 @@ export const Header: React.FC<HeaderType> = ({
                   <IconButton
                      icon={isBurgerShowed ? faClose : faBars}
                      className='header__burger-btn'
-                     onClick={() => handleSwitchBurgerShow()}
+                     onClick={(e) => {
+                        e.stopPropagation();
+                        handleSwitchBurgerShow();
+                     }}
                   />
                   <h1 onClick={() => navigate(RoutesEnum.SHOP)}>Перлинка</h1>
                </div>

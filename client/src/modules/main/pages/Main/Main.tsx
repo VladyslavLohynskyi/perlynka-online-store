@@ -10,7 +10,7 @@ export const Main: React.FC = () => {
       setIsBurgerShowed((prev) => !prev);
    };
    return (
-      <div className='main'>
+      <div className='main' onClick={() => setIsBurgerShowed(false)}>
          <Header
             isBurgerShowed={isBurgerShowed}
             handleSwitchBurgerShow={handleSwitchBurgerShow}
