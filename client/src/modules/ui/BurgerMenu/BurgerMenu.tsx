@@ -21,7 +21,10 @@ export const BurgerMenu: React.FC<BurgerMenuType> = ({
       navigate(RoutesEnum.SHOP);
    };
    return (
-      <div className='burger-menu__container'>
+      <div
+         className='burger-menu__container'
+         onClick={(e) => e.stopPropagation()}
+      >
          <nav>
             <NavItem
                text={SexEnum.BOY}
