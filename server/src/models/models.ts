@@ -13,7 +13,7 @@ import Token from './tokenModel';
 import ForgotToken from './forgotTokenModel';
 import ShoesInfo from './shoesInfoModel';
 import ShoesImage from './shoesImageModel';
-import NewsletterSubscription from './subcsriptionModel';
+import NewsletterSubscription from './newsletterSubscriptionModel';
 
 User.hasOne(Basket);
 Basket.belongsTo(User);
