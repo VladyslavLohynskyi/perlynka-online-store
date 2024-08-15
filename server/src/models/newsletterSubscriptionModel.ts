@@ -4,6 +4,7 @@ import { DataTypes, Model, Optional } from 'sequelize';
 interface newsletterSubscriptionAttributes {
    id: number;
    email: string;
+   token: string;
 }
 
 interface newsletterSubscriptionCreationAttributes
@@ -24,6 +25,7 @@ const NewsletterSubscription = sequelize.define<newsletterSubscriptionInstance>(
    {
       id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
       email: { type: DataTypes.STRING, unique: true },
+      token: {type: DataTypes.STRING,unique:true}
    },
 );
 

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import ApiError from '../exceptions/ApiError';
 import NewsletterSubscription from '../models/newsletterSubscriptionModel';
+import { v4 as uuidv4 } from 'uuid';
 interface ICreateNewsletterSubscriptionRequest extends Request {
    body: {
       email: string;
@@ -20,8 +21,9 @@ class NewsletterSubscriptionController {
          if (isSubscriptionExist) {
             return res.json({ massage: 'У вас вже підписка активована' });
          }
+         const token = uuidv4();
          await NewsletterSubscription.create({
-            email,
+            email,token
          });
          return res.json({ massage: 'Підписка активована' });
       } catch (error) {
