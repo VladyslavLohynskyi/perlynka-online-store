@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import ApiError from '../exceptions/ApiError';
 import NewsletterSubscription from '../models/newsletterSubscriptionModel';
 import { v4 as uuidv4 } from 'uuid';
+import mailService from '../services/mailService';
 interface ICreateNewsletterSubscriptionRequest extends Request {
    body: {
       email: string;
@@ -25,6 +26,7 @@ class NewsletterSubscriptionController {
          await NewsletterSubscription.create({
             email,token
          });
+         await mailService.sendSuccessSubscriptionMail(email)
          return res.json({ massage: 'Підписка активована' });
       } catch (error) {
          return next(

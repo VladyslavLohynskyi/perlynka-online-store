@@ -172,6 +172,19 @@ class MailService {
       await this.transporter.sendMail(mailOptionToCustomer);
       await this.transporter.sendMail(mailOptionToManager);
    }
+
+   async sendSuccessSubscriptionMail(to: string) {
+      await this.transporter.sendMail({
+         to,
+         subject:
+            'Активація підписки на сайті онлайн-магазину Перлинка',
+         html: `
+         <div>
+            <p>Активація підписки на розсилку повідомлень щодо майбутніх оновлень</p>
+         </div>`,
+      });
+   }
+
 }
 
 export default new MailService();

@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './NewsletterSubscription.scss';
 import { Button } from '../../../Button';
 import { ButtonClassEnum } from '../../../Button/ButtonType';
+import NewsletterSubscriptionReq from '../../../../../http/newsletterSubscription';
 
 export const NewsletterSubscription: React.FC = () => {
+   const [email, setEmail] = useState<string>("")
+   const handleSubmitNewsletterSubscription = (e:React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+     return NewsletterSubscriptionReq.createSubscription(email);}
    return (
       <div className='newsletter-subscription'>
          <div className='newsletter-subscription__container'>
@@ -14,11 +19,12 @@ export const NewsletterSubscription: React.FC = () => {
                   та спеціальні пропозиції першими
                </p>
             </div>
-            <form className='newsletter-subscription__form'>
+            <form onSubmit={handleSubmitNewsletterSubscription} className='newsletter-subscription__form'>
                <input
                   type='email'
                   placeholder='Введіть вашу пошту'
                   required={true}
+                  onChange={(e)=> setEmail(e.target.value)}
                />
                <Button
                   buttonClass={ButtonClassEnum.SUBSCRIPTION}
