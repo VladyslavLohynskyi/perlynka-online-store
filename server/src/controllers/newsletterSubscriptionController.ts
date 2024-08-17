@@ -36,6 +36,29 @@ class NewsletterSubscriptionController {
          );
       }
    }
+   async delete(
+      req: Request,
+      res: Response,
+      next: NextFunction,
+   ) {
+      try {
+         const { token } = req.params;
+         const isSubscriptionExist = await NewsletterSubscription.findOne({
+            where: { token },
+         });
+         if (!isSubscriptionExist) {
+            return res.json({ massage: 'У вас не підписка активована' });
+         }
+         await NewsletterSubscription.destroy({where:{token}});
+         return res.json({ massage: 'Відписка на email розсилки пройшла успішно' });
+      } catch (error) {
+         return next(
+            ApiError.internalServer(
+               'Невідома помилка здійснені відписки на листи',
+            ),
+         );
+      }
+   }
 }
 
 export default new NewsletterSubscriptionController();
