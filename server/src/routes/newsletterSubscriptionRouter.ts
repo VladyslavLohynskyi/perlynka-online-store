@@ -3,5 +3,5 @@ import newsletterSubscriptionController from '../controllers/newsletterSubscript
 
 export const newsletterSubscriptionRouter = Router();
 newsletterSubscriptionRouter.post('/', newsletterSubscriptionController.create);
-newsletterSubscriptionRouter.delete('/:token', newsletterSubscriptionController.delete);
+newsletterSubscriptionRouter.post('/unsubscribe/:token', newsletterSubscriptionController.delete);
 

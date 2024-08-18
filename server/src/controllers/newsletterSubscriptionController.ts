@@ -26,7 +26,7 @@ class NewsletterSubscriptionController {
          await NewsletterSubscription.create({
             email,token
          });
-         await mailService.sendSuccessSubscriptionMail(email)
+         await mailService.sendSuccessSubscriptionMail(email,token)
          return res.json({ massage: 'Підписка активована' });
       } catch (error) {
          return next(
@@ -47,10 +47,14 @@ class NewsletterSubscriptionController {
             where: { token },
          });
          if (!isSubscriptionExist) {
-            return res.json({ massage: 'У вас не підписка активована' });
+            return next(
+               ApiError.notFound(
+                  'У вас підписка не активована',
+               ),
+            );
          }
          await NewsletterSubscription.destroy({where:{token}});
-         return res.json({ massage: 'Відписка на email розсилки пройшла успішно' });
+         return res.redirect(process.env.CLIENT_URL);
       } catch (error) {
          return next(
             ApiError.internalServer(

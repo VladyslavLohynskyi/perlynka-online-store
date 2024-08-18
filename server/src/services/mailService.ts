@@ -173,7 +173,7 @@ class MailService {
       await this.transporter.sendMail(mailOptionToManager);
    }
 
-   async sendSuccessSubscriptionMail(to: string) {
+   async sendSuccessSubscriptionMail(to: string, token:string) {
       await this.transporter.sendMail({
          to,
          subject:
@@ -181,6 +181,10 @@ class MailService {
          html: `
          <div>
             <p>Активація підписки на розсилку повідомлень щодо майбутніх оновлень</p>
+            <p>${process.env.API_URL+"/api/newsletter-subscription/"+token}</p>
+            <form  action="${process.env.API_URL+"/api/newsletter-subscription/unsubscribe/"+token}" method="POST">
+             <button>Відписатись</button>
+            </form>
          </div>`,
       });
    }
