@@ -3,12 +3,21 @@ import './NewsletterSubscription.scss';
 import { Button } from '../../../Button';
 import { ButtonClassEnum } from '../../../Button/ButtonType';
 import NewsletterSubscriptionReq from '../../../../../http/newsletterSubscription';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+   faSpinner
+} from '@fortawesome/free-solid-svg-icons';
 
 export const NewsletterSubscription: React.FC = () => {
    const [email, setEmail] = useState<string>("")
-   const handleSubmitNewsletterSubscription = (e:React.FormEvent<HTMLFormElement>) => {
+   const [isLoading, setIsLoading] = useState<boolean>(false)
+   const handleSubmitNewsletterSubscription = async(e:React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-     return NewsletterSubscriptionReq.createSubscription(email);}
+      setIsLoading(true)
+    await NewsletterSubscriptionReq.createSubscription(email)
+     setEmail('');
+     setIsLoading(false);
+   }
    return (
       <div className='newsletter-subscription'>
          <div className='newsletter-subscription__container'>
@@ -19,19 +28,23 @@ export const NewsletterSubscription: React.FC = () => {
                   та спеціальні пропозиції першими
                </p>
             </div>
-            <form onSubmit={handleSubmitNewsletterSubscription} className='newsletter-subscription__form'>
-               <input
+            {isLoading?
+               <div className='newsletter-subscription__form'>
+                  <FontAwesomeIcon icon={faSpinner} spin={true} />
+               </div>: 
+               <form onSubmit={handleSubmitNewsletterSubscription} className='newsletter-subscription__form'>
+                  <input
                   type='email'
                   placeholder='Введіть вашу пошту'
                   required={true}
                   onChange={(e)=> setEmail(e.target.value)}
-               />
-               <Button
+                  />
+                  <  Button
                   buttonClass={ButtonClassEnum.SUBSCRIPTION}
                   buttonText='Підписатися'
                   style={{ height: '36px' }}
-               />
-            </form>
+                  />
+               </form>}
          </div>
       </div>
    );
