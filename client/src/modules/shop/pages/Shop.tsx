@@ -167,7 +167,7 @@ export const Shop: React.FC = () => {
                   </aside>
                   <div className='shop__right-side'>
                      {isLoadingShoes ? (
-                        <Loader />
+                        <Loader className='shop__loader' />
                      ) : (
                         <>
                            {!!shoes.length ? (

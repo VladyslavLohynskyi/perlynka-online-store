@@ -77,6 +77,11 @@
       color: var(--horizontal-line-color);
       margin: auto;
    }
+
+   &__loader {
+      height: 90vh;
+      width: 100%;
+   }
 }
 
 @media #{$tablet-small} {
@@ -106,6 +111,10 @@
       }
       &__mobile-filter-button-container {
          display: none;
+      }
+      &__loader {
+         height: 100%;
+         width: 100%;
       }
    }
 }
