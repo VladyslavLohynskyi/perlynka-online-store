@@ -199,6 +199,28 @@ class MailService {
       });
    }
 
+   async sendSuccessUnsubscribeMail(to: string) {
+      await this.transporter.sendMail({
+         to,
+         subject:
+            'Деактивація підписки на сайті онлайн-магазину Перлинка',
+         html: `
+         <div>
+          <p style="margin:0;font-weight:700;">Вітаємо,</p>
+            <p style="margin:0 0 15px 0; font-weight:700;">Ви щойно успішно деактивували підписку на розсилку повідомлень від магазину "Перлинка".</p>
+            <p style="margin:3px;">Ми є магазином який пропонує якісне та комфортне дитяче та підліткове взуття.</p>
+            <p style="margin:3px;">Широкий асортимент лікувального, профілактичного, звичайного взуття для будь-якого бюджету.</p>
+            <p style="margin:3px;">Оглянути все ви можете відвідавши наш сайт <a href="${process.env.CLIENT_URL}">${process.env.CLIENT_URL}</a></p>
+            <p style="margin:3px;">або завітавши до наших фізичних магазинів які знаходяться</p>
+            <p style="margin:3px;">у м. Львів, вул. Щирецька 36, ТВК "Південний":</p>
+            <ul style="margin:0 0 15px 0;">
+               <li style="list-style-type:disc;">ТЦ "Калина" 2А;</li>
+               <li style="list-style-type:disc;">ТЦ "Новинка" 92;</li>
+            </ul>
+         </div>`,
+      });
+   }
+
 }
 
 export default new MailService();

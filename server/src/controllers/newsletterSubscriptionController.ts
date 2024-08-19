@@ -54,6 +54,7 @@ class NewsletterSubscriptionController {
             );
          }
          await NewsletterSubscription.destroy({where:{token}});
+         await mailService.sendSuccessUnsubscribeMail(isSubscriptionExist.email)
          return res.redirect(process.env.CLIENT_URL);
       } catch (error) {
          return next(
