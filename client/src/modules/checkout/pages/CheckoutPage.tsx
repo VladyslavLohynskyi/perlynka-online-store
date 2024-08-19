@@ -37,6 +37,7 @@ export const CheckoutPage: React.FC = () => {
       useAppSelector((state) => state.basketReducer);
    const [isCheckoutSuccess, setIsCheckoutSuccess] = useState(false);
    const [totalPrice, setTotalPrice] = useState<number>(0);
+   const [isLoadingOrder, setIsLoadingOrder] = useState<boolean>(false);
 
    useEffect(() => {
       let price = 0;
@@ -74,12 +75,15 @@ export const CheckoutPage: React.FC = () => {
          price: totalPrice,
          basket: basketOrder,
       };
-      CheckoutReq.createCheckout(customerInfo, orderInfo).then(() => {
-         setIsCheckoutSuccess(true);
-         return clearBasket();
-      });
+      setIsLoadingOrder(true);
+      CheckoutReq.createCheckout(customerInfo, orderInfo)
+         .then(() => {
+            setIsCheckoutSuccess(true);
+         })
+         .then(() => clearBasket())
+         .finally(() => setIsLoadingOrder(false));
    };
-   if (isLoadingBasket && isAuth) {
+   if ((isLoadingBasket && isAuth) || isLoadingOrder) {
       return <Loader className='checkout__loader' />;
    }
 
