@@ -70,6 +70,13 @@
          font-size: 16px;
       }
    }
+   &__empty-text {
+      align-self: center;
+      justify-self: center;
+      font-size: 24px;
+      color: var(--horizontal-line-color);
+      margin: auto;
+   }
 }
 
 @media #{$tablet-small} {

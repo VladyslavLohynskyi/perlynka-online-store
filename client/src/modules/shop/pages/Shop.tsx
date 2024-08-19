@@ -23,7 +23,7 @@ import { Modal } from '../../modal/pages';
 import useWindowSize from '../../../hooks/useWindowSize';
 import { AsideMobileFiltersModal } from '../../modal/components/HeaderDropdown/pages/AsideMobileFiltersModal';
 import { ResetFiltersButton } from '../../ui/ResetFiltersButton';
-import { Footer } from '../../ui/Footer';
+import { Loader } from '../../ui/Loader';
 
 interface ISelectFilterOption {
    id: number;
@@ -42,9 +42,8 @@ export const Shop: React.FC = () => {
    const dispatch = useAppDispatch();
    const [isMobileAsideFiltersShowed, setIsMobileAsideFiltersShowed] =
       useState<boolean>(false);
-   const { shoes, brands, types, seasons, colors } = useAppSelector(
-      (state) => state.shoesReducer,
-   );
+   const { isLoadingShoes, shoes, brands, types, seasons, colors } =
+      useAppSelector((state) => state.shoesReducer);
    const {
       selectedBrandsId,
       selectedTypesId,
@@ -140,13 +139,24 @@ export const Shop: React.FC = () => {
                      />
                   </aside>
                   <div className='shop__right-side'>
-                     <section className='shop__shoes-list'>
-                        {!!shoes.length &&
-                           shoes.map((shoes) => (
-                              <ShoesItem key={shoes.id} shoes={shoes} />
-                           ))}
-                     </section>
-                     <Pagination />
+                     {isLoadingShoes ? (
+                        <Loader />
+                     ) : (
+                        <>
+                           {!!shoes.length ? (
+                              <section className='shop__shoes-list'>
+                                 {shoes.map((shoes) => (
+                                    <ShoesItem key={shoes.id} shoes={shoes} />
+                                 ))}
+                              </section>
+                           ) : (
+                              <p className='shop__empty-text'>
+                                 Взуття з такою фільтрацією не знайденно
+                              </p>
+                           )}
+                           <Pagination />
+                        </>
+                     )}
                   </div>
                </div>
             </div>
