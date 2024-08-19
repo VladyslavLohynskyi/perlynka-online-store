@@ -58,6 +58,7 @@ export const Footer: React.FC = () => {
                      className='label-text'
                      href='mailto:perlynka.shoes.store@gmail.com'
                      target='_blank'
+                     rel='noreferrer'
                   >
                      perlynka.shoes.store@gmail.com
                   </a>
@@ -69,13 +70,18 @@ export const Footer: React.FC = () => {
                      <a
                         href='https://www.instagram.com/perlynka_shoes'
                         target='_blank'
+                        rel='noreferrer'
                      >
                         <IconButton
                            icon={faInstagram as IconDefinition}
                            className='footer__icon'
                         />
                      </a>
-                     <a href='https://t.me/KolyaMaseratti' target='_blank'>
+                     <a
+                        href='https://t.me/KolyaMaseratti'
+                        target='_blank'
+                        rel='noreferrer'
+                     >
                         <IconButton
                            icon={faTelegram as IconDefinition}
                            className='footer__icon'
@@ -84,6 +90,7 @@ export const Footer: React.FC = () => {
                      <a
                         href='https://invite.viber.com/?g2=AQAvW%2F8r5XFDNU0ZYEQxJ9E4nY6HIa5ypojA4YoGXCs7oQJZjm7MtD7tnDlaw0Sl'
                         target='_blank'
+                        rel='noreferrer'
                      >
                         <IconButton
                            icon={faViber as IconDefinition}
@@ -93,6 +100,7 @@ export const Footer: React.FC = () => {
                      <a
                         href='mailto:perlynka.shoes.store@gmail.com'
                         target='_blank'
+                        rel='noreferrer'
                      >
                         <IconButton
                            icon={faEnvelope as IconDefinition}
