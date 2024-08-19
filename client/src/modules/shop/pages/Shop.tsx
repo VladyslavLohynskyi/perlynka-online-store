@@ -24,6 +24,7 @@ import useWindowSize from '../../../hooks/useWindowSize';
 import { AsideMobileFiltersModal } from '../../modal/components/HeaderDropdown/pages/AsideMobileFiltersModal';
 import { ResetFiltersButton } from '../../ui/ResetFiltersButton';
 import { Loader } from '../../ui/Loader';
+import { getAllShoesByFilter } from '../../../store/reducers/shoes/ShoesActionCreators';
 
 interface ISelectFilterOption {
    id: number;
@@ -44,6 +45,7 @@ export const Shop: React.FC = () => {
       useState<boolean>(false);
    const { isLoadingShoes, shoes, brands, types, seasons, colors } =
       useAppSelector((state) => state.shoesReducer);
+   const filter = useAppSelector((state) => state.filterReducer);
    const {
       selectedBrandsId,
       selectedTypesId,
@@ -51,6 +53,31 @@ export const Shop: React.FC = () => {
       selectedColorsId,
       selectedSortFilter,
    } = useAppSelector((state) => state.filterReducer);
+
+   useEffect(() => {
+      dispatch(
+         getAllShoesByFilter({
+            brandsId: filter.selectedBrandsId,
+            typesId: filter.selectedTypesId,
+            seasonsId: filter.selectedSeasonsId,
+            colorsId: filter.selectedColorsId,
+            sex: filter.selectedSex,
+            sizesId: filter.selectedSizesId,
+            sortBy: filter.selectedSortFilter,
+            limit: filter.limit,
+            offset: filter.limit * (filter.page - 1),
+         }),
+      );
+   }, [
+      filter.selectedBrandsId,
+      filter.selectedTypesId,
+      filter.selectedSeasonsId,
+      filter.selectedColorsId,
+      filter.selectedSex,
+      filter.selectedSizesId,
+      filter.selectedSortFilter,
+      filter.page,
+   ]);
 
    const selectOptions: ISelectFilterOption[] = [
       { id: 1, text: 'За спаданням цін', sort: SortEnum.PRICE_ASC },
