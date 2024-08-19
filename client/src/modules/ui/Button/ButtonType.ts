@@ -13,6 +13,7 @@ export enum ButtonClassEnum {
    BUY = 'buy',
    MOBILE_FILTER = 'mobile-filter',
    COMMUNICATION = 'communication',
+   SUBSCRIPTION = 'subscription',
 }
 export interface ButtonPropsType
    extends React.HTMLAttributes<HTMLButtonElement> {

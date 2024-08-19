@@ -9,6 +9,8 @@ import { userRouter } from './userRouter';
 import { basketRouter } from './basketRouter';
 import { ratingRouter } from './ratingRouter';
 import { checkoutRouter } from './checkoutRouter';
+import { newsletterSubscriptionRouter } from './newsletterSubscriptionRouter';
+
 export const router = Router();
 
 router.use('/user', userRouter);
@@ -21,3 +23,4 @@ router.use('/shoes', shoesRouter);
 router.use('/basket', basketRouter);
 router.use('/rating', ratingRouter);
 router.use('/checkout', checkoutRouter);
+router.use('/newsletter-subscription', newsletterSubscriptionRouter);
