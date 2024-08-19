@@ -10,6 +10,9 @@ import { authUser } from './store/reducers/user/UserActionCreators';
 import { preloadFilter } from './store/reducers/filter/FilterActionCreators';
 import { AlertTypeEnum } from './modules/ui/Alert/AlertType';
 import Alert from './modules/ui/Alert/Alert';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { Loader } from './modules/ui/Loader';
 
 const App: FC = () => {
    const dispatch = useAppDispatch();
@@ -105,7 +108,7 @@ const App: FC = () => {
    ]);
 
    if (user.isLoading) {
-      return <div>Loading...</div>;
+      return <Loader />;
    }
    return (
       <div className='app'>
