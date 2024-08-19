@@ -68,6 +68,10 @@
 
       grid-template-columns: 1fr;
    }
+   &__loader {
+      height: 90vh;
+      width: 100%;
+   }
 }
 
 @media #{$tablet-middle} {
@@ -79,6 +83,10 @@
          grid-template-columns:
             100px minmax(200px, 400px) minmax(200px, 300px)
             minmax(50px, 200px) minmax(50px, 200px);
+      }
+      &__loader {
+         height: 100%;
+         width: 100%;
       }
    }
 }

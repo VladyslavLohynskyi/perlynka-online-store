@@ -13,14 +13,14 @@ import { Button } from '../../ui/Button';
 import { ButtonClassEnum } from '../../ui/Button/ButtonType';
 import { useNavigate } from 'react-router-dom';
 import { RoutesEnum } from '../../../utils/constants';
+import { Loader } from '../../ui/Loader';
 
 export const BasketPage: React.FC = () => {
    const dispatch = useAppDispatch();
    const navigate = useNavigate();
    const { isAuth } = useAppSelector((state) => state.userReducer);
-   const { basket, totalCountOfShoesInBasket } = useAppSelector(
-      (state) => state.basketReducer,
-   );
+   const { isLoadingBasket, basket, totalCountOfShoesInBasket } =
+      useAppSelector((state) => state.basketReducer);
    const [totalPrice, setTotalPrice] = useState<number>(0);
 
    useEffect(() => {
@@ -45,6 +45,36 @@ export const BasketPage: React.FC = () => {
          dispatch(deleteAllFromBasketNotAuth());
       }
    };
+
+   const loadBasket = () => {
+      if (isLoadingBasket && isAuth)
+         return <Loader className='basket__loader' />;
+      if (basket.length > 0)
+         return (
+            <>
+               {basket.map(({ id, sho, count, size }) => (
+                  <BasketItem
+                     key={id}
+                     id={id}
+                     shoes={sho}
+                     count={+count}
+                     size={size}
+                  />
+               ))}
+               <div className='basket__order-menu'>
+                  <Button
+                     buttonText='Оформити Замовлення'
+                     buttonClass={ButtonClassEnum.BUY}
+                     buttonClick={() => navigate(RoutesEnum.CHECKOUT)}
+                  />
+                  <p className='basket__order-menu__price'>
+                     Всього: {totalPrice} грн.
+                  </p>
+               </div>
+            </>
+         );
+      return <p className='basket__empty-text'>Корзина Порожня</p>;
+   };
    return (
       <div className='basket'>
          <div className='basket__main'>
@@ -64,31 +94,7 @@ export const BasketPage: React.FC = () => {
                </div>
             </div>
             <HorizontalLine />
-            {basket.length > 0 ? (
-               <>
-                  {basket.map(({ id, sho, count, size }) => (
-                     <BasketItem
-                        key={id}
-                        id={id}
-                        shoes={sho}
-                        count={+count}
-                        size={size}
-                     />
-                  ))}
-                  <div className='basket__order-menu'>
-                     <Button
-                        buttonText='Оформити Замовлення'
-                        buttonClass={ButtonClassEnum.BUY}
-                        buttonClick={() => navigate(RoutesEnum.CHECKOUT)}
-                     />
-                     <p className='basket__order-menu__price'>
-                        Всього: {totalPrice} грн.
-                     </p>
-                  </div>
-               </>
-            ) : (
-               <p className='basket__empty-text'>Корзина Порожня</p>
-            )}
+            {loadBasket()}
          </div>
       </div>
    );

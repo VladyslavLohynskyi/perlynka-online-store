@@ -18,6 +18,7 @@ import CheckoutReq, {
 } from '../../../http/checkout';
 import { CheckoutSuccess } from '../components/CheckoutSuccess';
 import { CustomerDeliveryInfo } from '../components/CustomerDeliveryInfo';
+import { Loader } from '../../ui/Loader';
 export enum DeliveryOptionsEnum {
    NOVA_POST = 'У відділення Нової пошти',
    SELF_DELIVERY = 'Самовивіз з магазину',
@@ -32,9 +33,8 @@ export const CheckoutPage: React.FC = () => {
    const dispatch = useAppDispatch();
 
    const { isAuth } = useAppSelector((state) => state.userReducer);
-   const { isLoading, basket, totalCountOfShoesInBasket } = useAppSelector(
-      (state) => state.basketReducer,
-   );
+   const { isLoadingBasket, basket, totalCountOfShoesInBasket } =
+      useAppSelector((state) => state.basketReducer);
    const [isCheckoutSuccess, setIsCheckoutSuccess] = useState(false);
    const [totalPrice, setTotalPrice] = useState<number>(0);
 
@@ -79,8 +79,8 @@ export const CheckoutPage: React.FC = () => {
          return clearBasket();
       });
    };
-   if (isLoading) {
-      return <p>...Loading</p>;
+   if (isLoadingBasket && isAuth) {
+      return <Loader className='checkout__loader' />;
    }
 
    return (

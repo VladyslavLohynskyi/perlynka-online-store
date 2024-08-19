@@ -67,12 +67,12 @@ export const getTotalCountOfShoesInBasketNotAuth =
 
 export const getAllShoesOfBasket = () => async (dispatch: AppDispatch) => {
    try {
-      dispatch(basketSlice.actions.start());
+      dispatch(basketSlice.actions.getBasketStart());
       const basket = await BasketReq.getAllInBasket();
       dispatch(basketSlice.actions.getAllShoesOfBasketSuccess(basket));
    } catch (error) {
       if (axios.isAxiosError(error)) {
-         dispatch(basketSlice.actions.error(error.response?.data));
+         dispatch(basketSlice.actions.getBasketError(error.response?.data));
       } else
          dispatch(
             basketSlice.actions.error(
