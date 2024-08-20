@@ -47,6 +47,7 @@ import {
 import { AdminShoesPanelSection } from './components/AdminShoesPanelSection';
 import { AdminBasicPanelSection } from './components/AdminBasicPanelSection';
 import { AdminSizePanelSection } from './components/AdminSizePanelSection';
+import { Loader } from '../ui/Loader';
 
 export const Admin: React.FC = () => {
    const { brands, types, seasons, colors } = useAppSelector(
@@ -55,6 +56,7 @@ export const Admin: React.FC = () => {
    const { admins, isLoading } = useAppSelector((state) => state.adminsReducer);
    const { foundUsers } = useAppSelector((state) => state.findUsersReducer);
    const [userInputValue, setUserInputValue] = useState('');
+   const [isLoadingFindUser, setIsLoadingFindUser] = useState<boolean>(false);
 
    const dispatch = useAppDispatch();
    const changeUserInputValueHandler = (
@@ -79,7 +81,10 @@ export const Admin: React.FC = () => {
 
    useEffect(() => {
       if (userInputValue.length > 2) {
-         dispatch(getAllUsersByEmail(userInputValue));
+         setIsLoadingFindUser(true);
+         dispatch(getAllUsersByEmail(userInputValue)).finally(() =>
+            setIsLoadingFindUser(false),
+         );
       }
    }, [userInputValue]);
 
@@ -146,7 +151,9 @@ export const Admin: React.FC = () => {
             <div className='admin__manage-user__container'>
                <div className='admin__manage-user__admins-info'>
                   <h3 className='admin__manage-user__header'>Адміни</h3>
-                  {!isLoading &&
+                  {isLoading ? (
+                     <Loader />
+                  ) : (
                      admins.map((admin) => (
                         <AdminInfoItem
                            key={admin.id}
@@ -156,7 +163,8 @@ export const Admin: React.FC = () => {
                               handleClickDeleteAdmin(admin.id);
                            }}
                         />
-                     ))}
+                     ))
+                  )}
                </div>
                <div className='admin__manage-user__user-search'>
                   <h3 className='admin__manage-user__header'>Додати адміна</h3>
@@ -165,7 +173,7 @@ export const Admin: React.FC = () => {
                      type='text'
                      placeholder='Введіть пошту користувача'
                   />
-                  {foundUsers &&
+                  {!isLoadingFindUser && foundUsers ? (
                      foundUsers.map((user) => (
                         <AdminInfoItem
                            key={user.id}
@@ -173,7 +181,10 @@ export const Admin: React.FC = () => {
                            icon={faAdd}
                            onClickButton={() => handleClickAddAdmin(user.id)}
                         />
-                     ))}
+                     ))
+                  ) : (
+                     <Loader className='admin__find-user-loader' />
+                  )}
                </div>
             </div>
          </main>
