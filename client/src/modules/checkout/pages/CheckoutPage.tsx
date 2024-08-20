@@ -18,6 +18,7 @@ import CheckoutReq, {
 } from '../../../http/checkout';
 import { CheckoutSuccess } from '../components/CheckoutSuccess';
 import { CustomerDeliveryInfo } from '../components/CustomerDeliveryInfo';
+import { Loader } from '../../ui/Loader';
 export enum DeliveryOptionsEnum {
    NOVA_POST = 'У відділення Нової пошти',
    SELF_DELIVERY = 'Самовивіз з магазину',
@@ -32,11 +33,11 @@ export const CheckoutPage: React.FC = () => {
    const dispatch = useAppDispatch();
 
    const { isAuth } = useAppSelector((state) => state.userReducer);
-   const { isLoading, basket, totalCountOfShoesInBasket } = useAppSelector(
-      (state) => state.basketReducer,
-   );
+   const { isLoadingBasket, basket, totalCountOfShoesInBasket } =
+      useAppSelector((state) => state.basketReducer);
    const [isCheckoutSuccess, setIsCheckoutSuccess] = useState(false);
    const [totalPrice, setTotalPrice] = useState<number>(0);
+   const [isLoadingOrder, setIsLoadingOrder] = useState<boolean>(false);
 
    useEffect(() => {
       let price = 0;
@@ -74,13 +75,16 @@ export const CheckoutPage: React.FC = () => {
          price: totalPrice,
          basket: basketOrder,
       };
-      CheckoutReq.createCheckout(customerInfo, orderInfo).then(() => {
-         setIsCheckoutSuccess(true);
-         return clearBasket();
-      });
+      setIsLoadingOrder(true);
+      CheckoutReq.createCheckout(customerInfo, orderInfo)
+         .then(() => {
+            setIsCheckoutSuccess(true);
+         })
+         .then(() => clearBasket())
+         .finally(() => setIsLoadingOrder(false));
    };
-   if (isLoading) {
-      return <p>...Loading</p>;
+   if ((isLoadingBasket && isAuth) || isLoadingOrder) {
+      return <Loader className='checkout__loader' />;
    }
 
    return (

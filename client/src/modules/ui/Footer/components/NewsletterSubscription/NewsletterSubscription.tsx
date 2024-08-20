@@ -4,20 +4,20 @@ import { Button } from '../../../Button';
 import { ButtonClassEnum } from '../../../Button/ButtonType';
 import NewsletterSubscriptionReq from '../../../../../http/newsletterSubscription';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-   faSpinner
-} from '@fortawesome/free-solid-svg-icons';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 export const NewsletterSubscription: React.FC = () => {
-   const [email, setEmail] = useState<string>("")
-   const [isLoading, setIsLoading] = useState<boolean>(false)
-   const handleSubmitNewsletterSubscription = async(e:React.FormEvent<HTMLFormElement>) => {
+   const [email, setEmail] = useState<string>('');
+   const [isLoading, setIsLoading] = useState<boolean>(false);
+   const handleSubmitNewsletterSubscription = async (
+      e: React.FormEvent<HTMLFormElement>,
+   ) => {
       e.preventDefault();
-      setIsLoading(true)
-    await NewsletterSubscriptionReq.createSubscription(email)
-     setEmail('');
-     setIsLoading(false);
-   }
+      setIsLoading(true);
+      await NewsletterSubscriptionReq.createSubscription(email);
+      setEmail('');
+      setIsLoading(false);
+   };
    return (
       <div className='newsletter-subscription'>
          <div className='newsletter-subscription__container'>
@@ -28,23 +28,28 @@ export const NewsletterSubscription: React.FC = () => {
                   та спеціальні пропозиції першими
                </p>
             </div>
-            {isLoading?
+            {isLoading ? (
                <div className='newsletter-subscription__form'>
                   <FontAwesomeIcon icon={faSpinner} spin={true} />
-               </div>: 
-               <form onSubmit={handleSubmitNewsletterSubscription} className='newsletter-subscription__form'>
+               </div>
+            ) : (
+               <form
+                  onSubmit={handleSubmitNewsletterSubscription}
+                  className='newsletter-subscription__form'
+               >
                   <input
-                  type='email'
-                  placeholder='Введіть вашу пошту'
-                  required={true}
-                  onChange={(e)=> setEmail(e.target.value)}
+                     type='email'
+                     placeholder='Введіть вашу пошту'
+                     required={true}
+                     onChange={(e) => setEmail(e.target.value)}
                   />
-                  <  Button
-                  buttonClass={ButtonClassEnum.SUBSCRIPTION}
-                  buttonText='Підписатися'
-                  style={{ height: '36px' }}
+                  <Button
+                     buttonClass={ButtonClassEnum.SUBSCRIPTION}
+                     buttonText='Підписатися'
+                     style={{ height: '36px' }}
                   />
-               </form>}
+               </form>
+            )}
          </div>
       </div>
    );

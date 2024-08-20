@@ -12,6 +12,7 @@ interface IBasketState {
    basket: IBasketItem[];
    totalCountOfShoesInBasket: number;
    isLoading: boolean;
+   isLoadingBasket: boolean;
    error: string;
    message: string;
 }
@@ -21,6 +22,7 @@ const initialState: IBasketState = {
    totalCountOfShoesInBasket: 0,
    message: '',
    isLoading: true,
+   isLoadingBasket: true,
    error: '',
 };
 interface IAddShoesToBasketSuccess {
@@ -97,8 +99,15 @@ export const basketSlice = createSlice({
          }
       },
 
+      getBasketStart(state) {
+         state.isLoadingBasket = true;
+      },
+      getBasketError(state, action: PayloadAction<string>) {
+         state.isLoadingBasket = true;
+         state.error = action.payload;
+      },
       getAllShoesOfBasketSuccess(state, action: PayloadAction<IBasketItem[]>) {
-         state.isLoading = false;
+         state.isLoadingBasket = false;
          state.error = '';
          state.basket = [...action.payload];
       },

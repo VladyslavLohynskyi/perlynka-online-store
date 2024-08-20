@@ -47,6 +47,7 @@ export interface IShoesState {
    shoes: IShoesWithSizes[];
    countOfShoesModels: number;
    isLoading: boolean;
+   isLoadingShoes: boolean;
    error: string;
    message: string;
 }
@@ -68,6 +69,7 @@ const initialState: IShoesState = {
    sizes: null,
    countOfShoesModels: 0,
    isLoading: true,
+   isLoadingShoes: true,
    error: '',
    message: '',
 };
@@ -104,7 +106,7 @@ export const shoesSlice = createSlice({
             message: string;
          }>,
       ) {
-         state.isLoading = false;
+         state.isLoadingShoes = false;
          state.error = '';
          state.shoes = action.payload.rows;
          state.countOfShoesModels = action.payload.count;
@@ -119,7 +121,7 @@ export const shoesSlice = createSlice({
             message: string;
          }>,
       ) {
-         state.isLoading = false;
+         state.isLoadingShoes = false;
          state.error = '';
          state.shoes = action.payload.rows;
          state.countOfShoesModels = action.payload.count;
@@ -130,7 +132,7 @@ export const shoesSlice = createSlice({
          state,
          action: PayloadAction<{ id: number; message: string }>,
       ) {
-         state.isLoading = false;
+         state.isLoadingShoes = false;
          state.error = '';
          state.shoes = state.shoes.filter((el) => el.id !== action.payload.id);
          state.message = action.payload.message;
@@ -310,14 +312,24 @@ export const shoesSlice = createSlice({
          }
          state.message = action.payload.message;
       },
+      shoesStart(state) {
+         state.isLoadingShoes = true;
+         state.error = '';
+         state.message = '';
+      },
 
       shoesGetAll(
          state,
          action: PayloadAction<{ count: number; rows: IShoesWithSizes[] }>,
       ) {
-         state.isLoading = false;
+         state.isLoadingShoes = false;
          state.shoes = action.payload.rows;
          state.countOfShoesModels = action.payload.count;
+      },
+      shoesError(state, action: PayloadAction<string>) {
+         state.isLoadingShoes = false;
+         state.error = '';
+         state.message = '';
       },
 
       error(state, action: PayloadAction<string>) {

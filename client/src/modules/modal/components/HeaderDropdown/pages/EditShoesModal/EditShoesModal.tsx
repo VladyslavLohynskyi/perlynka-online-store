@@ -22,6 +22,7 @@ import { IShoesInfo, keyShoesInfoEnum } from '../AddShoesModal';
 import { IconButton } from '../../../../../ui/IconButton';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { HorizontalLine } from '../../../../../ui/HorizontalLine';
+import { Loader } from '../../../../../ui/Loader';
 
 interface INewAdditionImages {
    id: number;
@@ -47,6 +48,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
    const [id, setId] = useState<number>(0);
    const [error, setError] = useState('');
    const [foundShoes, setFoundShoes] = useState<null | IParticularShoes>(null);
+   const [isShoesLoading, setIsShoesLoading] = useState<boolean>(false);
    const [model, setModel] = useState('');
    const [price, setPrice] = useState(0);
    const [brand, setBrand] = useState(0);
@@ -149,10 +151,12 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
    const handleSubmitId = async () => {
       setError('');
       setFoundShoes(null);
+      setIsShoesLoading(true);
       shoesReq
          .getShoesById(id)
          .then((data) => setFoundShoes(data))
-         .catch((e) => setError(e.response.data));
+         .catch((e) => setError(e.response.data))
+         .finally(() => setIsShoesLoading(false));
    };
 
    const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -249,297 +253,316 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
       <div className='edit-shoes-modal__container  modal-container'>
          <ModalHeader text='Редагувати Взуття' onClose={onClose} />
          <div className='edit-shoes-modal__main'>
-            <ModalSearch
-               value={id}
-               setValue={handleChangeId}
-               handleSubmitValue={handleSubmitId}
-               type='number'
-               text='Введіть ID'
-               label='Індефікатор'
-            />
-            {error && <p className='modal__error'>{error}</p>}
-            <HorizontalLine />
-            {foundShoes && (
-               <form
-                  onSubmit={(e) => {
-                     e.preventDefault();
-                     handleSubmitUpdate(foundShoes);
-                  }}
-                  className='edit-shoes-modal__edit-form'
-               >
-                  <div>
-                     <ModalInput
-                        text='Модель'
-                        placeholder='Введіть назву моделі'
-                        value={model}
-                        onChange={(e) => setModel(e.target.value)}
-                     />
-                     <ModalInput
-                        text='Ціна'
-                        placeholder='Введіть Ціну'
-                        value={price}
-                        onChange={(e) => setPrice(Number(e.target.value))}
-                        min={1}
-                     />
-                  </div>
-                  <div className='edit-shoes-modal__edit-images-container'>
-                     <div className='edit-shoes-modal__edit-img-container'>
-                        <div className='edit-shoes-modal__img-container'>
-                           <img
-                              src={
-                                 file
-                                    ? URL.createObjectURL(file)
-                                    : baseURL + foundShoes.img + '.webp'
-                              }
-                              alt='Взуття'
-                           />
-                        </div>
-                        <ModalInput
-                           text='Змінити'
-                           onChange={handleChangeFile}
-                           type='file'
-                           required={false}
-                        />
-                     </div>
-                     {additionImages.map(({ img, id }) => (
-                        <div
-                           key={id}
-                           className='edit-shoes-modal__edit-img-container'
-                        >
-                           <div className='edit-shoes-modal__img-container'>
-                              <img src={baseURL + img + '.webp'} alt='Взуття' />
-                           </div>
-                           <div className='edit-shoes-modal__trash-button-container'>
-                              <IconButton
-                                 icon={faTrash}
-                                 onClick={() => removeImage(img)}
-                              />
-                           </div>
-                        </div>
-                     ))}
-                     {newAdditionImages.map(({ id, img }) => (
-                        <div
-                           key={id}
-                           className='edit-shoes-modal__edit-img-container'
-                        >
-                           <div className='edit-shoes-modal__img-container'>
-                              <img
-                                 src={
-                                    img
-                                       ? URL.createObjectURL(img)
-                                       : '/images/Noimg.webp'
-                                 }
-                                 alt='Взуття'
-                              />
-                           </div>
-                           <ModalInput
-                              text='Завантажити'
-                              onChange={(e) => handleChangeAdditionImage(e, id)}
-                              type='file'
-                              required={false}
-                              accept='image/*'
-                           />
-                        </div>
-                     ))}
-                  </div>
-                  <div className='edit-shoes-modal___secondary-edit-container'>
-                     <select
-                        className='add-shoes-modal__select'
-                        name='brands'
-                        onChange={(e) => setBrand(Number(e.target.value))}
-                        value={brand}
-                     >
-                        <option value={0} hidden disabled>
-                           Вибрати тип
-                        </option>
-                        {brands?.map((brand) => (
-                           <option key={brand.id} value={brand.id}>
-                              {brand.name}
-                           </option>
-                        ))}
-                     </select>
-                     <select
-                        className='add-shoes-modal__select'
-                        name='types'
-                        onChange={(e) => setType(Number(e.target.value))}
-                        value={type}
-                     >
-                        <option value={0} hidden disabled>
-                           Вибрати тип
-                        </option>
-                        {types?.map((type) => (
-                           <option key={type.id} value={type.id}>
-                              {type.name}
-                           </option>
-                        ))}
-                     </select>
-                     <select
-                        className='add-shoes-modal__select'
-                        name='colors'
-                        onChange={(e) => setColor(Number(e.target.value))}
-                        value={color}
-                     >
-                        <option value={0} hidden disabled>
-                           Вибрати колір
-                        </option>
-                        {colors?.map((color) => (
-                           <option key={color.id} value={color.id}>
-                              {color.name}
-                           </option>
-                        ))}
-                     </select>
-                     <select
-                        className='add-shoes-modal__select'
-                        name='seasons'
-                        onChange={(e) => setSeason(Number(e.target.value))}
-                        value={season}
-                     >
-                        <option value={0} hidden disabled>
-                           Вибрати сезон
-                        </option>
-                        {seasons?.map((season) => (
-                           <option key={season.id} value={season.id}>
-                              {season.name}
-                           </option>
-                        ))}
-                     </select>
-                     <select
-                        className='add-shoes-modal__select'
-                        name='sex'
-                        onChange={(e) => setSex(e.target.value)}
-                        value={sex}
-                     >
-                        <option value={SexEnum.UNISEX}>{SexEnum.UNISEX}</option>
-                        <option value={SexEnum.GIRL}>{SexEnum.GIRL}</option>
-                        <option value={SexEnum.BOY}>{SexEnum.BOY}</option>
-                     </select>
-                  </div>
-                  <div className='add-shoes-modal__sizes-container'>
-                     {sizes?.map((size) => {
-                        const value = foundShoes.shoes_sizes.find((el) => {
-                           return el.sizeId === Number(size.id);
-                        });
-
-                        return (
-                           <SizeEditItem
-                              key={size.id}
-                              onChangeSize={handleChangeSize}
-                              size={size.size}
-                              id={size.id}
-                              value={value?.count}
-                           />
-                        );
-                     })}
-                  </div>
-
-                  <div>
-                     <Button
-                        buttonClass={ButtonClassEnum.SECONDARY}
-                        buttonText='Додати додатковий опис товару'
-                        onClick={(e) => {
+            {isShoesLoading ? (
+               <Loader />
+            ) : (
+               <>
+                  <ModalSearch
+                     value={id}
+                     setValue={handleChangeId}
+                     handleSubmitValue={handleSubmitId}
+                     type='number'
+                     text='Введіть ID'
+                     label='Індефікатор'
+                  />
+                  {error && <p className='modal__error'>{error}</p>}
+                  <HorizontalLine />
+                  {foundShoes && (
+                     <form
+                        onSubmit={(e) => {
                            e.preventDefault();
-                           addInfo();
+                           handleSubmitUpdate(foundShoes);
                         }}
-                     />
-                     {infos.map((info) => (
-                        <div
-                           className='add-shoes-modal__info-container'
-                           key={info.id}
-                        >
+                        className='edit-shoes-modal__edit-form'
+                     >
+                        <div>
                            <ModalInput
-                              text='Заголовок'
-                              onChange={(e) =>
-                                 changeInfo(
-                                    keyShoesInfoEnum.TITLE,
-                                    e.target.value,
-                                    info.id,
-                                    setInfos,
-                                 )
-                              }
-                              value={info.title}
-                              type='text'
-                              required={true}
+                              text='Модель'
+                              placeholder='Введіть назву моделі'
+                              value={model}
+                              onChange={(e) => setModel(e.target.value)}
                            />
                            <ModalInput
-                              text='Oпис'
-                              onChange={(e) =>
-                                 changeInfo(
-                                    keyShoesInfoEnum.DESCRIPTION,
-                                    e.target.value,
-                                    info.id,
-                                    setInfos,
-                                 )
-                              }
-                              value={info.description}
-                              type='text'
-                              required={true}
+                              text='Ціна'
+                              placeholder='Введіть Ціну'
+                              value={price}
+                              onChange={(e) => setPrice(Number(e.target.value))}
+                              min={1}
                            />
-                           <div className='add-shoes-modal__info-container__trash-button-container'>
-                              <IconButton
-                                 icon={faTrash}
-                                 onClick={() => {
-                                    removeInfo(info.id, setInfos);
-                                    setDeletedInfoIds((prev) => [
-                                       ...prev,
-                                       info.id,
-                                    ]);
-                                 }}
+                        </div>
+                        <div className='edit-shoes-modal__edit-images-container'>
+                           <div className='edit-shoes-modal__edit-img-container'>
+                              <div className='edit-shoes-modal__img-container'>
+                                 <img
+                                    src={
+                                       file
+                                          ? URL.createObjectURL(file)
+                                          : baseURL + foundShoes.img + '.webp'
+                                    }
+                                    alt='Взуття'
+                                 />
+                              </div>
+                              <ModalInput
+                                 text='Змінити'
+                                 onChange={handleChangeFile}
+                                 type='file'
+                                 required={false}
                               />
                            </div>
+                           {additionImages.map(({ img, id }) => (
+                              <div
+                                 key={id}
+                                 className='edit-shoes-modal__edit-img-container'
+                              >
+                                 <div className='edit-shoes-modal__img-container'>
+                                    <img
+                                       src={baseURL + img + '.webp'}
+                                       alt='Взуття'
+                                    />
+                                 </div>
+                                 <div className='edit-shoes-modal__trash-button-container'>
+                                    <IconButton
+                                       icon={faTrash}
+                                       onClick={() => removeImage(img)}
+                                    />
+                                 </div>
+                              </div>
+                           ))}
+                           {newAdditionImages.map(({ id, img }) => (
+                              <div
+                                 key={id}
+                                 className='edit-shoes-modal__edit-img-container'
+                              >
+                                 <div className='edit-shoes-modal__img-container'>
+                                    <img
+                                       src={
+                                          img
+                                             ? URL.createObjectURL(img)
+                                             : '/images/Noimg.webp'
+                                       }
+                                       alt='Взуття'
+                                    />
+                                 </div>
+                                 <ModalInput
+                                    text='Завантажити'
+                                    onChange={(e) =>
+                                       handleChangeAdditionImage(e, id)
+                                    }
+                                    type='file'
+                                    required={false}
+                                    accept='image/*'
+                                 />
+                              </div>
+                           ))}
                         </div>
-                     ))}
-                     {addedInfos.map((info) => (
-                        <div
-                           className='add-shoes-modal__info-container'
-                           key={info.id}
-                        >
-                           <ModalInput
-                              text='Заголовок'
+                        <div className='edit-shoes-modal___secondary-edit-container'>
+                           <select
+                              className='add-shoes-modal__select'
+                              name='brands'
+                              onChange={(e) => setBrand(Number(e.target.value))}
+                              value={brand}
+                           >
+                              <option value={0} hidden disabled>
+                                 Вибрати тип
+                              </option>
+                              {brands?.map((brand) => (
+                                 <option key={brand.id} value={brand.id}>
+                                    {brand.name}
+                                 </option>
+                              ))}
+                           </select>
+                           <select
+                              className='add-shoes-modal__select'
+                              name='types'
+                              onChange={(e) => setType(Number(e.target.value))}
+                              value={type}
+                           >
+                              <option value={0} hidden disabled>
+                                 Вибрати тип
+                              </option>
+                              {types?.map((type) => (
+                                 <option key={type.id} value={type.id}>
+                                    {type.name}
+                                 </option>
+                              ))}
+                           </select>
+                           <select
+                              className='add-shoes-modal__select'
+                              name='colors'
+                              onChange={(e) => setColor(Number(e.target.value))}
+                              value={color}
+                           >
+                              <option value={0} hidden disabled>
+                                 Вибрати колір
+                              </option>
+                              {colors?.map((color) => (
+                                 <option key={color.id} value={color.id}>
+                                    {color.name}
+                                 </option>
+                              ))}
+                           </select>
+                           <select
+                              className='add-shoes-modal__select'
+                              name='seasons'
                               onChange={(e) =>
-                                 changeInfo(
-                                    keyShoesInfoEnum.TITLE,
-                                    e.target.value,
-                                    info.id,
-                                    setAddedInfos,
-                                 )
+                                 setSeason(Number(e.target.value))
                               }
-                              value={info.title}
-                              type='text'
-                              required={true}
-                           />
-                           <ModalInput
-                              text='Oпис'
-                              onChange={(e) =>
-                                 changeInfo(
-                                    keyShoesInfoEnum.DESCRIPTION,
-                                    e.target.value,
-                                    info.id,
-                                    setAddedInfos,
-                                 )
-                              }
-                              value={info.description}
-                              type='text'
-                              required={true}
-                           />
-                           <div className='add-shoes-modal__info-container__trash-button-container'>
-                              <IconButton
-                                 icon={faTrash}
-                                 onClick={() =>
-                                    removeInfo(info.id, setAddedInfos)
-                                 }
-                              />
-                           </div>
+                              value={season}
+                           >
+                              <option value={0} hidden disabled>
+                                 Вибрати сезон
+                              </option>
+                              {seasons?.map((season) => (
+                                 <option key={season.id} value={season.id}>
+                                    {season.name}
+                                 </option>
+                              ))}
+                           </select>
+                           <select
+                              className='add-shoes-modal__select'
+                              name='sex'
+                              onChange={(e) => setSex(e.target.value)}
+                              value={sex}
+                           >
+                              <option value={SexEnum.UNISEX}>
+                                 {SexEnum.UNISEX}
+                              </option>
+                              <option value={SexEnum.GIRL}>
+                                 {SexEnum.GIRL}
+                              </option>
+                              <option value={SexEnum.BOY}>{SexEnum.BOY}</option>
+                           </select>
                         </div>
-                     ))}
-                  </div>
-                  <div>
-                     <Button
-                        disabled={foundShoes ? false : true}
-                        buttonClass={ButtonClassEnum.PRIMARY}
-                        buttonText='Оновити'
-                     />
-                  </div>
-               </form>
+                        <div className='add-shoes-modal__sizes-container'>
+                           {sizes?.map((size) => {
+                              const value = foundShoes.shoes_sizes.find(
+                                 (el) => {
+                                    return el.sizeId === Number(size.id);
+                                 },
+                              );
+
+                              return (
+                                 <SizeEditItem
+                                    key={size.id}
+                                    onChangeSize={handleChangeSize}
+                                    size={size.size}
+                                    id={size.id}
+                                    value={value?.count}
+                                 />
+                              );
+                           })}
+                        </div>
+
+                        <div>
+                           <Button
+                              buttonClass={ButtonClassEnum.SECONDARY}
+                              buttonText='Додати додатковий опис товару'
+                              onClick={(e) => {
+                                 e.preventDefault();
+                                 addInfo();
+                              }}
+                           />
+                           {infos.map((info) => (
+                              <div
+                                 className='add-shoes-modal__info-container'
+                                 key={info.id}
+                              >
+                                 <ModalInput
+                                    text='Заголовок'
+                                    onChange={(e) =>
+                                       changeInfo(
+                                          keyShoesInfoEnum.TITLE,
+                                          e.target.value,
+                                          info.id,
+                                          setInfos,
+                                       )
+                                    }
+                                    value={info.title}
+                                    type='text'
+                                    required={true}
+                                 />
+                                 <ModalInput
+                                    text='Oпис'
+                                    onChange={(e) =>
+                                       changeInfo(
+                                          keyShoesInfoEnum.DESCRIPTION,
+                                          e.target.value,
+                                          info.id,
+                                          setInfos,
+                                       )
+                                    }
+                                    value={info.description}
+                                    type='text'
+                                    required={true}
+                                 />
+                                 <div className='add-shoes-modal__info-container__trash-button-container'>
+                                    <IconButton
+                                       icon={faTrash}
+                                       onClick={() => {
+                                          removeInfo(info.id, setInfos);
+                                          setDeletedInfoIds((prev) => [
+                                             ...prev,
+                                             info.id,
+                                          ]);
+                                       }}
+                                    />
+                                 </div>
+                              </div>
+                           ))}
+                           {addedInfos.map((info) => (
+                              <div
+                                 className='add-shoes-modal__info-container'
+                                 key={info.id}
+                              >
+                                 <ModalInput
+                                    text='Заголовок'
+                                    onChange={(e) =>
+                                       changeInfo(
+                                          keyShoesInfoEnum.TITLE,
+                                          e.target.value,
+                                          info.id,
+                                          setAddedInfos,
+                                       )
+                                    }
+                                    value={info.title}
+                                    type='text'
+                                    required={true}
+                                 />
+                                 <ModalInput
+                                    text='Oпис'
+                                    onChange={(e) =>
+                                       changeInfo(
+                                          keyShoesInfoEnum.DESCRIPTION,
+                                          e.target.value,
+                                          info.id,
+                                          setAddedInfos,
+                                       )
+                                    }
+                                    value={info.description}
+                                    type='text'
+                                    required={true}
+                                 />
+                                 <div className='add-shoes-modal__info-container__trash-button-container'>
+                                    <IconButton
+                                       icon={faTrash}
+                                       onClick={() =>
+                                          removeInfo(info.id, setAddedInfos)
+                                       }
+                                    />
+                                 </div>
+                              </div>
+                           ))}
+                        </div>
+                        <div>
+                           <Button
+                              disabled={foundShoes ? false : true}
+                              buttonClass={ButtonClassEnum.PRIMARY}
+                              buttonText='Оновити'
+                           />
+                        </div>
+                     </form>
+                  )}
+               </>
             )}
          </div>
       </div>

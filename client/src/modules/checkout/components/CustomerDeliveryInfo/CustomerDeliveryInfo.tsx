@@ -13,6 +13,7 @@ import { ICustomerInfo } from '../../../../http/checkout';
 import { CustomerDeliveryInfoType } from './CustomerDeliveryInfoType';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { getFullInfoOfUser } from '../../../../store/reducers/user/UserActionCreators';
+import { Loader } from '../../../ui/Loader';
 
 export const CustomerDeliveryInfo: React.FC<CustomerDeliveryInfoType> = ({
    handleSubmitCheckout,
@@ -91,8 +92,8 @@ export const CustomerDeliveryInfo: React.FC<CustomerDeliveryInfoType> = ({
       handleSubmitCheckout(customerInfo);
    };
 
-   if (isLoadingFullUserInfo) {
-      return <p>...Loading</p>;
+   if (isLoadingFullUserInfo && isAuth) {
+      return <Loader />;
    }
 
    return (
