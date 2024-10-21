@@ -11,7 +11,7 @@ import cookieParser from 'cookie-parser';
 import errorMiddleware from './middleware/errorMiddleware';
 
 const app: Application = express();
-const port: number = Number(process.env.PORT) || 8888;
+const port: number = +process.env.PORT || 8888;
 
 app.use(express.json());
 app.use(cookieParser());
