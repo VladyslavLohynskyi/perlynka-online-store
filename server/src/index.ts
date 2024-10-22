@@ -35,7 +35,7 @@ const start = async () => {
       console.log('DB authenticate Error');
    }
    try {
-      await await sequelize.sync();
+      await sequelize.sync();
    } catch (error) {
       console.log('DB synchronization Error');
    }

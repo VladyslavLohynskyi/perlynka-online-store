@@ -17,7 +17,8 @@ import ShoesInfo from '../models/shoesInfoModel';
 import ShoesImage from '../models/shoesImageModel';
 import ApiError from '../exceptions/ApiError';
 import sharp from 'sharp';
-import { error } from 'console';
+
+import fileUploadService from '../services/fileUploadService';
 
 interface IParseSizes {
    sizeId: number;
@@ -101,51 +102,33 @@ class shoesController {
          }
          const fileMainName = uuidv4();
          if (!Array.isArray(img)) {
-            await sharp(img.data.buffer)
-               .resize(300, 300)
-               .webp()
-               .toFile(
-                  path.resolve(
-                     __dirname,
-                     '..',
-                     'static',
-                     fileMainName + '-preview.webp',
-                  ),
-               );
-            await sharp(img.data.buffer)
-               .resize(1000, 1000)
-               .webp()
-               .toFile(
-                  path.resolve(
-                     __dirname,
-                     '..',
-                     'static',
-                     fileMainName + '.webp',
-                  ),
-               );
+            fileUploadService.uploadPhoto(
+               sharp(img.data.buffer).resize(300, 300).webp(),
+               fileMainName,
+               'preview',
+            );
+
+            fileUploadService.uploadPhoto(
+               sharp(img.data.buffer).resize(1000, 1000).webp(),
+               fileMainName,
+               'images',
+            );
          } else {
-            await sharp(img[img.length - 1].data.buffer)
-               .resize(300, 300)
-               .webp()
-               .toFile(
-                  path.resolve(
-                     __dirname,
-                     '..',
-                     'static',
-                     fileMainName + '-preview.webp',
-                  ),
-               );
-            await sharp(img[img.length - 1].data.buffer)
-               .resize(1000, 1000)
-               .webp()
-               .toFile(
-                  path.resolve(
-                     __dirname,
-                     '..',
-                     'static',
-                     fileMainName + '.webp',
-                  ),
-               );
+            fileUploadService.uploadPhoto(
+               sharp(img[img.length - 1].data.buffer)
+                  .resize(300, 300)
+                  .webp(),
+               fileMainName,
+               'preview',
+            );
+
+            fileUploadService.uploadPhoto(
+               sharp(img[img.length - 1].data.buffer)
+                  .resize(1000, 1000)
+                  .webp(),
+               fileMainName,
+               'images',
+            );
          }
          const shoes = await Shoes.create({
             model,
@@ -161,17 +144,11 @@ class shoesController {
          if (Array.isArray(img)) {
             for (let i = img.length - 2; i >= 0; i--) {
                const fileName = uuidv4();
-               await sharp(img[i].data.buffer)
-                  .resize(1000, 1000)
-                  .webp()
-                  .toFile(
-                     path.resolve(
-                        __dirname,
-                        '..',
-                        'static',
-                        fileName + '.webp',
-                     ),
-                  );
+               fileUploadService.uploadPhoto(
+                  sharp(img[i].data.buffer).resize(1000, 1000).webp(),
+                  fileMainName,
+                  'images',
+               );
                await ShoesImage.create({ shoId: shoes.id, img: fileName });
             }
          }
@@ -263,14 +240,19 @@ class shoesController {
    async deleteOne(req: Request, res: Response, next: NextFunction) {
       try {
          const { id } = req.params;
-
          const shoes = await Shoes.findOne({ where: { id: id } });
          if (shoes) {
             await ShoesSize.destroy({ where: { shoId: id } });
             await Shoes.destroy({ where: { id: id } });
-            await promises.unlink(
-               path.resolve(__dirname, '..', 'static', shoes.img + '.webp'),
-            );
+            await fileUploadService.deleteFile(shoes.img, 'preview');
+            await fileUploadService.deleteFile(shoes.img, 'images');
+            const images = await ShoesImage.findAll({ where: { id } });
+            if (images.length > 0) {
+               await ShoesImage.destroy({ where: { id } });
+               images.forEach((el) =>
+                  fileUploadService.deleteFile(el.img, 'images'),
+               );
+            }
             return res.json({ message: 'Взуття успішно видалене' });
          } else {
             return next(ApiError.notFound(`Взуття з id = ${id} не існує`));

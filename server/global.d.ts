@@ -11,5 +11,8 @@ namespace NodeJS {
       CLIENT_URL: string;
       MODE: string;
       DATABASE_URL: string;
+      GOOGLE_CLOUD_BUCKET_NAME: string;
+      GOOGLE_CLOUD_PROJECT_ID: string;
+      GOOGLE_CLOUD_STORAGE_BASE_URL: string;
    }
 }
