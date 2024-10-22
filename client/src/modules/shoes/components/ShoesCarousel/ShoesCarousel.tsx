@@ -3,7 +3,10 @@ import React, { useRef, useState } from 'react';
 import { ShoesCarouselType } from './ShoesCarouselType';
 import { Swiper, SwiperSlide, SwiperRef } from 'swiper/react';
 import 'swiper/css';
-import { baseURL } from '../../../../utils/constants';
+import {
+   GOOGLE_CLOUD_BUCKET_NAME,
+   GOOGLE_CLOUD_STORAGE_BASE_URL,
+} from '../../../../utils/constants';
 
 const ShoesCarousel: React.FC<ShoesCarouselType> = ({ slides }) => {
    const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
@@ -23,7 +26,7 @@ const ShoesCarousel: React.FC<ShoesCarouselType> = ({ slides }) => {
                      className='shoes-page-carousel__option-container'
                   >
                      <img
-                        src={baseURL + img + '.webp'}
+                        src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/images/${img}.webp`}
                         alt='Взуття'
                         draggable={false}
                      />
@@ -49,7 +52,7 @@ const ShoesCarousel: React.FC<ShoesCarouselType> = ({ slides }) => {
                         <img
                            ref={mainImageRef}
                            draggable={false}
-                           src={baseURL + img + '.webp'}
+                           src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/images/${img}.webp`}
                            alt='Взуття'
                         />
                      </div>
