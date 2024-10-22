@@ -8,17 +8,20 @@ const CustomMap: React.FC = () => {
          id: number;
          lat: number;
          lng: number;
+         title: string;
       }[]
    >([
       {
          id: 1,
          lat: 49.811027,
          lng: 23.974144,
+         title: 'Перлинка, ТЦ "Новинка" 92',
       },
       {
          id: 2,
          lat: 49.811796,
          lng: 23.974714,
+         title: 'Перлинка, ТЦ "Калина" 2A',
       },
    ]);
 
@@ -42,6 +45,7 @@ const CustomMap: React.FC = () => {
                   onClick={() =>
                      handleMarkerClick(markerLocation.lat, markerLocation.lng)
                   }
+                  title={markerLocation.title}
                />
             ))}
          </Map>
