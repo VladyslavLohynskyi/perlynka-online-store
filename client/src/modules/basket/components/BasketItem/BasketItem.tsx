@@ -2,7 +2,12 @@ import React from 'react';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import './BasketItem.scss';
 import { BasketItemType } from './BasketItemType';
-import { RoutesEnum, baseURL } from '../../../../utils/constants';
+import {
+   GOOGLE_CLOUD_BUCKET_NAME,
+   GOOGLE_CLOUD_STORAGE_BASE_URL,
+   RoutesEnum,
+   baseURL,
+} from '../../../../utils/constants';
 import { HorizontalLine } from '../../../ui/HorizontalLine';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { IconButton } from '../../../ui/IconButton';
@@ -60,7 +65,10 @@ export const BasketItem: React.FC<BasketItemType> = ({
                className='basket-item__img-container'
                onClick={() => navigate(RoutesEnum.SHOES + '/' + shoes.id)}
             >
-               <img src={baseURL + shoes.img + '-preview.webp'} alt='shoes' />
+               <img
+                  src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/preview/${shoes.img}.webp`}
+                  alt='shoes'
+               />
             </div>
             <div className='basket-item__info-container'>
                <p

@@ -1,6 +1,10 @@
 import React, { useRef } from 'react';
 import { useAppSelector } from '../../../../hooks/redux';
-import { RoutesEnum, baseURL } from '../../../../utils/constants';
+import {
+   GOOGLE_CLOUD_BUCKET_NAME,
+   GOOGLE_CLOUD_STORAGE_BASE_URL,
+   RoutesEnum,
+} from '../../../../utils/constants';
 
 import './ShoesItem.scss';
 import { ShoesItemType } from './ShoesItemType';
@@ -17,7 +21,7 @@ export const ShoesItem: React.FC<ShoesItemType> = ({ shoes }) => {
       >
          <div className='shoes-item__img-container'>
             <img
-               src={baseURL + shoes.img + '-preview.webp'}
+               src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/preview/${shoes.img}.webp`}
                loading='lazy'
                alt='shoes'
                ref={ref}

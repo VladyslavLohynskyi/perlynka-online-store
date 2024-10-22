@@ -1,7 +1,12 @@
 import React from 'react';
 import './CheckoutItem.scss';
 import { CheckoutItemType } from './CheckoutItemType';
-import { RoutesEnum, baseURL } from '../../../../utils/constants';
+import {
+   GOOGLE_CLOUD_BUCKET_NAME,
+   GOOGLE_CLOUD_STORAGE_BASE_URL,
+   RoutesEnum,
+   baseURL,
+} from '../../../../utils/constants';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { IconButton } from '../../../ui/IconButton';
 
@@ -60,7 +65,10 @@ export const CheckoutItem: React.FC<CheckoutItemType> = ({
                className='checkout-item__img-container'
                onClick={() => navigate(RoutesEnum.SHOES + '/' + shoes.id)}
             >
-               <img src={baseURL + shoes.img + '-preview.webp'} alt='shoes' />
+               <img
+                  src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/preview/${shoes.img}.webp`}
+                  alt='shoes'
+               />
             </div>
             <div>
                <p

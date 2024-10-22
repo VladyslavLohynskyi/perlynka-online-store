@@ -4,7 +4,11 @@ import { DeleteShoesModalType } from './DeleteShoesModalType';
 import { ModalHeader } from '../../components/ModalHeader';
 import ShoesReq from '../../../../../../http/shoes';
 import { IShoes } from '../../../../../../store/reducers/shoes/ShoesSlice';
-import { baseURL } from '../../../../../../utils/constants';
+import {
+   GOOGLE_CLOUD_BUCKET_NAME,
+   GOOGLE_CLOUD_STORAGE_BASE_URL,
+   baseURL,
+} from '../../../../../../utils/constants';
 import { Button } from '../../../../../ui/Button';
 import { deleteShoes } from '../../../../../../store/reducers/shoes/ShoesActionCreators';
 import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
@@ -60,7 +64,7 @@ export const DeleteShoesModal: React.FC<DeleteShoesModalType> = ({
                            <div className='delete-shoes-modal__shoes-view-img-container'>
                               <img
                                  style={{ width: '100%' }}
-                                 src={baseURL + foundShoes.img + '.webp'}
+                                 src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/images/${foundShoes.img}.webp`}
                                  alt='Взуття'
                               />
                            </div>
