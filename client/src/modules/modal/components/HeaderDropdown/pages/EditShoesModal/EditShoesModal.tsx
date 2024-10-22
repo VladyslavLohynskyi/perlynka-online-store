@@ -11,7 +11,11 @@ import {
    ISize,
    SexEnum,
 } from '../../../../../../store/reducers/shoes/ShoesSlice';
-import { baseURL } from '../../../../../../utils/constants';
+import {
+   GOOGLE_CLOUD_BUCKET_NAME,
+   GOOGLE_CLOUD_STORAGE_BASE_URL,
+   baseURL,
+} from '../../../../../../utils/constants';
 import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
 import { Button } from '../../../../../ui/Button';
 import { SizeEditItem } from '../../components/SizeEditItem';
@@ -297,7 +301,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                                     src={
                                        file
                                           ? URL.createObjectURL(file)
-                                          : baseURL + foundShoes.img + '.webp'
+                                          : `${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/images/${foundShoes.img}.webp`
                                     }
                                     alt='Взуття'
                                  />
@@ -316,7 +320,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                               >
                                  <div className='edit-shoes-modal__img-container'>
                                     <img
-                                       src={baseURL + img + '.webp'}
+                                       src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/images/${img}.webp`}
                                        alt='Взуття'
                                     />
                                  </div>
