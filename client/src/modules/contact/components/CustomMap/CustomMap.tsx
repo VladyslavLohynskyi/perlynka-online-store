@@ -22,16 +22,27 @@ const CustomMap: React.FC = () => {
       },
    ]);
 
+   const handleMarkerClick = (lat: number, lng: number) => {
+      const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+      window.open(googleMapsUrl, '_blank');
+   };
    return (
       <div className='map__container'>
          <Map
             defaultZoom={17}
             defaultCenter={{ lat: 49.81156505739717, lng: 23.974355648327954 }}
             gestureHandling={'greedy'}
-            disableDefaultUI={true}
+            zoomControl={true}
+            disableDefaultUI={false}
          >
             {markersLocation.map((markerLocation) => (
-               <Marker key={markerLocation.id} position={markerLocation} />
+               <Marker
+                  key={markerLocation.id}
+                  position={markerLocation}
+                  onClick={() =>
+                     handleMarkerClick(markerLocation.lat, markerLocation.lng)
+                  }
+               />
             ))}
          </Map>
       </div>
