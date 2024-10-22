@@ -6,6 +6,7 @@ import { BasketPage } from '../basket/pages';
 import { CheckoutPage } from '../checkout/pages';
 import Contact from '../contact/pages/Contact';
 import PaymentAndDelivery from '../PaymentAndDelivery/pages/PaymentAndDelivery';
+import Profile from '../profile/pages/Profile';
 import ReturnAndExchange from '../returnAndExchange/pages/ReturnAndExchange';
 
 import { ShoesPage } from '../shoes/pages';
@@ -17,7 +18,7 @@ interface IRoutes {
 export const authRoutes: IRoutes[] = [
    {
       path: RoutesEnum.PROFILE,
-      Component: Shop,
+      Component: Profile,
    },
    {
       path: RoutesEnum.SHOP,
