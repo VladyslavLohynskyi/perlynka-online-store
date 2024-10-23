@@ -148,3 +148,24 @@ export const updateUserData =
             );
       }
    };
+
+export const changeUserPassword =
+   (id: string, password: string, token: string) =>
+   async (dispatch: AppDispatch) => {
+      try {
+         dispatch(userSlice.actions.userChangePassword());
+         const data = await UserReq.forgotPasswordChange(id!, password, token!);
+         dispatch(userSlice.actions.userChangePasswordSuccess(data));
+      } catch (error) {
+         if (axios.isAxiosError(error)) {
+            dispatch(
+               userSlice.actions.userChangePasswordError(error.response?.data),
+            );
+         } else
+            dispatch(
+               userSlice.actions.userUpdateDataError(
+                  'Невідома помилка під час зміни данних користувача',
+               ),
+            );
+      }
+   };

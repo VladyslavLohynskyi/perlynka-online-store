@@ -92,12 +92,16 @@ export class UserReq {
    checkForgotToken(id: string, token: string) {
       return $host.get('/user/forgot-password/check/' + id + '/' + token);
    }
-   forgotPasswordChange(userId: string, password: string, token: string) {
-      return $host.post('/user/forgot-password/change', {
-         userId,
-         password,
-         token,
-      });
+   async forgotPasswordChange(userId: string, password: string, token: string) {
+      const { data } = await $host.post<{ message: string }>(
+         '/user/forgot-password/change',
+         {
+            userId,
+            password,
+            token,
+         },
+      );
+      return data;
    }
    getUserFullInfo = async () => {
       const { data } = await $authHost.get<IUserResponse>('/user/user-info');

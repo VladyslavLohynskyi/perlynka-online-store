@@ -132,6 +132,23 @@ export const userSlice = createSlice({
          state.message = '';
          state.error = action.payload;
       },
+
+      userChangePassword(state) {
+         state.message = '';
+         state.error = '';
+      },
+
+      userChangePasswordSuccess(
+         state,
+         action: PayloadAction<{ message: string }>,
+      ) {
+         state.message = action.payload.message;
+      },
+
+      userChangePasswordError(state, action: PayloadAction<string>) {
+         state.message = '';
+         state.error = action.payload;
+      },
    },
 });
 
