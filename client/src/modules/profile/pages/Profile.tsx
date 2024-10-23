@@ -78,62 +78,70 @@ const Profile = () => {
                <div className='profile__info-container'>
                   <label>
                      <span>Пошта:</span>
-                     <BasicInput
-                        disabled
-                        style={{ height: '30px', fontSize: '14px' }}
-                        value={user?.email}
-                     />
+                     <div className='profile__input-container'>
+                        <BasicInput
+                           disabled
+                           style={{ height: '30px', fontSize: '14px' }}
+                           value={user?.email}
+                        />
+                     </div>
                   </label>
                   <label>
                      <span>Ім'я:</span>
-                     <BasicInput
-                        disabled={isDisabledName}
-                        style={{ height: '30px', fontSize: '14px' }}
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                     />
-                     <IconButton
-                        icon={isDisabledName ? faPenToSquare : faCheck}
-                        style={{
-                           color:
-                              !isDisabledName && name !== user?.name
-                                 ? 'green'
-                                 : '#000',
-                        }}
-                        onClick={() => handleSubmitChangeName(name)}
-                     />
+                     <div className='profile__input-container'>
+                        <BasicInput
+                           disabled={isDisabledName}
+                           style={{ height: '30px', fontSize: '14px' }}
+                           value={name}
+                           onChange={(e) => setName(e.target.value)}
+                        />
+                        <IconButton
+                           icon={isDisabledName ? faPenToSquare : faCheck}
+                           style={{
+                              color:
+                                 !isDisabledName && name !== user?.name
+                                    ? 'green'
+                                    : '#000',
+                           }}
+                           onClick={() => handleSubmitChangeName(name)}
+                        />
+                     </div>
                   </label>
                   <label>
                      <span>Прізвище:</span>
-                     <BasicInput
-                        disabled={isDisabledSurname}
-                        style={{ height: '30px', fontSize: '14px' }}
-                        value={surname}
-                        onChange={(e) => setSurname(e.target.value)}
-                     />
-                     <IconButton
-                        icon={isDisabledSurname ? faPenToSquare : faCheck}
-                        style={{
-                           color:
-                              !isDisabledSurname && surname !== user?.surname
-                                 ? 'green'
-                                 : '#000',
-                        }}
-                        onClick={() => handleSubmitChangeSurname(surname)}
-                     />
+                     <div className='profile__input-container'>
+                        <BasicInput
+                           disabled={isDisabledSurname}
+                           style={{ height: '30px', fontSize: '14px' }}
+                           value={surname}
+                           onChange={(e) => setSurname(e.target.value)}
+                        />
+                        <IconButton
+                           icon={isDisabledSurname ? faPenToSquare : faCheck}
+                           style={{
+                              color:
+                                 !isDisabledSurname && surname !== user?.surname
+                                    ? 'green'
+                                    : '#000',
+                           }}
+                           onClick={() => handleSubmitChangeSurname(surname)}
+                        />
+                     </div>
                   </label>
                   <label>
                      <span>Пароль:</span>
-                     <BasicInput
-                        disabled
-                        style={{ height: '30px', fontSize: '14px' }}
-                        value={'...........'}
-                        type='password'
-                     />
-                     <IconButton
-                        icon={faPenToSquare}
-                        onClick={handleClickChangePassword}
-                     />
+                     <div className='profile__input-container'>
+                        <BasicInput
+                           disabled
+                           style={{ height: '30px', fontSize: '14px' }}
+                           value={'...........'}
+                           type='password'
+                        />
+                        <IconButton
+                           icon={faPenToSquare}
+                           onClick={handleClickChangePassword}
+                        />
+                     </div>
                   </label>
                </div>
             </div>
