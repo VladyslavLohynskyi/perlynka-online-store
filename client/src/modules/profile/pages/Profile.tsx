@@ -4,6 +4,10 @@ import { IconButton } from '../../ui/IconButton';
 import { faPenToSquare, faCheck } from '@fortawesome/free-solid-svg-icons';
 import './Profile.scss';
 import { useState } from 'react';
+import UserReq from '../../../http/users';
+import axios from 'axios';
+import Alert from '../../ui/Alert/Alert';
+import { AlertTypeEnum } from '../../ui/Alert/AlertType';
 
 const Profile = () => {
    const { user } = useAppSelector((state) => state.userReducer);
@@ -11,6 +15,18 @@ const Profile = () => {
    const [name, setName] = useState(user?.name);
    const [isDisabledSurname, setIsDisabledSurname] = useState<boolean>(true);
    const [surname, setSurname] = useState(user?.surname);
+   const [showAlertNotification, setShowAlertNotification] =
+      useState<boolean>(false);
+   const [alertNotificationMessage, setAlertNotificationMessage] = useState('');
+   const handleClickChangePassword = async () => {
+      try {
+         await UserReq.sendForgotPasswordLink(user!.email);
+         setAlertNotificationMessage(
+            'Повідомлення нарахунок підвердження зміни паролю надіслано на вашу пошту',
+         );
+         setShowAlertNotification(true);
+      } catch (error) {}
+   };
    return (
       <div className='profile'>
          <div className='profile__container'>
@@ -71,11 +87,23 @@ const Profile = () => {
                         value={'...........'}
                         type='password'
                      />
-                     <IconButton icon={faPenToSquare} />
+                     <IconButton
+                        icon={faPenToSquare}
+                        onClick={handleClickChangePassword}
+                     />
                   </label>
                </div>
             </div>
          </div>
+         <Alert
+            type={AlertTypeEnum.SUCCESS}
+            show={showAlertNotification}
+            onClose={() => {
+               setShowAlertNotification(false);
+               setAlertNotificationMessage('');
+            }}
+            message={alertNotificationMessage}
+         />
       </div>
    );
 };

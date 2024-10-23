@@ -48,6 +48,10 @@ export const authRoutes: IRoutes[] = [
       path: RoutesEnum.RETURN_AND_EXCHANGE,
       Component: ReturnAndExchange,
    },
+   {
+      path: RoutesEnum.FORGOT_FORM + '/:id' + '/:token',
+      Component: ChangePassword,
+   },
 ];
 
 export const publicRoutes: IRoutes[] = [
