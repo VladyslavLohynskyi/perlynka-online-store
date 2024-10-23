@@ -18,13 +18,14 @@ interface ISignUpUserProps {
    surname: string;
    name: string;
    password: string;
+   phoneNumber: string;
 }
 interface IUpdateUserDataProps {
    name?: string;
    surname?: string;
 }
 export const registrationUser =
-   ({ email, password, name, surname }: ISignUpUserProps) =>
+   ({ email, password, name, surname, phoneNumber }: ISignUpUserProps) =>
    async (dispatch: AppDispatch) => {
       try {
          dispatch(userSlice.actions.userRegistration());
@@ -33,6 +34,7 @@ export const registrationUser =
             password,
             name,
             surname,
+            phoneNumber,
          );
          const user = jwt_decode<IUser>(data.token);
          dispatch(

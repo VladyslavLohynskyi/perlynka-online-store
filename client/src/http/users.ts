@@ -20,6 +20,7 @@ export class UserReq {
       password: string,
       name: string,
       surname: string,
+      phoneNumber: string,
    ) => {
       const { data } = await $host.post<{ token: string; message: string }>(
          '/user/registration',
@@ -28,6 +29,7 @@ export class UserReq {
             password,
             name,
             surname,
+            phoneNumber,
          },
       );
       return data;

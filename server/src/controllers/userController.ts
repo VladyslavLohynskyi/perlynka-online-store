@@ -22,6 +22,7 @@ interface userRegistrationRequest extends Request {
       name: string;
       surname: string;
       password: string;
+      phoneNumber: string;
    };
 }
 
@@ -70,10 +71,12 @@ class userController {
       next: NextFunction,
    ) {
       try {
-         const { email, password, name, surname } = req.body;
-         if (!email || !password) {
+         const { email, password, name, surname, phoneNumber } = req.body;
+         if (!email || !password || !phoneNumber || !name || !surname) {
             return next(
-               ApiError.badRequest('Неправильно введенно пароль або email'),
+               ApiError.badRequest(
+                  'Данні користувача повинні бути заповненими',
+               ),
             );
          }
          const candidate = await User.findOne({ where: { email } });
@@ -120,6 +123,7 @@ class userController {
             password: hashPassword,
             isActivated: false,
             activationLink,
+            phoneNumber,
          });
          await mailService.sendActivationMail(
             email,

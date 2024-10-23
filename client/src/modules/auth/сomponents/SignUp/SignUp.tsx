@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { BasicInput } from '../../../ui/BasicInput';
 import { Button } from '../../../ui/Button';
 import { ButtonClassEnum } from '../../../ui/Button/ButtonType';
-import { RoutesEnum } from '../../../../utils/constants';
+import { RoutesEnum, phoneNumberPattern } from '../../../../utils/constants';
 import { userSlice } from '../../../../store/reducers/user/UserSlice';
 import { registrationUser } from '../../../../store/reducers/user/UserActionCreators';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
+import PhoneInput from 'react-phone-input-2';
 
 const SignUp = () => {
    const dispatch = useAppDispatch();
@@ -15,12 +16,22 @@ const SignUp = () => {
    const [name, setName] = useState('');
    const [surname, setSurname] = useState('');
    const [email, setEmail] = useState('');
+   const [phoneNumber, setPhoneNumber] = useState('');
+   const [isValidatedPhoneNumber, setIsValidatedPhoneNumber] = useState(true);
+   const [customError, setCustomError] = useState('');
    const [password, setPassword] = useState('');
    const handleClickSubmitAuth = async (
       e: React.FormEvent<HTMLFormElement>,
    ) => {
       e.preventDefault();
-      await dispatch(registrationUser({ email, password, surname, name }));
+      if (!phoneNumberPattern.test(phoneNumber)) {
+         setIsValidatedPhoneNumber(false);
+         setCustomError('Телефоний номер не валідний');
+         return;
+      }
+      await dispatch(
+         registrationUser({ email, password, surname, name, phoneNumber }),
+      );
    };
 
    const handleClickChangeAuth = () => {
@@ -33,6 +44,7 @@ const SignUp = () => {
          <form className='auth__form' onSubmit={handleClickSubmitAuth}>
             <h2 className='auth__header'>Реєстрація</h2>
             {error && <h3 className='auth__error'>{error}</h3>}
+            {customError && <h3 className='auth__error'>{customError}</h3>}
             <BasicInput
                name={'name'}
                type='text'
@@ -56,6 +68,36 @@ const SignUp = () => {
                onChange={(e) => setEmail(e.target.value)}
                required={true}
                placeholder='Пошта'
+            />
+            <PhoneInput
+               country={'ua'}
+               onlyCountries={['ua']}
+               inputClass='basic-input'
+               inputStyle={{
+                  width: '100%',
+                  fontSize: '12px',
+                  border: `1.5px solid ${
+                     isValidatedPhoneNumber ? '#d9d7d7' : 'rgb(156, 5, 5)'
+                  }`,
+               }}
+               buttonStyle={{
+                  border: `1.5px solid ${
+                     isValidatedPhoneNumber ? '#d9d7d7' : 'rgb(156, 5, 5)'
+                  }`,
+               }}
+               containerStyle={{ marginBottom: '15px' }}
+               disableDropdown={true}
+               countryCodeEditable={false}
+               inputProps={{
+                  name: 'phone',
+                  required: true,
+               }}
+               value={phoneNumber}
+               onChange={(e) => {
+                  setCustomError('');
+                  setIsValidatedPhoneNumber(true);
+                  setPhoneNumber(e);
+               }}
             />
             <BasicInput
                type='password'
