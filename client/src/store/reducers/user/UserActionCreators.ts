@@ -19,7 +19,10 @@ interface ISignUpUserProps {
    name: string;
    password: string;
 }
-
+interface IUpdateUserDataProps {
+   name?: string;
+   surname?: string;
+}
 export const registrationUser =
    ({ email, password, name, surname }: ISignUpUserProps) =>
    async (dispatch: AppDispatch) => {
@@ -59,10 +62,7 @@ export const loginUser =
       try {
          dispatch(userSlice.actions.userLogin());
          const data = await UserReq.login(email, password);
-         const user: IUser = jwt_decode(data.token);
-         dispatch(
-            userSlice.actions.userLoginSuccess({ user, token: data.token }),
-         );
+         dispatch(userSlice.actions.userLoginSuccess({ ...data }));
          dispatch(synchronizeBaskets(shoes));
       } catch (error) {
          if (axios.isAxiosError(error)) {
@@ -80,8 +80,7 @@ export const authUser = () => async (dispatch: AppDispatch) => {
    try {
       dispatch(userSlice.actions.userAuth());
       const data = await UserReq.auth();
-      const user: IUser = jwt_decode(data.token);
-      dispatch(userSlice.actions.userAuthSuccess({ user, token: data.token }));
+      dispatch(userSlice.actions.userAuthSuccess({ ...data }));
    } catch (error) {
       if (axios.isAxiosError(error)) {
          dispatch(userSlice.actions.userAuthError(error.response?.data));
@@ -126,3 +125,23 @@ export const logOutUser = () => async (dispatch: AppDispatch) => {
          );
    }
 };
+
+export const updateUserData =
+   (userUpdateData: IUpdateUserDataProps) => async (dispatch: AppDispatch) => {
+      try {
+         dispatch(userSlice.actions.userUpdateData());
+         const data = await UserReq.updateUserData({ ...userUpdateData });
+         dispatch(userSlice.actions.userUpdateDataSuccess(data));
+      } catch (error) {
+         if (axios.isAxiosError(error)) {
+            dispatch(
+               userSlice.actions.userUpdateDataError(error.response?.data),
+            );
+         } else
+            dispatch(
+               userSlice.actions.userUpdateDataError(
+                  'Невідома помилка під час зміни данних користувача',
+               ),
+            );
+      }
+   };

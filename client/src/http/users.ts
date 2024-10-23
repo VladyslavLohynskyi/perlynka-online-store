@@ -9,6 +9,11 @@ export interface IUserResponse {
    message: string;
 }
 
+interface IUpdateUserData {
+   name?: string;
+   surname?: string;
+}
+
 export class UserReq {
    registration = async (
       email: string,
@@ -28,15 +33,18 @@ export class UserReq {
       return data;
    };
    login = async (email: string, password: string) => {
-      const { data } = await $host.post<{ token: string }>('/user/login', {
-         email,
-         password,
-      });
+      const { data } = await $host.post<{ token: string; user: IUser }>(
+         '/user/login',
+         {
+            email,
+            password,
+         },
+      );
       return data;
    };
 
    auth = async () => {
-      const { data } = await axios.get<{ token: string }>(
+      const { data } = await axios.get<{ token: string; user: IUser }>(
          `${baseURL}api/user/refresh`,
          { withCredentials: true },
       );
@@ -90,6 +98,13 @@ export class UserReq {
    }
    getUserFullInfo = async () => {
       const { data } = await $authHost.get<IUserResponse>('/user/user-info');
+      return data;
+   };
+
+   updateUserData = async (updateUserData: IUpdateUserData) => {
+      const { data } = await $authHost.patch<IUserResponse>('/user', {
+         ...updateUserData,
+      });
       return data;
    };
 }

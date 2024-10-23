@@ -29,8 +29,9 @@ const Alert: React.FC<AlertType> = ({ show, onClose, type, message }) => {
             <div>
                <h3 className='nav-btn-text'>{message}</h3>
                {type === AlertTypeEnum.DANGER && (
-                  <p>
-                     Спробуйте перезавантажити сторінку і повторити дію ще раз
+                  <p className='modal-alert__description'>
+                     Примітка: Спробуйте перезавантажити сторінку і повторити
+                     дію ще раз
                   </p>
                )}
             </div>
