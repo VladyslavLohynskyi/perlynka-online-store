@@ -18,8 +18,10 @@ const SignUp = () => {
    const [email, setEmail] = useState('');
    const [phoneNumber, setPhoneNumber] = useState('');
    const [isValidatedPhoneNumber, setIsValidatedPhoneNumber] = useState(true);
+   const [isValidatedPassword, setIsValidatedPassword] = useState(true);
    const [customError, setCustomError] = useState('');
    const [password, setPassword] = useState('');
+   const [confirmPassword, setConfirmPassword] = useState('');
    const handleClickSubmitAuth = async (
       e: React.FormEvent<HTMLFormElement>,
    ) => {
@@ -27,6 +29,11 @@ const SignUp = () => {
       if (!phoneNumberPattern.test(phoneNumber)) {
          setIsValidatedPhoneNumber(false);
          setCustomError('Телефоний номер не валідний');
+         return;
+      }
+      if (password !== confirmPassword) {
+         setIsValidatedPassword(false);
+         setCustomError('Паролі не збігаються');
          return;
       }
       await dispatch(
@@ -102,9 +109,34 @@ const SignUp = () => {
             <BasicInput
                type='password'
                value={password}
-               onChange={(e) => setPassword(e.target.value)}
+               onChange={(e) => {
+                  setCustomError('');
+                  setIsValidatedPassword(true);
+                  setPassword(e.target.value);
+               }}
+               style={{
+                  border: `1.5px solid ${
+                     isValidatedPassword ? '#d9d7d7' : 'rgb(156, 5, 5)'
+                  }`,
+               }}
                minLength={8}
                placeholder='Пароль'
+            />
+            <BasicInput
+               type='password'
+               value={confirmPassword}
+               style={{
+                  border: `1.5px solid ${
+                     isValidatedPassword ? '#d9d7d7' : 'rgb(156, 5, 5)'
+                  }`,
+               }}
+               onChange={(e) => {
+                  setCustomError('');
+                  setIsValidatedPassword(true);
+                  setConfirmPassword(e.target.value);
+               }}
+               minLength={8}
+               placeholder='Підтвердіть пароль'
             />
             <Button
                style={{ height: '38px' }}
