@@ -12,6 +12,7 @@ export interface IUserResponse {
 interface IUpdateUserData {
    name?: string;
    surname?: string;
+   phoneNumber?: string;
 }
 
 export class UserReq {

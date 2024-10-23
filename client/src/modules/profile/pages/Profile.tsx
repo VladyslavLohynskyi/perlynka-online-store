@@ -81,10 +81,11 @@ const Profile = () => {
       if (!isDisabledPhoneNumber) {
          if (
             phoneNumber === user?.phoneNumber ||
-            phoneNumberPattern.test(phoneNumber)
+            !phoneNumberPattern.test(phoneNumber)
          ) {
             return setIsDisabledPhoneNumber((prev) => !prev);
          }
+         dispatch(updateUserData({ phoneNumber }));
       }
       setIsDisabledPhoneNumber((prev) => !prev);
    };

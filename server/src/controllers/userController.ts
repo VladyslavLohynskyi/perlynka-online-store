@@ -61,6 +61,7 @@ interface IUpdateUserDataRequest extends authRequest {
    body: {
       name: string;
       surname: string;
+      phoneNumber: string;
    };
 }
 
@@ -485,7 +486,7 @@ class userController {
       next: NextFunction,
    ) {
       try {
-         const { name, surname } = req.body;
+         const { name, surname, phoneNumber } = req.body;
          const userData = await User.findOne({
             where: { id: req.user?.id, email: req.user?.email },
          });
@@ -495,11 +496,12 @@ class userController {
          const { password, activationLink, ...user } = userData.get({
             plain: true,
          });
-         if (name || surname) {
+         if (name || surname || phoneNumber) {
             await User.update(
                {
                   name: name ? name : user.name,
                   surname: surname ? surname : user.surname,
+                  phoneNumber: phoneNumber ? phoneNumber : user.phoneNumber,
                },
                { where: { id: user.id } },
             );
@@ -516,6 +518,7 @@ class userController {
                ...user,
                name: name ? name : user.name,
                surname: surname ? surname : user.surname,
+               phoneNumber: phoneNumber ? phoneNumber : user.phoneNumber,
             },
          });
       } catch (error) {

@@ -23,6 +23,7 @@ interface ISignUpUserProps {
 interface IUpdateUserDataProps {
    name?: string;
    surname?: string;
+   phoneNumber?: string;
 }
 export const registrationUser =
    ({ email, password, name, surname, phoneNumber }: ISignUpUserProps) =>
