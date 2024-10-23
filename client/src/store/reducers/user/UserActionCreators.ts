@@ -19,7 +19,10 @@ interface ISignUpUserProps {
    name: string;
    password: string;
 }
-
+interface IUpdateUserDataProps {
+   name?: string;
+   surname?: string;
+}
 export const registrationUser =
    ({ email, password, name, surname }: ISignUpUserProps) =>
    async (dispatch: AppDispatch) => {
@@ -122,3 +125,23 @@ export const logOutUser = () => async (dispatch: AppDispatch) => {
          );
    }
 };
+
+export const updateUserData =
+   (userUpdateData: IUpdateUserDataProps) => async (dispatch: AppDispatch) => {
+      try {
+         dispatch(userSlice.actions.userUpdateData());
+         const data = await UserReq.updateUserData({ ...userUpdateData });
+         dispatch(userSlice.actions.userUpdateDataSuccess(data));
+      } catch (error) {
+         if (axios.isAxiosError(error)) {
+            dispatch(
+               userSlice.actions.userUpdateDataError(error.response?.data),
+            );
+         } else
+            dispatch(
+               userSlice.actions.userUpdateDataError(
+                  'Невідома помилка під час зміни данних користувача',
+               ),
+            );
+      }
+   };

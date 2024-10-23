@@ -2,12 +2,13 @@ import bcrypt from 'bcrypt';
 import { NextFunction, Request, Response } from 'express';
 import User, { Role } from '../models/userModel';
 import Basket from '../models/basketModel';
-import { Op } from 'sequelize';
+import { Op, where } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import mailService from '../services/mailService';
 import tokenService from '../services/tokenService';
 import ApiError from '../exceptions/ApiError';
 import ForgotToken from '../models/forgotTokenModel';
+import { authRequest } from '../middleware/authMiddleware';
 
 interface userLoginRequest extends Request {
    body: {
@@ -53,6 +54,12 @@ interface IChangeRole extends Request {
    body: {
       role: Role;
       id: string;
+   };
+}
+interface IUpdateUserDataRequest extends authRequest {
+   body: {
+      name: string;
+      surname: string;
    };
 }
 
@@ -463,6 +470,55 @@ class userController {
          return next(
             ApiError.internalServer(
                'Невідома помилка при зміні паролю користувача',
+            ),
+         );
+      }
+   }
+
+   async updateUserData(
+      req: IUpdateUserDataRequest,
+      res: Response,
+      next: NextFunction,
+   ) {
+      try {
+         const { name, surname } = req.body;
+         const userData = await User.findOne({
+            where: { id: req.user?.id, email: req.user?.email },
+         });
+         if (!userData) {
+            return next(ApiError.Unauthorized('Користувача не знайдено в db'));
+         }
+         const { password, activationLink, ...user } = userData.get({
+            plain: true,
+         });
+         if (name || surname) {
+            await User.update(
+               {
+                  name: name ? name : user.name,
+                  surname: surname ? surname : user.surname,
+               },
+               { where: { id: user.id } },
+            );
+         } else {
+            return next(
+               ApiError.badRequest(
+                  'Помилка валідації данних: значення не повинне бути пусте',
+               ),
+            );
+         }
+         return res.status(200).json({
+            message: 'Дані користувача успішно змінено',
+            user: {
+               ...user,
+               name: name ? name : user.name,
+               surname: surname ? surname : user.surname,
+            },
+         });
+      } catch (error) {
+         console.log(error);
+         return next(
+            ApiError.internalServer(
+               'Невідома помилка при змінні данних користувача',
             ),
          );
       }

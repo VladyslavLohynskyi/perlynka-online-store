@@ -113,6 +113,24 @@ export const userSlice = createSlice({
          document.cookie = 'token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
          state.message = action.payload;
       },
+
+      userUpdateData(state) {
+         state.message = '';
+         state.error = '';
+      },
+
+      userUpdateDataSuccess(
+         state,
+         action: PayloadAction<{ message: string; user: IUser }>,
+      ) {
+         state.user = action.payload.user;
+         state.message = action.payload.message;
+      },
+
+      userUpdateDataError(state, action: PayloadAction<string>) {
+         state.message = '';
+         state.error = action.payload;
+      },
    },
 });
 

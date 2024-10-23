@@ -18,3 +18,4 @@ userRouter.get(
 );
 userRouter.post('/forgot-password/change', userController.forgotPasswordChange);
 userRouter.get('/user-info', authMiddleware, userController.getUserByJWT);
+userRouter.patch('/', authMiddleware, userController.updateUserData);

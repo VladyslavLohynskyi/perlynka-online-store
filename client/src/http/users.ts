@@ -9,6 +9,11 @@ export interface IUserResponse {
    message: string;
 }
 
+interface IUpdateUserData {
+   name?: string;
+   surname?: string;
+}
+
 export class UserReq {
    registration = async (
       email: string,
@@ -93,6 +98,13 @@ export class UserReq {
    }
    getUserFullInfo = async () => {
       const { data } = await $authHost.get<IUserResponse>('/user/user-info');
+      return data;
+   };
+
+   updateUserData = async (updateUserData: IUpdateUserData) => {
+      const { data } = await $authHost.patch<IUserResponse>('/user', {
+         ...updateUserData,
+      });
       return data;
    };
 }
