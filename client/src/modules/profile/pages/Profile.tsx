@@ -9,6 +9,8 @@ import Alert from '../../ui/Alert/Alert';
 import { AlertTypeEnum } from '../../ui/Alert/AlertType';
 import axios from 'axios';
 import { updateUserData } from '../../../store/reducers/user/UserActionCreators';
+import PhoneInput from 'react-phone-input-2';
+import { phoneNumberPattern } from '../../../utils/constants';
 
 const Profile = () => {
    const dispatch = useAppDispatch();
@@ -22,6 +24,10 @@ const Profile = () => {
    const [alertNotificationMessage, setAlertNotificationMessage] = useState('');
    const [isErrorNotificationMessage, setIsErrorNotificationMessage] =
       useState<boolean>(false);
+
+   const [phoneNumber, setPhoneNumber] = useState(user!.phoneNumber);
+   const [isDisabledPhoneNumber, setIsDisabledPhoneNumber] = useState(true);
+
    const handleClickChangePassword = async () => {
       try {
          await UserReq.sendForgotPasswordLink(user!.email);
@@ -69,6 +75,18 @@ const Profile = () => {
          dispatch(updateUserData({ surname }));
       }
       setIsDisabledSurname((prev) => !prev);
+   };
+
+   const handleSubmitChangePhoneNumber = (phoneNumber: string) => {
+      if (!isDisabledPhoneNumber) {
+         if (
+            phoneNumber === user?.phoneNumber ||
+            phoneNumberPattern.test(phoneNumber)
+         ) {
+            return setIsDisabledPhoneNumber((prev) => !prev);
+         }
+      }
+      setIsDisabledPhoneNumber((prev) => !prev);
    };
    return (
       <div className='profile'>
@@ -125,6 +143,55 @@ const Profile = () => {
                                     : '#000',
                            }}
                            onClick={() => handleSubmitChangeSurname(surname)}
+                        />
+                     </div>
+                  </label>
+                  <label>
+                     <span>Телефон:</span>
+                     <div className='profile__input-container'>
+                        <PhoneInput
+                           disabled={isDisabledPhoneNumber}
+                           country={'ua'}
+                           onlyCountries={['ua']}
+                           inputClass='basic-input'
+                           inputStyle={{
+                              width: '100%',
+                              fontSize: '12px',
+                              border: '1.5px solid #d9d7d7',
+                              backgroundColor: isDisabledPhoneNumber
+                                 ? '#EFEFEF4D'
+                                 : '#fff',
+                              height: '30px',
+                           }}
+                           buttonStyle={{
+                              border: '1.5px solid #d9d7d7',
+                           }}
+                           disableDropdown={true}
+                           countryCodeEditable={false}
+                           inputProps={{
+                              name: 'phone',
+                              required: true,
+                           }}
+                           value={phoneNumber}
+                           onChange={(e) => {
+                              setPhoneNumber(e);
+                           }}
+                        />
+                        <IconButton
+                           icon={
+                              isDisabledPhoneNumber ? faPenToSquare : faCheck
+                           }
+                           style={{
+                              color:
+                                 !isDisabledPhoneNumber &&
+                                 phoneNumber !== user?.phoneNumber &&
+                                 phoneNumberPattern.test(phoneNumber)
+                                    ? 'green'
+                                    : '#000',
+                           }}
+                           onClick={() =>
+                              handleSubmitChangePhoneNumber(phoneNumber)
+                           }
                         />
                      </div>
                   </label>
