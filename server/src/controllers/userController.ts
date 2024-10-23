@@ -169,7 +169,17 @@ class userController {
             maxAge: 30 * 24 * 60 * 60 * 1000,
             httpOnly: true,
          });
-         return res.json({ token: tokens.accessToken });
+         const {
+            password: _,
+            activationLink,
+            ...userWithoutPassword
+         } = user.get({
+            plain: true,
+         });
+         return res.json({
+            token: tokens.accessToken,
+            user: userWithoutPassword,
+         });
       } catch (error) {
          return next(
             ApiError.internalServer('Невідома помилка при вході в аккаунт'),
@@ -306,7 +316,10 @@ class userController {
          if (!userData || !tokenFromDB) {
             return next(ApiError.Unauthorized('Не авторизований користувач'));
          }
-         const user = await User.findOne({ where: { id: userData.id } });
+         const user = await User.findOne({
+            where: { id: userData.id },
+            attributes: { exclude: ['password', 'activationLink'] },
+         });
 
          const tokens = tokenService.generateTokens({
             id: user!.id,
@@ -318,7 +331,7 @@ class userController {
             maxAge: 30 * 24 * 60 * 60 * 1000,
             httpOnly: true,
          });
-         return res.json({ token: tokens.accessToken });
+         return res.json({ token: tokens.accessToken, user });
       } catch (error) {
          return next(
             ApiError.internalServer('Невідома помилка при оновленні токена'),

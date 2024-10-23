@@ -59,10 +59,7 @@ export const loginUser =
       try {
          dispatch(userSlice.actions.userLogin());
          const data = await UserReq.login(email, password);
-         const user: IUser = jwt_decode(data.token);
-         dispatch(
-            userSlice.actions.userLoginSuccess({ user, token: data.token }),
-         );
+         dispatch(userSlice.actions.userLoginSuccess({ ...data }));
          dispatch(synchronizeBaskets(shoes));
       } catch (error) {
          if (axios.isAxiosError(error)) {
@@ -80,8 +77,7 @@ export const authUser = () => async (dispatch: AppDispatch) => {
    try {
       dispatch(userSlice.actions.userAuth());
       const data = await UserReq.auth();
-      const user: IUser = jwt_decode(data.token);
-      dispatch(userSlice.actions.userAuthSuccess({ user, token: data.token }));
+      dispatch(userSlice.actions.userAuthSuccess({ ...data }));
    } catch (error) {
       if (axios.isAxiosError(error)) {
          dispatch(userSlice.actions.userAuthError(error.response?.data));

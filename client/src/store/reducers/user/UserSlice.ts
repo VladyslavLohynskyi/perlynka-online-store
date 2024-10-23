@@ -22,8 +22,8 @@ export interface IUser {
    id: number;
    email: string;
    role: Role;
-   name?: string;
-   surname?: string;
+   name: string;
+   surname: string;
 }
 
 const initialState: IUserState = {

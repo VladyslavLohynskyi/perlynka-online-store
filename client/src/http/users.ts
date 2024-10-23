@@ -28,15 +28,18 @@ export class UserReq {
       return data;
    };
    login = async (email: string, password: string) => {
-      const { data } = await $host.post<{ token: string }>('/user/login', {
-         email,
-         password,
-      });
+      const { data } = await $host.post<{ token: string; user: IUser }>(
+         '/user/login',
+         {
+            email,
+            password,
+         },
+      );
       return data;
    };
 
    auth = async () => {
-      const { data } = await axios.get<{ token: string }>(
+      const { data } = await axios.get<{ token: string; user: IUser }>(
          `${baseURL}api/user/refresh`,
          { withCredentials: true },
       );
