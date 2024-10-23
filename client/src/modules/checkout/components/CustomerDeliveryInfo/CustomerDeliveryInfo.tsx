@@ -14,6 +14,7 @@ import { CustomerDeliveryInfoType } from './CustomerDeliveryInfoType';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { getFullInfoOfUser } from '../../../../store/reducers/user/UserActionCreators';
 import { Loader } from '../../../ui/Loader';
+import { phoneNumberPattern } from '../../../../utils/constants';
 
 export const CustomerDeliveryInfo: React.FC<CustomerDeliveryInfoType> = ({
    handleSubmitCheckout,
@@ -35,6 +36,9 @@ export const CustomerDeliveryInfo: React.FC<CustomerDeliveryInfoType> = ({
    const [settlementRef, setSettlementRef] = useState<string>('');
    const [warehouse, setWarehouse] = useState<IWarehouse>();
 
+   const [isValidatedPhoneNumber, setIsValidatedPhoneNumber] = useState(true);
+   const [customError, setCustomError] = useState('');
+
    useEffect(() => {
       if (isAuth) {
          dispatch(getFullInfoOfUser()).then(() => {});
@@ -44,6 +48,7 @@ export const CustomerDeliveryInfo: React.FC<CustomerDeliveryInfoType> = ({
       if (user?.email) setEmail(user?.email);
       if (user?.name) setName(user.name);
       if (user?.surname) setSurname(user.surname);
+      if (user?.phoneNumber) setPhone(user.phoneNumber);
    }, [user]);
 
    useEffect(() => {
@@ -75,6 +80,11 @@ export const CustomerDeliveryInfo: React.FC<CustomerDeliveryInfoType> = ({
 
    const handleClickCheckoutBtn = () => {
       if (!name || !surname || !email || !phone) {
+         return;
+      }
+      if (!phoneNumberPattern.test(phone)) {
+         setIsValidatedPhoneNumber(false);
+         setCustomError('Телефоний номер не валідний');
          return;
       }
       const customerInfo: ICustomerInfo = {
@@ -155,6 +165,14 @@ export const CustomerDeliveryInfo: React.FC<CustomerDeliveryInfoType> = ({
                      inputStyle={{
                         width: '100%',
                         fontSize: '12px',
+                        border: `1.5px solid ${
+                           isValidatedPhoneNumber ? '#d9d7d7' : 'rgb(156, 5, 5)'
+                        }`,
+                     }}
+                     buttonStyle={{
+                        border: `1.5px solid ${
+                           isValidatedPhoneNumber ? '#d9d7d7' : 'rgb(156, 5, 5)'
+                        }`,
                      }}
                      disableDropdown={true}
                      countryCodeEditable={false}
@@ -164,11 +182,14 @@ export const CustomerDeliveryInfo: React.FC<CustomerDeliveryInfoType> = ({
                      }}
                      value={phone}
                      onChange={(e) => {
+                        setCustomError('');
+                        setIsValidatedPhoneNumber(true);
                         setPhone(e);
                      }}
                   />
                </label>
             </div>
+            {customError && <h3 className='auth__error'>{customError}</h3>}
          </div>
          <div className='checkout__customer-info__container'>
             <div className='checkout__customer-info__header'>

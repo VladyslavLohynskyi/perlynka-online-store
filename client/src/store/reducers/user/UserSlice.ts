@@ -24,6 +24,7 @@ export interface IUser {
    role: Role;
    name: string;
    surname: string;
+   phoneNumber: string;
 }
 
 const initialState: IUserState = {
