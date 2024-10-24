@@ -18,6 +18,7 @@ const keyJsonContent = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
 if (keyJsonContent) {
    const filePath = path.join(__dirname, 'key.json');
    fs.writeFileSync(filePath, keyJsonContent, 'utf8');
+   process.env.GOOGLE_APPLICATION_CREDENTIALS_PATH = filePath;
 } else {
    console.error('GOOGLE_APPLICATION_CREDENTIALS_JSON is not set');
 }

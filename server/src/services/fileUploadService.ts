@@ -9,7 +9,7 @@ class fileUploadService {
       this.bucketName = process.env.GOOGLE_CLOUD_BUCKET_NAME;
       this.storage = new Storage({
          projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
-         keyFilename: './src/key.json',
+         keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS_PATH,
       });
    }
 
