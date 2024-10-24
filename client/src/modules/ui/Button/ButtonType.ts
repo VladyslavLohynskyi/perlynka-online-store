@@ -14,6 +14,7 @@ export enum ButtonClassEnum {
    MOBILE_FILTER = 'mobile-filter',
    COMMUNICATION = 'communication',
    SUBSCRIPTION = 'subscription',
+   GO_TOP = 'go-top',
 }
 export interface ButtonPropsType
    extends React.HTMLAttributes<HTMLButtonElement> {
