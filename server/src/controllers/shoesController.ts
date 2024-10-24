@@ -1,7 +1,5 @@
 import Shoes, { SexType } from '../models/shoesModel';
 import { v4 as uuidv4 } from 'uuid';
-import path from 'path';
-import { promises } from 'fs';
 import { NextFunction, Request, Response } from 'express';
 import ShoesSize from '../models/shoesSizeModel';
 

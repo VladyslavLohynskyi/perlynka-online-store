@@ -1,25 +1,15 @@
 import { Storage } from '@google-cloud/storage';
 import sharp from 'sharp';
 import ApiError from '../exceptions/ApiError';
-import fs from 'fs';
 
 class fileUploadService {
    bucketName: string;
    storage: Storage;
    constructor() {
       this.bucketName = process.env.GOOGLE_CLOUD_BUCKET_NAME;
-      console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS_PATH);
-      console.log(
-         fs.readFileSync(
-            process.env.GOOGLE_APPLICATION_CREDENTIALS_PATH,
-            'utf8',
-         ),
-      );
-
       this.storage = new Storage({
          projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
-         keyFilename:
-            process.env.GOOGLE_APPLICATION_CREDENTIALS_PATH || './src/key.json',
+         keyFilename: './build/key.json',
       });
    }
 
