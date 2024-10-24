@@ -28,7 +28,7 @@ const initialState: IFilterState = {
    selectedSeasonsId: [],
    selectedColorsId: [],
    selectedSizesId: [],
-   selectedSortFilter: SortEnum.PRICE_ASC,
+   selectedSortFilter: SortEnum.CREATED_AT_DESC,
    selectedSex: SexEnum.UNISEX,
    page: 1,
    limit: limitGettingShoesFromDB,
@@ -156,7 +156,7 @@ export const filterSlice = createSlice({
          state.selectedSex = SexEnum.UNISEX;
          document.cookie =
             'sexFilter= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
-         state.selectedSortFilter = SortEnum.PRICE_ASC;
+         state.selectedSortFilter = SortEnum.CREATED_AT_DESC;
          document.cookie =
             'sortFilter= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
          state.page = 1;
@@ -191,7 +191,8 @@ export const filterSlice = createSlice({
          state.selectedSex =
             (getCookieValue('sexFilter') as SexEnum) || SexEnum.UNISEX;
          state.selectedSortFilter =
-            (getCookieValue('sortFilter') as SortEnum) || SortEnum.PRICE_ASC;
+            (getCookieValue('sortFilter') as SortEnum) ||
+            SortEnum.CREATED_AT_DESC;
          state.page = Number(getCookieValue('page')) || 1;
       },
    },

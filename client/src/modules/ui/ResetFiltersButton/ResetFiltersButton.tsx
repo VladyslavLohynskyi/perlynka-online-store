@@ -29,7 +29,7 @@ export const ResetFiltersButton: React.FC<ResetFiltersButtonType> = ({
       !selectedSizesId.length &&
       !selectedColorsId.length &&
       selectedSex === SexEnum.UNISEX &&
-      selectedSortFilter === SortEnum.PRICE_ASC;
+      selectedSortFilter === SortEnum.CREATED_AT_DESC;
 
    const handleClickResetButton = () => {
       dispatch(resetFilters());

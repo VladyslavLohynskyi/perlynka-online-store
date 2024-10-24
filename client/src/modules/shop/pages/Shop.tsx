@@ -46,13 +46,6 @@ export const Shop: React.FC = () => {
    const { isLoadingShoes, shoes, brands, types, seasons, colors } =
       useAppSelector((state) => state.shoesReducer);
    const filter = useAppSelector((state) => state.filterReducer);
-   const {
-      selectedBrandsId,
-      selectedTypesId,
-      selectedSeasonsId,
-      selectedColorsId,
-      selectedSortFilter,
-   } = useAppSelector((state) => state.filterReducer);
 
    useEffect(() => {
       dispatch(
@@ -80,10 +73,10 @@ export const Shop: React.FC = () => {
    ]);
 
    const selectOptions: ISelectFilterOption[] = [
-      { id: 1, text: 'За спаданням цін', sort: SortEnum.PRICE_ASC },
-      { id: 2, text: 'За зростанням цін', sort: SortEnum.PRICE_DESC },
-      { id: 3, text: 'Від новіших моделей', sort: SortEnum.CREATED_AT_ASC },
-      { id: 4, text: 'Від давніших моделей', sort: SortEnum.CREATED_AT_DESC },
+      { id: 1, text: 'За спаданням цін', sort: SortEnum.PRICE_DESC },
+      { id: 2, text: 'За зростанням цін', sort: SortEnum.PRICE_ASC },
+      { id: 3, text: 'Від новіших моделей', sort: SortEnum.CREATED_AT_DESC },
+      { id: 4, text: 'Від давніших моделей', sort: SortEnum.CREATED_AT_ASC },
    ];
    useEffect(() => {
       if (width > 767 && isMobileAsideFiltersShowed) {
@@ -123,7 +116,7 @@ export const Shop: React.FC = () => {
                      <select
                         className='sort-title-text shop__top-filters__select'
                         name='filters'
-                        value={selectedSortFilter}
+                        value={filter.selectedSortFilter}
                         onChange={handleClickSelectSort}
                      >
                         {selectOptions.map((option) => (
@@ -137,25 +130,25 @@ export const Shop: React.FC = () => {
                <div className='shop__main-container'>
                   <aside className='shop__aside-filters'>
                      <FilterCheckboxList
-                        selectedValuesId={selectedBrandsId}
+                        selectedValuesId={filter.selectedBrandsId}
                         handleClickCheckbox={handleClickBrandCheckbox}
                         list={brands}
                         name={NameOfCategoriesEnum.BRAND}
                      />
                      <FilterCheckboxList
-                        selectedValuesId={selectedTypesId}
+                        selectedValuesId={filter.selectedTypesId}
                         handleClickCheckbox={handleClickTypeCheckbox}
                         list={types}
                         name={NameOfCategoriesEnum.TYPE}
                      />
                      <FilterCheckboxList
-                        selectedValuesId={selectedSeasonsId}
+                        selectedValuesId={filter.selectedSeasonsId}
                         handleClickCheckbox={handleClickSeasonCheckbox}
                         list={seasons}
                         name={NameOfCategoriesEnum.SEASON}
                      />
                      <FilterCheckboxList
-                        selectedValuesId={selectedColorsId}
+                        selectedValuesId={filter.selectedColorsId}
                         handleClickCheckbox={handleClickColorCheckbox}
                         list={colors}
                         name={NameOfCategoriesEnum.COLOR}
