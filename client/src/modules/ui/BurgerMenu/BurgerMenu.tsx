@@ -42,7 +42,6 @@ export const BurgerMenu: React.FC<BurgerMenuType> = ({
                }}
                type={NavItemEnum.BURGER_MENU_ITEM}
             />
-            <NavItem text='Бренди' type={NavItemEnum.BURGER_MENU_ITEM} />
             <NavItem
                text='Контакти'
                type={NavItemEnum.BURGER_MENU_ITEM}

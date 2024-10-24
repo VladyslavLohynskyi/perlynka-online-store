@@ -33,16 +33,15 @@
       grid-template-columns: auto;
       row-gap: 20px;
       padding-top: 20px;
-
-      & div {
-         display: grid;
-         grid-template-columns: 2fr 1fr;
-         align-items: center;
-      }
+      margin-right: 8px;
    }
-   &__id {
+   &__price-container {
+      display: grid;
+      grid-template-columns: 2fr 20px;
+      align-items: center;
+   }
+   &__plus-btn {
       justify-self: end;
-      padding-right: 5px;
    }
 }
 
