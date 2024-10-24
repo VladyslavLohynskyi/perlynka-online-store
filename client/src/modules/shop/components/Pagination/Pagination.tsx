@@ -36,12 +36,15 @@ export const Pagination: React.FC = () => {
    ];
    const handleClick = (number: number) => {
       dispatch(changePage(number));
+      window.scrollTo({ top: 0 });
    };
    const handleClickRightArrow = () => {
       dispatch(changePage(page + 1));
+      window.scrollTo({ top: 0 });
    };
    const handleClickLeftArrow = () => {
       dispatch(changePage(page - 1));
+      window.scrollTo({ top: 0 });
    };
    return (
       <div className='pagination__container'>
