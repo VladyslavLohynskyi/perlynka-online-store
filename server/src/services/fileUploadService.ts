@@ -15,7 +15,6 @@ class fileUploadService {
    }
 
    async uploadPhoto(file: sharp.Sharp, fileName: string, path: string) {
-      console.log(fs.readFileSync('./build/key.json', 'utf8'));
       const bucket = this.storage.bucket(this.bucketName);
       const blob = bucket.file(path + '/' + fileName + '.webp');
       const blobStream = blob.createWriteStream({
