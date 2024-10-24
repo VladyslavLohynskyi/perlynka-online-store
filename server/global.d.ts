@@ -14,5 +14,6 @@ namespace NodeJS {
       GOOGLE_CLOUD_BUCKET_NAME: string;
       GOOGLE_CLOUD_PROJECT_ID: string;
       GOOGLE_CLOUD_STORAGE_BASE_URL: string;
+      GOOGLE_APPLICATION_CREDENTIALS_JSON?: string;
    }
 }
