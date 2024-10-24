@@ -21,3 +21,5 @@ export const GOOGLE_CLOUD_STORAGE_BASE_URL =
    process.env.REACT_APP_GOOGLE_CLOUD_STORAGE_BASE_URL;
 export const GOOGLE_CLOUD_BUCKET_NAME =
    process.env.REACT_APP_GOOGLE_CLOUD_BUCKET_NAME;
+
+export const phoneNumberPattern = /^380\d{9}$/;

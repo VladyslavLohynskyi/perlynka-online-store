@@ -24,6 +24,7 @@ export interface IUser {
    role: Role;
    name: string;
    surname: string;
+   phoneNumber: string;
 }
 
 const initialState: IUserState = {
@@ -128,6 +129,23 @@ export const userSlice = createSlice({
       },
 
       userUpdateDataError(state, action: PayloadAction<string>) {
+         state.message = '';
+         state.error = action.payload;
+      },
+
+      userChangePassword(state) {
+         state.message = '';
+         state.error = '';
+      },
+
+      userChangePasswordSuccess(
+         state,
+         action: PayloadAction<{ message: string }>,
+      ) {
+         state.message = action.payload.message;
+      },
+
+      userChangePasswordError(state, action: PayloadAction<string>) {
          state.message = '';
          state.error = action.payload;
       },

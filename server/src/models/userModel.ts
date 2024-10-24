@@ -12,6 +12,7 @@ interface userAttributes {
    name: string;
    surname: string;
    password: string;
+   phoneNumber: string;
    role: Role;
    isActivated: boolean;
    activationLink: string;
@@ -32,6 +33,7 @@ const User = sequelize.define<userInstance>('user', {
    name: { type: DataTypes.STRING },
    surname: { type: DataTypes.STRING },
    password: { type: DataTypes.STRING },
+   phoneNumber: { type: DataTypes.STRING },
    role: { type: DataTypes.STRING, defaultValue: 'USER' },
    isActivated: { type: DataTypes.BOOLEAN, defaultValue: false },
    activationLink: { type: DataTypes.STRING },

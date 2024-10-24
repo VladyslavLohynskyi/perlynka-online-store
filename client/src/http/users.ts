@@ -12,6 +12,7 @@ export interface IUserResponse {
 interface IUpdateUserData {
    name?: string;
    surname?: string;
+   phoneNumber?: string;
 }
 
 export class UserReq {
@@ -20,6 +21,7 @@ export class UserReq {
       password: string,
       name: string,
       surname: string,
+      phoneNumber: string,
    ) => {
       const { data } = await $host.post<{ token: string; message: string }>(
          '/user/registration',
@@ -28,6 +30,7 @@ export class UserReq {
             password,
             name,
             surname,
+            phoneNumber,
          },
       );
       return data;
@@ -89,12 +92,16 @@ export class UserReq {
    checkForgotToken(id: string, token: string) {
       return $host.get('/user/forgot-password/check/' + id + '/' + token);
    }
-   forgotPasswordChange(userId: string, password: string, token: string) {
-      return $host.post('/user/forgot-password/change', {
-         userId,
-         password,
-         token,
-      });
+   async forgotPasswordChange(userId: string, password: string, token: string) {
+      const { data } = await $host.post<{ message: string }>(
+         '/user/forgot-password/change',
+         {
+            userId,
+            password,
+            token,
+         },
+      );
+      return data;
    }
    getUserFullInfo = async () => {
       const { data } = await $authHost.get<IUserResponse>('/user/user-info');

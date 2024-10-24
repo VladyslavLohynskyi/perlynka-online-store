@@ -18,13 +18,15 @@ interface ISignUpUserProps {
    surname: string;
    name: string;
    password: string;
+   phoneNumber: string;
 }
 interface IUpdateUserDataProps {
    name?: string;
    surname?: string;
+   phoneNumber?: string;
 }
 export const registrationUser =
-   ({ email, password, name, surname }: ISignUpUserProps) =>
+   ({ email, password, name, surname, phoneNumber }: ISignUpUserProps) =>
    async (dispatch: AppDispatch) => {
       try {
          dispatch(userSlice.actions.userRegistration());
@@ -33,6 +35,7 @@ export const registrationUser =
             password,
             name,
             surname,
+            phoneNumber,
          );
          const user = jwt_decode<IUser>(data.token);
          dispatch(
@@ -136,6 +139,27 @@ export const updateUserData =
          if (axios.isAxiosError(error)) {
             dispatch(
                userSlice.actions.userUpdateDataError(error.response?.data),
+            );
+         } else
+            dispatch(
+               userSlice.actions.userUpdateDataError(
+                  'Невідома помилка під час зміни данних користувача',
+               ),
+            );
+      }
+   };
+
+export const changeUserPassword =
+   (id: string, password: string, token: string) =>
+   async (dispatch: AppDispatch) => {
+      try {
+         dispatch(userSlice.actions.userChangePassword());
+         const data = await UserReq.forgotPasswordChange(id!, password, token!);
+         dispatch(userSlice.actions.userChangePasswordSuccess(data));
+      } catch (error) {
+         if (axios.isAxiosError(error)) {
+            dispatch(
+               userSlice.actions.userChangePasswordError(error.response?.data),
             );
          } else
             dispatch(

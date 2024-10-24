@@ -22,6 +22,7 @@ interface userRegistrationRequest extends Request {
       name: string;
       surname: string;
       password: string;
+      phoneNumber: string;
    };
 }
 
@@ -60,6 +61,7 @@ interface IUpdateUserDataRequest extends authRequest {
    body: {
       name: string;
       surname: string;
+      phoneNumber: string;
    };
 }
 
@@ -70,10 +72,12 @@ class userController {
       next: NextFunction,
    ) {
       try {
-         const { email, password, name, surname } = req.body;
-         if (!email || !password) {
+         const { email, password, name, surname, phoneNumber } = req.body;
+         if (!email || !password || !phoneNumber || !name || !surname) {
             return next(
-               ApiError.badRequest('Неправильно введенно пароль або email'),
+               ApiError.badRequest(
+                  'Данні користувача повинні бути заповненими',
+               ),
             );
          }
          const candidate = await User.findOne({ where: { email } });
@@ -120,6 +124,7 @@ class userController {
             password: hashPassword,
             isActivated: false,
             activationLink,
+            phoneNumber,
          });
          await mailService.sendActivationMail(
             email,
@@ -481,7 +486,7 @@ class userController {
       next: NextFunction,
    ) {
       try {
-         const { name, surname } = req.body;
+         const { name, surname, phoneNumber } = req.body;
          const userData = await User.findOne({
             where: { id: req.user?.id, email: req.user?.email },
          });
@@ -491,11 +496,12 @@ class userController {
          const { password, activationLink, ...user } = userData.get({
             plain: true,
          });
-         if (name || surname) {
+         if (name || surname || phoneNumber) {
             await User.update(
                {
                   name: name ? name : user.name,
                   surname: surname ? surname : user.surname,
+                  phoneNumber: phoneNumber ? phoneNumber : user.phoneNumber,
                },
                { where: { id: user.id } },
             );
@@ -512,6 +518,7 @@ class userController {
                ...user,
                name: name ? name : user.name,
                surname: surname ? surname : user.surname,
+               phoneNumber: phoneNumber ? phoneNumber : user.phoneNumber,
             },
          });
       } catch (error) {

@@ -7,9 +7,12 @@ import userReq from '../../../../http/users';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { BasicInput } from '../../../ui/BasicInput';
+import { useAppDispatch } from '../../../../hooks/redux';
+import { changeUserPassword } from '../../../../store/reducers/user/UserActionCreators';
 
 const ChangePassword = () => {
    const { id, token } = useParams();
+   const dispatch = useAppDispatch();
    useEffect(() => {
       if (id && token) {
          userReq
@@ -19,7 +22,8 @@ const ChangePassword = () => {
    }, []);
    const navigate = useNavigate();
    const [password, setPassword] = useState('');
-   const [isChanged, setIsChanged] = useState(false);
+   const [confirmPassword, setConfirmPassword] = useState('');
+   const [isValidatedPassword, setIsValidatedPassword] = useState(true);
    const [error, setError] = useState('');
 
    const handleClickSubmitAuth = async (
@@ -30,8 +34,14 @@ const ChangePassword = () => {
 
    const handleClickMain = async () => {
       try {
-         await userReq.forgotPasswordChange(id!, password, token!);
-         setIsChanged(true);
+         if (password !== confirmPassword) {
+            setIsValidatedPassword(false);
+            setError('Паролі не збігаються');
+            return;
+         }
+         dispatch(changeUserPassword(id!, password, token!)).then(() =>
+            navigate(RoutesEnum.SHOP),
+         );
       } catch (error) {
          if (axios.isAxiosError(error)) {
             setError(error.response?.data.message);
@@ -45,16 +55,40 @@ const ChangePassword = () => {
             <form className='auth__form' onSubmit={handleClickSubmitAuth}>
                <h2 className='auth__header'>Форма зміни паролю</h2>
                {error && <h3 className='auth__error'>{error}</h3>}
-               {isChanged && (
-                  <p className='auth__message'>Пароль було змінено успішно</p>
-               )}
                <div>
                   <BasicInput
                      type='password'
                      value={password}
-                     onChange={(e) => setPassword(e.target.value)}
+                     onChange={(e) => {
+                        setError('');
+                        setIsValidatedPassword(true);
+                        setPassword(e.target.value);
+                     }}
+                     style={{
+                        border: `1.5px solid ${
+                           isValidatedPassword ? '#d9d7d7' : 'rgb(156, 5, 5)'
+                        }`,
+                     }}
                      minLength={8}
                      placeholder='Новий пароль'
+                  />
+               </div>
+               <div>
+                  <BasicInput
+                     type='password'
+                     value={confirmPassword}
+                     style={{
+                        border: `1.5px solid ${
+                           isValidatedPassword ? '#d9d7d7' : 'rgb(156, 5, 5)'
+                        }`,
+                     }}
+                     onChange={(e) => {
+                        setError('');
+                        setIsValidatedPassword(true);
+                        setConfirmPassword(e.target.value);
+                     }}
+                     minLength={8}
+                     placeholder='Підтвердіть пароль'
                   />
                </div>
                <Button
@@ -62,7 +96,6 @@ const ChangePassword = () => {
                   buttonText={'Підтвердити'}
                   buttonClass={ButtonClassEnum.BUY}
                   buttonClick={handleClickMain}
-                  disabled={isChanged}
                />
             </form>
             <Button
