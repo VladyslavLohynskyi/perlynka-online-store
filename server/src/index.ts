@@ -16,7 +16,7 @@ const port: number = +process.env.PORT || 8888;
 const keyJsonContent = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
 
 if (keyJsonContent) {
-   const filePath = path.join(__dirname, 'src', 'key.json');
+   const filePath = path.join(__dirname, 'key.json');
    fs.writeFileSync(filePath, keyJsonContent, 'utf8');
 } else {
    console.error('GOOGLE_APPLICATION_CREDENTIALS_JSON is not set');
