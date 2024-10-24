@@ -1,4 +1,4 @@
-export const baseURL = '/';
+export const baseURL = process.env.REACT_APP_BACKEND_URL + '/';
 export enum RoutesEnum {
    SHOP = '/shop',
    LOGIN = '/login',
