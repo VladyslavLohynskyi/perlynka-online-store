@@ -13,7 +13,7 @@ mainCarouselRouter.post(
    mainCarouselController.createSlide,
 );
 mainCarouselRouter.delete(
-   '/',
+   '/:id',
    authMiddleware,
    checkRoleMiddleware(Role.ADMIN),
    mainCarouselController.deleteSlide,

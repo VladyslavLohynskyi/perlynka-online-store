@@ -41,7 +41,7 @@ class MainCarouselController {
          );
 
          const url = await fileUploadService.uploadPhoto(
-            sharp(img.data.buffer).resize(400, 266).webp(),
+            sharp(img.data.buffer).resize(700, 465).webp(),
             fileName,
             'main-carousel/' + slide.id,
          );
@@ -63,11 +63,28 @@ class MainCarouselController {
       res: Response,
       next: NextFunction,
    ) {
+      const transaction = await sequelize.transaction();
       try {
-         const { slideId } = req.body;
-
+         const { id } = req.params;
+         const slide = await MainCarouselSlide.findOne({
+            where: { id: +id },
+         });
+         console.log(slide);
+         if (!slide) {
+            return next('Слайд з таким id не існує');
+         }
+         await MainCarouselSlide.destroy({
+            where: { id: slide.id },
+            transaction,
+         });
+         await fileUploadService.deleteFile(
+            slide.img,
+            'main-carousel/' + slide.id,
+         );
+         await transaction.commit();
          return res.json({ message: 'Слайд успішно видалений' });
       } catch (error) {
+         await transaction.rollback();
          return next(
             ApiError.internalServer('Невідома помилка видаленні слайду'),
          );
@@ -76,7 +93,8 @@ class MainCarouselController {
 
    async getSlides(req: Request, res: Response, next: NextFunction) {
       try {
-         return res.json({ message: 'Слайди успішно отримано' });
+         const slides = await MainCarouselSlide.findAll();
+         return res.json({ message: 'Слайди успішно отримано', slides });
       } catch (error) {
          return next(
             ApiError.internalServer('Невідома помилка отримані слайдів'),
