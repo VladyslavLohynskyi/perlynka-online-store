@@ -15,6 +15,7 @@ const App: FC = () => {
    const shoes = useAppSelector((state) => state.shoesReducer);
    const basket = useAppSelector((state) => state.basketReducer);
    const admin = useAppSelector((state) => state.adminsReducer);
+   const mainCarousel = useAppSelector((state) => state.mainCarouselReducer);
    const [showAlertNotification, setShowAlertNotification] =
       useState<boolean>(false);
    const [alertNotificationMessage, setAlertNotificationMessage] =
@@ -41,6 +42,19 @@ const App: FC = () => {
          setIsErrorNotificationMessage(false);
       }
    }, [basket.error, basket.message]);
+
+   useEffect(() => {
+      if (mainCarousel.error) {
+         setShowAlertNotification(true);
+         setAlertNotificationMessage(mainCarousel.error);
+         setIsErrorNotificationMessage(true);
+      }
+      if (mainCarousel.message) {
+         setShowAlertNotification(true);
+         setAlertNotificationMessage(mainCarousel.message);
+         setIsErrorNotificationMessage(false);
+      }
+   }, [mainCarousel.error, mainCarousel.message]);
 
    useEffect(() => {
       if (shoes.error) {

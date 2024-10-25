@@ -10,6 +10,7 @@ import { basketRouter } from './basketRouter';
 import { ratingRouter } from './ratingRouter';
 import { checkoutRouter } from './checkoutRouter';
 import { newsletterSubscriptionRouter } from './newsletterSubscriptionRouter';
+import { mainCarouselRouter } from './mainCarouselRouter';
 
 export const router = Router();
 
@@ -24,3 +25,4 @@ router.use('/basket', basketRouter);
 router.use('/rating', ratingRouter);
 router.use('/checkout', checkoutRouter);
 router.use('/newsletter-subscription', newsletterSubscriptionRouter);
+router.use('/main-carousel', mainCarouselRouter);

@@ -24,9 +24,10 @@ class NewsletterSubscriptionController {
          }
          const token = uuidv4();
          await NewsletterSubscription.create({
-            email,token
+            email,
+            token,
          });
-         await mailService.sendSuccessSubscriptionMail(email,token)
+         await mailService.sendSuccessSubscriptionMail(email, token);
          return res.json({ massage: 'Підписка активована' });
       } catch (error) {
          return next(
@@ -36,25 +37,19 @@ class NewsletterSubscriptionController {
          );
       }
    }
-   async delete(
-      req: Request,
-      res: Response,
-      next: NextFunction,
-   ) {
+   async delete(req: Request, res: Response, next: NextFunction) {
       try {
          const { token } = req.params;
          const isSubscriptionExist = await NewsletterSubscription.findOne({
             where: { token },
          });
          if (!isSubscriptionExist) {
-            return next(
-               ApiError.notFound(
-                  'У вас підписка не активована',
-               ),
-            );
+            return next(ApiError.notFound('У вас підписка не активована'));
          }
-         await NewsletterSubscription.destroy({where:{token}});
-         await mailService.sendSuccessUnsubscribeMail(isSubscriptionExist.email)
+         await NewsletterSubscription.destroy({ where: { token } });
+         await mailService.sendSuccessUnsubscribeMail(
+            isSubscriptionExist.email,
+         );
          return res.redirect(process.env.CLIENT_URL);
       } catch (error) {
          return next(
