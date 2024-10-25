@@ -25,6 +25,7 @@ import { AsideMobileFiltersModal } from '../../modal/components/HeaderDropdown/p
 import { ResetFiltersButton } from '../../ui/ResetFiltersButton';
 import { Loader } from '../../ui/Loader';
 import { getAllShoesByFilter } from '../../../store/reducers/shoes/ShoesActionCreators';
+import MainCarousel from '../components/mainCarousel/MainCarousel';
 
 interface ISelectFilterOption {
    id: number;
@@ -107,6 +108,9 @@ export const Shop: React.FC = () => {
       <>
          <div className='shop__container'>
             <div className='shop'>
+               <div>
+                  <MainCarousel />
+               </div>
                <div className='shop__top'>
                   <div className='shop__reset-filters'></div>
                   <div className='shop__top-filters'>
