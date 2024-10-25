@@ -14,6 +14,7 @@ import ForgotToken from './forgotTokenModel';
 import ShoesInfo from './shoesInfoModel';
 import ShoesImage from './shoesImageModel';
 import NewsletterSubscription from './newsletterSubscriptionModel';
+import MainCarouselSlide from './mainCarouselSlideModel';
 
 User.hasOne(Basket);
 Basket.belongsTo(User);
@@ -78,4 +79,5 @@ module.exports = {
    Token,
    ShoesInfo,
    NewsletterSubscription,
+   MainCarouselSlide,
 };
