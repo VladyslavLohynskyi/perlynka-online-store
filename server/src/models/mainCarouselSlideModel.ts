@@ -3,7 +3,7 @@ import { DataTypes, Model, Optional } from 'sequelize';
 interface mainCarouselSlideAttributes {
    id: number;
    alt: string;
-   link: string;
+   link?: string | null;
    img: string;
 }
 
@@ -25,7 +25,10 @@ const MainCarouselSlide = sequelize.define<mainCarouselInstance>(
    {
       id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
       alt: { type: DataTypes.STRING, allowNull: false },
-      link: { type: DataTypes.STRING, allowNull: true },
+      link: {
+         type: DataTypes.STRING,
+         allowNull: true,
+      },
       img: { type: DataTypes.STRING, unique: true, allowNull: false },
    },
 );
