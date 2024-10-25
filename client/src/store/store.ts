@@ -5,6 +5,7 @@ import adminsReducer from './reducers/admins/AdminsSlice';
 import filterReducer from './reducers/filter/FilterSlice';
 import findUsersReducer from './reducers/findUsers/findUsersSlice';
 import basketReducer from './reducers/basket/BasketSlice';
+import mainCarouselReducer from './reducers/mainCarousel/MainCarouselSlice';
 const rootReducer = combineReducers({
    userReducer,
    shoesReducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
    findUsersReducer,
    filterReducer,
    basketReducer,
+   mainCarouselReducer,
 });
 
 export const setupStore = () => {

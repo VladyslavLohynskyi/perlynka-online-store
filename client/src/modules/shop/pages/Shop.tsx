@@ -108,9 +108,8 @@ export const Shop: React.FC = () => {
       <>
          <div className='shop__container'>
             <div className='shop'>
-               <div>
-                  <MainCarousel />
-               </div>
+               <MainCarousel />
+
                <div className='shop__top'>
                   <div className='shop__reset-filters'></div>
                   <div className='shop__top-filters'>

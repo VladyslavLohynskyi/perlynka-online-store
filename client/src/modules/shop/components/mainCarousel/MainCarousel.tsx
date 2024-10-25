@@ -4,59 +4,113 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import './MainCarousel.scss';
-import { useRef } from 'react';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useRef, useState } from 'react';
+import { Modal } from '../../../modal/pages';
+import { Button } from '../../../ui/Button';
+import { ButtonClassEnum } from '../../../ui/Button/ButtonType';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
+import { Role } from '../../../../store/reducers/user/UserSlice';
+import { CreateSlideModal } from '../../../modal/components/HeaderDropdown/pages/CreateSlideModal';
+import {
+   deleteMainCarouselSlide,
+   getMainCarouselSlides,
+} from '../../../../store/reducers/mainCarousel/MainCarouselActionCreators';
+import {
+   GOOGLE_CLOUD_BUCKET_NAME,
+   GOOGLE_CLOUD_STORAGE_BASE_URL,
+} from '../../../../utils/constants';
+
+import { IconButton } from '../../../ui/IconButton';
+import SkeletonSlide from '../skeletonSlide/SkeletonSlide';
 
 const MainCarousel = () => {
-   const swiperRef = useRef(null);
-   const images = [
-      {
-         src: 'https://via.placeholder.com/600x400?text=Slide+1',
-         alt: 'Slide 1',
-      },
-      {
-         src: 'https://via.placeholder.com/600x400?text=Slide+2',
-         alt: 'Slide 2',
-      },
-      {
-         src: 'https://via.placeholder.com/600x400?text=Slide+3',
-         alt: 'Slide 3',
-      },
-      {
-         src: 'https://via.placeholder.com/600x400?text=Slide+4',
-         alt: 'Slide 4',
-      },
-      {
-         src: 'https://via.placeholder.com/600x400?text=Slide+5',
-         alt: 'Slide 5',
-      },
-   ];
+   const dispatch = useAppDispatch();
+   const [isCreateSlideModalOpened, setIsCreateSlideModalOpened] =
+      useState(false);
+   const { user } = useAppSelector((state) => state.userReducer);
+   const { isLoading, slides } = useAppSelector(
+      (state) => state.mainCarouselReducer,
+   );
 
+   useEffect(() => {
+      dispatch(getMainCarouselSlides());
+   }, []);
+
+   const handleDeleteSlide = (slideId: number) => {
+      dispatch(deleteMainCarouselSlide(slideId));
+   };
    return (
-      <Swiper
-         modules={[Navigation, Pagination, Autoplay]}
-         ref={swiperRef}
-         navigation
-         pagination={{ clickable: true }}
-         autoplay={{ delay: 3000, disableOnInteraction: false }}
-         loop
-         spaceBetween={20}
-         slidesPerView={1}
-         breakpoints={{
-            640: { slidesPerView: 1 },
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
-         }}
-      >
-         {images.map((image, index) => (
-            <SwiperSlide key={index}>
-               <img
-                  className='carousel-image'
-                  src={image.src}
-                  alt={image.alt || `Slide ${index + 1}`}
+      <>
+         {user?.role === Role.ADMIN && (
+            <div className='main-carousel__admin-action-panel'>
+               <Button
+                  buttonClass={ButtonClassEnum.PRIMARY}
+                  buttonText='Створити Слайд'
+                  onClick={() => setIsCreateSlideModalOpened(true)}
+                  style={{ width: '160px' }}
                />
-            </SwiperSlide>
-         ))}
-      </Swiper>
+            </div>
+         )}
+
+         <Swiper
+            modules={[Navigation, Pagination, Autoplay]}
+            navigation
+            pagination={{ clickable: true }}
+            autoplay={{ delay: 3000, disableOnInteraction: false }}
+            loop
+            spaceBetween={20}
+            slidesPerView={1}
+            breakpoints={{
+               640: { slidesPerView: 1 },
+               768: { slidesPerView: 2 },
+               1024: { slidesPerView: 3 },
+            }}
+         >
+            {isLoading
+               ? [...Array(3)].map((_, index) => (
+                    <SwiperSlide key={`skeleton-${index}`}>
+                       <SkeletonSlide />
+                    </SwiperSlide>
+                 ))
+               : slides.map((slide, index) => (
+                    <SwiperSlide key={slide.id}>
+                       {user?.role === Role.ADMIN && (
+                          <IconButton
+                             style={{
+                                position: 'relative',
+                                width: '70px',
+                                top: '30px',
+                                color: 'red',
+                                fontSize: '25px',
+                             }}
+                             icon={faClose}
+                             onClick={() => {
+                                handleDeleteSlide(slide.id);
+                             }}
+                          />
+                       )}
+                       <img
+                          className='main-carousel__carousel-image'
+                          src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/main-carousel/${slide.id}/${slide.img}.webp`}
+                          alt={slide.alt || `Slide ${index + 1}`}
+                          loading='lazy'
+                       />
+                    </SwiperSlide>
+                 ))}
+         </Swiper>
+
+         <Modal
+            isModalOpen={isCreateSlideModalOpened}
+            onClose={() => setIsCreateSlideModalOpened(false)}
+            onBlur={true}
+            modalPosition='modal-position__admin'
+         >
+            <CreateSlideModal
+               onClose={() => setIsCreateSlideModalOpened(false)}
+            />
+         </Modal>
+      </>
    );
 };
 

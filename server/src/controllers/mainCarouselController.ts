@@ -41,7 +41,7 @@ class MainCarouselController {
          );
 
          const url = await fileUploadService.uploadPhoto(
-            sharp(img.data.buffer).resize(700, 465).webp(),
+            sharp(img.data.buffer).resize(1000, 665).webp(),
             fileName,
             'main-carousel/' + slide.id,
          );
