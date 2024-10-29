@@ -17,7 +17,7 @@
       width: 100%;
       display: flex;
       justify-content: center;
-
+      position: relative;
       & img {
          object-fit: cover;
          min-width: 120px;
@@ -29,9 +29,8 @@
    }
    &__info {
       display: grid;
-      grid-template-columns: 1fr;
       grid-template-columns: auto;
-      row-gap: 20px;
+      row-gap: 10px;
       padding-top: 20px;
       margin-right: 8px;
    }
@@ -43,6 +42,42 @@
    &__plus-btn {
       justify-self: end;
    }
+   &__promo-price {
+      font-size: 14px;
+      color: var(--footer-background-color);
+      text-decoration: line-through;
+   }
+
+   &__tags {
+      position: absolute;
+      bottom: 5px;
+      left: 5px;
+      display: flex;
+      gap: 5px;
+   }
+
+   &__tag {
+      font-size: 12px;
+      background-color: var(--main-text-color);
+      padding: 3px 6px;
+      border-radius: 30px;
+      color: var(--footer-text-color);
+
+      &--promotional {
+         background-color: rgb(134, 9, 9);
+      }
+   }
+
+   &__discount-tag {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      background-color: var(--main-text-color);
+      color: var(--footer-text-color);
+      padding: 3px 6px;
+      border-radius: 30px;
+      font-size: 11px;
+   }
 }
 
 @media #{$mobile-large} {
@@ -52,6 +87,14 @@
       &__info {
          row-gap: 15px;
          padding-bottom: 20px;
+      }
+      &__price {
+         display: flex;
+         flex-direction: row;
+         align-items: end;
+      }
+      &__promo-price {
+         margin-left: 5px;
       }
    }
 }
