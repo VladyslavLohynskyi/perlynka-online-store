@@ -52,6 +52,7 @@ interface shoesCreateRequest extends Request {
       brandId: number;
       sizes: string;
       sex: SexType;
+      promotionalPrice?: number;
       shoesInfos: string;
    };
 }
@@ -67,6 +68,7 @@ interface shoesUpdateRequest extends Request {
       brandId?: number;
       sizes?: string;
       sex?: SexType;
+      promotionalPrice?: number;
       shoesInfos?: string;
       newShoesInfos?: string;
       deletedShoesInfoIds?: string;
@@ -92,6 +94,7 @@ class shoesController {
             seasonId,
             sizes,
             sex,
+            promotionalPrice,
             shoesInfos,
          } = req.body;
          const img = Array.isArray(req.files?.images)
@@ -125,6 +128,7 @@ class shoesController {
                'images',
             );
          }
+         console.log(promotionalPrice);
          const shoes = await Shoes.create({
             model,
             price,
@@ -134,6 +138,7 @@ class shoesController {
             seasonId,
             img: fileMainName,
             sex,
+            promotionalPrice,
          });
 
          if (Array.isArray(img)) {
@@ -300,6 +305,7 @@ class shoesController {
             seasonId,
             sizes,
             sex,
+            promotionalPrice,
             shoesInfos,
             newShoesInfos,
             deletedShoesInfoIds,
@@ -332,6 +338,9 @@ class shoesController {
                colorId: colorId ? colorId : shoes.colorId,
                seasonId: seasonId ? seasonId : shoes.seasonId,
                sex: sex ? sex : shoes.sex,
+               promotionalPrice: promotionalPrice
+                  ? promotionalPrice
+                  : shoes.promotionalPrice,
             },
             { where: { id } },
          );
