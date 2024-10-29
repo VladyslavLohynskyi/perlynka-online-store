@@ -26,6 +26,7 @@ import { ResetFiltersButton } from '../../ui/ResetFiltersButton';
 import { Loader } from '../../ui/Loader';
 import { getAllShoesByFilter } from '../../../store/reducers/shoes/ShoesActionCreators';
 import MainCarousel from '../components/mainCarousel/MainCarousel';
+import SkeletonShoesItem from '../components/skeletonShoesItem/SkeletonShoesItem';
 
 interface ISelectFilterOption {
    id: number;
@@ -163,7 +164,13 @@ export const Shop: React.FC = () => {
                   </aside>
                   <div className='shop__right-side'>
                      {isLoadingShoes ? (
-                        <Loader className='shop__loader' />
+                        <section className='shop__shoes-list'>
+                           {Array.from({ length: filter.limit }).map(
+                              (_, index) => (
+                                 <SkeletonShoesItem key={index} />
+                              ),
+                           )}
+                        </section>
                      ) : (
                         <>
                            {!!shoes.length ? (
