@@ -60,6 +60,7 @@ const ShoesInfos: React.FC<ShoesInfosType> = ({ currentShoes }) => {
                brandId,
                sex,
                shoes_sizes,
+               promotionalPrice,
             } = currentShoes;
             dispatch(
                addShoesToBasketNotAuth({
@@ -71,6 +72,7 @@ const ShoesInfos: React.FC<ShoesInfosType> = ({ currentShoes }) => {
                      price,
                      img,
                      typeId,
+                     promotionalPrice,
                      colorId,
                      seasonId,
                      brandId,
@@ -94,12 +96,40 @@ const ShoesInfos: React.FC<ShoesInfosType> = ({ currentShoes }) => {
          <h3 className='shoes-page-info__model-name main-page-title'>
             {currentShoes.brand.name} {currentShoes.model}
          </h3>
-         <p className='shoes-page-info__model-id label-text'>
-            ID товару: #{currentShoes.id}
-         </p>
-         <p className='shoes-page-info__model-price subtitle'>
-            Ціна: {currentShoes.price} грн.
-         </p>
+         <div className='shoes-page-info__id-container'>
+            <div className='shoes-page-info__brand-tag'>
+               {' '}
+               {currentShoes.brand.name}{' '}
+            </div>
+            <p className='shoes-page-info__model-id label-text'>
+               Код товару: #{currentShoes.id}
+            </p>
+         </div>
+         <div className='shoes-page-info__price'>
+            <p className='shoes-page-info__model-price subtitle'>
+               Ціна:{' '}
+               {currentShoes.promotionalPrice
+                  ? currentShoes.promotionalPrice
+                  : currentShoes.price}{' '}
+               грн.
+            </p>
+            {currentShoes.promotionalPrice && (
+               <span className='shoes-page-info__promo-price'>
+                  {currentShoes.price} грн.
+               </span>
+            )}
+            {currentShoes.promotionalPrice && (
+               <div className='shoes-page-info__discount-tag'>
+                  -
+                  {Math.round(
+                     100 -
+                        (currentShoes.promotionalPrice / currentShoes.price) *
+                           100,
+                  )}
+                  %
+               </div>
+            )}
+         </div>
          <p className='shoes-page-info__model-size label-text'>
             Розмір взуття:
          </p>

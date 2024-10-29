@@ -102,8 +102,14 @@ export const CheckoutItem: React.FC<CheckoutItemType> = ({
                style={{ color: 'red', padding: '5px', fontSize: '12px' }}
             />
          </div>
-         <div className='label-text'>{shoes.price} грн.</div>
-         <div className='label-text'>{shoes.price * count} грн.</div>
+         <div className='label-text'>
+            {shoes.promotionalPrice ? shoes.promotionalPrice : shoes.price} грн.
+         </div>
+         <div className='label-text'>
+            {(shoes.promotionalPrice ? shoes.promotionalPrice : shoes.price) *
+               count}{' '}
+            грн.
+         </div>
       </div>
    );
 };

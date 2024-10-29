@@ -55,6 +55,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
    const [isShoesLoading, setIsShoesLoading] = useState<boolean>(false);
    const [model, setModel] = useState('');
    const [price, setPrice] = useState(0);
+   const [promotionalPrice, setPromotionalPrice] = useState(0);
    const [brand, setBrand] = useState(0);
    const [type, setType] = useState(0);
    const [color, setColor] = useState(0);
@@ -81,6 +82,9 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
          setSex(foundShoes.sex);
          setAdditionImages(foundShoes.shoes_images);
          setAddSizes([]);
+         setPromotionalPrice(
+            foundShoes.promotionalPrice ? foundShoes.promotionalPrice : 0,
+         );
          setInfos((prev) =>
             Array.isArray(foundShoes.shoes_infos)
                ? foundShoes.shoes_infos
@@ -230,6 +234,9 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
          formData.append('deletedImagesNames', JSON.stringify(deletedImages));
       }
 
+      if (promotionalPrice > 0) {
+         formData.append('promotionalPrice', String(promotionalPrice));
+      }
       newAdditionImages.forEach(({ img }) => {
          if (img) formData.append('newAdditionImages', img);
       });
@@ -291,6 +298,15 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                               placeholder='Введіть Ціну'
                               value={price}
                               onChange={(e) => setPrice(Number(e.target.value))}
+                              min={1}
+                           />
+                           <ModalInput
+                              text='Акційна Ціна'
+                              placeholder='Введіть Акційну Ціну'
+                              value={promotionalPrice}
+                              onChange={(e) =>
+                                 setPromotionalPrice(Number(e.target.value))
+                              }
                               min={1}
                            />
                         </div>

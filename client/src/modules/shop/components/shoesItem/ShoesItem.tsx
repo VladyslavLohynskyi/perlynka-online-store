@@ -22,6 +22,16 @@ export const ShoesItem: React.FC<ShoesItemType> = ({ shoes }) => {
          onClick={() => navigate(RoutesEnum.SHOES + '/' + shoes.id)}
       >
          <div className='shoes-item__img-container'>
+            {shoes.promotionalPrice && (
+               <div className='shoes-item__discount-tag'>
+                  -
+                  {Math.round(
+                     100 - (shoes.promotionalPrice / shoes.price) * 100,
+                  )}
+                  %
+               </div>
+            )}
+
             <img
                src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/preview/${shoes.img}.webp`}
                loading='lazy'
@@ -29,6 +39,13 @@ export const ShoesItem: React.FC<ShoesItemType> = ({ shoes }) => {
                ref={ref}
                style={{ height: ref.current?.clientWidth }}
             />
+            <div className='shoes-item__tags'>
+               {shoes.promotionalPrice && (
+                  <div className='shoes-item__tag shoes-item__tag--promotional'>
+                     Розпродаж
+                  </div>
+               )}
+            </div>
          </div>
          <div className='shoes-item__info'>
             <p className='preview-shoes-item-model-text '>
@@ -39,9 +56,20 @@ export const ShoesItem: React.FC<ShoesItemType> = ({ shoes }) => {
                {shoes.model}
             </p>
             <div className='shoes-item__price-container'>
-               <p className='preview-shoes-item-price-text'>
-                  {shoes.price} грн
-               </p>
+               <div className='shoes-item__price'>
+                  <p className='preview-shoes-item-price-text'>
+                     {shoes.promotionalPrice
+                        ? shoes.promotionalPrice
+                        : shoes.price}{' '}
+                     грн
+                  </p>
+                  {shoes.promotionalPrice && (
+                     <span className='shoes-item__promo-price'>
+                        {shoes.price} грн
+                     </span>
+                  )}
+               </div>
+
                <IconButton
                   className='shoes-item__plus-btn '
                   icon={faPlusCircle}

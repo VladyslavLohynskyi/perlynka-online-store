@@ -11,6 +11,7 @@ interface shoesAttributes {
    colorId: number;
    seasonId: number;
    brandId: number;
+   promotionalPrice?: number;
    sex: SexType;
 }
 
@@ -32,6 +33,7 @@ const Shoes = sequelize.define<shoesInstance>('shoes', {
    seasonId: { allowNull: false, type: DataTypes.INTEGER },
    colorId: { allowNull: false, type: DataTypes.INTEGER },
    brandId: { allowNull: false, type: DataTypes.INTEGER },
+   promotionalPrice: { type: DataTypes.INTEGER, allowNull: true },
    sex: { allowNull: false, type: DataTypes.STRING, defaultValue: 'Унісекс' },
 });
 

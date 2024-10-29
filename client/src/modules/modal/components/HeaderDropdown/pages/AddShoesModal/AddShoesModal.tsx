@@ -52,6 +52,7 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
    const dispatch = useAppDispatch();
    const [model, setModel] = useState('');
    const [price, setPrice] = useState(0);
+   const [promotionalPrice, setPromotionalPrice] = useState(0);
    const [brand, setBrand] = useState(0);
    const [type, setType] = useState(0);
    const [color, setColor] = useState(0);
@@ -153,6 +154,9 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
       }
       formData.append('images', mainPhoto);
       formData.append('shoesInfos', JSON.stringify(infos));
+      if (promotionalPrice > 0) {
+         formData.append('promotionalPrice', String(promotionalPrice));
+      }
       dispatch(
          createShoes(formData, {
             brandsId: selectedBrandsId,
@@ -210,6 +214,14 @@ export const AddShoesModal: React.FC<AddShoesModalType> = ({ onClose }) => {
                placeholder='Введіть ціну'
                type='number'
                onChange={(e) => setPrice(Number(e.target.value))}
+               required={true}
+            />
+            <ModalInput
+               text='Aкційна ціна'
+               value={promotionalPrice}
+               placeholder='Введіть акційну ціну'
+               type='number'
+               onChange={(e) => setPromotionalPrice(Number(e.target.value))}
                required={true}
             />
             <div className='add-shoes-modal__selects-container'>
