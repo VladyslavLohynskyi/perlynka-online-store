@@ -5,7 +5,10 @@
   "scripts": {
     "build": "concurrently \"npm run build:client\" \"npm run build:server\"",
     "build:client": "cd client && npm install && npm run build",
-    "build:server": "cd server && npm install && npx tsc"
+    "build:server": "cd server && npm install && npx tsc",
+    "start:client": "cd client && npm run start",
+    "start:server": "cd server && npm run start",
+    "start": "concurrently \"npm run start:client\" \"npm run start:server\""
   },
   "devDependencies": {
     "concurrently": "^7.5.0"
