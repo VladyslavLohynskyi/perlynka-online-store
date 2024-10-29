@@ -82,6 +82,9 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
          setSex(foundShoes.sex);
          setAdditionImages(foundShoes.shoes_images);
          setAddSizes([]);
+         setPromotionalPrice(
+            foundShoes.promotionalPrice ? foundShoes.promotionalPrice : 0,
+         );
          setInfos((prev) =>
             Array.isArray(foundShoes.shoes_infos)
                ? foundShoes.shoes_infos
