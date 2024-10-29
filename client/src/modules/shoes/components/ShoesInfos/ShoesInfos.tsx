@@ -60,6 +60,7 @@ const ShoesInfos: React.FC<ShoesInfosType> = ({ currentShoes }) => {
                brandId,
                sex,
                shoes_sizes,
+               promotionalPrice,
             } = currentShoes;
             dispatch(
                addShoesToBasketNotAuth({
@@ -71,6 +72,7 @@ const ShoesInfos: React.FC<ShoesInfosType> = ({ currentShoes }) => {
                      price,
                      img,
                      typeId,
+                     promotionalPrice,
                      colorId,
                      seasonId,
                      brandId,
