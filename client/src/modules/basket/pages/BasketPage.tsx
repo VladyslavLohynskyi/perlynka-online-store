@@ -26,7 +26,9 @@ export const BasketPage: React.FC = () => {
    useEffect(() => {
       let price = 0;
       basket.forEach((el) => {
-         price += el.count * el.sho.price;
+         price +=
+            el.count *
+            (el.sho.promotionalPrice ? el.sho.promotionalPrice : el.sho.price);
       });
       setTotalPrice(price);
    }, [totalCountOfShoesInBasket, basket]);

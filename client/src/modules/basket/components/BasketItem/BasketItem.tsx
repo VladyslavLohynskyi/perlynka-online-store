@@ -83,7 +83,10 @@ export const BasketItem: React.FC<BasketItemType> = ({
                   Розмір взуття: {size.size} EU
                </p>
             </div>
-            <p className='label-text'>{shoes.price} грн.</p>
+            <p className='label-text'>
+               {shoes.promotionalPrice ? shoes.promotionalPrice : shoes.price}{' '}
+               грн.
+            </p>
             <div className='basket-item__buy-counter'>
                <IconButton
                   icon={faChevronUp}
@@ -97,7 +100,12 @@ export const BasketItem: React.FC<BasketItemType> = ({
                   onClick={handleClickDecrementButton}
                />
             </div>
-            <p className='label-text'>{shoes.price * count} грн.</p>
+            <p className='label-text'>
+               {(shoes.promotionalPrice
+                  ? shoes.promotionalPrice
+                  : shoes.price) * count}{' '}
+               грн.
+            </p>
             <div className='basket-item__trash-button-container'>
                <IconButton icon={faTrash} onClick={handleClickTrashButton} />
             </div>
