@@ -58,6 +58,14 @@ export const BurgerMenu: React.FC<BurgerMenuType> = ({
                   handleSwitchBurgerShow();
                }}
             />
+            <NavItem
+               text='Знижки'
+               type={NavItemEnum.BURGER_MENU_ITEM}
+               onClick={() => {
+                  navigate(RoutesEnum.DISCOUNT);
+                  handleSwitchBurgerShow();
+               }}
+            />
          </nav>
          <div className='burger-menu__footer'>
             <p className='nav-btn-text'>

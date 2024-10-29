@@ -115,6 +115,11 @@ export const Header: React.FC<HeaderType> = ({
                      onClick={() => navigate(RoutesEnum.PAYMENT_AND_DELIVERY)}
                      type={NavItemEnum.DESKTOP_MENU_ITEM}
                   />
+                  <NavItem
+                     text='Знижки'
+                     onClick={() => navigate(RoutesEnum.DISCOUNT)}
+                     type={NavItemEnum.DESKTOP_MENU_ITEM}
+                  />
                </nav>
                <div className='icon-menu'>
                   <div className='icon-menu__basket'>
