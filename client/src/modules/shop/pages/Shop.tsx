@@ -10,6 +10,9 @@ import {
    seasonFilter,
    colorFilter,
    sortFilter,
+   sizeFilter,
+   resetFilters,
+   changePage,
 } from '../../../store/reducers/filter/FilterActionCreators';
 import { FilterCheckboxList } from '../components/filterCheckboxList';
 import { FilterSizeCheckboxList } from '../components/filterSizeCheckboxList';
@@ -45,8 +48,15 @@ export const Shop: React.FC = () => {
    const dispatch = useAppDispatch();
    const [isMobileAsideFiltersShowed, setIsMobileAsideFiltersShowed] =
       useState<boolean>(false);
-   const { isLoadingShoes, shoes, brands, types, seasons, colors } =
-      useAppSelector((state) => state.shoesReducer);
+   const {
+      isLoadingShoes,
+      shoes,
+      brands,
+      types,
+      seasons,
+      colors,
+      countOfShoesModels,
+   } = useAppSelector((state) => state.shoesReducer);
    const filter = useAppSelector((state) => state.filterReducer);
 
    useEffect(() => {
@@ -105,6 +115,18 @@ export const Shop: React.FC = () => {
       dispatch(sortFilter(e.target.value as SortEnum));
    };
 
+   const handleClickSizeCheckbox = (id: number) => {
+      dispatch(sizeFilter(id));
+   };
+
+   const handleClickResetButton = () => {
+      dispatch(resetFilters());
+   };
+
+   const handleChangePage = (number: number) => {
+      dispatch(changePage(number));
+   };
+
    return (
       <>
          <div className='shop__container'>
@@ -157,8 +179,19 @@ export const Shop: React.FC = () => {
                         list={colors}
                         name={NameOfCategoriesEnum.COLOR}
                      />
-                     <FilterSizeCheckboxList />
+                     <FilterSizeCheckboxList
+                        selectedValuesId={filter.selectedSizesId}
+                        handleClickCheckbox={handleClickSizeCheckbox}
+                     />
                      <ResetFiltersButton
+                        selectedBrandsId={filter.selectedBrandsId}
+                        selectedColorsId={filter.selectedColorsId}
+                        selectedSeasonsId={filter.selectedSeasonsId}
+                        selectedSex={filter.selectedSex}
+                        selectedSizesId={filter.selectedSizesId}
+                        selectedSortFilter={filter.selectedSortFilter}
+                        selectedTypesId={filter.selectedTypesId}
+                        handleClickResetButton={handleClickResetButton}
                         style={{ height: '30px', marginTop: '10px' }}
                      />
                   </aside>
@@ -184,7 +217,12 @@ export const Shop: React.FC = () => {
                                  Взуття з такою фільтрацією не знайденно
                               </p>
                            )}
-                           <Pagination />
+                           <Pagination
+                              page={filter.page}
+                              limit={filter.limit}
+                              countOfShoesModels={countOfShoesModels}
+                              handleChangePage={handleChangePage}
+                           />
                         </>
                      )}
                   </div>
@@ -207,6 +245,19 @@ export const Shop: React.FC = () => {
             onBlur={true}
          >
             <AsideMobileFiltersModal
+               handleClickBrandCheckbox={handleClickBrandCheckbox}
+               handleClickColorCheckbox={handleClickColorCheckbox}
+               handleClickSeasonCheckbox={handleClickSeasonCheckbox}
+               handleClickSizeCheckbox={handleClickSizeCheckbox}
+               handleClickTypeCheckbox={handleClickTypeCheckbox}
+               selectedBrandsId={filter.selectedBrandsId}
+               selectedColorsId={filter.selectedColorsId}
+               selectedSeasonsId={filter.selectedSeasonsId}
+               selectedSex={filter.selectedSex}
+               selectedSizesId={filter.selectedSizesId}
+               selectedSortFilter={filter.selectedSortFilter}
+               selectedTypesId={filter.selectedTypesId}
+               handleClickResetButton={handleClickResetButton}
                onClose={() => setIsMobileAsideFiltersShowed(false)}
             />
          </Modal>

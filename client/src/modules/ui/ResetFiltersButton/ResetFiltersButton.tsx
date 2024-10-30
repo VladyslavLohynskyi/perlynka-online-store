@@ -1,26 +1,25 @@
 import React from 'react';
 import { ResetFiltersButtonType } from './ResetFiltersButtonType';
 
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { resetFilters } from '../../../store/reducers/filter/FilterActionCreators';
+import { useAppDispatch } from '../../../hooks/redux';
+
 import { SexEnum } from '../../../store/reducers/shoes/ShoesSlice';
 import { SortEnum } from '../../../store/reducers/filter/FilterSlice';
 import { Button } from '../Button';
 import { ButtonClassEnum } from '../Button/ButtonType';
 
 export const ResetFiltersButton: React.FC<ResetFiltersButtonType> = ({
+   selectedBrandsId,
+   selectedTypesId,
+   selectedSeasonsId,
+   selectedColorsId,
+   selectedSex,
+   selectedSizesId,
+   selectedSortFilter,
+   handleClickResetButton,
    ...props
 }) => {
    const dispatch = useAppDispatch();
-   const {
-      selectedBrandsId,
-      selectedTypesId,
-      selectedSeasonsId,
-      selectedColorsId,
-      selectedSex,
-      selectedSizesId,
-      selectedSortFilter,
-   } = useAppSelector((state) => state.filterReducer);
 
    const isFiltersEmpty =
       !selectedBrandsId.length &&
@@ -31,9 +30,6 @@ export const ResetFiltersButton: React.FC<ResetFiltersButtonType> = ({
       selectedSex === SexEnum.UNISEX &&
       selectedSortFilter === SortEnum.CREATED_AT_DESC;
 
-   const handleClickResetButton = () => {
-      dispatch(resetFilters());
-   };
    return (
       <Button
          buttonClass={

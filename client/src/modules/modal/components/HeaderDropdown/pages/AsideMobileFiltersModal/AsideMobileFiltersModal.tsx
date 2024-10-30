@@ -6,48 +6,33 @@ import { AsideMobileFiltersModalType } from './AsideMobileFiltersModalType';
 import { MobileFilterItem } from '../../components/MobileFilterItem';
 import { ResetFiltersButton } from '../../../../../ui/ResetFiltersButton';
 import { NameOfCategoriesEnum } from '../../../../../shop/pages';
-import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
+import { useAppSelector } from '../../../../../../hooks/redux';
 import { FilterCheckboxList } from '../../../../../shop/components/filterCheckboxList';
-import {
-   brandFilter,
-   colorFilter,
-   seasonFilter,
-   typeFilter,
-} from '../../../../../../store/reducers/filter/FilterActionCreators';
+
 import { FilterSizeCheckboxList } from '../../../../../shop/components/filterSizeCheckboxList';
 
 export const AsideMobileFiltersModal: React.FC<AsideMobileFiltersModalType> = ({
    onClose,
+   selectedBrandsId,
+   selectedTypesId,
+   selectedSeasonsId,
+   selectedColorsId,
+   selectedSizesId,
+   selectedSex,
+   selectedSortFilter,
+   handleClickBrandCheckbox,
+   handleClickTypeCheckbox,
+   handleClickSeasonCheckbox,
+   handleClickColorCheckbox,
+   handleClickResetButton,
+   handleClickSizeCheckbox,
 }) => {
-   const dispatch = useAppDispatch();
-   const {
-      selectedBrandsId,
-      selectedTypesId,
-      selectedSeasonsId,
-      selectedColorsId,
-   } = useAppSelector((state) => state.filterReducer);
    const { brands, types, seasons, colors } = useAppSelector(
       (state) => state.shoesReducer,
    );
    const [isFilterOptionClicked, setIsFilterOptionClicked] =
       useState<boolean>(false);
    const [optionNameClicked, setOptionNameClicked] = useState<string>('');
-
-   const handleClickBrandCheckbox = (id: number) => {
-      dispatch(brandFilter(id));
-   };
-
-   const handleClickTypeCheckbox = (id: number) => {
-      dispatch(typeFilter(id));
-   };
-
-   const handleClickSeasonCheckbox = (id: number) => {
-      dispatch(seasonFilter(id));
-   };
-
-   const handleClickColorCheckbox = (id: number) => {
-      dispatch(colorFilter(id));
-   };
 
    const switchFiltersCheckboxes = (optionNameClicked: string) => {
       switch (optionNameClicked) {
@@ -84,7 +69,12 @@ export const AsideMobileFiltersModal: React.FC<AsideMobileFiltersModalType> = ({
                />
             );
          case NameOfCategoriesEnum.SIZE:
-            return <FilterSizeCheckboxList />;
+            return (
+               <FilterSizeCheckboxList
+                  selectedValuesId={selectedSizesId}
+                  handleClickCheckbox={handleClickSizeCheckbox}
+               />
+            );
 
          default:
             break;
@@ -146,6 +136,14 @@ export const AsideMobileFiltersModal: React.FC<AsideMobileFiltersModalType> = ({
             </>
          )}
          <ResetFiltersButton
+            selectedBrandsId={selectedBrandsId}
+            selectedColorsId={selectedColorsId}
+            selectedSeasonsId={selectedSeasonsId}
+            selectedSex={selectedSex}
+            selectedSizesId={selectedSizesId}
+            selectedSortFilter={selectedSortFilter}
+            selectedTypesId={selectedTypesId}
+            handleClickResetButton={handleClickResetButton}
             style={{
                height: '50px',
                margin: '0 20px',

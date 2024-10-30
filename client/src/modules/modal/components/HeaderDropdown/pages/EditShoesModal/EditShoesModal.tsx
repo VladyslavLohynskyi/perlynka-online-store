@@ -14,7 +14,6 @@ import {
 import {
    GOOGLE_CLOUD_BUCKET_NAME,
    GOOGLE_CLOUD_STORAGE_BASE_URL,
-   baseURL,
 } from '../../../../../../utils/constants';
 import { useAppDispatch, useAppSelector } from '../../../../../../hooks/redux';
 import { Button } from '../../../../../ui/Button';
@@ -234,7 +233,10 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
          formData.append('deletedImagesNames', JSON.stringify(deletedImages));
       }
 
-      if (promotionalPrice > 0) {
+      if (
+         promotionalPrice > 0 ||
+         promotionalPrice !== foundShoes?.promotionalPrice
+      ) {
          formData.append('promotionalPrice', String(promotionalPrice));
       }
       newAdditionImages.forEach(({ img }) => {

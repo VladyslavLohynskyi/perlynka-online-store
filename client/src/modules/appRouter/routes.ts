@@ -5,6 +5,7 @@ import ChangePassword from '../auth/сomponents/ChangePassword/ChangePassword';
 import { BasketPage } from '../basket/pages';
 import { CheckoutPage } from '../checkout/pages';
 import Contact from '../contact/pages/Contact';
+import { Discount } from '../discount/pages';
 import PaymentAndDelivery from '../PaymentAndDelivery/pages/PaymentAndDelivery';
 import Profile from '../profile/pages/Profile';
 import ReturnAndExchange from '../returnAndExchange/pages/ReturnAndExchange';
@@ -51,6 +52,10 @@ export const authRoutes: IRoutes[] = [
    {
       path: RoutesEnum.FORGOT_FORM + '/:id' + '/:token',
       Component: ChangePassword,
+   },
+   {
+      path: RoutesEnum.DISCOUNT,
+      Component: Discount,
    },
 ];
 
@@ -99,6 +104,11 @@ export const publicRoutes: IRoutes[] = [
    {
       path: RoutesEnum.RETURN_AND_EXCHANGE,
       Component: ReturnAndExchange,
+   },
+
+   {
+      path: RoutesEnum.DISCOUNT,
+      Component: Discount,
    },
 ];
 

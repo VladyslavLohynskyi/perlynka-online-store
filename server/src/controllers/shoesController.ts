@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { NextFunction, Request, Response } from 'express';
 import ShoesSize from '../models/shoesSizeModel';
 
-import { Op } from 'sequelize';
+import { Op, Sequelize } from 'sequelize';
 
 import Brand from '../models/brandModel';
 
@@ -40,6 +40,7 @@ interface shoesGetRequest extends Request {
       sortBy: SortEnum;
       limit: string;
       offset: string;
+      promotion?: string;
    };
 }
 interface shoesCreateRequest extends Request {
@@ -128,7 +129,6 @@ class shoesController {
                'images',
             );
          }
-         console.log(promotionalPrice);
          const shoes = await Shoes.create({
             model,
             price,
@@ -190,6 +190,7 @@ class shoesController {
             sortBy,
             limit,
             offset,
+            promotion,
          } = req.query;
          const brandIdsParsed: string[] = JSON.parse(brandsId);
          const typeIdsParsed: string[] = JSON.parse(typesId);
@@ -208,15 +209,28 @@ class shoesController {
 
          const sortBySplit: string[] = sortBy.split(' ');
 
+         const whereClause: any = {
+            brandId: { [Op.or]: [...brandIdsParsed] },
+            typeId: { [Op.or]: [...typeIdsParsed] },
+            seasonId: { [Op.or]: [...seasonIdsParsed] },
+            colorId: { [Op.or]: [...colorsIdsParsed] },
+            sex: { [Op.or]: sexFilter() },
+         };
+         if (promotion === 'true') {
+            whereClause.promotionalPrice = { [Op.not]: null };
+         }
          const shoes = await Shoes.findAndCountAll({
-            where: {
-               brandId: { [Op.or]: [...brandIdsParsed] },
-               typeId: { [Op.or]: [...typeIdsParsed] },
-               seasonId: { [Op.or]: [...seasonIdsParsed] },
-               colorId: { [Op.or]: [...colorsIdsParsed] },
-               sex: { [Op.or]: sexFilter() },
-            },
-            order: [[sortBySplit[0], sortBySplit[1]]],
+            where: whereClause,
+            order: [
+               [
+                  sortBySplit[0] === 'price'
+                     ? Sequelize.literal(
+                          `COALESCE("shoes"."promotionalPrice", "shoes"."price")`,
+                       )
+                     : sortBySplit[0],
+                  sortBySplit[1].toUpperCase(),
+               ],
+            ],
             include: [
                {
                   model: ShoesSize,
@@ -338,9 +352,12 @@ class shoesController {
                colorId: colorId ? colorId : shoes.colorId,
                seasonId: seasonId ? seasonId : shoes.seasonId,
                sex: sex ? sex : shoes.sex,
-               promotionalPrice: promotionalPrice
-                  ? promotionalPrice
-                  : shoes.promotionalPrice,
+               promotionalPrice:
+                  promotionalPrice && promotionalPrice > 0
+                     ? promotionalPrice
+                     : promotionalPrice == 0
+                     ? null
+                     : shoes.promotionalPrice,
             },
             { where: { id } },
          );
