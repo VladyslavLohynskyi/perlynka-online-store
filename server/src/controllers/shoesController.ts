@@ -40,6 +40,7 @@ interface shoesGetRequest extends Request {
       sortBy: SortEnum;
       limit: string;
       offset: string;
+      promotion?: string;
    };
 }
 interface shoesCreateRequest extends Request {
@@ -190,6 +191,7 @@ class shoesController {
             sortBy,
             limit,
             offset,
+            promotion,
          } = req.query;
          const brandIdsParsed: string[] = JSON.parse(brandsId);
          const typeIdsParsed: string[] = JSON.parse(typesId);
@@ -208,14 +210,18 @@ class shoesController {
 
          const sortBySplit: string[] = sortBy.split(' ');
 
+         const whereClause: any = {
+            brandId: { [Op.or]: [...brandIdsParsed] },
+            typeId: { [Op.or]: [...typeIdsParsed] },
+            seasonId: { [Op.or]: [...seasonIdsParsed] },
+            colorId: { [Op.or]: [...colorsIdsParsed] },
+            sex: { [Op.or]: sexFilter() },
+         };
+         if (promotion === 'true') {
+            whereClause.promotionalPrice = { [Op.not]: null };
+         }
          const shoes = await Shoes.findAndCountAll({
-            where: {
-               brandId: { [Op.or]: [...brandIdsParsed] },
-               typeId: { [Op.or]: [...typeIdsParsed] },
-               seasonId: { [Op.or]: [...seasonIdsParsed] },
-               colorId: { [Op.or]: [...colorsIdsParsed] },
-               sex: { [Op.or]: sexFilter() },
-            },
+            where: whereClause,
             order: [[sortBySplit[0], sortBySplit[1]]],
             include: [
                {

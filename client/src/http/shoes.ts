@@ -20,6 +20,7 @@ export interface IFilter {
    sortBy: SortEnum;
    offset: number;
    limit: number;
+   promotion?: boolean;
 }
 interface IParticularSize extends ISize {
    sizeId: number;
@@ -51,12 +52,14 @@ class ShoesReq {
       sortBy,
       offset,
       limit,
+      promotion,
    }: IFilter) => {
       const brandIdStringified = JSON.stringify(brandsId);
       const typesIdStringified = JSON.stringify(typesId);
       const seasonsIdStringified = JSON.stringify(seasonsId);
       const colorsIdStringified = JSON.stringify(colorsId);
       const sizesIdStringified = JSON.stringify(sizesId);
+      const promotionStringified = promotion ? promotion.toString() : promotion;
       const responseShoes = await $host.get<{
          count: number;
          rows: IShoesWithSizes[];
@@ -71,6 +74,7 @@ class ShoesReq {
             offset,
             limit,
             sizesId: sizesIdStringified,
+            promotion: promotionStringified,
          },
       });
       const shoes = responseShoes.data;

@@ -1,11 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-
+import ShoesReq from '../../../http/shoes';
 import { SortEnum } from '../../../store/reducers/filter/FilterSlice';
 import { FilterCheckboxList } from '../../shop/components/filterCheckboxList';
 import { useAppSelector } from '../../../hooks/redux';
 import { NameOfCategoriesEnum } from '../../shop/pages';
 import SkeletonShoesItem from '../../shop/components/skeletonShoesItem/SkeletonShoesItem';
-import { IShoes, SexEnum } from '../../../store/reducers/shoes/ShoesSlice';
+import {
+   IShoes,
+   IShoesWithSizes,
+   SexEnum,
+} from '../../../store/reducers/shoes/ShoesSlice';
 import { ShoesItem } from '../../shop/components/shoesItem';
 import { FilterSizeCheckboxList } from '../../shop/components/filterSizeCheckboxList';
 import { ResetFiltersButton } from '../../ui/ResetFiltersButton';
@@ -19,6 +23,8 @@ export const Discount: React.FC = () => {
       (state) => state.shoesReducer,
    );
    const [page, setPage] = useState(1);
+   const [limit, setLimit] = useState(16);
+   const [count, setCount] = useState(0);
    const [selectedSortFilter, setSelectedSortFilter] = useState<SortEnum>(
       SortEnum.CREATED_AT_DESC,
    );
@@ -29,8 +35,37 @@ export const Discount: React.FC = () => {
    const [selectedSizesId, setSelectedSizesId] = useState<number[]>([]);
    const [selectedSex, setSelectedSex] = useState<SexEnum>(SexEnum.UNISEX);
    const [isLoadingShoes, setIsLoadingShoes] = useState(true);
-   const [shoes, setShoes] = useState<IShoes[]>([]);
+   const [shoes, setShoes] = useState<IShoesWithSizes[]>([]);
 
+   useEffect(() => {
+      setIsLoadingShoes(true);
+      ShoesReq.getAllShoes({
+         brandsId: selectedBrandsId,
+         typesId: selectedTypesId,
+         colorsId: selectedColorsId,
+         sizesId: selectedSizesId,
+         seasonsId: selectedSeasonsId,
+         sex: selectedSex,
+         sortBy: selectedSortFilter,
+         offset: limit * (page - 1),
+         limit,
+         promotion: true,
+      })
+         .then(({ count, rows }) => {
+            setShoes(rows);
+            setCount(count);
+         })
+         .finally(() => setIsLoadingShoes(false));
+   }, [
+      selectedBrandsId,
+      selectedTypesId,
+      selectedColorsId,
+      selectedSizesId,
+      selectedSeasonsId,
+      selectedSex,
+      selectedSortFilter,
+      page,
+   ]);
    const handleClickSelectSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
       setSelectedSortFilter(e.target.value as SortEnum);
    };
