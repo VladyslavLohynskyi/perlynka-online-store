@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { NextFunction, Request, Response } from 'express';
 import ShoesSize from '../models/shoesSizeModel';
 
-import { Op } from 'sequelize';
+import { Op, Sequelize } from 'sequelize';
 
 import Brand from '../models/brandModel';
 
@@ -129,7 +129,6 @@ class shoesController {
                'images',
             );
          }
-         console.log(promotionalPrice);
          const shoes = await Shoes.create({
             model,
             price,
@@ -222,7 +221,16 @@ class shoesController {
          }
          const shoes = await Shoes.findAndCountAll({
             where: whereClause,
-            order: [[sortBySplit[0], sortBySplit[1]]],
+            order: [
+               [
+                  sortBySplit[0] === 'price'
+                     ? Sequelize.literal(
+                          `COALESCE("shoes"."promotionalPrice", "shoes"."price")`,
+                       )
+                     : sortBySplit[0],
+                  sortBySplit[1].toUpperCase(),
+               ],
+            ],
             include: [
                {
                   model: ShoesSize,
