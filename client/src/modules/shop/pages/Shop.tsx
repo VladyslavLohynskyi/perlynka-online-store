@@ -11,6 +11,7 @@ import {
    colorFilter,
    sortFilter,
    sizeFilter,
+   resetFilters,
 } from '../../../store/reducers/filter/FilterActionCreators';
 import { FilterCheckboxList } from '../components/filterCheckboxList';
 import { FilterSizeCheckboxList } from '../components/filterSizeCheckboxList';
@@ -110,6 +111,10 @@ export const Shop: React.FC = () => {
       dispatch(sizeFilter(id));
    };
 
+   const handleClickResetButton = () => {
+      dispatch(resetFilters());
+   };
+
    return (
       <>
          <div className='shop__container'>
@@ -167,6 +172,14 @@ export const Shop: React.FC = () => {
                         handleClickCheckbox={handleClickSizeCheckbox}
                      />
                      <ResetFiltersButton
+                        selectedBrandsId={filter.selectedBrandsId}
+                        selectedColorsId={filter.selectedColorsId}
+                        selectedSeasonsId={filter.selectedSeasonsId}
+                        selectedSex={filter.selectedSex}
+                        selectedSizesId={filter.selectedSizesId}
+                        selectedSortFilter={filter.selectedSortFilter}
+                        selectedTypesId={filter.selectedTypesId}
+                        handleClickResetButton={handleClickResetButton}
                         style={{ height: '30px', marginTop: '10px' }}
                      />
                   </aside>

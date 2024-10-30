@@ -11,6 +11,7 @@ import { FilterCheckboxList } from '../../../../../shop/components/filterCheckbo
 import {
    brandFilter,
    colorFilter,
+   resetFilters,
    seasonFilter,
    sizeFilter,
    typeFilter,
@@ -27,6 +28,8 @@ export const AsideMobileFiltersModal: React.FC<AsideMobileFiltersModalType> = ({
       selectedSeasonsId,
       selectedColorsId,
       selectedSizesId,
+      selectedSex,
+      selectedSortFilter,
    } = useAppSelector((state) => state.filterReducer);
    const { brands, types, seasons, colors } = useAppSelector(
       (state) => state.shoesReducer,
@@ -52,6 +55,9 @@ export const AsideMobileFiltersModal: React.FC<AsideMobileFiltersModalType> = ({
    };
    const handleClickSizeCheckbox = (id: number) => {
       dispatch(sizeFilter(id));
+   };
+   const handleClickResetButton = () => {
+      dispatch(resetFilters());
    };
 
    const switchFiltersCheckboxes = (optionNameClicked: string) => {
@@ -156,6 +162,14 @@ export const AsideMobileFiltersModal: React.FC<AsideMobileFiltersModalType> = ({
             </>
          )}
          <ResetFiltersButton
+            selectedBrandsId={selectedBrandsId}
+            selectedColorsId={selectedColorsId}
+            selectedSeasonsId={selectedSeasonsId}
+            selectedSex={selectedSex}
+            selectedSizesId={selectedSizesId}
+            selectedSortFilter={selectedSortFilter}
+            selectedTypesId={selectedTypesId}
+            handleClickResetButton={handleClickResetButton}
             style={{
                height: '50px',
                margin: '0 20px',

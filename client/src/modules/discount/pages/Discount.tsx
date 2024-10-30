@@ -5,9 +5,10 @@ import { FilterCheckboxList } from '../../shop/components/filterCheckboxList';
 import { useAppSelector } from '../../../hooks/redux';
 import { NameOfCategoriesEnum } from '../../shop/pages';
 import SkeletonShoesItem from '../../shop/components/skeletonShoesItem/SkeletonShoesItem';
-import { IShoes } from '../../../store/reducers/shoes/ShoesSlice';
+import { IShoes, SexEnum } from '../../../store/reducers/shoes/ShoesSlice';
 import { ShoesItem } from '../../shop/components/shoesItem';
 import { FilterSizeCheckboxList } from '../../shop/components/filterSizeCheckboxList';
+import { ResetFiltersButton } from '../../ui/ResetFiltersButton';
 interface ISelectFilterOption {
    id: number;
    text: string;
@@ -18,12 +19,15 @@ export const Discount: React.FC = () => {
       (state) => state.shoesReducer,
    );
    const [page, setPage] = useState(1);
-   const [selectedSortFilter, setSelectedSortFilter] = useState('');
+   const [selectedSortFilter, setSelectedSortFilter] = useState<SortEnum>(
+      SortEnum.CREATED_AT_DESC,
+   );
    const [selectedBrandsId, setSelectedBrandsId] = useState<number[]>([]);
    const [selectedTypesId, setSelectedTypesId] = useState<number[]>([]);
    const [selectedSeasonsId, setSelectedSeasonsId] = useState<number[]>([]);
    const [selectedColorsId, setSelectedColorsId] = useState<number[]>([]);
    const [selectedSizesId, setSelectedSizesId] = useState<number[]>([]);
+   const [selectedSex, setSelectedSex] = useState<SexEnum>(SexEnum.UNISEX);
    const [isLoadingShoes, setIsLoadingShoes] = useState(true);
    const [shoes, setShoes] = useState<IShoes[]>([]);
 
@@ -68,12 +72,23 @@ export const Discount: React.FC = () => {
    };
 
    const handleClickSizeCheckbox = (id: number) => {
-      if (selectedSizesId.includes(id)) {
+      if (!selectedSizesId.includes(id)) {
          setSelectedSizesId([...selectedSizesId, id]);
       } else {
          setSelectedSizesId(selectedSizesId.filter((el) => el !== id));
       }
       setPage(1);
+   };
+
+   const handleClickResetButton = () => {
+      setPage(1);
+      setSelectedBrandsId([]);
+      setSelectedColorsId([]);
+      setSelectedSeasonsId([]);
+      setSelectedSex(SexEnum.UNISEX);
+      setSelectedSizesId([]);
+      setSelectedSortFilter(SortEnum.CREATED_AT_DESC);
+      setSelectedTypesId([]);
    };
 
    const selectOptions: ISelectFilterOption[] = [
@@ -137,6 +152,17 @@ export const Discount: React.FC = () => {
                      <FilterSizeCheckboxList
                         selectedValuesId={selectedSizesId}
                         handleClickCheckbox={handleClickSizeCheckbox}
+                     />
+                     <ResetFiltersButton
+                        selectedBrandsId={selectedBrandsId}
+                        selectedColorsId={selectedColorsId}
+                        selectedSeasonsId={selectedSeasonsId}
+                        selectedSex={selectedSex}
+                        selectedSizesId={selectedSizesId}
+                        selectedSortFilter={selectedSortFilter}
+                        selectedTypesId={selectedTypesId}
+                        handleClickResetButton={handleClickResetButton}
+                        style={{ height: '30px', marginTop: '10px' }}
                      />
                   </aside>
                   <div className='shop__right-side'>
