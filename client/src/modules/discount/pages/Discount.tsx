@@ -13,6 +13,11 @@ import {
 import { ShoesItem } from '../../shop/components/shoesItem';
 import { FilterSizeCheckboxList } from '../../shop/components/filterSizeCheckboxList';
 import { ResetFiltersButton } from '../../ui/ResetFiltersButton';
+import { Button } from '../../ui/Button';
+import { ButtonClassEnum } from '../../ui/Button/ButtonType';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSliders } from '@fortawesome/free-solid-svg-icons';
+import { Pagination } from '../../shop/components/Pagination';
 interface ISelectFilterOption {
    id: number;
    text: string;
@@ -22,6 +27,9 @@ export const Discount: React.FC = () => {
    const { brands, types, seasons, colors } = useAppSelector(
       (state) => state.shoesReducer,
    );
+
+   const [isMobileAsideFiltersShowed, setIsMobileAsideFiltersShowed] =
+      useState<boolean>(false);
    const [page, setPage] = useState(1);
    const [limit, setLimit] = useState(16);
    const [count, setCount] = useState(0);
@@ -220,10 +228,27 @@ export const Discount: React.FC = () => {
                                  Взуття з такою фільтрацією не знайденно
                               </p>
                            )}
+                           <Pagination
+                              page={page}
+                              limit={limit}
+                              countOfShoesModels={count}
+                              handleChangePage={(number: number) =>
+                                 setPage(number)
+                              }
+                           />
                         </>
                      )}
                   </div>
                </div>
+            </div>
+            <div className='shop__mobile-filter-button-container'>
+               <Button
+                  buttonClass={ButtonClassEnum.MOBILE_FILTER}
+                  buttonText='Фільтр'
+                  buttonClick={() => setIsMobileAsideFiltersShowed(true)}
+               >
+                  <FontAwesomeIcon icon={faSliders} className='fa-lg' />
+               </Button>
             </div>
          </div>
       </>

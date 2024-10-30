@@ -1,17 +1,18 @@
 import React from 'react';
 
 import './Pagination.scss';
-import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
-import { changePage } from '../../../../store/reducers/filter/FilterActionCreators';
 import { Button } from '../../../ui/Button';
 import { ButtonClassEnum } from '../../../ui/Button/ButtonType';
 import { IconButton } from '../../../ui/IconButton';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { PaginationType } from './PaginationType';
 
-export const Pagination: React.FC = () => {
-   const { countOfShoesModels } = useAppSelector((state) => state.shoesReducer);
-   const { page, limit } = useAppSelector((state) => state.filterReducer);
-   const dispatch = useAppDispatch();
+export const Pagination: React.FC<PaginationType> = ({
+   countOfShoesModels,
+   page,
+   limit,
+   handleChangePage,
+}) => {
    const allPagesNumber = Math.ceil(countOfShoesModels / limit);
    const countPages = (number: number) => {
       let pagesNumber: number[] = [];
@@ -35,15 +36,15 @@ export const Pagination: React.FC = () => {
       ...countPages(allPagesNumber >= 9 ? 9 : allPagesNumber),
    ];
    const handleClick = (number: number) => {
-      dispatch(changePage(number));
+      handleChangePage(number);
       window.scrollTo({ top: 0 });
    };
    const handleClickRightArrow = () => {
-      dispatch(changePage(page + 1));
+      handleChangePage(page + 1);
       window.scrollTo({ top: 0 });
    };
    const handleClickLeftArrow = () => {
-      dispatch(changePage(page - 1));
+      handleChangePage(page - 1);
       window.scrollTo({ top: 0 });
    };
    return (

@@ -12,6 +12,7 @@ import {
    sortFilter,
    sizeFilter,
    resetFilters,
+   changePage,
 } from '../../../store/reducers/filter/FilterActionCreators';
 import { FilterCheckboxList } from '../components/filterCheckboxList';
 import { FilterSizeCheckboxList } from '../components/filterSizeCheckboxList';
@@ -47,8 +48,15 @@ export const Shop: React.FC = () => {
    const dispatch = useAppDispatch();
    const [isMobileAsideFiltersShowed, setIsMobileAsideFiltersShowed] =
       useState<boolean>(false);
-   const { isLoadingShoes, shoes, brands, types, seasons, colors } =
-      useAppSelector((state) => state.shoesReducer);
+   const {
+      isLoadingShoes,
+      shoes,
+      brands,
+      types,
+      seasons,
+      colors,
+      countOfShoesModels,
+   } = useAppSelector((state) => state.shoesReducer);
    const filter = useAppSelector((state) => state.filterReducer);
 
    useEffect(() => {
@@ -115,6 +123,9 @@ export const Shop: React.FC = () => {
       dispatch(resetFilters());
    };
 
+   const handleChangePage = (number: number) => {
+      dispatch(changePage(number));
+   };
    return (
       <>
          <div className='shop__container'>
@@ -205,7 +216,12 @@ export const Shop: React.FC = () => {
                                  Взуття з такою фільтрацією не знайденно
                               </p>
                            )}
-                           <Pagination />
+                           <Pagination
+                              page={filter.page}
+                              limit={filter.limit}
+                              countOfShoesModels={countOfShoesModels}
+                              handleChangePage={handleChangePage}
+                           />
                         </>
                      )}
                   </div>

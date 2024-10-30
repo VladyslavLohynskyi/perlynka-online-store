@@ -53,6 +53,10 @@ export const authRoutes: IRoutes[] = [
       path: RoutesEnum.FORGOT_FORM + '/:id' + '/:token',
       Component: ChangePassword,
    },
+   {
+      path: RoutesEnum.DISCOUNT,
+      Component: Discount,
+   },
 ];
 
 export const publicRoutes: IRoutes[] = [
