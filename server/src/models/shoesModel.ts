@@ -11,7 +11,7 @@ interface shoesAttributes {
    colorId: number;
    seasonId: number;
    brandId: number;
-   promotionalPrice?: number;
+   promotionalPrice?: number | null;
    sex: SexType;
 }
 

@@ -352,9 +352,12 @@ class shoesController {
                colorId: colorId ? colorId : shoes.colorId,
                seasonId: seasonId ? seasonId : shoes.seasonId,
                sex: sex ? sex : shoes.sex,
-               promotionalPrice: promotionalPrice
-                  ? promotionalPrice
-                  : shoes.promotionalPrice,
+               promotionalPrice:
+                  promotionalPrice && promotionalPrice > 0
+                     ? promotionalPrice
+                     : promotionalPrice == 0
+                     ? null
+                     : shoes.promotionalPrice,
             },
             { where: { id } },
          );
