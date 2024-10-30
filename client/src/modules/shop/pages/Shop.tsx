@@ -126,6 +126,7 @@ export const Shop: React.FC = () => {
    const handleChangePage = (number: number) => {
       dispatch(changePage(number));
    };
+
    return (
       <>
          <div className='shop__container'>
@@ -244,6 +245,19 @@ export const Shop: React.FC = () => {
             onBlur={true}
          >
             <AsideMobileFiltersModal
+               handleClickBrandCheckbox={handleClickBrandCheckbox}
+               handleClickColorCheckbox={handleClickColorCheckbox}
+               handleClickSeasonCheckbox={handleClickSeasonCheckbox}
+               handleClickSizeCheckbox={handleClickSizeCheckbox}
+               handleClickTypeCheckbox={handleClickTypeCheckbox}
+               selectedBrandsId={filter.selectedBrandsId}
+               selectedColorsId={filter.selectedColorsId}
+               selectedSeasonsId={filter.selectedSeasonsId}
+               selectedSex={filter.selectedSex}
+               selectedSizesId={filter.selectedSizesId}
+               selectedSortFilter={filter.selectedSortFilter}
+               selectedTypesId={filter.selectedTypesId}
+               handleClickResetButton={handleClickResetButton}
                onClose={() => setIsMobileAsideFiltersShowed(false)}
             />
          </Modal>

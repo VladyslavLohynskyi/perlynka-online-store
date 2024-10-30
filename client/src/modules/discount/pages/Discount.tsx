@@ -18,6 +18,8 @@ import { ButtonClassEnum } from '../../ui/Button/ButtonType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSliders } from '@fortawesome/free-solid-svg-icons';
 import { Pagination } from '../../shop/components/Pagination';
+import { Modal } from '../../modal/pages';
+import { AsideMobileFiltersModal } from '../../modal/components/HeaderDropdown/pages/AsideMobileFiltersModal';
 interface ISelectFilterOption {
    id: number;
    text: string;
@@ -251,6 +253,29 @@ export const Discount: React.FC = () => {
                </Button>
             </div>
          </div>
+         <Modal
+            modalPosition='mobile-aside-filter'
+            isModalOpen={isMobileAsideFiltersShowed}
+            onClose={() => setIsMobileAsideFiltersShowed(false)}
+            onBlur={true}
+         >
+            <AsideMobileFiltersModal
+               handleClickBrandCheckbox={handleClickBrandCheckbox}
+               handleClickColorCheckbox={handleClickColorCheckbox}
+               handleClickSeasonCheckbox={handleClickSeasonCheckbox}
+               handleClickSizeCheckbox={handleClickSizeCheckbox}
+               handleClickTypeCheckbox={handleClickTypeCheckbox}
+               selectedBrandsId={selectedBrandsId}
+               selectedColorsId={selectedColorsId}
+               selectedSeasonsId={selectedSeasonsId}
+               selectedSex={selectedSex}
+               selectedSizesId={selectedSizesId}
+               selectedSortFilter={selectedSortFilter}
+               selectedTypesId={selectedTypesId}
+               handleClickResetButton={handleClickResetButton}
+               onClose={() => setIsMobileAsideFiltersShowed(false)}
+            />
+         </Modal>
       </>
    );
 };
