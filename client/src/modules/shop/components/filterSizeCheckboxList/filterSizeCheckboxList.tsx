@@ -2,16 +2,15 @@ import React from 'react';
 
 import '../filterCheckboxList/FilterCheckboxList.scss';
 import { FilterCheckboxItem } from '../filterCheckboxItem';
-import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
-import { sizeFilter } from '../../../../store/reducers/filter/FilterActionCreators';
+import { useAppSelector } from '../../../../hooks/redux';
 
-export const FilterSizeCheckboxList: React.FC = () => {
+import { filterSizeCheckboxListType } from './filterSizeCheckboxListType';
+
+export const FilterSizeCheckboxList: React.FC<filterSizeCheckboxListType> = ({
+   handleClickCheckbox,
+   selectedValuesId,
+}) => {
    const { sizes } = useAppSelector((state) => state.shoesReducer);
-   const { selectedSizesId } = useAppSelector((state) => state.filterReducer);
-   const dispatch = useAppDispatch();
-   const handleClickCheckbox = (id: number) => {
-      dispatch(sizeFilter(id));
-   };
    return (
       <div className='checkbox-list__container'>
          <h3 className='checkbox-list__header filter-header'>Розміри</h3>
@@ -22,7 +21,7 @@ export const FilterSizeCheckboxList: React.FC = () => {
                   name={size + ' EU'}
                   id={id}
                   handleClickCheckbox={handleClickCheckbox}
-                  selectedValuesId={selectedSizesId}
+                  selectedValuesId={selectedValuesId}
                />
             ))}
          </div>

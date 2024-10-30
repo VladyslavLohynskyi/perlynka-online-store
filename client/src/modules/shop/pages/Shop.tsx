@@ -10,6 +10,7 @@ import {
    seasonFilter,
    colorFilter,
    sortFilter,
+   sizeFilter,
 } from '../../../store/reducers/filter/FilterActionCreators';
 import { FilterCheckboxList } from '../components/filterCheckboxList';
 import { FilterSizeCheckboxList } from '../components/filterSizeCheckboxList';
@@ -105,6 +106,10 @@ export const Shop: React.FC = () => {
       dispatch(sortFilter(e.target.value as SortEnum));
    };
 
+   const handleClickSizeCheckbox = (id: number) => {
+      dispatch(sizeFilter(id));
+   };
+
    return (
       <>
          <div className='shop__container'>
@@ -157,7 +162,10 @@ export const Shop: React.FC = () => {
                         list={colors}
                         name={NameOfCategoriesEnum.COLOR}
                      />
-                     <FilterSizeCheckboxList />
+                     <FilterSizeCheckboxList
+                        selectedValuesId={filter.selectedSizesId}
+                        handleClickCheckbox={handleClickSizeCheckbox}
+                     />
                      <ResetFiltersButton
                         style={{ height: '30px', marginTop: '10px' }}
                      />

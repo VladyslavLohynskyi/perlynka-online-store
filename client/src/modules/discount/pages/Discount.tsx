@@ -7,6 +7,7 @@ import { NameOfCategoriesEnum } from '../../shop/pages';
 import SkeletonShoesItem from '../../shop/components/skeletonShoesItem/SkeletonShoesItem';
 import { IShoes } from '../../../store/reducers/shoes/ShoesSlice';
 import { ShoesItem } from '../../shop/components/shoesItem';
+import { FilterSizeCheckboxList } from '../../shop/components/filterSizeCheckboxList';
 interface ISelectFilterOption {
    id: number;
    text: string;
@@ -22,6 +23,7 @@ export const Discount: React.FC = () => {
    const [selectedTypesId, setSelectedTypesId] = useState<number[]>([]);
    const [selectedSeasonsId, setSelectedSeasonsId] = useState<number[]>([]);
    const [selectedColorsId, setSelectedColorsId] = useState<number[]>([]);
+   const [selectedSizesId, setSelectedSizesId] = useState<number[]>([]);
    const [isLoadingShoes, setIsLoadingShoes] = useState(true);
    const [shoes, setShoes] = useState<IShoes[]>([]);
 
@@ -61,6 +63,15 @@ export const Discount: React.FC = () => {
          setSelectedColorsId([...selectedColorsId, id]);
       } else {
          setSelectedColorsId(selectedColorsId.filter((el) => el !== id));
+      }
+      setPage(1);
+   };
+
+   const handleClickSizeCheckbox = (id: number) => {
+      if (selectedSizesId.includes(id)) {
+         setSelectedSizesId([...selectedSizesId, id]);
+      } else {
+         setSelectedSizesId(selectedSizesId.filter((el) => el !== id));
       }
       setPage(1);
    };
@@ -122,6 +133,10 @@ export const Discount: React.FC = () => {
                         handleClickCheckbox={handleClickColorCheckbox}
                         list={colors}
                         name={NameOfCategoriesEnum.COLOR}
+                     />
+                     <FilterSizeCheckboxList
+                        selectedValuesId={selectedSizesId}
+                        handleClickCheckbox={handleClickSizeCheckbox}
                      />
                   </aside>
                   <div className='shop__right-side'>

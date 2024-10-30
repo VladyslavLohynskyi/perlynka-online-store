@@ -12,6 +12,7 @@ import {
    brandFilter,
    colorFilter,
    seasonFilter,
+   sizeFilter,
    typeFilter,
 } from '../../../../../../store/reducers/filter/FilterActionCreators';
 import { FilterSizeCheckboxList } from '../../../../../shop/components/filterSizeCheckboxList';
@@ -25,6 +26,7 @@ export const AsideMobileFiltersModal: React.FC<AsideMobileFiltersModalType> = ({
       selectedTypesId,
       selectedSeasonsId,
       selectedColorsId,
+      selectedSizesId,
    } = useAppSelector((state) => state.filterReducer);
    const { brands, types, seasons, colors } = useAppSelector(
       (state) => state.shoesReducer,
@@ -47,6 +49,9 @@ export const AsideMobileFiltersModal: React.FC<AsideMobileFiltersModalType> = ({
 
    const handleClickColorCheckbox = (id: number) => {
       dispatch(colorFilter(id));
+   };
+   const handleClickSizeCheckbox = (id: number) => {
+      dispatch(sizeFilter(id));
    };
 
    const switchFiltersCheckboxes = (optionNameClicked: string) => {
@@ -84,7 +89,12 @@ export const AsideMobileFiltersModal: React.FC<AsideMobileFiltersModalType> = ({
                />
             );
          case NameOfCategoriesEnum.SIZE:
-            return <FilterSizeCheckboxList />;
+            return (
+               <FilterSizeCheckboxList
+                  selectedValuesId={selectedSizesId}
+                  handleClickCheckbox={handleClickSizeCheckbox}
+               />
+            );
 
          default:
             break;
