@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useAppSelector } from '../../../../hooks/redux';
 import {
    GOOGLE_CLOUD_BUCKET_NAME,
@@ -14,6 +14,7 @@ import { IconButton } from '../../../ui/IconButton';
 
 export const ShoesItem: React.FC<ShoesItemType> = ({ shoes }) => {
    const { brands } = useAppSelector((state) => state.shoesReducer);
+   const [isImgLoading, setIsImgLoading] = useState(true);
    const ref = useRef<HTMLImageElement>(null);
    const navigate = useNavigate();
    return (
@@ -34,11 +35,15 @@ export const ShoesItem: React.FC<ShoesItemType> = ({ shoes }) => {
 
             <img
                src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/preview/${shoes.img}.webp`}
-               loading='lazy'
+               onLoad={() => setIsImgLoading(false)}
                alt='shoes'
                ref={ref}
-               style={{ height: ref.current?.clientWidth }}
+               style={{
+                  aspectRatio: '1/1',
+                  display: isImgLoading ? 'none' : undefined,
+               }}
             />
+            {isImgLoading && <div className='skeleton-item__image'></div>}
             <div className='shoes-item__tags'>
                {shoes.promotionalPrice && (
                   <div className='shoes-item__tag shoes-item__tag--promotional'>
