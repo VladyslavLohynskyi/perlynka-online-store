@@ -23,6 +23,7 @@ import {
 
 import { IconButton } from '../../../ui/IconButton';
 import SkeletonSlide from '../skeletonSlide/SkeletonSlide';
+import { Slide } from './components/Slide';
 
 const MainCarousel = () => {
    const dispatch = useAppDispatch();
@@ -75,27 +76,7 @@ const MainCarousel = () => {
                  ))
                : slides.map((slide, index) => (
                     <SwiperSlide key={slide.id}>
-                       {user?.role === Role.ADMIN && (
-                          <IconButton
-                             style={{
-                                position: 'relative',
-                                width: '70px',
-                                top: '30px',
-                                color: 'red',
-                                fontSize: '25px',
-                             }}
-                             icon={faClose}
-                             onClick={() => {
-                                handleDeleteSlide(slide.id);
-                             }}
-                          />
-                       )}
-                       <img
-                          className='main-carousel__carousel-image'
-                          src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/main-carousel/${slide.id}/${slide.img}.webp`}
-                          alt={slide.alt || `Slide ${index + 1}`}
-                          loading='lazy'
-                       />
+                       <Slide slide={slide} index={index} />
                     </SwiperSlide>
                  ))}
          </Swiper>
