@@ -1,8 +1,10 @@
-import { $host } from '.';
+import { Interface } from 'readline';
+import { $authHost, $host } from '.';
 import {
    DeliveryOptionsEnum,
    PaymentOptionsEnum,
 } from '../modules/checkout/pages';
+import { IBasicCategory, IShoes } from '../store/reducers/shoes/ShoesSlice';
 
 export interface IOrderItemCreate {
    shoeId: number;
@@ -37,6 +39,54 @@ export interface ICustomerInfo {
    settlementTypeDescription?: string;
 }
 
+interface IOrder {
+   createdAt: string;
+   deliveryDescription: string | null;
+   deliveryOption: DeliveryOptionsEnum;
+   description: string | null;
+   email: string;
+   id: number;
+   name: string;
+   paymentOption: PaymentOptionsEnum;
+   phone: string;
+   settlementAreaDescription: string | null;
+   settlementDescription: string | null;
+   settlementTypeDescription: string | null;
+   status: string;
+   surname: string;
+   totalPrice: number;
+   updatedAt: string;
+}
+
+interface IOrderItem {
+   id: number;
+   orderId: number;
+   shoeId: number;
+   quantity: number;
+   price: number;
+   size: number;
+}
+
+export interface IShoesWithDetails extends IShoes {
+   brand: IBasicCategory;
+   season: IBasicCategory;
+   color: IBasicCategory;
+   type: IBasicCategory;
+}
+
+export interface IOrderItemWithShoesDetails extends IOrderItem {
+   sho: IShoesWithDetails;
+}
+
+export interface IOrderWithItems extends IOrder {
+   order_items: IOrderItemWithShoesDetails[];
+}
+
+interface IGetOrdersResponse {
+   count: number;
+   rows: IOrderWithItems[];
+}
+
 export interface IOrderInfo {
    price: number;
    basket: IOrderItemCreate[];
@@ -55,6 +105,10 @@ class OrderReq {
       const { data } = await $host.post('/order', {
          ...orderBody,
       });
+      return data;
+   };
+   getOrdersByAdmin = async () => {
+      const { data } = await $authHost.get<IGetOrdersResponse>('/order');
       return data;
    };
 }

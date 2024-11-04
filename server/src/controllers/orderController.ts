@@ -7,6 +7,11 @@ import mailService, {
    PaymentOptionsEnum,
 } from '../services/mailService';
 import OrderItem from '../models/orderItemModel';
+import Shoes from '../models/shoesModel';
+import Type from '../models/typeModel';
+import Season from '../models/seasonModel';
+import Color from '../models/colorModel';
+import Brand from '../models/brandModel';
 
 interface IOrderItemCreate {
    shoeId: number;
@@ -65,9 +70,24 @@ class OrderController {
    async getAll(req: Request, res: Response, next: NextFunction) {
       try {
          const orders = await Order.findAndCountAll({
-            include: [{ model: OrderItem }],
+            include: [
+               {
+                  model: OrderItem,
+                  include: [
+                     {
+                        model: Shoes,
+                        include: [
+                           { model: Type },
+                           { model: Season },
+                           { model: Color },
+                           { model: Brand },
+                        ],
+                     },
+                  ],
+               },
+            ],
          });
-         return orders;
+         return res.json(orders);
       } catch (error) {
          return next(
             ApiError.internalServer('Помилка при отриманні замовлень'),

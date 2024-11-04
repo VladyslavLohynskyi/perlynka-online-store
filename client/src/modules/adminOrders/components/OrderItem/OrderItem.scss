@@ -1,0 +1,124 @@
+@import '../../../../breakpoints.scss';
+
+.order-item {
+   border: 1px solid var(--horizontal-line-color);
+   padding: 20px 20px 10px 20px;
+   margin-bottom: 10px;
+   border-radius: 8px;
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+   &__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      font-weight: 600;
+      font-size: 16px;
+      color: #007bff;
+   }
+   &__names-columns-photo {
+      display: none;
+   }
+
+   &__data-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+   }
+
+   &__id,
+   &__status {
+      font-size: 14px;
+      color: #6c757d;
+   }
+
+   &__customer-data,
+   &__delivery-data {
+      padding: 10px;
+      border-radius: 5px;
+
+      border: 1px solid var(--horizontal-line-color);
+
+      h4 {
+         font-weight: bold;
+         font-size: 14px;
+         margin-bottom: 8px;
+         border-bottom: 2px solid var(--horizontal-line-color);
+         padding-bottom: 5px;
+      }
+
+      p {
+         font-size: 14px;
+         margin-bottom: 6px;
+
+         span {
+            font-weight: bold;
+         }
+      }
+   }
+   &__names-columns-container {
+      margin-top: 15px;
+      width: 100%;
+      display: grid;
+      border-top-right-radius: 5px;
+      border-top-left-radius: 5px;
+      border: 1px solid var(--horizontal-line-color);
+      grid-template-columns:
+         minmax(100px, 500px) minmax(50px, 300px)
+         minmax(50px, 200px) minmax(50px, 200px);
+
+      & div {
+         font-size: 12px;
+         font-weight: 400;
+         padding: 8px;
+      }
+   }
+   &__more-button {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+   }
+   &__info {
+      padding: 8px 5px;
+      display: grid;
+      grid-template-columns: auto minmax(50px, 150px);
+      justify-content: end;
+      border-left: 1px solid var(--horizontal-line-color);
+      border-right: 1px solid var(--horizontal-line-color);
+      border-bottom: 1px solid var(--horizontal-line-color);
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+      &__header {
+         font-size: 12px;
+         font-weight: 700;
+      }
+      &__text {
+         font-size: 12px;
+         font-weight: 400;
+         padding-left: 10px;
+      }
+   }
+   &__data-container {
+      display: flex;
+      flex-direction: column;
+   }
+}
+
+@media #{$tablet-middle} {
+   .order-item {
+      &__data-container {
+         display: grid;
+         grid-template-columns: 1fr 1fr;
+         gap: 15px;
+      }
+      &__names-columns-photo {
+         display: block;
+      }
+      &__names-columns-container {
+         grid-template-columns:
+            100px minmax(200px, 400px) minmax(200px, 300px)
+            minmax(50px, 200px) minmax(50px, 200px);
+      }
+   }
+}

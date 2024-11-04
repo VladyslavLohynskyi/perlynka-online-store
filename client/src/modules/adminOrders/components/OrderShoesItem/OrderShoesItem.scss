@@ -1,0 +1,82 @@
+@import '../../../../breakpoints.scss';
+.order-shoes-item {
+   &__img-container img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+   }
+
+   &__info-shoes-container {
+      display: grid;
+      grid-template-columns: minmax(100px, auto);
+   }
+   &__container {
+      display: grid;
+      border-left: 1px solid var(--horizontal-line-color);
+      border-right: 1px solid var(--horizontal-line-color);
+      border-bottom: 1px solid var(--horizontal-line-color);
+      grid-template-columns:
+         minmax(100px, 500px) minmax(50px, 300px)
+         minmax(50px, 200px) minmax(50px, 200px);
+      grid-template-rows: auto;
+      padding-bottom: 5px;
+
+      & div {
+         align-self: center;
+         margin-left: 5px;
+      }
+   }
+
+   &__buy-counter {
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+   }
+
+   &__buy-number {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: var(--horizontal-line-color);
+      & p {
+         padding-top: 1px;
+         font-size: 14px;
+         display: flex;
+         align-self: center;
+         justify-content: center;
+      }
+   }
+   &__size-text {
+      color: var(--secondary-text-color);
+      margin-top: 5px;
+   }
+   &__trash-button-container {
+      display: flex;
+      justify-content: center;
+   }
+
+   &__img-container {
+      cursor: pointer;
+   }
+   &__main-info {
+      cursor: pointer;
+   }
+}
+
+@media #{$tablet-middle} {
+   .order-shoes-item {
+      &__info-shoes-container {
+         display: grid;
+         grid-template-columns: 100px minmax(200px, 400px);
+      }
+      &__container {
+         grid-template-columns:
+            minmax(300px, 500px) minmax(200px, 300px)
+            minmax(50px, 200px) minmax(50px, 200px);
+         grid-template-rows: 100px;
+         padding-bottom: 0;
+      }
+   }
+}
