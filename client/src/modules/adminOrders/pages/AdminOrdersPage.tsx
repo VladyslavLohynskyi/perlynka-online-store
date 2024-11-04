@@ -3,13 +3,16 @@ import OrderReq, { IOrderWithItems } from '../../../http/orders';
 
 import './AdminOrdersPage.scss';
 import { OrderItem } from '../components/OrderItem';
+import { Pagination } from '../../shop/components/Pagination';
 
 export const AdminOrdersPage: React.FC = () => {
    const [orders, setOrders] = useState<IOrderWithItems[]>([]);
    const [isLoadingOrders, setIsLoadingOrders] = useState(true);
    const [count, setCount] = useState(0);
+   const [page, setPage] = useState(1);
+   const limit = 16;
    useEffect(() => {
-      OrderReq.getOrdersByAdmin()
+      OrderReq.getOrdersByAdmin({ offset: limit * (page - 1), limit })
          .then((data) => {
             setCount(data.count);
             setOrders([...data.rows]);
@@ -17,7 +20,7 @@ export const AdminOrdersPage: React.FC = () => {
          .finally(() => {
             setIsLoadingOrders(false);
          });
-   }, []);
+   }, [page]);
    return (
       <div className='admin-orders'>
          <div className='admin-orders__container'>
@@ -29,6 +32,12 @@ export const AdminOrdersPage: React.FC = () => {
                      <OrderItem key={order.id} order={order} />
                   ))}
                </div>
+               <Pagination
+                  page={page}
+                  limit={limit}
+                  countOfShoesModels={count}
+                  handleChangePage={(number: number) => setPage(number)}
+               />
             </main>
          </div>
       </div>

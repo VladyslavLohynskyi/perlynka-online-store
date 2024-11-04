@@ -91,6 +91,11 @@ export interface IOrderInfo {
    price: number;
    basket: IOrderItemCreate[];
 }
+
+interface IGetOrderRequest {
+   limit: number;
+   offset: number;
+}
 class OrderReq {
    createCheckout = async (
       customerInfo: ICustomerInfo,
@@ -107,8 +112,10 @@ class OrderReq {
       });
       return data;
    };
-   getOrdersByAdmin = async () => {
-      const { data } = await $authHost.get<IGetOrdersResponse>('/order');
+   getOrdersByAdmin = async (getOrdersByAdminData: IGetOrderRequest) => {
+      const { data } = await $authHost.get<IGetOrdersResponse>('/order', {
+         params: getOrdersByAdminData,
+      });
       return data;
    };
 }

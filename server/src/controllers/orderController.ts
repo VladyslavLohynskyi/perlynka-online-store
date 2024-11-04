@@ -35,6 +35,13 @@ interface ICreateOrderRequest extends Request {
       list: IOrderItemCreate[];
    };
 }
+
+interface IGetOrderRequest extends Request {
+   query: {
+      limit: string;
+      offset: string;
+   };
+}
 class OrderController {
    async create(req: ICreateOrderRequest, res: Response, next: NextFunction) {
       try {
@@ -67,8 +74,9 @@ class OrderController {
       }
    }
 
-   async getAll(req: Request, res: Response, next: NextFunction) {
+   async getAll(req: IGetOrderRequest, res: Response, next: NextFunction) {
       try {
+         const { limit, offset } = req.query;
          const orders = await Order.findAndCountAll({
             include: [
                {
@@ -86,6 +94,10 @@ class OrderController {
                   ],
                },
             ],
+            order: [['id', 'DESC']],
+            distinct: true,
+            limit: +limit,
+            offset: +offset,
          });
          return res.json(orders);
       } catch (error) {
