@@ -4,20 +4,27 @@ import OrderReq, { IOrderWithItems } from '../../../http/orders';
 import './AdminOrdersPage.scss';
 import { OrderItem } from '../components/OrderItem';
 import { Pagination } from '../../shop/components/Pagination';
-import { OrderStatusEnum } from '../../../utils/constants';
+import { OrderStatusEnum, OrderStatusOptions } from '../../../utils/constants';
 import Alert from '../../ui/Alert/Alert';
 import { AlertTypeEnum } from '../../ui/Alert/AlertType';
 
 export const AdminOrdersPage: React.FC = () => {
    const [orders, setOrders] = useState<IOrderWithItems[]>([]);
    const [isLoadingOrders, setIsLoadingOrders] = useState(true);
+   const [statusOption, setStatusOption] = useState<
+      OrderStatusEnum | 'Всі Статуси'
+   >('Всі Статуси');
    const [message, setMessage] = useState('');
    const [isAlertShewed, setIsAlertShowed] = useState(false);
    const [count, setCount] = useState(0);
    const [page, setPage] = useState(1);
    const limit = 16;
    useEffect(() => {
-      OrderReq.getOrdersByAdmin({ offset: limit * (page - 1), limit })
+      OrderReq.getOrdersByAdmin({
+         offset: limit * (page - 1),
+         limit,
+         status: statusOption,
+      })
          .then((data) => {
             setCount(data.count);
             setOrders([...data.rows]);
@@ -25,7 +32,7 @@ export const AdminOrdersPage: React.FC = () => {
          .finally(() => {
             setIsLoadingOrders(false);
          });
-   }, [page]);
+   }, [page, statusOption]);
 
    const changeStatus = (id: number, status: OrderStatusEnum) => {
       OrderReq.updateOrderStatus(id, status)
@@ -35,9 +42,12 @@ export const AdminOrdersPage: React.FC = () => {
          })
          .finally(() => {
             setPage(1);
-            console.log('change');
             setIsLoadingOrders(true);
-            OrderReq.getOrdersByAdmin({ offset: limit * (1 - 1), limit })
+            OrderReq.getOrdersByAdmin({
+               offset: limit * (1 - 1),
+               limit,
+               status: statusOption,
+            })
                .then((data) => {
                   setCount(data.count);
                   setOrders([...data.rows]);
@@ -47,13 +57,35 @@ export const AdminOrdersPage: React.FC = () => {
                });
          });
    };
+
+   const handleClickSelectStatusOption = (
+      e: React.ChangeEvent<HTMLSelectElement>,
+   ) => {
+      setIsLoadingOrders(true);
+      setStatusOption(e.target.value as OrderStatusEnum | 'Всі Статуси');
+   };
+
    return (
       <>
          <div className='admin-orders'>
             <div className='admin-orders__container'>
                <h3>Замовлення Клієнтів</h3>
                <main className='admin-orders__main'>
-                  <div className='admin-orders__filters'></div>
+                  <div className='admin-orders__filters'>
+                     <select
+                        name='change-status'
+                        className='admin-orders__select-status'
+                        value={statusOption}
+                        onChange={handleClickSelectStatusOption}
+                     >
+                        <option value={'Всі Статуси'}>Всі Статуси</option>
+                        {OrderStatusOptions.map((option) => (
+                           <option key={option.id} value={option.name}>
+                              {option.name}
+                           </option>
+                        ))}
+                     </select>
+                  </div>
                   <div className='admin-orders__orders-container'>
                      {orders.map((order) => (
                         <OrderItem

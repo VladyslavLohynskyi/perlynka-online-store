@@ -14,4 +14,13 @@
    &__main {
       margin: 20px 0;
    }
+
+   &__filters {
+      margin-bottom: 20px;
+   }
+   &__select-status {
+      padding: 5px;
+      border: 1px solid var(--horizontal-line-color);
+      border-radius: 5px;
+   }
 }

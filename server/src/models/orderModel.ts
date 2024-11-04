@@ -5,7 +5,7 @@ import {
    PaymentOptionsEnum,
 } from '../services/mailService';
 
-interface OrderAttributes {
+export interface OrderAttributes {
    id: number;
    status: string;
    totalPrice: number;

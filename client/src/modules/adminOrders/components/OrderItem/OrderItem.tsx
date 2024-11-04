@@ -50,6 +50,7 @@ export const OrderItem: React.FC<OrderItemType> = ({ order, changeStatus }) => {
                <p>Cтатус: </p>
                <select
                   disabled={isSelectStatusDisabled}
+                  name='change-status'
                   className='order-item__select-status'
                   value={statusOption}
                   onChange={handleClickSelectStatusOption}

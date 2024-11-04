@@ -97,6 +97,7 @@ export interface IOrderInfo {
 interface IGetOrderRequest {
    limit: number;
    offset: number;
+   status: OrderStatusEnum | 'Всі Статуси';
 }
 class OrderReq {
    createCheckout = async (

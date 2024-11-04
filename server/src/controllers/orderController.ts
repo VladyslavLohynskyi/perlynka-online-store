@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 import ApiError from '../exceptions/ApiError';
-import Order from '../models/orderModel';
+import Order, { OrderAttributes } from '../models/orderModel';
 import mailService, {
    DeliveryOptionsEnum,
    PaymentOptionsEnum,
@@ -12,7 +12,7 @@ import Type from '../models/typeModel';
 import Season from '../models/seasonModel';
 import Color from '../models/colorModel';
 import Brand from '../models/brandModel';
-import { json } from 'sequelize';
+import { json, where, WhereOptions } from 'sequelize';
 
 interface IOrderItemCreate {
    shoeId: number;
@@ -47,6 +47,7 @@ interface IGetOrderRequest extends Request {
    query: {
       limit: string;
       offset: string;
+      status: string;
    };
 }
 class OrderController {
@@ -83,7 +84,11 @@ class OrderController {
 
    async getAll(req: IGetOrderRequest, res: Response, next: NextFunction) {
       try {
-         const { limit, offset } = req.query;
+         const { limit, offset, status } = req.query;
+         const whereOptions: WhereOptions<OrderAttributes> = {};
+         if (status !== 'Всі Статуси') {
+            whereOptions.status = status;
+         }
          const orders = await Order.findAndCountAll({
             include: [
                {
@@ -101,6 +106,7 @@ class OrderController {
                   ],
                },
             ],
+            where: whereOptions,
             order: [['id', 'DESC']],
             distinct: true,
             limit: +limit,
