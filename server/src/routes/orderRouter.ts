@@ -26,7 +26,7 @@ ordersRouter.put(
    '/:id',
    authMiddleware,
    checkRoleMiddleware(Role.ADMIN),
-   ordersController.update,
+   ordersController.updateStatus,
 );
 
 export default ordersRouter;

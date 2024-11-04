@@ -7,23 +7,70 @@ import { IconButton } from '../../../ui/IconButton';
 import {
    faAngleDoubleDown,
    faAngleDoubleUp,
+   faPenToSquare,
+   faCheck,
 } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '../../../ui/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ButtonClassEnum } from '../../../ui/Button/ButtonType';
 import { OrderShoesItem } from '../OrderShoesItem';
+import {
+   OrderStatusEnum,
+   OrderStatusOptions,
+} from '../../../../utils/constants';
 
-export const OrderItem: React.FC<OrderItemType> = ({ order }) => {
+export const OrderItem: React.FC<OrderItemType> = ({ order, changeStatus }) => {
    const [isMoreButtonClicked, setIsMoreButtonClicked] = useState(false);
    const handleClickMoreButton = () => {
       setIsMoreButtonClicked((prev) => !prev);
    };
-   console.log(order);
+   const [statusOption, setStatusOption] = useState<OrderStatusEnum>(
+      order.status as OrderStatusEnum,
+   );
+
+   const [isSelectStatusDisabled, setIsSelectStatusDisabled] = useState(true);
+   const handleClickSelectStatusOption = (
+      e: React.ChangeEvent<HTMLSelectElement>,
+   ) => {
+      setStatusOption(e.target.value as OrderStatusEnum);
+   };
+
+   const handleClickChangeStatusButton = () => {
+      if (!isSelectStatusDisabled && statusOption !== order.status) {
+         changeStatus(order.id, statusOption);
+      } else {
+         setIsSelectStatusDisabled((prev) => !prev);
+      }
+   };
    return (
       <div className='order-item'>
          <div className='order-item__top'>
             <p className='order-item__id'>Номер замовлення: #{order.id}</p>
-            <p className='order-item__status'>Cтатус: {order.status}</p>
+            <div className='order-item__status'>
+               <p>Cтатус: </p>
+               <select
+                  disabled={isSelectStatusDisabled}
+                  className='order-item__select-status'
+                  value={statusOption}
+                  onChange={handleClickSelectStatusOption}
+               >
+                  {OrderStatusOptions.map((option) => (
+                     <option key={option.id} value={option.name}>
+                        {option.name}
+                     </option>
+                  ))}
+               </select>
+               <IconButton
+                  style={{
+                     color:
+                        !isSelectStatusDisabled && statusOption !== order.status
+                           ? 'green'
+                           : 'black',
+                  }}
+                  icon={!isSelectStatusDisabled ? faCheck : faPenToSquare}
+                  onClick={handleClickChangeStatusButton}
+               />
+            </div>
          </div>
          <div className='order-item__data-container'>
             <div className='order-item__customer-data'>

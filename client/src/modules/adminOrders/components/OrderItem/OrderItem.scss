@@ -9,7 +9,8 @@
 
    &__top {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+
       align-items: center;
       margin-bottom: 15px;
       font-weight: 600;
@@ -30,6 +31,9 @@
    &__status {
       font-size: 14px;
       color: #6c757d;
+   }
+   &__status {
+      display: flex;
    }
 
    &__customer-data,
@@ -54,6 +58,14 @@
          span {
             font-weight: bold;
          }
+      }
+   }
+   &__select-status {
+      background-color: transparent;
+      color: black;
+      cursor: pointer;
+      &:disabled {
+         cursor: not-allowed;
       }
    }
    &__names-columns-container {
@@ -107,6 +119,11 @@
 
 @media #{$tablet-middle} {
    .order-item {
+      &__top {
+         display: flex;
+         flex-direction: row;
+         justify-content: space-between;
+      }
       &__data-container {
          display: grid;
          grid-template-columns: 1fr 1fr;

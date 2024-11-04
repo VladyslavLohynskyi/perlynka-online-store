@@ -5,6 +5,8 @@ import {
    PaymentOptionsEnum,
 } from '../modules/checkout/pages';
 import { IBasicCategory, IShoes } from '../store/reducers/shoes/ShoesSlice';
+import { OrderStatusEnum } from '../utils/constants';
+import { IBasicResponse } from './basket';
 
 export interface IOrderItemCreate {
    shoeId: number;
@@ -115,6 +117,12 @@ class OrderReq {
    getOrdersByAdmin = async (getOrdersByAdminData: IGetOrderRequest) => {
       const { data } = await $authHost.get<IGetOrdersResponse>('/order', {
          params: getOrdersByAdminData,
+      });
+      return data;
+   };
+   updateOrderStatus = async (id: number, status: OrderStatusEnum) => {
+      const { data } = await $authHost.put<IBasicResponse>('/order/' + id, {
+         status,
       });
       return data;
    };

@@ -25,3 +25,23 @@ export const GOOGLE_CLOUD_BUCKET_NAME =
    process.env.REACT_APP_GOOGLE_CLOUD_BUCKET_NAME;
 
 export const phoneNumberPattern = /^380\d{9}$/;
+
+export enum OrderStatusEnum {
+   PENDING = 'Очікування прийняття замовлення',
+   ACCEPTED = 'Замовлення прийнято',
+   COMPLETED = 'Замовлення виконано',
+   CANCELED = 'Замовлення скасовано',
+   DELIVERED = 'Замовлення доставлено',
+   RETURNED = 'Замовлення повернуто',
+   SENT = 'Замовлення надіслано',
+}
+
+export const OrderStatusOptions: { id: number; name: OrderStatusEnum }[] = [
+   { id: 1, name: OrderStatusEnum.PENDING },
+   { id: 2, name: OrderStatusEnum.ACCEPTED },
+   { id: 3, name: OrderStatusEnum.COMPLETED },
+   { id: 4, name: OrderStatusEnum.CANCELED },
+   { id: 5, name: OrderStatusEnum.DELIVERED },
+   { id: 6, name: OrderStatusEnum.RETURNED },
+   { id: 7, name: OrderStatusEnum.SENT },
+];

@@ -12,6 +12,7 @@ import Type from '../models/typeModel';
 import Season from '../models/seasonModel';
 import Color from '../models/colorModel';
 import Brand from '../models/brandModel';
+import { json } from 'sequelize';
 
 interface IOrderItemCreate {
    shoeId: number;
@@ -33,6 +34,12 @@ interface ICreateOrderRequest extends Request {
       settlementDescription?: string;
       settlementTypeDescription?: string;
       list: IOrderItemCreate[];
+   };
+}
+
+interface IUpdateOrderRequest extends Request {
+   body: {
+      status: string;
    };
 }
 
@@ -115,8 +122,16 @@ class OrderController {
       }
    }
 
-   async update(req: Request, res: Response, next: NextFunction) {
+   async updateStatus(
+      req: IUpdateOrderRequest,
+      res: Response,
+      next: NextFunction,
+   ) {
       try {
+         const { id } = req.params;
+         const { status } = req.body;
+         Order.update({ status }, { where: { id } });
+         return res.json({ message: 'Статус замовлення оновлено' });
       } catch (error) {
          return next(
             ApiError.internalServer('Помилка при оновленні замовлення'),
