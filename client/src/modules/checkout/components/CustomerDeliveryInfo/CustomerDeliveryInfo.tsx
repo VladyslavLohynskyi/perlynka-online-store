@@ -9,7 +9,7 @@ import { DeliveryOptionsEnum, PaymentOptionsEnum } from '../../pages';
 import novaPost, { IArea, IWarehouse } from '../../../../http/novaPost';
 import { Button } from '../../../ui/Button';
 import { ButtonClassEnum } from '../../../ui/Button/ButtonType';
-import { ICustomerInfo } from '../../../../http/checkout';
+import { ICustomerInfo } from '../../../../http/orders';
 import { CustomerDeliveryInfoType } from './CustomerDeliveryInfoType';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { getFullInfoOfUser } from '../../../../store/reducers/user/UserActionCreators';
@@ -92,12 +92,12 @@ export const CustomerDeliveryInfo: React.FC<CustomerDeliveryInfoType> = ({
          surname: surname!,
          email: email!,
          phone: phone!,
-         PaymentOption: paymentActiveOption,
-         DeliveryOption: deliveryActiveOption,
-         SettlementAreaDescription: warehouse?.SettlementAreaDescription,
-         SettlementDescription: warehouse?.SettlementDescription,
-         SettlementTypeDescription: warehouse?.SettlementTypeDescription,
-         Description: warehouse?.Description,
+         paymentOption: paymentActiveOption,
+         deliveryOption: deliveryActiveOption,
+         settlementAreaDescription: warehouse?.SettlementAreaDescription,
+         settlementDescription: warehouse?.SettlementDescription,
+         settlementTypeDescription: warehouse?.SettlementTypeDescription,
+         deliveryDescription: warehouse?.Description,
       };
       handleSubmitCheckout(customerInfo);
    };

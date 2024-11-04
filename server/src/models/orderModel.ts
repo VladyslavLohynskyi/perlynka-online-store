@@ -1,5 +1,9 @@
 import { sequelize } from '../db';
 import { DataTypes, Model, Optional } from 'sequelize';
+import {
+   DeliveryOptionsEnum,
+   PaymentOptionsEnum,
+} from '../services/mailService';
 
 interface OrderAttributes {
    id: number;
@@ -9,12 +13,13 @@ interface OrderAttributes {
    name: string;
    surname: string;
    phone: string;
-   paymentOption: string;
-   deliveryOption: string;
+   paymentOption: PaymentOptionsEnum;
+   deliveryOption: DeliveryOptionsEnum;
    description?: string;
    settlementAreaDescription?: string;
    settlementDescription?: string;
    settlementTypeDescription?: string;
+   deliveryDescription?: string;
 }
 
 interface OrderCreationAttributes extends Optional<OrderAttributes, 'id'> {}
@@ -43,6 +48,7 @@ const Order = sequelize.define<OrderInstance>('order', {
    settlementAreaDescription: { type: DataTypes.STRING, allowNull: true },
    settlementDescription: { type: DataTypes.STRING, allowNull: true },
    settlementTypeDescription: { type: DataTypes.STRING, allowNull: true },
+   deliveryDescription: { type: DataTypes.STRING, allowNull: true },
 });
 
 export default Order;

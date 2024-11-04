@@ -7,6 +7,7 @@ interface OrderItemAttributes {
    shoeId: number;
    quantity: number;
    price: number;
+   size: number;
 }
 
 interface OrderItemCreationAttributes
@@ -25,6 +26,7 @@ const OrderItem = sequelize.define<OrderItemInstance>('order_item', {
    shoeId: { type: DataTypes.INTEGER, allowNull: false },
    quantity: { type: DataTypes.INTEGER, allowNull: false },
    price: { type: DataTypes.FLOAT, allowNull: false },
+   size: { type: DataTypes.INTEGER, allowNull: false },
 });
 
 export default OrderItem;

@@ -1,4 +1,4 @@
-import { ICustomerInfo } from '../../../../http/checkout';
+import { ICustomerInfo } from '../../../../http/orders';
 
 export interface CustomerDeliveryInfoType {
    handleSubmitCheckout: (customerInfo: ICustomerInfo) => void;

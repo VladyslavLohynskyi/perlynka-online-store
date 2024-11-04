@@ -8,17 +8,16 @@ import {
    getAllShoesOfBasketNotAuth,
 } from '../../../store/reducers/basket/BasketActionCreators';
 import { CheckoutItem } from '../components/CheckoutItem';
-import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 
-import CheckoutReq, {
-   IBasketCheckoutItem,
-   ICustomerInfo,
-   IOrderInfo,
-} from '../../../http/checkout';
 import { CheckoutSuccess } from '../components/CheckoutSuccess';
 import { CustomerDeliveryInfo } from '../components/CustomerDeliveryInfo';
 import { Loader } from '../../ui/Loader';
+import OrdersReq, {
+   IOrderInfo,
+   IOrderItemCreate,
+   ICustomerInfo,
+} from '../../../http/orders';
 export enum DeliveryOptionsEnum {
    NOVA_POST = 'У відділення Нової пошти',
    SELF_DELIVERY = 'Самовивіз з магазину',
@@ -66,11 +65,12 @@ export const CheckoutPage: React.FC = () => {
    };
 
    const handleSubmitCheckout = (customerInfo: ICustomerInfo) => {
-      const basketOrder: IBasketCheckoutItem[] = basket.map((item) => {
+      const basketOrder: IOrderItemCreate[] = basket.map((item) => {
          return {
-            modelId: item.sho.id,
+            shoeId: item.sho.id,
             count: item.count,
-            size: item.size.size,
+            size: +item.size.size,
+            price: item.sho.promotionalPrice || item.sho.price,
          };
       });
       const orderInfo: IOrderInfo = {
@@ -78,7 +78,7 @@ export const CheckoutPage: React.FC = () => {
          basket: basketOrder,
       };
       setIsLoadingOrder(true);
-      CheckoutReq.createCheckout(customerInfo, orderInfo)
+      OrdersReq.createCheckout(customerInfo, orderInfo)
          .then(() => {
             setIsCheckoutSuccess(true);
          })
