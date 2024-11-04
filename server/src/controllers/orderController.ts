@@ -64,6 +64,10 @@ class OrderController {
 
    async getAll(req: Request, res: Response, next: NextFunction) {
       try {
+         const orders = await Order.findAndCountAll({
+            include: [{ model: OrderItem }],
+         });
+         return orders;
       } catch (error) {
          return next(
             ApiError.internalServer('Помилка при отриманні замовлень'),

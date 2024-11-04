@@ -151,13 +151,22 @@ export const Header: React.FC<HeaderType> = ({
                            }}
                         />
                         {user?.role === 'ADMIN' && (
-                           <DropdownItem
-                              text='Адмін панель'
-                              onClick={() => {
-                                 navigate(RoutesEnum.ADMIN);
-                                 setIsHeaderDropdownOpen(false);
-                              }}
-                           />
+                           <>
+                              <DropdownItem
+                                 text='Адмін Панель'
+                                 onClick={() => {
+                                    navigate(RoutesEnum.ADMIN);
+                                    setIsHeaderDropdownOpen(false);
+                                 }}
+                              />
+                              <DropdownItem
+                                 text='Адмін Замовлення'
+                                 onClick={() => {
+                                    navigate(RoutesEnum.ADMIN_ORDERS);
+                                    setIsHeaderDropdownOpen(false);
+                                 }}
+                              />
+                           </>
                         )}
                         <DropdownItem
                            text='Вихід'
