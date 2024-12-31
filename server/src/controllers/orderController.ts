@@ -107,7 +107,7 @@ class OrderController {
 
          if (email) {
             whereOptions.email = {
-               [Op.like]: `%${email}%`,
+               [Op.iLike]: `%${email}%`,
             };
          }
          if (phone) {
@@ -117,12 +117,12 @@ class OrderController {
          }
          if (name) {
             whereOptions.name = {
-               [Op.like]: `%${name}%`,
+               [Op.iLike]: `%${name}%`,
             };
          }
          if (surname) {
             whereOptions.surname = {
-               [Op.like]: `%${surname}%`,
+               [Op.iLike]: `%${surname}%`,
             };
          }
          const orders = await Order.findAndCountAll({

@@ -16,6 +16,7 @@ import { ModalInput } from '../../modal/components/HeaderDropdown/components/Mod
 import { useDebounce } from '../../../hooks/useDebounce';
 import PhoneInput from 'react-phone-input-2';
 import { HorizontalLine } from '../../ui/HorizontalLine';
+import { Loader } from '../../ui/Loader';
 
 export const AdminOrdersPage: React.FC = () => {
    const [orders, setOrders] = useState<IOrderWithItems[]>([]);
@@ -41,6 +42,7 @@ export const AdminOrdersPage: React.FC = () => {
    const [page, setPage] = useState(1);
    const limit = 16;
    useEffect(() => {
+      setIsLoadingOrders(true);
       OrderReq.getOrdersByAdmin({
          offset: limit * (page - 1),
          limit,
@@ -100,7 +102,6 @@ export const AdminOrdersPage: React.FC = () => {
    const handleClickSelectStatusOption = (
       e: React.ChangeEvent<HTMLSelectElement>,
    ) => {
-      setIsLoadingOrders(true);
       setStatusOption(e.target.value as OrderStatusEnum | 'Всі Статуси');
       setPage(1);
    };
@@ -108,7 +109,6 @@ export const AdminOrdersPage: React.FC = () => {
    const handleClickSelectFilterOption = (
       e: React.ChangeEvent<HTMLSelectElement>,
    ) => {
-      setIsLoadingOrders(true);
       setFilterOption(e.target.value as OrderFiltersEnum);
       setPage(1);
    };
@@ -200,13 +200,17 @@ export const AdminOrdersPage: React.FC = () => {
                      <h5>Кількість знайдених записів: {count}</h5>
                   </div>
                   <div className='admin-orders__orders-container'>
-                     {orders.map((order) => (
-                        <OrderItem
-                           changeStatus={changeStatus}
-                           key={order.id}
-                           order={order}
-                        />
-                     ))}
+                     {isLoadingOrders ? (
+                        <Loader />
+                     ) : (
+                        orders.map((order) => (
+                           <OrderItem
+                              changeStatus={changeStatus}
+                              key={order.id}
+                              order={order}
+                           />
+                        ))
+                     )}
                   </div>
                   <Pagination
                      page={page}
