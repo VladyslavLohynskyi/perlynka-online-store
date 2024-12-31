@@ -15,6 +15,8 @@ import ShoesInfo from './shoesInfoModel';
 import ShoesImage from './shoesImageModel';
 import NewsletterSubscription from './newsletterSubscriptionModel';
 import MainCarouselSlide from './mainCarouselSlideModel';
+import Order from './orderModel';
+import OrderItem from './orderItemModel';
 
 User.hasOne(Basket);
 Basket.belongsTo(User);
@@ -64,7 +66,15 @@ ShoesInfo.belongsTo(Shoes);
 Shoes.hasMany(ShoesImage);
 ShoesImage.belongsTo(Shoes);
 
+Order.hasMany(OrderItem, { foreignKey: 'orderId' });
+OrderItem.belongsTo(Order, { foreignKey: 'orderId' });
+
+Shoes.hasMany(OrderItem, { foreignKey: 'shoeId' });
+OrderItem.belongsTo(Shoes, { foreignKey: 'shoeId' });
+
 module.exports = {
+   Order,
+   OrderItem,
    User,
    Basket,
    Shoes,

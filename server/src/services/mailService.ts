@@ -1,6 +1,5 @@
 import nodemailer from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
-import { Model, or } from 'sequelize';
 import Shoes, { shoesInstance } from '../models/shoesModel';
 import Brand, { brandInstance } from '../models/brandModel';
 
@@ -9,28 +8,28 @@ export interface ICustomerInfo {
    name: string;
    surname: string;
    phone: string;
-   PaymentOption: PaymentOptionsEnum;
-   DeliveryOption: DeliveryOptionsEnum;
-   Description: string;
-   SettlementAreaDescription: string;
-   SettlementDescription: string;
-   SettlementTypeDescription: string;
+   paymentOption: PaymentOptionsEnum;
+   deliveryOption: DeliveryOptionsEnum;
+   deliveryDescription?: string;
+   settlementAreaDescription?: string;
+   settlementDescription?: string;
+   settlementTypeDescription?: string;
 }
 
-enum DeliveryOptionsEnum {
+export enum DeliveryOptionsEnum {
    NOVA_POST = 'У відділення Нової пошти',
    SELF_DELIVERY = 'Самовивіз з магазину',
 }
 
-enum PaymentOptionsEnum {
+export enum PaymentOptionsEnum {
    CARD_DETAILS = 'Онлайн оплата по реквізитах',
    POSTPAID = 'Оплата при доставці (передоплата 100грн.)',
 }
 
 export interface IBasketCheckoutItem {
-   modelId: number;
+   shoeId: number;
    count: number;
-   size: string;
+   size: number;
 }
 export interface IOrderInfo {
    price: number;
@@ -95,12 +94,12 @@ class MailService {
       const checkoutShoesDivItem = await Promise.all(
          orderInfo.basket.map(async (item) => {
             const shoes = (await Shoes.findOne({
-               where: { id: item.modelId },
+               where: { id: item.shoeId },
                include: [{ model: Brand, as: 'brand' }],
             })) as shoesWithBrand;
             return `
                <tr>
-                  <th style="border:1px solid gray;padding:8px 10px;">#${item.modelId}</th> 
+                  <th style="border:1px solid gray;padding:8px 10px;">#${item.shoeId}</th> 
                   <td style="border:1px solid gray;padding:8px 10px;">${shoes?.brand?.name} ${shoes.model}</td> 
                   <td style="border:1px solid gray;padding:8px 10px;">${item.size}</td> <td style="border:1px solid gray;padding:8px 10px;">${item.count}</td> 
                   <td style="border:1px solid gray;padding:8px 10px;">${shoes.price}грн.</td>
@@ -111,11 +110,11 @@ class MailService {
 
       const deliveryInfoHTML = `
          <h3>Деталі замовлення:</h3>
-         <p>Cпосіб доставки: ${customerInfo.DeliveryOption}</p>
-         <p>Спосіб оплати:	${customerInfo.PaymentOption}</p>
+         <p>Cпосіб доставки: ${customerInfo.deliveryOption}</p>
+         <p>Спосіб оплати:	${customerInfo.paymentOption}</p>
          ${
-            customerInfo.DeliveryOption === DeliveryOptionsEnum.NOVA_POST
-               ? `<p>Адреса доставки:	${customerInfo.SettlementAreaDescription} обл., ${customerInfo.SettlementTypeDescription}. ${customerInfo.SettlementDescription}, ${customerInfo.Description}</p>`
+            customerInfo.deliveryOption === DeliveryOptionsEnum.NOVA_POST
+               ? `<p>Адреса доставки:	${customerInfo.settlementAreaDescription} обл., ${customerInfo.settlementTypeDescription}. ${customerInfo.settlementDescription}, ${customerInfo.deliveryDescription}</p>`
                : ''
          }
          <table style="border:1.5px solid gray;">
@@ -173,25 +172,30 @@ class MailService {
       await this.transporter.sendMail(mailOptionToManager);
    }
 
-   async sendSuccessSubscriptionMail(to: string, token:string) {
+   async sendSuccessSubscriptionMail(to: string, token: string) {
       await this.transporter.sendMail({
          to,
-         subject:
-            'Активація підписки на сайті онлайн-магазину Перлинка',
+         subject: 'Активація підписки на сайті онлайн-магазину Перлинка',
          html: `
          <div>
           <p style="margin:0;font-weight:700;">Вітаємо,</p>
             <p style="margin:0 0 15px 0; font-weight:700;">Ви щойно успішно активували підписку на розсилку повідомлень від магазину "Перлинка".</p>
             <p style="margin:3px;">Ми є магазином який пропонує якісне та комфортне дитяче та підліткове взуття.</p>
             <p style="margin:3px;">Широкий асортимент лікувального, профілактичного, звичайного взуття для будь-якого бюджету.</p>
-            <p style="margin:3px;">Оглянути все ви можете відвідавши наш сайт <a href="${process.env.CLIENT_URL}">${process.env.CLIENT_URL}</a></p>
+            <p style="margin:3px;">Оглянути все ви можете відвідавши наш сайт <a href="${
+               process.env.CLIENT_URL
+            }">${process.env.CLIENT_URL}</a></p>
             <p style="margin:3px;">або завітавши до наших фізичних магазинів які знаходяться</p>
             <p style="margin:3px;">у м. Львів, вул. Щирецька 36, ТВК "Південний":</p>
             <ul style="margin:0 0 15px 0;">
                <li style="list-style-type:disc;">ТЦ "Калина" 2А;</li>
                <li style="list-style-type:disc;">ТЦ "Новинка" 92;</li>
             </ul>
-            <form  action="${process.env.API_URL+"/api/newsletter-subscription/unsubscribe/"+token}" method="POST">
+            <form  action="${
+               process.env.API_URL +
+               '/api/newsletter-subscription/unsubscribe/' +
+               token
+            }" method="POST">
             <p>Щоб деактивувати підписку на росилку повідомлень натисніть кнопку нижче:</p>
              <button>Відписатись</button>
             </form>
@@ -202,8 +206,7 @@ class MailService {
    async sendSuccessUnsubscribeMail(to: string) {
       await this.transporter.sendMail({
          to,
-         subject:
-            'Деактивація підписки на сайті онлайн-магазину Перлинка',
+         subject: 'Деактивація підписки на сайті онлайн-магазину Перлинка',
          html: `
          <div>
           <p style="margin:0;font-weight:700;">Вітаємо,</p>
@@ -220,7 +223,6 @@ class MailService {
          </div>`,
       });
    }
-
 }
 
 export default new MailService();

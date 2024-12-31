@@ -1,5 +1,6 @@
 import { RoutesEnum } from '../../utils/constants';
 import { Admin } from '../admin';
+import { AdminOrdersPage } from '../adminOrders/pages';
 import Auth from '../auth/Auth';
 import ChangePassword from '../auth/сomponents/ChangePassword/ChangePassword';
 import { BasketPage } from '../basket/pages';
@@ -116,5 +117,9 @@ export const adminRoutes: IRoutes[] = [
    {
       path: RoutesEnum.ADMIN,
       Component: Admin,
+   },
+   {
+      path: RoutesEnum.ADMIN_ORDERS,
+      Component: AdminOrdersPage,
    },
 ];
