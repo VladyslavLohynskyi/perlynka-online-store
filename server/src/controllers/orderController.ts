@@ -12,7 +12,7 @@ import Type from '../models/typeModel';
 import Season from '../models/seasonModel';
 import Color from '../models/colorModel';
 import Brand from '../models/brandModel';
-import { json, where, WhereOptions } from 'sequelize';
+import { json, Op, where, WhereOptions } from 'sequelize';
 
 interface IOrderItemCreate {
    shoeId: number;
@@ -48,6 +48,7 @@ interface IGetOrderRequest extends Request {
       limit: string;
       offset: string;
       status: string;
+      email: string;
    };
 }
 class OrderController {
@@ -84,10 +85,16 @@ class OrderController {
 
    async getAll(req: IGetOrderRequest, res: Response, next: NextFunction) {
       try {
-         const { limit, offset, status } = req.query;
+         const { limit, offset, status, email } = req.query;
          const whereOptions: WhereOptions<OrderAttributes> = {};
          if (status !== 'Всі Статуси') {
             whereOptions.status = status;
+         }
+
+         if (email) {
+            whereOptions.email = {
+               [Op.like]: `%${email}%`,
+            };
          }
          const orders = await Order.findAndCountAll({
             include: [

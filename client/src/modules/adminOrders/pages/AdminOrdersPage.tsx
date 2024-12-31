@@ -28,6 +28,7 @@ export const AdminOrdersPage: React.FC = () => {
          offset: limit * (page - 1),
          limit,
          status: statusOption,
+         email: debouncedEmail,
       })
          .then((data) => {
             setCount(data.count);
@@ -51,6 +52,7 @@ export const AdminOrdersPage: React.FC = () => {
                offset: limit * (1 - 1),
                limit,
                status: statusOption,
+               email: debouncedEmail,
             })
                .then((data) => {
                   setCount(data.count);

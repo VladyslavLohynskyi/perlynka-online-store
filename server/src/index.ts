@@ -13,12 +13,14 @@ import fs from 'fs';
 
 const app: Application = express();
 const port: number = +process.env.PORT || 8888;
-const keyJsonContent = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
-if (keyJsonContent) {
-   const filePath = path.join(__dirname, 'key.json');
-   fs.writeFileSync(filePath, keyJsonContent, 'utf8');
-} else {
-   console.error('GOOGLE_APPLICATION_CREDENTIALS_JSON is not set');
+if (process.env.MODE === 'poduction') {
+   const keyJsonContent = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
+   if (keyJsonContent) {
+      const filePath = path.join(__dirname, 'key.json');
+      fs.writeFileSync(filePath, keyJsonContent, 'utf8');
+   } else {
+      console.error('GOOGLE_APPLICATION_CREDENTIALS_JSON is not set');
+   }
 }
 app.use(
    cors({
