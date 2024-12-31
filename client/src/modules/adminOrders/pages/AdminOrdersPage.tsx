@@ -7,6 +7,8 @@ import { Pagination } from '../../shop/components/Pagination';
 import { OrderStatusEnum, OrderStatusOptions } from '../../../utils/constants';
 import Alert from '../../ui/Alert/Alert';
 import { AlertTypeEnum } from '../../ui/Alert/AlertType';
+import { ModalInput } from '../../modal/components/HeaderDropdown/components/ModalInput';
+import { useDebounce } from '../../../hooks/useDebounce';
 
 export const AdminOrdersPage: React.FC = () => {
    const [orders, setOrders] = useState<IOrderWithItems[]>([]);
@@ -15,6 +17,8 @@ export const AdminOrdersPage: React.FC = () => {
       OrderStatusEnum | 'Всі Статуси'
    >('Всі Статуси');
    const [message, setMessage] = useState('');
+   const [email, setEmail] = useState('');
+   const debouncedEmail = useDebounce(email, 1000);
    const [isAlertShewed, setIsAlertShowed] = useState(false);
    const [count, setCount] = useState(0);
    const [page, setPage] = useState(1);
@@ -32,7 +36,7 @@ export const AdminOrdersPage: React.FC = () => {
          .finally(() => {
             setIsLoadingOrders(false);
          });
-   }, [page, statusOption]);
+   }, [page, statusOption, debouncedEmail]);
 
    const changeStatus = (id: number, status: OrderStatusEnum) => {
       OrderReq.updateOrderStatus(id, status)
@@ -85,6 +89,11 @@ export const AdminOrdersPage: React.FC = () => {
                            </option>
                         ))}
                      </select>
+                     <ModalInput
+                        text='Пошук за поштою'
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                     />
                   </div>
                   <div className='admin-orders__orders-container'>
                      {orders.map((order) => (
