@@ -9,6 +9,7 @@ import Alert from '../../ui/Alert/Alert';
 import { AlertTypeEnum } from '../../ui/Alert/AlertType';
 import { ModalInput } from '../../modal/components/HeaderDropdown/components/ModalInput';
 import { useDebounce } from '../../../hooks/useDebounce';
+import PhoneInput from 'react-phone-input-2';
 
 export const AdminOrdersPage: React.FC = () => {
    const [orders, setOrders] = useState<IOrderWithItems[]>([]);
@@ -19,6 +20,12 @@ export const AdminOrdersPage: React.FC = () => {
    const [message, setMessage] = useState('');
    const [email, setEmail] = useState('');
    const debouncedEmail = useDebounce(email, 1000);
+   const [phone, setPhone] = useState('');
+   const debouncedPhone = useDebounce(phone, 1000);
+   const [name, setName] = useState('');
+   const debouncedName = useDebounce(name, 1000);
+   const [surname, setSurname] = useState('');
+   const debouncedSurname = useDebounce(surname, 1000);
    const [isAlertShewed, setIsAlertShowed] = useState(false);
    const [count, setCount] = useState(0);
    const [page, setPage] = useState(1);
@@ -29,6 +36,9 @@ export const AdminOrdersPage: React.FC = () => {
          limit,
          status: statusOption,
          email: debouncedEmail,
+         phone: debouncedPhone,
+         name: debouncedName,
+         surname: debouncedSurname,
       })
          .then((data) => {
             setCount(data.count);
@@ -37,7 +47,14 @@ export const AdminOrdersPage: React.FC = () => {
          .finally(() => {
             setIsLoadingOrders(false);
          });
-   }, [page, statusOption, debouncedEmail]);
+   }, [
+      page,
+      statusOption,
+      debouncedEmail,
+      debouncedPhone,
+      debouncedName,
+      debouncedSurname,
+   ]);
 
    const changeStatus = (id: number, status: OrderStatusEnum) => {
       OrderReq.updateOrderStatus(id, status)
@@ -53,6 +70,9 @@ export const AdminOrdersPage: React.FC = () => {
                limit,
                status: statusOption,
                email: debouncedEmail,
+               phone: debouncedPhone,
+               name: debouncedName,
+               surname: debouncedSurname,
             })
                .then((data) => {
                   setCount(data.count);
@@ -95,6 +115,40 @@ export const AdminOrdersPage: React.FC = () => {
                         text='Пошук за поштою'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                     />
+                     <PhoneInput
+                        country={'ua'}
+                        onlyCountries={['ua']}
+                        inputClass='basic-input'
+                        inputStyle={{
+                           width: 'calc(100% - 20px)',
+                           maxWidth: '500px',
+                           margin: '0 20px 0 0',
+                           fontSize: '12px',
+                           border: '1.5px solid #d9d7d7',
+                           backgroundColor: '#fff',
+                           height: '38px',
+                        }}
+                        buttonStyle={{
+                           border: '1.5px solid #d9d7d7',
+                        }}
+                        disableDropdown={true}
+                        countryCodeEditable={false}
+                        inputProps={{
+                           name: 'phone',
+                        }}
+                        value={phone}
+                        onChange={(e) => setPhone(e)}
+                     />
+                     <ModalInput
+                        text='Пошук за іменем'
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                     />
+                     <ModalInput
+                        text='Пошук за прізвищем'
+                        value={surname}
+                        onChange={(e) => setSurname(e.target.value)}
                      />
                   </div>
                   <div className='admin-orders__orders-container'>

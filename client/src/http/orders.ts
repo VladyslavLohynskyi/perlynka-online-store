@@ -99,6 +99,9 @@ interface IGetOrderRequest {
    offset: number;
    status: OrderStatusEnum | 'Всі Статуси';
    email: string;
+   phone: string;
+   name: string;
+   surname: string;
 }
 class OrderReq {
    createCheckout = async (

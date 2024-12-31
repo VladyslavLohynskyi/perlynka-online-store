@@ -49,6 +49,9 @@ interface IGetOrderRequest extends Request {
       offset: string;
       status: string;
       email: string;
+      phone: string;
+      name: string;
+      surname: string;
    };
 }
 class OrderController {
@@ -85,7 +88,8 @@ class OrderController {
 
    async getAll(req: IGetOrderRequest, res: Response, next: NextFunction) {
       try {
-         const { limit, offset, status, email } = req.query;
+         const { limit, offset, status, email, phone, name, surname } =
+            req.query;
          const whereOptions: WhereOptions<OrderAttributes> = {};
          if (status !== 'Всі Статуси') {
             whereOptions.status = status;
@@ -94,6 +98,21 @@ class OrderController {
          if (email) {
             whereOptions.email = {
                [Op.like]: `%${email}%`,
+            };
+         }
+         if (phone) {
+            whereOptions.phone = {
+               [Op.like]: `%${phone}%`,
+            };
+         }
+         if (name) {
+            whereOptions.name = {
+               [Op.like]: `%${name}%`,
+            };
+         }
+         if (surname) {
+            whereOptions.surname = {
+               [Op.like]: `%${surname}%`,
             };
          }
          const orders = await Order.findAndCountAll({
