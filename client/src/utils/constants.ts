@@ -36,6 +36,11 @@ export enum OrderStatusEnum {
    SENT = 'Замовлення надіслано',
 }
 
+export enum OrderFiltersEnum {
+   DATE_ASC = 'Фільтрація по даті (від давнішої)',
+   DATE_DESC = 'Фільтрація по даті (від новішої)',
+}
+
 export const OrderStatusOptions: { id: number; name: OrderStatusEnum }[] = [
    { id: 1, name: OrderStatusEnum.PENDING },
    { id: 2, name: OrderStatusEnum.ACCEPTED },
@@ -44,4 +49,9 @@ export const OrderStatusOptions: { id: number; name: OrderStatusEnum }[] = [
    { id: 5, name: OrderStatusEnum.DELIVERED },
    { id: 6, name: OrderStatusEnum.RETURNED },
    { id: 7, name: OrderStatusEnum.SENT },
+];
+
+export const OrderFilterOptions: { id: number; name: OrderFiltersEnum }[] = [
+   { id: 2, name: OrderFiltersEnum.DATE_DESC },
+   { id: 1, name: OrderFiltersEnum.DATE_ASC },
 ];

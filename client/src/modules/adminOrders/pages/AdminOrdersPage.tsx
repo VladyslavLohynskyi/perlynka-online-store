@@ -4,7 +4,12 @@ import OrderReq, { IOrderWithItems } from '../../../http/orders';
 import './AdminOrdersPage.scss';
 import { OrderItem } from '../components/OrderItem';
 import { Pagination } from '../../shop/components/Pagination';
-import { OrderStatusEnum, OrderStatusOptions } from '../../../utils/constants';
+import {
+   OrderFilterOptions,
+   OrderFiltersEnum,
+   OrderStatusEnum,
+   OrderStatusOptions,
+} from '../../../utils/constants';
 import Alert from '../../ui/Alert/Alert';
 import { AlertTypeEnum } from '../../ui/Alert/AlertType';
 import { ModalInput } from '../../modal/components/HeaderDropdown/components/ModalInput';
@@ -17,6 +22,10 @@ export const AdminOrdersPage: React.FC = () => {
    const [statusOption, setStatusOption] = useState<
       OrderStatusEnum | 'Всі Статуси'
    >('Всі Статуси');
+
+   const [filterOption, setFilterOption] = useState<OrderFiltersEnum>(
+      OrderFiltersEnum.DATE_DESC,
+   );
    const [message, setMessage] = useState('');
    const [email, setEmail] = useState('');
    const debouncedEmail = useDebounce(email, 1000);
@@ -39,6 +48,7 @@ export const AdminOrdersPage: React.FC = () => {
          phone: debouncedPhone,
          name: debouncedName,
          surname: debouncedSurname,
+         filterOption,
       })
          .then((data) => {
             setCount(data.count);
@@ -54,6 +64,7 @@ export const AdminOrdersPage: React.FC = () => {
       debouncedPhone,
       debouncedName,
       debouncedSurname,
+      filterOption,
    ]);
 
    const changeStatus = (id: number, status: OrderStatusEnum) => {
@@ -73,6 +84,7 @@ export const AdminOrdersPage: React.FC = () => {
                phone: debouncedPhone,
                name: debouncedName,
                surname: debouncedSurname,
+               filterOption,
             })
                .then((data) => {
                   setCount(data.count);
@@ -91,6 +103,13 @@ export const AdminOrdersPage: React.FC = () => {
       setStatusOption(e.target.value as OrderStatusEnum | 'Всі Статуси');
    };
 
+   const handleClickSelectFilterOption = (
+      e: React.ChangeEvent<HTMLSelectElement>,
+   ) => {
+      setIsLoadingOrders(true);
+      setFilterOption(e.target.value as OrderFiltersEnum);
+   };
+
    return (
       <>
          <div className='admin-orders'>
@@ -106,6 +125,18 @@ export const AdminOrdersPage: React.FC = () => {
                      >
                         <option value={'Всі Статуси'}>Всі Статуси</option>
                         {OrderStatusOptions.map((option) => (
+                           <option key={option.id} value={option.name}>
+                              {option.name}
+                           </option>
+                        ))}
+                     </select>
+                     <select
+                        name='change-filter'
+                        className='admin-orders__select-status'
+                        value={filterOption}
+                        onChange={handleClickSelectFilterOption}
+                     >
+                        {OrderFilterOptions.map((option) => (
                            <option key={option.id} value={option.name}>
                               {option.name}
                            </option>

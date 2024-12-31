@@ -5,7 +5,7 @@ import {
    PaymentOptionsEnum,
 } from '../modules/checkout/pages';
 import { IBasicCategory, IShoes } from '../store/reducers/shoes/ShoesSlice';
-import { OrderStatusEnum } from '../utils/constants';
+import { OrderFiltersEnum, OrderStatusEnum } from '../utils/constants';
 import { IBasicResponse } from './basket';
 
 export interface IOrderItemCreate {
@@ -102,6 +102,7 @@ interface IGetOrderRequest {
    phone: string;
    name: string;
    surname: string;
+   filterOption: OrderFiltersEnum;
 }
 class OrderReq {
    createCheckout = async (
