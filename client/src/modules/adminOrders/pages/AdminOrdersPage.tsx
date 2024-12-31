@@ -15,6 +15,7 @@ import { AlertTypeEnum } from '../../ui/Alert/AlertType';
 import { ModalInput } from '../../modal/components/HeaderDropdown/components/ModalInput';
 import { useDebounce } from '../../../hooks/useDebounce';
 import PhoneInput from 'react-phone-input-2';
+import { HorizontalLine } from '../../ui/HorizontalLine';
 
 export const AdminOrdersPage: React.FC = () => {
    const [orders, setOrders] = useState<IOrderWithItems[]>([]);
@@ -116,71 +117,76 @@ export const AdminOrdersPage: React.FC = () => {
             <div className='admin-orders__container'>
                <h3>Замовлення Клієнтів</h3>
                <main className='admin-orders__main'>
-                  <div className='admin-orders__filters'>
-                     <select
-                        name='change-status'
-                        className='admin-orders__select-status'
-                        value={statusOption}
-                        onChange={handleClickSelectStatusOption}
-                     >
-                        <option value={'Всі Статуси'}>Всі Статуси</option>
-                        {OrderStatusOptions.map((option) => (
-                           <option key={option.id} value={option.name}>
-                              {option.name}
-                           </option>
-                        ))}
-                     </select>
-                     <select
-                        name='change-filter'
-                        className='admin-orders__select-status'
-                        value={filterOption}
-                        onChange={handleClickSelectFilterOption}
-                     >
-                        {OrderFilterOptions.map((option) => (
-                           <option key={option.id} value={option.name}>
-                              {option.name}
-                           </option>
-                        ))}
-                     </select>
-                     <ModalInput
-                        text='Пошук за поштою'
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                     />
-                     <PhoneInput
-                        country={'ua'}
-                        onlyCountries={['ua']}
-                        inputClass='basic-input'
-                        inputStyle={{
-                           width: 'calc(100% - 20px)',
-                           maxWidth: '500px',
-                           margin: '0 20px 0 0',
-                           fontSize: '12px',
-                           border: '1.5px solid #d9d7d7',
-                           backgroundColor: '#fff',
-                           height: '38px',
-                        }}
-                        buttonStyle={{
-                           border: '1.5px solid #d9d7d7',
-                        }}
-                        disableDropdown={true}
-                        countryCodeEditable={false}
-                        inputProps={{
-                           name: 'phone',
-                        }}
-                        value={phone}
-                        onChange={(e) => setPhone(e)}
-                     />
-                     <ModalInput
-                        text='Пошук за іменем'
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                     />
-                     <ModalInput
-                        text='Пошук за прізвищем'
-                        value={surname}
-                        onChange={(e) => setSurname(e.target.value)}
-                     />
+                  <div>
+                     <HorizontalLine />
+                     <h4 style={{ marginLeft: '10px' }}>Фільтрація:</h4>
+                     <div className='admin-orders__filters'>
+                        <select
+                           name='change-status'
+                           className='admin-orders__select-status'
+                           value={statusOption}
+                           onChange={handleClickSelectStatusOption}
+                        >
+                           <option value={'Всі Статуси'}>Всі Статуси</option>
+                           {OrderStatusOptions.map((option) => (
+                              <option key={option.id} value={option.name}>
+                                 {option.name}
+                              </option>
+                           ))}
+                        </select>
+                        <select
+                           name='change-filter'
+                           className='admin-orders__select-status'
+                           value={filterOption}
+                           onChange={handleClickSelectFilterOption}
+                        >
+                           {OrderFilterOptions.map((option) => (
+                              <option key={option.id} value={option.name}>
+                                 {option.name}
+                              </option>
+                           ))}
+                        </select>
+                        <ModalInput
+                           text='Пошук за поштою'
+                           value={email}
+                           onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <PhoneInput
+                           country={'ua'}
+                           onlyCountries={['ua']}
+                           inputClass='basic-input'
+                           inputStyle={{
+                              width: 'calc(100% - 20px)',
+                              maxWidth: '500px',
+                              margin: '0 20px 0 0',
+                              fontSize: '12px',
+                              border: '1.5px solid #d9d7d7',
+                              backgroundColor: '#fff',
+                              height: '38px',
+                           }}
+                           buttonStyle={{
+                              border: '1.5px solid #d9d7d7',
+                           }}
+                           disableDropdown={true}
+                           countryCodeEditable={false}
+                           inputProps={{
+                              name: 'phone',
+                           }}
+                           value={phone}
+                           onChange={(e) => setPhone(e)}
+                        />
+                        <ModalInput
+                           text='Пошук за іменем'
+                           value={name}
+                           onChange={(e) => setName(e.target.value)}
+                        />
+                        <ModalInput
+                           text='Пошук за прізвищем'
+                           value={surname}
+                           onChange={(e) => setSurname(e.target.value)}
+                        />
+                     </div>
+                     <HorizontalLine style={{ marginBottom: '25px' }} />
                   </div>
                   <div className='admin-orders__orders-container'>
                      {orders.map((order) => (

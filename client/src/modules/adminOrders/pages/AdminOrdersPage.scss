@@ -1,3 +1,5 @@
+@import '../../../breakpoints.scss';
+
 .admin-orders {
    display: flex;
    flex-direction: column;
@@ -12,19 +14,18 @@
       flex-direction: column;
    }
    &__main {
-      margin: 20px 0;
+      margin: 10px 0;
    }
 
    &__filters {
       margin-bottom: 20px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      column-gap: 10px;
+      grid-template-columns: 1fr;
       align-items: center;
       justify-content: center;
    }
    &__select-status {
-      margin-top: 20px;
+      margin-top: 10px;
       max-width: 500px;
       margin-right: 20px;
       padding: 5px;
@@ -36,3 +37,13 @@
       margin-top: 17px;
    }
 }
+
+@media #{$tablet-small} {
+   .admin-orders {
+      &__filters {
+         display: grid;
+         grid-template-columns: 1fr 1fr;
+         column-gap: 10px;
+      }
+   }
+} ;
