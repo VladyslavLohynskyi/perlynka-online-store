@@ -12,7 +12,8 @@ import Type from '../models/typeModel';
 import Season from '../models/seasonModel';
 import Color from '../models/colorModel';
 import Brand from '../models/brandModel';
-import { json, Op, where, WhereOptions } from 'sequelize';
+import { Op, WhereOptions } from 'sequelize';
+import { OrderFiltersEnum } from '../utils/constants';
 
 interface IOrderItemCreate {
    shoeId: number;
@@ -52,6 +53,7 @@ interface IGetOrderRequest extends Request {
       phone: string;
       name: string;
       surname: string;
+      filterOption: OrderFiltersEnum;
    };
 }
 class OrderController {
@@ -88,8 +90,16 @@ class OrderController {
 
    async getAll(req: IGetOrderRequest, res: Response, next: NextFunction) {
       try {
-         const { limit, offset, status, email, phone, name, surname } =
-            req.query;
+         const {
+            limit,
+            offset,
+            status,
+            email,
+            phone,
+            name,
+            surname,
+            filterOption,
+         } = req.query;
          const whereOptions: WhereOptions<OrderAttributes> = {};
          if (status !== 'Всі Статуси') {
             whereOptions.status = status;
@@ -133,7 +143,11 @@ class OrderController {
                },
             ],
             where: whereOptions,
-            order: [['id', 'DESC']],
+            order: [
+               filterOption === OrderFiltersEnum.DATE_ASC
+                  ? ['createdAt', 'ASC']
+                  : ['createdAt', 'DESC'],
+            ],
             distinct: true,
             limit: +limit,
             offset: +offset,
