@@ -18,6 +18,7 @@ import {
    OrderStatusEnum,
    OrderStatusOptions,
 } from '../../../../utils/constants';
+import moment from 'moment-timezone';
 
 export const OrderItem: React.FC<OrderItemType> = ({ order, changeStatus }) => {
    const [isMoreButtonClicked, setIsMoreButtonClicked] = useState(false);
@@ -45,7 +46,15 @@ export const OrderItem: React.FC<OrderItemType> = ({ order, changeStatus }) => {
    return (
       <div className='order-item'>
          <div className='order-item__top'>
-            <p className='order-item__id'>Номер замовлення: #{order.id}</p>
+            <div className='order-item__id'>
+               <p>Номер замовлення: #{order.id}</p>
+               <p>
+                  Дата:{' '}
+                  {moment(order.createdAt)
+                     .tz('Europe/Kyiv')
+                     .format('YYYY-MM-DD HH:mm:ss')}
+               </p>
+            </div>
             <div className='order-item__status'>
                <p>Cтатус: </p>
                <select
