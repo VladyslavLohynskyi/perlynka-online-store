@@ -61,11 +61,11 @@ export const AdminOrdersPage: React.FC = () => {
    }, [
       page,
       statusOption,
+      filterOption,
       debouncedEmail,
       debouncedPhone,
       debouncedName,
       debouncedSurname,
-      filterOption,
    ]);
 
    const changeStatus = (id: number, status: OrderStatusEnum) => {
@@ -102,6 +102,7 @@ export const AdminOrdersPage: React.FC = () => {
    ) => {
       setIsLoadingOrders(true);
       setStatusOption(e.target.value as OrderStatusEnum | 'Всі Статуси');
+      setPage(1);
    };
 
    const handleClickSelectFilterOption = (
@@ -109,6 +110,7 @@ export const AdminOrdersPage: React.FC = () => {
    ) => {
       setIsLoadingOrders(true);
       setFilterOption(e.target.value as OrderFiltersEnum);
+      setPage(1);
    };
 
    return (
@@ -187,6 +189,15 @@ export const AdminOrdersPage: React.FC = () => {
                         />
                      </div>
                      <HorizontalLine style={{ marginBottom: '25px' }} />
+                  </div>
+                  <div
+                     style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        marginBottom: '20px',
+                     }}
+                  >
+                     <h5>Кількість знайдених записів: {count}</h5>
                   </div>
                   <div className='admin-orders__orders-container'>
                      {orders.map((order) => (
