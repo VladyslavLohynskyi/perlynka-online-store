@@ -9,6 +9,7 @@ import {
    faAngleDoubleUp,
    faPenToSquare,
    faCheck,
+   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '../../../ui/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -62,32 +63,50 @@ export const OrderItem: React.FC<OrderItemType> = ({
             <div className='order-item__status'>
                <p>Cтатус: </p>
                {isAdmin ? (
-                  <select
-                     disabled={isSelectStatusDisabled}
-                     name='change-status'
-                     className='order-item__select-status'
-                     value={statusOption}
-                     onChange={handleClickSelectStatusOption}
-                  >
-                     {OrderStatusOptions.map((option) => (
-                        <option key={option.id} value={option.name}>
-                           {option.name}
-                        </option>
-                     ))}
-                  </select>
+                  <>
+                     <select
+                        disabled={isSelectStatusDisabled}
+                        name='change-status'
+                        className='order-item__select-status'
+                        value={statusOption}
+                        onChange={handleClickSelectStatusOption}
+                     >
+                        {OrderStatusOptions.map((option) => (
+                           <option key={option.id} value={option.name}>
+                              {option.name}
+                           </option>
+                        ))}
+                     </select>
+                     <IconButton
+                        style={{
+                           color:
+                              !isSelectStatusDisabled &&
+                              statusOption !== order.status
+                                 ? 'green'
+                                 : 'black',
+                        }}
+                        icon={!isSelectStatusDisabled ? faCheck : faPenToSquare}
+                        onClick={handleClickChangeStatusButton}
+                     />
+                  </>
                ) : (
-                  <p>{statusOption}</p>
+                  <>
+                     <p
+                        style={{
+                           fontSize: '12px',
+                           fontWeight: '500',
+                           margin: '0 5px',
+                        }}
+                     >
+                        {statusOption}
+                     </p>{' '}
+                     <IconButton
+                        style={{ padding: 0 }}
+                        icon={faTrash}
+                        onClick={handleClickChangeStatusButton}
+                     />
+                  </>
                )}
-               <IconButton
-                  style={{
-                     color:
-                        !isSelectStatusDisabled && statusOption !== order.status
-                           ? 'green'
-                           : 'black',
-                  }}
-                  icon={!isSelectStatusDisabled ? faCheck : faPenToSquare}
-                  onClick={handleClickChangeStatusButton}
-               />
             </div>
          </div>
          <div className='order-item__data-container'>
