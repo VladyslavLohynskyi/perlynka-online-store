@@ -20,7 +20,11 @@ import {
 } from '../../../../utils/constants';
 import moment from 'moment-timezone';
 
-export const OrderItem: React.FC<OrderItemType> = ({ order, changeStatus }) => {
+export const OrderItem: React.FC<OrderItemType> = ({
+   order,
+   changeStatus,
+   isAdmin,
+}) => {
    const [isMoreButtonClicked, setIsMoreButtonClicked] = useState(false);
    const handleClickMoreButton = () => {
       setIsMoreButtonClicked((prev) => !prev);
@@ -57,19 +61,23 @@ export const OrderItem: React.FC<OrderItemType> = ({ order, changeStatus }) => {
             </div>
             <div className='order-item__status'>
                <p>Cтатус: </p>
-               <select
-                  disabled={isSelectStatusDisabled}
-                  name='change-status'
-                  className='order-item__select-status'
-                  value={statusOption}
-                  onChange={handleClickSelectStatusOption}
-               >
-                  {OrderStatusOptions.map((option) => (
-                     <option key={option.id} value={option.name}>
-                        {option.name}
-                     </option>
-                  ))}
-               </select>
+               {isAdmin ? (
+                  <select
+                     disabled={isSelectStatusDisabled}
+                     name='change-status'
+                     className='order-item__select-status'
+                     value={statusOption}
+                     onChange={handleClickSelectStatusOption}
+                  >
+                     {OrderStatusOptions.map((option) => (
+                        <option key={option.id} value={option.name}>
+                           {option.name}
+                        </option>
+                     ))}
+                  </select>
+               ) : (
+                  <p>{statusOption}</p>
+               )}
                <IconButton
                   style={{
                      color:

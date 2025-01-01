@@ -26,12 +26,18 @@ export default function (req: authRequest, res: Response, next: NextFunction) {
       if (!token) {
          return next(ApiError.Unauthorized('Користувач не авторизований'));
       }
-      const decoded = jwt.verify(
-         token,
-         process.env.SECRET_KEY_ACCESS,
-      ) as IDecodedJwt;
-      req.user = decoded;
-      next();
+      const decoded = jwt.verify(token, process.env.SECRET_KEY_ACCESS!);
+      if (
+         typeof decoded === 'object' &&
+         'id' in decoded &&
+         'email' in decoded &&
+         'role' in decoded
+      ) {
+         req.user = decoded as IDecodedJwt;
+         return next();
+      } else {
+         return next(ApiError.Unauthorized('Невірний токен'));
+      }
    } catch (error) {
       return next(ApiError.Unauthorized('Користувач не авторизований'));
    }

@@ -15,6 +15,8 @@ ordersRouter.get(
    ordersController.getAll,
 );
 
+ordersRouter.get('/my', authMiddleware, ordersController.getOrderAllByUser);
+
 ordersRouter.delete(
    '/:id',
    authMiddleware,

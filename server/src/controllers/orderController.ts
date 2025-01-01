@@ -14,6 +14,7 @@ import Color from '../models/colorModel';
 import Brand from '../models/brandModel';
 import { Op, WhereOptions } from 'sequelize';
 import { OrderFiltersEnum } from '../utils/constants';
+import { IDecodedJwt, authRequest } from '../middleware/authMiddleware';
 
 interface IOrderItemCreate {
    shoeId: number;
@@ -53,6 +54,15 @@ interface IGetOrderRequest extends Request {
       phone: string;
       name: string;
       surname: string;
+      filterOption: OrderFiltersEnum;
+   };
+}
+
+interface IGetOrderAllByUserRequest extends authRequest {
+   query: {
+      limit: string;
+      offset: string;
+      status: string;
       filterOption: OrderFiltersEnum;
    };
 }
@@ -125,6 +135,54 @@ class OrderController {
                [Op.iLike]: `%${surname}%`,
             };
          }
+         const orders = await Order.findAndCountAll({
+            include: [
+               {
+                  model: OrderItem,
+                  include: [
+                     {
+                        model: Shoes,
+                        include: [
+                           { model: Type },
+                           { model: Season },
+                           { model: Color },
+                           { model: Brand },
+                        ],
+                     },
+                  ],
+               },
+            ],
+            where: whereOptions,
+            order: [
+               filterOption === OrderFiltersEnum.DATE_ASC
+                  ? ['createdAt', 'ASC']
+                  : ['createdAt', 'DESC'],
+            ],
+            distinct: true,
+            limit: +limit,
+            offset: +offset,
+         });
+         return res.json(orders);
+      } catch (error) {
+         return next(
+            ApiError.internalServer('Помилка при отриманні замовлень'),
+         );
+      }
+   }
+
+   async getOrderAllByUser(
+      req: IGetOrderAllByUserRequest,
+      res: Response,
+      next: NextFunction,
+   ) {
+      try {
+         const user = req.user;
+         const { limit, offset, status, filterOption } = req.query;
+         const whereOptions: WhereOptions<OrderAttributes> = {};
+         if (status !== 'Всі Статуси') {
+            whereOptions.status = status;
+         }
+         whereOptions.email = user?.email;
          const orders = await Order.findAndCountAll({
             include: [
                {

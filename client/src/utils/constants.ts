@@ -15,6 +15,7 @@ export enum RoutesEnum {
    RETURN_AND_EXCHANGE = '/return-and-exchange',
    DISCOUNT = '/discount',
    ADMIN_ORDERS = '/admin-orders',
+   MY_ORDERS = '/my-orders',
 }
 
 export const limitGettingShoesFromDB = 16;

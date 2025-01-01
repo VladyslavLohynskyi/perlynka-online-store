@@ -13,6 +13,7 @@ import ReturnAndExchange from '../returnAndExchange/pages/ReturnAndExchange';
 
 import { ShoesPage } from '../shoes/pages';
 import { Shop } from '../shop/pages';
+import { UserOrdersPage } from '../userOrders/pages';
 interface IRoutes {
    path: string;
    Component: React.FC;
@@ -58,6 +59,7 @@ export const authRoutes: IRoutes[] = [
       path: RoutesEnum.DISCOUNT,
       Component: Discount,
    },
+   { path: RoutesEnum.MY_ORDERS, Component: UserOrdersPage },
 ];
 
 export const publicRoutes: IRoutes[] = [

@@ -4,4 +4,5 @@ import { OrderStatusEnum } from '../../../../utils/constants';
 export interface OrderItemType {
    order: IOrderWithItems;
    changeStatus: (id: number, status: OrderStatusEnum) => void;
+   isAdmin: boolean;
 }

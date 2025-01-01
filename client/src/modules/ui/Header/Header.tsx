@@ -150,6 +150,13 @@ export const Header: React.FC<HeaderType> = ({
                               setIsHeaderDropdownOpen(false);
                            }}
                         />
+                        <DropdownItem
+                           text='Мої замовлення'
+                           onClick={() => {
+                              navigate(RoutesEnum.MY_ORDERS);
+                              setIsHeaderDropdownOpen(false);
+                           }}
+                        />
                         {user?.role === 'ADMIN' && (
                            <>
                               <DropdownItem
