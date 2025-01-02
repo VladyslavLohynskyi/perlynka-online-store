@@ -66,6 +66,12 @@ interface IGetOrderAllByUserRequest extends authRequest {
       filterOption: OrderFiltersEnum;
    };
 }
+
+interface ICancelOrderRequest extends authRequest {
+   body: {
+      id: number;
+   };
+}
 class OrderController {
    async create(req: ICreateOrderRequest, res: Response, next: NextFunction) {
       try {
@@ -239,6 +245,32 @@ class OrderController {
       } catch (error) {
          return next(
             ApiError.internalServer('Помилка при оновленні замовлення'),
+         );
+      }
+   }
+
+   async cancelOrder(
+      req: ICancelOrderRequest,
+      res: Response,
+      next: NextFunction,
+   ) {
+      try {
+         const { user } = req;
+         const { id } = req.body;
+         const order = Order.findOne({ where: { id: id, email: user?.email } });
+         if (!order) {
+            return next(
+               ApiError.forbidden('Немає прав щоб скасувати це замовлення'),
+            );
+         }
+         Order.update(
+            { status: 'Замовлення скасовано' },
+            { where: { id: id, email: user?.email } },
+         );
+         return res.json({ message: 'Замовлення скасовано' });
+      } catch (error) {
+         return next(
+            ApiError.internalServer('Помилка при скасуванні замовлення'),
          );
       }
    }

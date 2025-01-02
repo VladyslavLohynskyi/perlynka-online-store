@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useState } from 'react';
+import OrderReq from '../../../../http/orders';
 import './OrderItem.scss';
 import { OrderItemType } from './OrderItemType';
 import { DeliveryOptionsEnum } from '../../../checkout/pages';
@@ -50,6 +50,12 @@ export const OrderItem: React.FC<OrderItemType> = ({
       } else {
          setIsSelectStatusDisabled((prev) => !prev);
       }
+   };
+
+   const handleSubmitCancelOrder = async () => {
+      await OrderReq.cancelOrder(order.id);
+      setStatusOption(OrderStatusEnum.CANCELED);
+      setIsSubmitModalOpened(false);
    };
    return (
       <>
@@ -112,8 +118,8 @@ export const OrderItem: React.FC<OrderItemType> = ({
                               {statusOption}
                            </p>{' '}
                         </div>
-                        {(order.status === OrderStatusEnum.ACCEPTED ||
-                           order.status === OrderStatusEnum.PENDING) && (
+                        {(statusOption === OrderStatusEnum.ACCEPTED ||
+                           statusOption === OrderStatusEnum.PENDING) && (
                            <IconButton
                               style={{ padding: 0 }}
                               icon={faTrash}
@@ -210,9 +216,7 @@ export const OrderItem: React.FC<OrderItemType> = ({
             <SubmitModal
                onClose={() => setIsSubmitModalOpened(false)}
                text={`Чи ви дійсно хочете скасувати замовлення №${order.id}?`}
-               onSubmit={() => {
-                  setIsSubmitModalOpened(false);
-               }}
+               onSubmit={handleSubmitCancelOrder}
             />
          </Modal>
       </>

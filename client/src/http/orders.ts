@@ -145,6 +145,12 @@ class OrderReq {
       });
       return data;
    };
+   cancelOrder = async (id: number) => {
+      const { data } = await $authHost.patch<IBasicResponse>('/order/cancel/', {
+         id,
+      });
+      return data;
+   };
 }
 
 export default new OrderReq();
