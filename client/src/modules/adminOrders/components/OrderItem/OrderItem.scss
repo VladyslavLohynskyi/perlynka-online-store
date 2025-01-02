@@ -33,7 +33,10 @@
       color: #6c757d;
    }
    &__status {
+      width: 100%;
       display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
    }
 
    &__customer-data,
@@ -123,6 +126,10 @@
          display: flex;
          flex-direction: row;
          justify-content: space-between;
+      }
+      &__status {
+         justify-content: flex-end;
+         width: 50%;
       }
       &__data-container {
          display: grid;

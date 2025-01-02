@@ -104,6 +104,13 @@ interface IGetOrderRequest {
    surname: string;
    filterOption: OrderFiltersEnum;
 }
+
+interface IGetOrderByUserRequest {
+   limit: number;
+   offset: number;
+   status: OrderStatusEnum | 'Всі Статуси';
+   filterOption: OrderFiltersEnum;
+}
 class OrderReq {
    createCheckout = async (
       customerInfo: ICustomerInfo,
@@ -126,9 +133,21 @@ class OrderReq {
       });
       return data;
    };
+   getOrdersByUser = async (getOrdersByUserData: IGetOrderByUserRequest) => {
+      const { data } = await $authHost.get<IGetOrdersResponse>('/order/my', {
+         params: getOrdersByUserData,
+      });
+      return data;
+   };
    updateOrderStatus = async (id: number, status: OrderStatusEnum) => {
       const { data } = await $authHost.put<IBasicResponse>('/order/' + id, {
          status,
+      });
+      return data;
+   };
+   cancelOrder = async (id: number) => {
+      const { data } = await $authHost.patch<IBasicResponse>('/order/cancel/', {
+         id,
       });
       return data;
    };

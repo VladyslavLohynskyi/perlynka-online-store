@@ -15,6 +15,8 @@ ordersRouter.get(
    ordersController.getAll,
 );
 
+ordersRouter.get('/my', authMiddleware, ordersController.getOrderAllByUser);
+
 ordersRouter.delete(
    '/:id',
    authMiddleware,
@@ -28,5 +30,7 @@ ordersRouter.put(
    checkRoleMiddleware(Role.ADMIN),
    ordersController.updateStatus,
 );
+
+ordersRouter.patch('/cancel', authMiddleware, ordersController.cancelOrder);
 
 export default ordersRouter;

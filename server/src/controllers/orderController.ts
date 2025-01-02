@@ -14,6 +14,7 @@ import Color from '../models/colorModel';
 import Brand from '../models/brandModel';
 import { Op, WhereOptions } from 'sequelize';
 import { OrderFiltersEnum } from '../utils/constants';
+import { IDecodedJwt, authRequest } from '../middleware/authMiddleware';
 
 interface IOrderItemCreate {
    shoeId: number;
@@ -54,6 +55,21 @@ interface IGetOrderRequest extends Request {
       name: string;
       surname: string;
       filterOption: OrderFiltersEnum;
+   };
+}
+
+interface IGetOrderAllByUserRequest extends authRequest {
+   query: {
+      limit: string;
+      offset: string;
+      status: string;
+      filterOption: OrderFiltersEnum;
+   };
+}
+
+interface ICancelOrderRequest extends authRequest {
+   body: {
+      id: number;
    };
 }
 class OrderController {
@@ -159,6 +175,54 @@ class OrderController {
          );
       }
    }
+
+   async getOrderAllByUser(
+      req: IGetOrderAllByUserRequest,
+      res: Response,
+      next: NextFunction,
+   ) {
+      try {
+         const user = req.user;
+         const { limit, offset, status, filterOption } = req.query;
+         const whereOptions: WhereOptions<OrderAttributes> = {};
+         if (status !== 'Всі Статуси') {
+            whereOptions.status = status;
+         }
+         whereOptions.email = user?.email;
+         const orders = await Order.findAndCountAll({
+            include: [
+               {
+                  model: OrderItem,
+                  include: [
+                     {
+                        model: Shoes,
+                        include: [
+                           { model: Type },
+                           { model: Season },
+                           { model: Color },
+                           { model: Brand },
+                        ],
+                     },
+                  ],
+               },
+            ],
+            where: whereOptions,
+            order: [
+               filterOption === OrderFiltersEnum.DATE_ASC
+                  ? ['createdAt', 'ASC']
+                  : ['createdAt', 'DESC'],
+            ],
+            distinct: true,
+            limit: +limit,
+            offset: +offset,
+         });
+         return res.json(orders);
+      } catch (error) {
+         return next(
+            ApiError.internalServer('Помилка при отриманні замовлень'),
+         );
+      }
+   }
    async deleteOne(req: Request, res: Response, next: NextFunction) {
       try {
       } catch (error) {
@@ -181,6 +245,32 @@ class OrderController {
       } catch (error) {
          return next(
             ApiError.internalServer('Помилка при оновленні замовлення'),
+         );
+      }
+   }
+
+   async cancelOrder(
+      req: ICancelOrderRequest,
+      res: Response,
+      next: NextFunction,
+   ) {
+      try {
+         const { user } = req;
+         const { id } = req.body;
+         const order = Order.findOne({ where: { id: id, email: user?.email } });
+         if (!order) {
+            return next(
+               ApiError.forbidden('Немає прав щоб скасувати це замовлення'),
+            );
+         }
+         Order.update(
+            { status: 'Замовлення скасовано' },
+            { where: { id: id, email: user?.email } },
+         );
+         return res.json({ message: 'Замовлення скасовано' });
+      } catch (error) {
+         return next(
+            ApiError.internalServer('Помилка при скасуванні замовлення'),
          );
       }
    }
