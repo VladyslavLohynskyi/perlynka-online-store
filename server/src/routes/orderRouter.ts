@@ -31,4 +31,6 @@ ordersRouter.put(
    ordersController.updateStatus,
 );
 
+ordersRouter.put('/сancel/:id', authMiddleware, ordersController.updateStatus);
+
 export default ordersRouter;
