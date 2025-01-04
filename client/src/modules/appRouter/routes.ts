@@ -8,6 +8,7 @@ import { CheckoutPage } from '../checkout/pages';
 import Contact from '../contact/pages/Contact';
 import { Discount } from '../discount/pages';
 import PaymentAndDelivery from '../PaymentAndDelivery/pages/PaymentAndDelivery';
+import Privacy from '../privacy/pages/Privacy';
 import Profile from '../profile/pages/Profile';
 import ReturnAndExchange from '../returnAndExchange/pages/ReturnAndExchange';
 
@@ -60,6 +61,7 @@ export const authRoutes: IRoutes[] = [
       Component: Discount,
    },
    { path: RoutesEnum.MY_ORDERS, Component: UserOrdersPage },
+   { path: RoutesEnum.PRIVACY, Component: Privacy },
 ];
 
 export const publicRoutes: IRoutes[] = [
@@ -113,6 +115,7 @@ export const publicRoutes: IRoutes[] = [
       path: RoutesEnum.DISCOUNT,
       Component: Discount,
    },
+   { path: RoutesEnum.PRIVACY, Component: Privacy },
 ];
 
 export const adminRoutes: IRoutes[] = [
