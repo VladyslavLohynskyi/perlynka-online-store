@@ -3,7 +3,7 @@
    display: grid;
    width: 100%;
    height: 100%;
-   grid-template-rows: 60px 1fr auto minmax(auto, 571px);
+   grid-template-rows: 60px 1fr auto minmax(auto, 585px);
 }
 
 @media #{$tablet-middle} {
