@@ -50,6 +50,12 @@ export const Footer: React.FC = () => {
                         navigate(RoutesEnum.CONTACT);
                      }}
                   />
+                  <FooterInfoItem
+                     text='Політика конфіденційності'
+                     onClick={() => {
+                        navigate(RoutesEnum.PRIVACY);
+                     }}
+                  />
                </div>
 
                <div className='footer__contact-container'>

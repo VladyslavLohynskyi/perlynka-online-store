@@ -8,6 +8,7 @@ import { preloadFilter } from './store/reducers/filter/FilterActionCreators';
 import { AlertTypeEnum } from './modules/ui/Alert/AlertType';
 import Alert from './modules/ui/Alert/Alert';
 import { Loader } from './modules/ui/Loader';
+import CookieConsent from 'react-cookie-consent';
 
 const App: FC = () => {
    const dispatch = useAppDispatch();
@@ -109,6 +110,28 @@ const App: FC = () => {
             }}
             message={alertNotificationMessage}
          />
+         <CookieConsent
+            location='bottom'
+            buttonText='Прийняти'
+            style={{
+               background: '#2B373B',
+               padding: '15px 20px',
+               fontSize: '13px',
+               display: 'flex',
+               justifyContent: 'center',
+            }}
+            buttonStyle={{
+               color: '#000',
+               fontSize: '12px',
+               background: '#fff',
+            }}
+            contentStyle={{ flex: 'none' }}
+            extraCookieOptions={{ secure: true, sameSite: 'Strict' }}
+         >
+            Ми використовуємо cookie для покращення вашого досвіду. Продовжуючи
+            використовувати сайт, ви погоджуєтеся з нашою політикою
+            конфіденційності.
+         </CookieConsent>
       </div>
    );
 };

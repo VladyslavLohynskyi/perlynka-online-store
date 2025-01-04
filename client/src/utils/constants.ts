@@ -16,6 +16,7 @@ export enum RoutesEnum {
    DISCOUNT = '/discount',
    ADMIN_ORDERS = '/admin-orders',
    MY_ORDERS = '/my-orders',
+   PRIVACY = '/privacy',
 }
 
 export const limitGettingShoesFromDB = 16;
