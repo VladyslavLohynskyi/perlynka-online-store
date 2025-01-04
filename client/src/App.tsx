@@ -124,8 +124,9 @@ const App: FC = () => {
                color: '#000',
                fontSize: '12px',
                background: '#fff',
+               margin: '7px',
             }}
-            contentStyle={{ flex: 'none' }}
+            contentStyle={{ flex: 'inherit', margin: '7px' }}
             extraCookieOptions={{ secure: true, sameSite: 'Strict' }}
          >
             Ми використовуємо cookie для покращення вашого досвіду. Продовжуючи
