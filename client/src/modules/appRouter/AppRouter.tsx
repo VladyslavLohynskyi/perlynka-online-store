@@ -1,17 +1,26 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { authRoutes, publicRoutes, adminRoutes } from './routes';
 import { useAppSelector } from '../../hooks/redux';
 import { RoutesEnum } from '../../utils/constants';
-import React from 'react';
+import React, { useEffect } from 'react';
 import AppRouterType from './AppRouterType';
 import { BurgerMenu } from '../ui/BurgerMenu';
 import useWindowSize from '../../hooks/useWindowSize';
+import ReactGA from 'react-ga4';
 const AppRouter: React.FC<AppRouterType> = ({
    isBurgerShowed,
    handleSwitchBurgerShow,
 }) => {
    const { isAuth, user } = useAppSelector((state) => state.userReducer);
    const { width } = useWindowSize();
+   const location = useLocation(); // для отримання поточного шляху
+
+   useEffect(() => {
+      ReactGA.send({
+         hitType: 'pageview',
+         page: location.pathname + location.search, // У разі наявності параметрів запиту
+      });
+   }, [location]);
    return (
       <>
          {isBurgerShowed && width < 992 ? (
