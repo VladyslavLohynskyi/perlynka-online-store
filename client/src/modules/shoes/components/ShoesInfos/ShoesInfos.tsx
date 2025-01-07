@@ -165,11 +165,7 @@ const ShoesInfos: React.FC<ShoesInfosType> = ({ currentShoes }) => {
             <div className='shoes-page-info__buy-button'>
                <Button
                   buttonText={buyButtonText}
-                  additionalClass={
-                     buyButtonText === BuyButtonTextEnum.BUY
-                        ? 'add-to-cart-button'
-                        : ''
-                  }
+                  additionalClass='add-to-cart-button'
                   buttonClass={
                      buyButtonText === BuyButtonTextEnum.BUY
                         ? ButtonClassEnum.BUY
