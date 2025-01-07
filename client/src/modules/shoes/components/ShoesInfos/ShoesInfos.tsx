@@ -166,6 +166,8 @@ const ShoesInfos: React.FC<ShoesInfosType> = ({ currentShoes }) => {
                <Button
                   buttonText={buyButtonText}
                   additionalClass='add-to-cart-button'
+                  style={{ height: '48px' }}
+                  data-product-id={currentShoes.id}
                   buttonClass={
                      buyButtonText === BuyButtonTextEnum.BUY
                         ? ButtonClassEnum.BUY
