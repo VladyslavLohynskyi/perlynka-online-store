@@ -29,11 +29,9 @@ class fileUploadService {
          blobStream
             .on('finish', () => {
                const publicUrl = `${process.env.GOOGLE_CLOUD_STORAGE_BASE_URL}/${this.bucketName}/${blob.name}`;
-               console.log(publicUrl);
                resolve(publicUrl);
             })
             .on('error', (err) => {
-               console.log(err);
                reject(() => {
                   throw ApiError.internalServer('Error uploading photo');
                });
