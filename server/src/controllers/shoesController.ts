@@ -75,7 +75,7 @@ interface shoesUpdateRequest extends Request {
       newShoesInfos?: string;
       deletedShoesInfoIds?: string;
       deletedImagesNames?: string;
-      isAvailable?: boolean;
+      isAvailable?: string;
    };
 }
 
@@ -334,6 +334,10 @@ class shoesController {
          if (!shoes) {
             return next(ApiError.notFound(`Взуття з id = ${id} не існує`));
          }
+         const isAvailableBool =
+            isAvailable === undefined
+               ? shoes.isAvailable
+               : isAvailable === 'true';
          const img = req.files?.file;
          const additionImages = req.files?.newAdditionImages;
          if (!Array.isArray(img) && img) {
@@ -363,8 +367,7 @@ class shoesController {
                      : promotionalPrice == 0
                      ? null
                      : shoes.promotionalPrice,
-               isAvailable:
-                  isAvailable !== undefined ? isAvailable : shoes.isAvailable,
+               isAvailable: isAvailableBool,
             },
             { where: { id } },
          );
@@ -464,9 +467,8 @@ class shoesController {
          }
 
          if (
-            isAvailable === false &&
-            isAvailable !== undefined &&
-            isAvailable !== shoes.isAvailable
+            isAvailableBool === false &&
+            shoes.isAvailable !== isAvailableBool
          ) {
             await BasketShoes.destroy({ where: { shoId: shoes.id } });
          }

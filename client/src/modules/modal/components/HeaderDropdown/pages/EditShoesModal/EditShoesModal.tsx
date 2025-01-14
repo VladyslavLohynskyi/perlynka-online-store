@@ -23,9 +23,10 @@ import { ModalSearch } from '../../components/ModalSearch';
 import { ButtonClassEnum } from '../../../../../ui/Button/ButtonType';
 import { IShoesInfo, keyShoesInfoEnum } from '../AddShoesModal';
 import { IconButton } from '../../../../../ui/IconButton';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faLadderWater, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { HorizontalLine } from '../../../../../ui/HorizontalLine';
 import { Loader } from '../../../../../ui/Loader';
+import { BasicInput } from '../../../../../ui/BasicInput';
 
 interface INewAdditionImages {
    id: number;
@@ -70,6 +71,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
    const [newAdditionImages, setNewAdditionImages] = useState<
       INewAdditionImages[]
    >([]);
+   const [isAvailable, setIsAvailable] = useState<boolean>(false);
    useEffect(() => {
       if (foundShoes) {
          setModel(foundShoes.model);
@@ -81,6 +83,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
          setSex(foundShoes.sex);
          setAdditionImages(foundShoes.shoes_images);
          setAddSizes([]);
+         setIsAvailable(foundShoes.isAvailable);
          setPromotionalPrice(
             foundShoes.promotionalPrice ? foundShoes.promotionalPrice : 0,
          );
@@ -187,6 +190,9 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
       formData.append('id', String(id));
       if (model !== shoes.model) {
          formData.append('model', model);
+      }
+      if (isAvailable !== shoes.isAvailable) {
+         formData.append('isAvailable', String(isAvailable));
       }
       if (price !== shoes.price) {
          formData.append('price', String(price));
@@ -474,7 +480,15 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                               );
                            })}
                         </div>
-
+                        <div className='edit-shoes-modal__checkbox-container'>
+                           <BasicInput
+                              type='checkbox'
+                              style={{ width: 'inherit', cursor: 'pointer' }}
+                              checked={isAvailable}
+                              onChange={() => setIsAvailable((prev) => !prev)}
+                           />
+                           <span>є в наявності</span>
+                        </div>
                         <div>
                            <Button
                               buttonClass={ButtonClassEnum.SECONDARY}
