@@ -13,6 +13,7 @@ interface shoesAttributes {
    brandId: number;
    promotionalPrice?: number | null;
    sex: SexType;
+   isAvailable: boolean;
 }
 
 interface shoesCreationAttributes extends Optional<shoesAttributes, 'id'> {}
@@ -35,6 +36,11 @@ const Shoes = sequelize.define<shoesInstance>('shoes', {
    brandId: { allowNull: false, type: DataTypes.INTEGER },
    promotionalPrice: { type: DataTypes.INTEGER, allowNull: true },
    sex: { allowNull: false, type: DataTypes.STRING, defaultValue: 'Унісекс' },
+   isAvailable: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+   },
 });
 
 export default Shoes;

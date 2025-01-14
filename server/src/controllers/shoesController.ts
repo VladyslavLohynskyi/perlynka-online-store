@@ -17,6 +17,7 @@ import ApiError from '../exceptions/ApiError';
 import sharp from 'sharp';
 
 import fileUploadService from '../services/fileUploadService';
+import BasketShoes from '../models/basketShoesModel';
 
 interface IParseSizes {
    sizeId: number;
@@ -74,6 +75,7 @@ interface shoesUpdateRequest extends Request {
       newShoesInfos?: string;
       deletedShoesInfoIds?: string;
       deletedImagesNames?: string;
+      isAvailable?: boolean;
    };
 }
 
@@ -139,6 +141,7 @@ class shoesController {
             img: fileMainName,
             sex,
             promotionalPrice,
+            isAvailable: true,
          });
 
          if (Array.isArray(img)) {
@@ -215,6 +218,7 @@ class shoesController {
             seasonId: { [Op.or]: [...seasonIdsParsed] },
             colorId: { [Op.or]: [...colorsIdsParsed] },
             sex: { [Op.or]: sexFilter() },
+            isAvailable: true,
          };
          if (promotion === 'true') {
             whereClause.promotionalPrice = { [Op.not]: null };
@@ -324,6 +328,7 @@ class shoesController {
             newShoesInfos,
             deletedShoesInfoIds,
             deletedImagesNames,
+            isAvailable,
          } = req.body;
          const shoes = await Shoes.findOne({ where: { id } });
          if (!shoes) {
@@ -358,6 +363,8 @@ class shoesController {
                      : promotionalPrice == 0
                      ? null
                      : shoes.promotionalPrice,
+               isAvailable:
+                  isAvailable !== undefined ? isAvailable : shoes.isAvailable,
             },
             { where: { id } },
          );
@@ -454,6 +461,14 @@ class shoesController {
                );
                await ShoesImage.create({ shoId: shoes.id, img: fileName });
             }
+         }
+
+         if (
+            isAvailable === false &&
+            isAvailable !== undefined &&
+            isAvailable !== shoes.isAvailable
+         ) {
+            await BasketShoes.destroy({ where: { shoId: shoes.id } });
          }
          return res.json({ message: 'Взуття успішно редаговано' });
       } catch (error) {
