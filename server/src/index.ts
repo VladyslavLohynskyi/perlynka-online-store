@@ -9,6 +9,7 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import errorMiddleware from './middleware/errorMiddleware';
 import fs from 'fs';
+import cors from 'cors';
 
 const app: Application = express();
 const port: number = +process.env.PORT || 8888;
@@ -21,7 +22,9 @@ if (process.env.MODE === 'production') {
       console.error('GOOGLE_APPLICATION_CREDENTIALS_JSON is not set');
    }
 }
-
+if (process.env.MODE === 'developmet') {
+   app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }));
+}
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.resolve(__dirname, 'static')));
