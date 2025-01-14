@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import express, { Application, Request, Response } from 'express';
-import cors from 'cors';
+import express, { Application } from 'express';
 import { sequelize } from './db';
 import fileUpload from 'express-fileupload';
 const models = require('./models/models');
