@@ -132,23 +132,32 @@ const ShoesInfos: React.FC<ShoesInfosType> = ({ currentShoes }) => {
                </div>
             )}
          </div>
-         <p className='shoes-page-info__model-size label-text'>
-            Розмір взуття:
-         </p>
-         <div className='shoes-page-info__sizes-buttons'>
-            {currentShoes.shoes_sizes.map(({ size, sizeId }) => (
-               <Button
-                  key={sizeId}
-                  buttonText={size.size}
-                  buttonClass={
-                     +size.id === selectedSizeId
-                        ? ButtonClassEnum.ACTIVE_SIZE_BUTTON
-                        : ButtonClassEnum.SIZE_BUTTON
-                  }
-                  buttonClick={() => handleClickSizeButton(+size.id)}
-               />
-            ))}
-         </div>
+         {currentShoes.isAvailable ? (
+            <>
+               <p className='shoes-page-info__model-size label-text'>
+                  Розмір взуття:
+               </p>
+               <div className='shoes-page-info__sizes-buttons'>
+                  {currentShoes.shoes_sizes.map(({ size, sizeId }) => (
+                     <Button
+                        key={sizeId}
+                        buttonText={size.size}
+                        buttonClass={
+                           +size.id === selectedSizeId
+                              ? ButtonClassEnum.ACTIVE_SIZE_BUTTON
+                              : ButtonClassEnum.SIZE_BUTTON
+                        }
+                        buttonClick={() => handleClickSizeButton(+size.id)}
+                     />
+                  ))}
+               </div>
+            </>
+         ) : (
+            <>
+               <HorizontalLine />
+               <h3 style={{ margin: '15px 0' }}>Немає в наявності</h3>
+            </>
+         )}
          <HorizontalLine />
          <div className='shoes-page-info__buy-container'>
             <div className='shoes-page-info__buy-counter'>
@@ -166,6 +175,7 @@ const ShoesInfos: React.FC<ShoesInfosType> = ({ currentShoes }) => {
             </div>
             <div className='shoes-page-info__buy-button'>
                <Button
+                  disabled={!currentShoes.isAvailable}
                   buttonText={buyButtonText}
                   buttonClass={
                      buyButtonText === BuyButtonTextEnum.BUY
