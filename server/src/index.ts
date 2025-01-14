@@ -12,7 +12,7 @@ import fs from 'fs';
 
 const app: Application = express();
 const port: number = +process.env.PORT || 8888;
-if (process.env.MODE === 'poduction') {
+if (process.env.MODE === 'production') {
    const keyJsonContent = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
    if (keyJsonContent) {
       const filePath = path.join(__dirname, 'key.json');
