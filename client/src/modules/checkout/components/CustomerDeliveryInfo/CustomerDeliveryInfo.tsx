@@ -358,6 +358,7 @@ export const CustomerDeliveryInfo: React.FC<CustomerDeliveryInfoType> = ({
             <div className='checkout__submit-btn'>
                <Button
                   buttonClass={ButtonClassEnum.BUY}
+                  additionalClass='create-order-button'
                   buttonText='Оформити замовлення'
                   buttonClick={handleClickCheckoutBtn}
                />

@@ -6,12 +6,14 @@ import React from 'react';
 import AppRouterType from './AppRouterType';
 import { BurgerMenu } from '../ui/BurgerMenu';
 import useWindowSize from '../../hooks/useWindowSize';
+
 const AppRouter: React.FC<AppRouterType> = ({
    isBurgerShowed,
    handleSwitchBurgerShow,
 }) => {
    const { isAuth, user } = useAppSelector((state) => state.userReducer);
    const { width } = useWindowSize();
+
    return (
       <>
          {isBurgerShowed && width < 992 ? (

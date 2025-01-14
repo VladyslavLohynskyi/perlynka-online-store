@@ -6,11 +6,12 @@ import { setupStore } from './store/store';
 import { BrowserRouter } from 'react-router-dom';
 import { APIProvider } from '@vis.gl/react-google-maps';
 
+import ReactGA from 'react-ga4';
+ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALITICS_KEY!);
 const store = setupStore();
 const root = ReactDOM.createRoot(
    document.getElementById('root') as HTMLElement,
 );
-
 root.render(
    <Provider store={store}>
       <BrowserRouter>
