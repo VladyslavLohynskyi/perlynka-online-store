@@ -34,6 +34,7 @@ export interface IShoes {
    brandId: number;
    sex: SexEnum;
    promotionalPrice: number;
+   isAvailable: boolean;
 }
 
 export interface IShoesWithSizes extends IShoes {

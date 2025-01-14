@@ -17,6 +17,7 @@ import ApiError from '../exceptions/ApiError';
 import sharp from 'sharp';
 
 import fileUploadService from '../services/fileUploadService';
+import BasketShoes from '../models/basketShoesModel';
 
 interface IParseSizes {
    sizeId: number;
@@ -74,6 +75,7 @@ interface shoesUpdateRequest extends Request {
       newShoesInfos?: string;
       deletedShoesInfoIds?: string;
       deletedImagesNames?: string;
+      isAvailable?: string;
    };
 }
 
@@ -139,6 +141,7 @@ class shoesController {
             img: fileMainName,
             sex,
             promotionalPrice,
+            isAvailable: true,
          });
 
          if (Array.isArray(img)) {
@@ -215,6 +218,7 @@ class shoesController {
             seasonId: { [Op.or]: [...seasonIdsParsed] },
             colorId: { [Op.or]: [...colorsIdsParsed] },
             sex: { [Op.or]: sexFilter() },
+            isAvailable: true,
          };
          if (promotion === 'true') {
             whereClause.promotionalPrice = { [Op.not]: null };
@@ -324,11 +328,16 @@ class shoesController {
             newShoesInfos,
             deletedShoesInfoIds,
             deletedImagesNames,
+            isAvailable,
          } = req.body;
          const shoes = await Shoes.findOne({ where: { id } });
          if (!shoes) {
             return next(ApiError.notFound(`Взуття з id = ${id} не існує`));
          }
+         const isAvailableBool =
+            isAvailable === undefined
+               ? shoes.isAvailable
+               : isAvailable === 'true';
          const img = req.files?.file;
          const additionImages = req.files?.newAdditionImages;
          if (!Array.isArray(img) && img) {
@@ -358,6 +367,7 @@ class shoesController {
                      : promotionalPrice == 0
                      ? null
                      : shoes.promotionalPrice,
+               isAvailable: isAvailableBool,
             },
             { where: { id } },
          );
@@ -454,6 +464,13 @@ class shoesController {
                );
                await ShoesImage.create({ shoId: shoes.id, img: fileName });
             }
+         }
+
+         if (
+            isAvailableBool === false &&
+            shoes.isAvailable !== isAvailableBool
+         ) {
+            await BasketShoes.destroy({ where: { shoId: shoes.id } });
          }
          return res.json({ message: 'Взуття успішно редаговано' });
       } catch (error) {

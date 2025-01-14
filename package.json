@@ -8,7 +8,8 @@
     "build:server": "cd server && npm install && npx tsc",
     "start:client": "cd client && npm run start",
     "start:server": "cd server && npm run start",
-    "start": "concurrently \"npm run start:client\" \"npm run start:server\""
+    "start:server:dev": "cd server && npm run dev",
+    "start:dev": "concurrently \"npm run start:client\" \"npm run start:server:dev\""
   },
   "devDependencies": {
     "concurrently": "^7.5.0"

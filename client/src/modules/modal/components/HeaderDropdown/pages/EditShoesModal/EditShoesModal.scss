@@ -54,6 +54,14 @@
       width: 100%;
       max-width: 500px;
    }
+   &__checkbox-container {
+      display: flex;
+      align-items: center;
+
+      & input {
+         margin-right: 10px;
+      }
+   }
 }
 
 @media #{$tablet-small} {
