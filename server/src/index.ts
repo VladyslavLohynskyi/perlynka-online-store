@@ -22,16 +22,20 @@ if (process.env.MODE === 'poduction') {
       console.error('GOOGLE_APPLICATION_CREDENTIALS_JSON is not set');
    }
 }
-app.use(
-   cors({
-      origin: process.env.CLIENT_URL,
-      credentials: true,
-   }),
-);
+
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.static(path.resolve(__dirname, 'static')));
 app.use(fileUpload({}));
 app.use('/api', router);
+
+if (process.env.MODE === 'production') {
+   app.use(express.static(path.join(__dirname, '../../client/build')));
+   app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
+   });
+}
+
 app.use(errorMiddleware);
 
 const start = async () => {
