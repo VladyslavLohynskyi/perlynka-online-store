@@ -170,6 +170,7 @@ class shoesController {
          }
          return res.json({ message: 'Взуття успішно створене' });
       } catch (error) {
+         console.log(error);
          return next(
             ApiError.internalServer(
                'Невідома помилка при створені нового взуття ',
