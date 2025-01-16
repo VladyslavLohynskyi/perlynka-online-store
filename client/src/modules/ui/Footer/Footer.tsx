@@ -77,6 +77,7 @@ export const Footer: React.FC = () => {
                         href='https://www.instagram.com/perlynka_shoes'
                         target='_blank'
                         rel='noreferrer'
+                        aria-label='Перейти до інстаграм профілю'
                      >
                         <IconButton
                            icon={faInstagram as IconDefinition}
@@ -87,6 +88,7 @@ export const Footer: React.FC = () => {
                         href='https://t.me/KolyaMaseratti'
                         target='_blank'
                         rel='noreferrer'
+                        aria-label='Перейти до телеграм профілю'
                      >
                         <IconButton
                            icon={faTelegram as IconDefinition}
@@ -97,6 +99,7 @@ export const Footer: React.FC = () => {
                         href='https://invite.viber.com/?g2=AQAvW%2F8r5XFDNU0ZYEQxJ9E4nY6HIa5ypojA4YoGXCs7oQJZjm7MtD7tnDlaw0Sl'
                         target='_blank'
                         rel='noreferrer'
+                        aria-label='Перейти до viber профілю'
                      >
                         <IconButton
                            icon={faViber as IconDefinition}
@@ -107,6 +110,7 @@ export const Footer: React.FC = () => {
                         href='mailto:perlynka.shoes.store@gmail.com'
                         target='_blank'
                         rel='noreferrer'
+                        aria-label='Перейти до нашої пошти'
                      >
                         <IconButton
                            icon={faEnvelope as IconDefinition}

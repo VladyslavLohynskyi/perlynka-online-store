@@ -13,7 +13,7 @@ export const FilterSizeCheckboxList: React.FC<filterSizeCheckboxListType> = ({
    const { sizes } = useAppSelector((state) => state.shoesReducer);
    return (
       <div className='checkbox-list__container'>
-         <h3 className='checkbox-list__header filter-header'>Розміри</h3>
+         <h2 className='checkbox-list__header filter-header'>Розміри</h2>
          <div className='checkbox-list__main'>
             {sizes?.map(({ id, size }) => (
                <FilterCheckboxItem

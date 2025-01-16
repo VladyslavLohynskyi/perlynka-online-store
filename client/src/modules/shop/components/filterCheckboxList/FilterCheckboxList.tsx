@@ -13,7 +13,7 @@ export const FilterCheckboxList: React.FC<FilterCheckboxListType> = ({
    return (
       <div className='checkbox-list__container'>
          {name && (
-            <h3 className='filter-header checkbox-list__header '>{name}</h3>
+            <h2 className='filter-header checkbox-list__header '>{name}</h2>
          )}
          <div className='checkbox-list__main'>
             {list?.map(({ id, name }) => (

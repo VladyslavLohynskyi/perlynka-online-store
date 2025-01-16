@@ -161,6 +161,7 @@ export const Shop: React.FC = () => {
                         name='filters'
                         value={filter.selectedSortFilter}
                         onChange={handleClickSelectSort}
+                        aria-label='Сортувати за'
                      >
                         {selectOptions.map((option) => (
                            <option key={option.id} value={option.sort}>
