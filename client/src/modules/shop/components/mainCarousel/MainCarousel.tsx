@@ -4,8 +4,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import './MainCarousel.scss';
-import { faClose } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal } from '../../../modal/pages';
 import { Button } from '../../../ui/Button';
 import { ButtonClassEnum } from '../../../ui/Button/ButtonType';
@@ -16,12 +15,6 @@ import {
    deleteMainCarouselSlide,
    getMainCarouselSlides,
 } from '../../../../store/reducers/mainCarousel/MainCarouselActionCreators';
-import {
-   GOOGLE_CLOUD_BUCKET_NAME,
-   GOOGLE_CLOUD_STORAGE_BASE_URL,
-} from '../../../../utils/constants';
-
-import { IconButton } from '../../../ui/IconButton';
 import SkeletonSlide from '../skeletonSlide/SkeletonSlide';
 import { Slide } from './components/Slide';
 
@@ -35,7 +28,9 @@ const MainCarousel = () => {
    );
 
    useEffect(() => {
-      dispatch(getMainCarouselSlides());
+      if (slides.length === 0) {
+         dispatch(getMainCarouselSlides());
+      }
    }, []);
 
    const handleDeleteSlide = (slideId: number) => {
