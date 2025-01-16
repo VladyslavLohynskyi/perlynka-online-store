@@ -23,7 +23,7 @@ export const OrderShoesItem: React.FC<IOrderShoesItemType> = ({
                }
             >
                <img
-                  src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/preview/${orderShoesItem.sho.img}.webp`}
+                  src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/preview/${orderShoesItem.shoeId}/${orderShoesItem.sho.img}.webp`}
                   alt='shoes'
                />
             </div>

@@ -8,7 +8,7 @@ import {
    GOOGLE_CLOUD_STORAGE_BASE_URL,
 } from '../../../../utils/constants';
 
-const ShoesCarousel: React.FC<ShoesCarouselType> = ({ slides }) => {
+const ShoesCarousel: React.FC<ShoesCarouselType> = ({ slides, shoesId }) => {
    const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
    const mainImageRef = useRef<HTMLImageElement>(null);
    const swiperRef = useRef<SwiperRef>(null);
@@ -26,7 +26,7 @@ const ShoesCarousel: React.FC<ShoesCarouselType> = ({ slides }) => {
                      className='shoes-page-carousel__option-container'
                   >
                      <img
-                        src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/images/${img}.webp`}
+                        src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/images/${shoesId}/${img}.webp`}
                         alt='Взуття'
                         draggable={false}
                      />
@@ -52,7 +52,7 @@ const ShoesCarousel: React.FC<ShoesCarouselType> = ({ slides }) => {
                         <img
                            ref={mainImageRef}
                            draggable={false}
-                           src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/images/${img}.webp`}
+                           src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/images/${shoesId}/${img}.webp`}
                            alt='Взуття'
                         />
                      </div>

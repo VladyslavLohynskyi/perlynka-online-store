@@ -66,7 +66,7 @@ export const CheckoutItem: React.FC<CheckoutItemType> = ({
                onClick={() => navigate(RoutesEnum.SHOES + '/' + shoes.id)}
             >
                <img
-                  src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/preview/${shoes.img}.webp`}
+                  src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/preview/${shoes.id}/${shoes.img}.webp`}
                   alt='shoes'
                />
             </div>

@@ -47,7 +47,7 @@ export const ShoesPage: React.FC = () => {
          {currentShoes && (
             <>
                <div className='shoes-page__main'>
-                  <ShoesCarousel slides={slides} />
+                  <ShoesCarousel slides={slides} shoesId={currentShoes.id} />
                   <ShoesInfos currentShoes={currentShoes} />
                </div>
                <HorizontalLine style={{ marginBottom: 0 }} />
