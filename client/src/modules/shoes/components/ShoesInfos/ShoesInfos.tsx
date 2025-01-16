@@ -95,9 +95,9 @@ const ShoesInfos: React.FC<ShoesInfosType> = ({ currentShoes }) => {
    };
    return (
       <div className='shoes-page-info__container'>
-         <h3 className='shoes-page-info__model-name main-page-title'>
+         <h2 className='shoes-page-info__model-name main-page-title'>
             {currentShoes.brand.name} {currentShoes.model}
-         </h3>
+         </h2>
          <div className='shoes-page-info__id-container'>
             <div className='shoes-page-info__brand-tag'>
                {' '}

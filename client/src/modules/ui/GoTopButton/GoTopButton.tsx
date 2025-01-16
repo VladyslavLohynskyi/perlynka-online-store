@@ -37,6 +37,7 @@ export const GoTopButton: React.FC = () => {
             transform: isVisible ? 'translateY(0)' : 'translateY(100px)',
             pointerEvents: isVisible ? 'auto' : 'none',
          }}
+         aria-label='Перейти до верху'
       >
          <FontAwesomeIcon icon={faArrowUp} />
       </Button>
