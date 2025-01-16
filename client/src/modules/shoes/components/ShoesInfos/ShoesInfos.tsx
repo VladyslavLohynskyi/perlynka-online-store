@@ -110,17 +110,17 @@ const ShoesInfos: React.FC<ShoesInfosType> = ({ currentShoes }) => {
          <div className='shoes-page-info__price'>
             <p className='shoes-page-info__model-price subtitle'>
                Ціна:{' '}
-               {currentShoes.promotionalPrice
+               {!!currentShoes.promotionalPrice
                   ? currentShoes.promotionalPrice
                   : currentShoes.price}{' '}
                грн.
             </p>
-            {currentShoes.promotionalPrice && (
+            {!!currentShoes.promotionalPrice && (
                <span className='shoes-page-info__promo-price'>
                   {currentShoes.price} грн.
                </span>
             )}
-            {currentShoes.promotionalPrice && (
+            {!!currentShoes.promotionalPrice && (
                <div className='shoes-page-info__discount-tag'>
                   -
                   {Math.round(

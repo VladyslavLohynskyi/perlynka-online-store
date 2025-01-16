@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import ShoesReq from '../../../http/shoes';
 import { SortEnum } from '../../../store/reducers/filter/FilterSlice';
 import { FilterCheckboxList } from '../../shop/components/filterCheckboxList';
-import { useAppSelector } from '../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { NameOfCategoriesEnum } from '../../shop/pages';
 import SkeletonShoesItem from '../../shop/components/skeletonShoesItem/SkeletonShoesItem';
 import {
@@ -20,12 +20,15 @@ import { faSliders } from '@fortawesome/free-solid-svg-icons';
 import { Pagination } from '../../shop/components/Pagination';
 import { Modal } from '../../modal/pages';
 import { AsideMobileFiltersModal } from '../../modal/components/HeaderDropdown/pages/AsideMobileFiltersModal';
+import { preloadList } from '../../../store/reducers/shoes/ShoesActionCreators';
+import { preloadFilter } from '../../../store/reducers/filter/FilterActionCreators';
 interface ISelectFilterOption {
    id: number;
    text: string;
    sort: string;
 }
 export const Discount: React.FC = () => {
+   const dispatch = useAppDispatch();
    const { brands, types, seasons, colors } = useAppSelector(
       (state) => state.shoesReducer,
    );
@@ -46,6 +49,14 @@ export const Discount: React.FC = () => {
    const [selectedSex, setSelectedSex] = useState<SexEnum>(SexEnum.UNISEX);
    const [isLoadingShoes, setIsLoadingShoes] = useState(true);
    const [shoes, setShoes] = useState<IShoesWithSizes[]>([]);
+
+   useEffect(() => {
+      (async () => {
+         if (brands === null) {
+            await dispatch(preloadList());
+         }
+      })();
+   }, []);
 
    useEffect(() => {
       setIsLoadingShoes(true);

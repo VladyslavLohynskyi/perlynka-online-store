@@ -14,15 +14,23 @@ import { ButtonClassEnum } from '../../ui/Button/ButtonType';
 import { useNavigate } from 'react-router-dom';
 import { RoutesEnum } from '../../../utils/constants';
 import { Loader } from '../../ui/Loader';
+import { preloadList } from '../../../store/reducers/shoes/ShoesActionCreators';
 
 export const BasketPage: React.FC = () => {
    const dispatch = useAppDispatch();
    const navigate = useNavigate();
    const { isAuth } = useAppSelector((state) => state.userReducer);
+   const { brands } = useAppSelector((state) => state.shoesReducer);
    const { isLoadingBasket, basket, totalCountOfShoesInBasket } =
       useAppSelector((state) => state.basketReducer);
    const [totalPrice, setTotalPrice] = useState<number>(0);
-
+   useEffect(() => {
+      (async () => {
+         if (brands === null) {
+            await dispatch(preloadList());
+         }
+      })();
+   }, []);
    useEffect(() => {
       let price = 0;
       basket.forEach((el) => {
