@@ -54,7 +54,7 @@ export interface IShoesState {
    message: string;
 }
 
-interface IPreloadList {
+export interface IPreloadList {
    types: IBasicCategory[];
    brands: IBasicCategory[];
    colors: IBasicCategory[];

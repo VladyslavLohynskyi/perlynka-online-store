@@ -1,32 +1,16 @@
 import { AppDispatch } from '../../store';
 import { shoesSlice } from './ShoesSlice';
 import ShoesReq, { IFilter } from '../../../http/shoes';
-import BrandReq from '../../../http/brands';
-import TypeReq from '../../../http/types';
-import ColorReq from '../../../http/colors';
-import SeasonReq from '../../../http/seasons';
-import { getAllSizes } from '../../../http/sizes';
+import PreloadReq from '../../../http/preload';
 import axios from 'axios';
 
 export const preloadList = () => async (dispatch: AppDispatch) => {
    try {
       dispatch(shoesSlice.actions.start());
 
-      const brands = await BrandReq.getAllElements();
-      const types = await TypeReq.getAllElements();
-      const colors = await ColorReq.getAllElements();
-      const seasons = await SeasonReq.getAllElements();
-      const sizes = await getAllSizes();
+      const preloadData = await PreloadReq.getPreloadList();
 
-      dispatch(
-         shoesSlice.actions.shoesPreloadListSuccess({
-            brands,
-            types,
-            colors,
-            seasons,
-            sizes,
-         }),
-      );
+      dispatch(shoesSlice.actions.shoesPreloadListSuccess(preloadData));
    } catch (error) {
       if (axios.isAxiosError(error)) {
          dispatch(shoesSlice.actions.error(error.response?.data));
