@@ -328,6 +328,7 @@ class shoesController {
    }
 
    async update(req: shoesUpdateRequest, res: Response, next: NextFunction) {
+      const transaction = await sequelize.transaction();
       try {
          const {
             id,
@@ -346,152 +347,177 @@ class shoesController {
             deletedImagesNames,
             isAvailable,
          } = req.body;
+
          const shoes = await Shoes.findOne({ where: { id } });
          if (!shoes) {
             return next(ApiError.notFound(`Взуття з id = ${id} не існує`));
          }
+
          const isAvailableBool =
             isAvailable === undefined
                ? shoes.isAvailable
                : isAvailable === 'true';
+
          const img = req.files?.file;
          const additionImages = req.files?.newAdditionImages;
-         if (!Array.isArray(img) && img) {
+         if (img && !Array.isArray(img)) {
+            if (shoes.img) {
+               await fileUploadService.deleteFile(
+                  shoes.img,
+                  'images/' + shoes.id,
+               );
+               await fileUploadService.deleteFile(
+                  shoes.img,
+                  'preview/' + shoes.id,
+               );
+            }
+            const newFileName = uuidv4();
             await fileUploadService.uploadPhoto(
                sharp(img.data.buffer).resize(300, 300).webp(),
-               shoes.img,
-               'preview',
+               newFileName,
+               'preview/' + shoes.id,
             );
             await fileUploadService.uploadPhoto(
                sharp(img.data.buffer).resize(1000, 1000).webp(),
-               shoes.img,
-               'images',
+               newFileName,
+               'images/' + shoes.id,
+            );
+            await Shoes.update(
+               { img: newFileName },
+               { where: { id }, transaction },
             );
          }
          await Shoes.update(
             {
-               model: model ? model : shoes.model,
-               price: price ? price : shoes.price,
-               brandId: brandId ? brandId : shoes.brandId,
-               typeId: typeId ? typeId : shoes.typeId,
-               colorId: colorId ? colorId : shoes.colorId,
-               seasonId: seasonId ? seasonId : shoes.seasonId,
-               sex: sex ? sex : shoes.sex,
+               model: model ?? shoes.model,
+               price: price ?? shoes.price,
+               brandId: brandId ?? shoes.brandId,
+               typeId: typeId ?? shoes.typeId,
+               colorId: colorId ?? shoes.colorId,
+               seasonId: seasonId ?? shoes.seasonId,
+               sex: sex ?? shoes.sex,
                promotionalPrice:
-                  promotionalPrice && promotionalPrice > 0
+                  promotionalPrice !== undefined && promotionalPrice >= 0
                      ? promotionalPrice
-                     : promotionalPrice == 0
-                     ? null
-                     : shoes.promotionalPrice,
+                     : null,
                isAvailable: isAvailableBool,
             },
-            { where: { id } },
+            { where: { id }, transaction },
          );
          if (sizes) {
             const parseSizes: IParseSizes[] = JSON.parse(sizes);
-            if (Array.isArray(parseSizes)) {
-               parseSizes.forEach(async ({ sizeId, count }) => {
-                  const shoesSize = await ShoesSize.findOne({
-                     where: { sizeId, shoId: shoes.id },
-                  });
-                  if (shoesSize && shoesSize.count !== count) {
+            const sizePromises = parseSizes.map(async ({ sizeId, count }) => {
+               const shoesSize = await ShoesSize.findOne({
+                  where: { sizeId, shoId: shoes.id },
+               });
+               if (shoesSize) {
+                  if (shoesSize.count !== count) {
                      await ShoesSize.update(
                         { count },
-                        { where: { sizeId, shoId: shoes.id } },
+                        { where: { sizeId, shoId: shoes.id }, transaction },
                      );
                   }
-                  if (shoesSize?.count !== count) {
-                     await ShoesSize.create({
-                        shoId: shoes.id,
-                        count,
-                        sizeId: sizeId,
-                     });
-                  }
-               });
-            }
+               } else {
+                  await ShoesSize.create(
+                     { shoId: shoes.id, count, sizeId },
+                     { transaction },
+                  );
+               }
+            });
+            await Promise.all(sizePromises);
          }
-
          if (shoesInfos) {
             const parseShoesInfos: IShoesInfo[] = JSON.parse(shoesInfos);
-            if (Array.isArray(parseShoesInfos)) {
-               parseShoesInfos.forEach(async ({ id, title, description }) => {
+            const shoesInfoPromises = parseShoesInfos.map(
+               async ({ id, title, description }) => {
                   await ShoesInfo.update(
                      { title, description },
-                     { where: { id } },
+                     { where: { id }, transaction },
                   );
-               });
-            }
+               },
+            );
+            await Promise.all(shoesInfoPromises);
          }
-
          if (newShoesInfos) {
             const parseNewShoesInfos: IShoesInfo[] = JSON.parse(newShoesInfos);
-            if (Array.isArray(parseNewShoesInfos)) {
-               parseNewShoesInfos.forEach(async ({ title, description }) => {
-                  await ShoesInfo.create({
-                     title,
-                     description,
-                     shoId: shoes.id,
-                  });
-               });
-            }
+            const newShoesInfoPromises = parseNewShoesInfos.map(
+               async ({ title, description }) => {
+                  await ShoesInfo.create(
+                     { title, description, shoId: shoes.id },
+                     { transaction },
+                  );
+               },
+            );
+            await Promise.all(newShoesInfoPromises);
          }
 
          if (deletedShoesInfoIds) {
             const parsedDeletedShoesInfoIds: number[] =
                JSON.parse(deletedShoesInfoIds);
-            if (Array.isArray(parsedDeletedShoesInfoIds)) {
-               parsedDeletedShoesInfoIds.forEach(async (id) => {
+            const deletedShoesInfoPromises = parsedDeletedShoesInfoIds.map(
+               async (id) => {
                   await ShoesInfo.destroy({
-                     where: {
-                        id,
-                        shoId: shoes.id,
-                     },
+                     where: { id, shoId: shoes.id },
+                     transaction,
                   });
-               });
-            }
+               },
+            );
+            await Promise.all(deletedShoesInfoPromises);
          }
 
          if (deletedImagesNames) {
             const parsedDeletedImagesNames: string[] =
                JSON.parse(deletedImagesNames);
-            parsedDeletedImagesNames.forEach(async (element) => {
-               await ShoesImage.destroy({ where: { img: element } });
-               await fileUploadService.deleteFile(element, 'images');
-            });
+            const deletedImagesPromises = parsedDeletedImagesNames.map(
+               async (element) => {
+                  await ShoesImage.destroy({
+                     where: { img: element },
+                     transaction,
+                  });
+                  await fileUploadService.deleteFile(
+                     element,
+                     'images/' + shoes.id,
+                  );
+               },
+            );
+            await Promise.all(deletedImagesPromises);
          }
-
          if (additionImages) {
-            if (Array.isArray(additionImages)) {
-               additionImages.forEach(async (el) => {
+            const additionImagesArray = Array.isArray(additionImages)
+               ? additionImages
+               : [additionImages];
+            const additionImagePromises = additionImagesArray.map(
+               async (el) => {
                   const fileName = uuidv4();
                   await fileUploadService.uploadPhoto(
                      sharp(el.data.buffer).resize(1000, 1000).webp(),
                      fileName,
-                     'images',
+                     'images/' + shoes.id,
                   );
-                  await ShoesImage.create({ shoId: shoes.id, img: fileName });
-               });
-            } else {
-               const fileName = uuidv4();
-               await fileUploadService.uploadPhoto(
-                  sharp(additionImages.data.buffer).resize(1000, 1000).webp(),
-                  fileName,
-                  'images',
-               );
-               await ShoesImage.create({ shoId: shoes.id, img: fileName });
-            }
+                  await ShoesImage.create(
+                     { shoId: shoes.id, img: fileName },
+                     { transaction },
+                  );
+               },
+            );
+            await Promise.all(additionImagePromises);
          }
-
          if (
             isAvailableBool === false &&
             shoes.isAvailable !== isAvailableBool
          ) {
-            await BasketShoes.destroy({ where: { shoId: shoes.id } });
+            await BasketShoes.destroy({
+               where: { shoId: shoes.id },
+               transaction,
+            });
          }
+
+         await transaction.commit();
          return res.json({ message: 'Взуття успішно редаговано' });
       } catch (error) {
+         await transaction.rollback();
          return next(
-            ApiError.internalServer('Невідома помилка при редагуванні взуття '),
+            ApiError.internalServer('Невідома помилка при редагуванні взуття'),
          );
       }
    }
