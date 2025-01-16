@@ -1,7 +1,6 @@
 import { Storage } from '@google-cloud/storage';
 import sharp from 'sharp';
 import ApiError from '../exceptions/ApiError';
-import fs from 'fs';
 
 class fileUploadService {
    bucketName: string;
@@ -20,7 +19,7 @@ class fileUploadService {
       const blobStream = blob.createWriteStream({
          resumable: true,
          metadata: {
-            cacheControl: 'no-cache',
+            cacheControl: 'public, max-age=31536000, immutable',
          },
       });
       const bufferedFile = await file.toBuffer();
@@ -41,10 +40,12 @@ class fileUploadService {
    }
    async deleteFile(fileName: string, path: string): Promise<void> {
       try {
+         const filePath = path + '/' + fileName + '.webp';
          await this.storage
             .bucket(this.bucketName)
-            .file(path + '/' + fileName + '.webp')
-            .delete();
+            .file(filePath)
+            .delete()
+            .catch(() => {});
       } catch (error) {
          throw ApiError.internalServer(`Failed to delete file ${fileName}`);
       }

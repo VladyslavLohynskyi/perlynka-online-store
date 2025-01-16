@@ -64,7 +64,7 @@ export const DeleteShoesModal: React.FC<DeleteShoesModalType> = ({
                            <div className='delete-shoes-modal__shoes-view-img-container'>
                               <img
                                  style={{ width: '100%' }}
-                                 src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/images/${foundShoes.img}.webp`}
+                                 src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/images/${foundShoes.id}/${foundShoes.img}.webp`}
                                  alt='Взуття'
                               />
                            </div>
