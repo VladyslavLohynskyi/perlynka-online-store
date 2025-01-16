@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-
+import { Helmet } from 'react-helmet';
 import { ShoesItem } from '../components/shoesItem';
 
 import './Shop.scss';
@@ -27,13 +27,17 @@ import { Modal } from '../../modal/pages';
 import useWindowSize from '../../../hooks/useWindowSize';
 import { AsideMobileFiltersModal } from '../../modal/components/HeaderDropdown/pages/AsideMobileFiltersModal';
 import { ResetFiltersButton } from '../../ui/ResetFiltersButton';
-import { Loader } from '../../ui/Loader';
+
 import {
    getAllShoesByFilter,
    preloadList,
 } from '../../../store/reducers/shoes/ShoesActionCreators';
 import MainCarousel from '../components/mainCarousel/MainCarousel';
 import SkeletonShoesItem from '../components/skeletonShoesItem/SkeletonShoesItem';
+import {
+   GOOGLE_CLOUD_BUCKET_NAME,
+   GOOGLE_CLOUD_STORAGE_BASE_URL,
+} from '../../../utils/constants';
 
 interface ISelectFilterOption {
    id: number;
@@ -146,6 +150,55 @@ export const Shop: React.FC = () => {
 
    return (
       <>
+         <Helmet>
+            <title>
+               Інтернет-магазин взуття для дітей та підлітків | Вибір стильного
+               та зручного взуття
+            </title>
+            <meta
+               name='description'
+               content='Купуйте стильне та зручне взуття для дітей та підлітків в нашому магазині. Великий асортимент моделей та знижки на популярні товари. Лікувальне, профілактичне та звичайне взуття від світових брендів: SuperFit, GEOX, IMac, Tutubi, Tiflani та інші'
+            />
+            <meta
+               name='keywords'
+               content='взуття для дітей, дитяче взуття, підліткове взуття, стильне взуття, знижки на взуття, дитячі черевики, кросівки,SuperFit, GEOX, IMac, Tutubi, Tiflani,Apawwa '
+            />
+            <meta
+               property='og:title'
+               content='Інтернет-магазин взуття для дітей та підлітків'
+            />
+            <meta
+               property='og:description'
+               content='Купуйте стильне та зручне взуття для дітей та підлітків в нашому магазині. Великий асортимент моделей та знижки на популярні товари.'
+            />
+            <meta
+               property='og:image'
+               content={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/utils/logo.png`}
+            />
+            <meta
+               property='og:url'
+               content={process.env.REACT_APP_BACKEND_URL}
+            />
+            <meta name='twitter:card' content='summary_large_image' />
+            <script type='application/ld+json'>
+               {JSON.stringify({
+                  '@context': 'https://schema.org',
+                  '@type': 'Store',
+                  name: 'Інтернет-магазин взуття для дітей та підлітків',
+                  description:
+                     'Купуйте стильне та зручне взуття для дітей та підлітків в нашому магазині. Великий асортимент моделей та знижки на популярні товари.',
+                  url: process.env.REACT_APP_BACKEND_URL,
+                  logo: `${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/utils/logo.png`,
+                  sameAs: ['https://www.instagram.com/perlynka_shoes'],
+                  openingHours: 'Tu-Su 09:00-19:00',
+                  contactPoint: {
+                     '@type': 'ContactPoint',
+                     telephone: '+380964668757',
+                     contactType: 'customer service',
+                  },
+               })}
+            </script>
+         </Helmet>
          <div className='shop__container'>
             <div className='shop'>
                <MainCarousel />
