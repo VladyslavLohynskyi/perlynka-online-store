@@ -396,10 +396,7 @@ class shoesController {
                colorId: colorId ?? shoes.colorId,
                seasonId: seasonId ?? shoes.seasonId,
                sex: sex ?? shoes.sex,
-               promotionalPrice:
-                  promotionalPrice !== undefined && promotionalPrice >= 0
-                     ? promotionalPrice
-                     : null,
+               promotionalPrice: promotionalPrice ?? shoes.promotionalPrice,
                isAvailable: isAvailableBool,
             },
             { where: { id }, transaction },
