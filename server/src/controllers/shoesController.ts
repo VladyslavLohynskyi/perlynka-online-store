@@ -18,6 +18,7 @@ import sharp from 'sharp';
 
 import fileUploadService from '../services/fileUploadService';
 import BasketShoes from '../models/basketShoesModel';
+import { sequelize } from '../db';
 
 interface IParseSizes {
    sizeId: number;
@@ -87,6 +88,7 @@ export interface IShoesInfo {
 
 class shoesController {
    async create(req: shoesCreateRequest, res: Response, next: NextFunction) {
+      const transaction = await sequelize.transaction();
       try {
          const {
             model,
@@ -103,79 +105,93 @@ class shoesController {
          const img = Array.isArray(req.files?.images)
             ? req.files?.images.reverse()
             : req.files?.images;
+
          if (!img) {
             return next(ApiError.badRequest('Зображень не знайдено'));
          }
          const fileMainName = uuidv4();
+         const shoes = await Shoes.create(
+            {
+               model,
+               price,
+               brandId,
+               typeId,
+               colorId,
+               seasonId,
+               img: fileMainName,
+               sex,
+               promotionalPrice,
+               isAvailable: true,
+            },
+            { transaction },
+         );
+
          if (!Array.isArray(img)) {
             await fileUploadService.uploadPhoto(
                sharp(img.data.buffer).resize(300, 300).webp(),
-               fileMainName,
-               'preview',
+               `${fileMainName}`,
+               `preview/${shoes.id}`,
             );
-
             await fileUploadService.uploadPhoto(
                sharp(img.data.buffer).resize(1000, 1000).webp(),
                fileMainName,
-               'images',
+               `images/${shoes.id}`,
             );
          } else {
             await fileUploadService.uploadPhoto(
                sharp(img[0].data.buffer).resize(300, 300).webp(),
-               fileMainName,
-               'preview',
+               `${fileMainName}`,
+               `preview/${shoes.id}`,
             );
             await fileUploadService.uploadPhoto(
                sharp(img[0].data.buffer).resize(1000, 1000).webp(),
                fileMainName,
-               'images',
+               `images/${shoes.id}`,
             );
          }
-         const shoes = await Shoes.create({
-            model,
-            price,
-            brandId,
-            typeId,
-            colorId,
-            seasonId,
-            img: fileMainName,
-            sex,
-            promotionalPrice,
-            isAvailable: true,
-         });
-
          if (Array.isArray(img)) {
             for (let i = 1; i < img.length; i++) {
                const fileName = uuidv4();
                await fileUploadService.uploadPhoto(
                   sharp(img[i].data.buffer).resize(1000, 1000).webp(),
                   fileName,
-                  'images',
+                  `images/${shoes.id}`,
                );
-               await ShoesImage.create({ shoId: shoes.id, img: fileName });
+               await ShoesImage.create(
+                  { shoId: shoes.id, img: fileName },
+                  { transaction },
+               );
             }
          }
          const parseSizes: IParseSizes[] = JSON.parse(sizes);
          if (Array.isArray(parseSizes)) {
-            parseSizes.map(({ sizeId, count }) =>
-               ShoesSize.create({ sizeId, count, shoId: shoes.id }),
-            );
+            for (const { sizeId, count } of parseSizes) {
+               await ShoesSize.create(
+                  { sizeId, count, shoId: shoes.id },
+                  { transaction },
+               );
+            }
          }
-         if (shoesInfos.length != 0) {
+         if (shoesInfos.length !== 0) {
             const parseInfo = JSON.parse(shoesInfos) as IShoesInfo[];
-            parseInfo.map((element) => {
-               ShoesInfo.create({
-                  title: element.title,
-                  description: element.description,
-                  shoId: shoes.id,
-               });
-            });
+            for (const element of parseInfo) {
+               await ShoesInfo.create(
+                  {
+                     title: element.title,
+                     description: element.description,
+                     shoId: shoes.id,
+                  },
+                  { transaction },
+               );
+            }
          }
+         await transaction.commit();
          return res.json({ message: 'Взуття успішно створене' });
       } catch (error) {
+         await transaction.rollback();
          return next(
             ApiError.internalServer(
-               'Невідома помилка при створені нового взуття ',
+               'Невідома помилка при створені нового взуття',
             ),
          );
       }
