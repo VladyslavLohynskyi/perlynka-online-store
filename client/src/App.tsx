@@ -26,8 +26,6 @@ const App: FC = () => {
       useState<boolean>(false);
    useEffect(() => {
       (async () => {
-         await dispatch(preloadList());
-         dispatch(preloadFilter());
          await dispatch(authUser());
       })();
    }, []);
@@ -91,7 +89,7 @@ const App: FC = () => {
       }
    }, [admin.error, admin.message]);
 
-   if (user.isLoading || shoes.isLoading) {
+   if (user.isLoading) {
       return <Loader />;
    }
    return (

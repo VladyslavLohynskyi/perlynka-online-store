@@ -13,6 +13,7 @@ import {
    sizeFilter,
    resetFilters,
    changePage,
+   preloadFilter,
 } from '../../../store/reducers/filter/FilterActionCreators';
 import { FilterCheckboxList } from '../components/filterCheckboxList';
 import { FilterSizeCheckboxList } from '../components/filterSizeCheckboxList';
@@ -27,7 +28,10 @@ import useWindowSize from '../../../hooks/useWindowSize';
 import { AsideMobileFiltersModal } from '../../modal/components/HeaderDropdown/pages/AsideMobileFiltersModal';
 import { ResetFiltersButton } from '../../ui/ResetFiltersButton';
 import { Loader } from '../../ui/Loader';
-import { getAllShoesByFilter } from '../../../store/reducers/shoes/ShoesActionCreators';
+import {
+   getAllShoesByFilter,
+   preloadList,
+} from '../../../store/reducers/shoes/ShoesActionCreators';
 import MainCarousel from '../components/mainCarousel/MainCarousel';
 import SkeletonShoesItem from '../components/skeletonShoesItem/SkeletonShoesItem';
 
@@ -44,6 +48,7 @@ export enum NameOfCategoriesEnum {
    SIZE = 'Розмір',
 }
 export const Shop: React.FC = () => {
+   const isFirstRender = useRef(true);
    const { width } = useWindowSize();
    const dispatch = useAppDispatch();
    const [isMobileAsideFiltersShowed, setIsMobileAsideFiltersShowed] =
@@ -60,6 +65,18 @@ export const Shop: React.FC = () => {
    const filter = useAppSelector((state) => state.filterReducer);
 
    useEffect(() => {
+      (async () => {
+         if (brands === null) {
+            await dispatch(preloadList());
+         }
+         dispatch(preloadFilter());
+      })();
+   }, []);
+   useEffect(() => {
+      if (isFirstRender.current) {
+         isFirstRender.current = false;
+         return;
+      }
       dispatch(
          getAllShoesByFilter({
             brandsId: filter.selectedBrandsId,

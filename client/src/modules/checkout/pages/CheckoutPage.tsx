@@ -18,6 +18,7 @@ import OrdersReq, {
    IOrderItemCreate,
    ICustomerInfo,
 } from '../../../http/orders';
+import { preloadList } from '../../../store/reducers/shoes/ShoesActionCreators';
 export enum DeliveryOptionsEnum {
    NOVA_POST = 'У відділення Нової пошти',
    SELF_DELIVERY = 'Самовивіз з магазину',
@@ -37,7 +38,14 @@ export const CheckoutPage: React.FC = () => {
    const [isCheckoutSuccess, setIsCheckoutSuccess] = useState(false);
    const [totalPrice, setTotalPrice] = useState<number>(0);
    const [isLoadingOrder, setIsLoadingOrder] = useState<boolean>(false);
-
+   const { brands } = useAppSelector((state) => state.shoesReducer);
+   useEffect(() => {
+      (async () => {
+         if (brands === null) {
+            await dispatch(preloadList());
+         }
+      })();
+   }, []);
    useEffect(() => {
       let price = 0;
       basket.forEach((el) => {

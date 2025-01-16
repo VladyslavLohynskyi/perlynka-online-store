@@ -48,6 +48,8 @@ import { AdminShoesPanelSection } from './components/AdminShoesPanelSection';
 import { AdminBasicPanelSection } from './components/AdminBasicPanelSection';
 import { AdminSizePanelSection } from './components/AdminSizePanelSection';
 import { Loader } from '../ui/Loader';
+import { preloadList } from '../../store/reducers/shoes/ShoesActionCreators';
+import { preloadFilter } from '../../store/reducers/filter/FilterActionCreators';
 
 export const Admin: React.FC = () => {
    const { brands, types, seasons, colors } = useAppSelector(
@@ -68,7 +70,13 @@ export const Admin: React.FC = () => {
       () => debounce(changeUserInputValueHandler, 1000),
       [],
    );
-
+   useEffect(() => {
+      (async () => {
+         if (brands === null) {
+            await dispatch(preloadList());
+         }
+      })();
+   }, []);
    useEffect(() => {
       dispatch(getAllAdmins());
    }, []);

@@ -22,12 +22,14 @@ import { logOutUser } from '../../../store/reducers/user/UserActionCreators';
 import { DropdownItem } from './components/DropdownItem';
 import HeaderType from './HeaderType';
 import { NavItemEnum } from './components/NavItem/NavItemType';
+import { getAllShoesByFilter } from '../../../store/reducers/shoes/ShoesActionCreators';
 
 export const Header: React.FC<HeaderType> = ({
    isBurgerShowed,
    handleSwitchBurgerShow,
 }) => {
    const { user, isAuth } = useAppSelector((state) => state.userReducer);
+   const filter = useAppSelector((state) => state.filterReducer);
    const { totalCountOfShoesInBasket } = useAppSelector(
       (state) => state.basketReducer,
    );
@@ -70,8 +72,8 @@ export const Header: React.FC<HeaderType> = ({
    const handleClickBasketIcon = () => {
       return navigate(RoutesEnum.BASKET);
    };
-   const onClickSex = (sex: SexEnum) => {
-      dispatch(sexFilter(sex));
+   const onClickSex = async (sex: SexEnum) => {
+      await dispatch(sexFilter(sex));
       navigate(RoutesEnum.SHOP);
    };
 
