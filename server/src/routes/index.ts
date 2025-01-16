@@ -11,6 +11,7 @@ import { ratingRouter } from './ratingRouter';
 import { newsletterSubscriptionRouter } from './newsletterSubscriptionRouter';
 import { mainCarouselRouter } from './mainCarouselRouter';
 import { ordersRouter } from './orderRouter';
+import preloadRouter from './preloadRouter';
 
 export const router = Router();
 
@@ -26,3 +27,4 @@ router.use('/rating', ratingRouter);
 router.use('/newsletter-subscription', newsletterSubscriptionRouter);
 router.use('/main-carousel', mainCarouselRouter);
 router.use('/order', ordersRouter);
+router.use('/preload', preloadRouter);
