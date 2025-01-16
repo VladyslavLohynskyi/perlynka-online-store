@@ -272,23 +272,27 @@ class shoesController {
    }
 
    async deleteOne(req: Request, res: Response, next: NextFunction) {
+      const { id } = req.params;
       try {
-         const { id } = req.params;
          const shoes = await Shoes.findOne({ where: { id: id } });
-         if (shoes) {
-            const images = await ShoesImage.findAll({ where: { shoId: +id } });
-            await Shoes.destroy({ where: { id: id } });
-            await fileUploadService.deleteFile(shoes.img, 'preview');
-            await fileUploadService.deleteFile(shoes.img, 'images');
-            if (images.length > 0) {
-               images.forEach((el) =>
-                  fileUploadService.deleteFile(el.img, 'images'),
-               );
-            }
-            return res.json({ message: 'Взуття успішно видалене' });
-         } else {
+         if (!shoes) {
             return next(ApiError.notFound(`Взуття з id = ${id} не існує`));
          }
+         await Promise.all([
+            fileUploadService.deleteFile(shoes.img, 'preview/' + shoes.id),
+            fileUploadService.deleteFile(shoes.img, 'images/' + shoes.id),
+         ]);
+         const images = await ShoesImage.findAll({ where: { shoId: +id } });
+         if (images.length > 0) {
+            await Promise.all(
+               images.map((el) =>
+                  fileUploadService.deleteFile(el.img, 'images/' + shoes.id),
+               ),
+            );
+         }
+         await Shoes.destroy({ where: { id: id } });
+
+         return res.json({ message: 'Взуття успішно видалене' });
       } catch (error) {
          return next(
             ApiError.internalServer('Невідома помилка при видалені взуття'),
@@ -299,7 +303,6 @@ class shoesController {
    async getOne(req: Request, res: Response, next: NextFunction) {
       try {
          const { id } = req.params;
-
          const shoes = await Shoes.findOne({
             where: { id },
             include: [
