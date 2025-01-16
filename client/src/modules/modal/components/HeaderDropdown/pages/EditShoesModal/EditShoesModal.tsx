@@ -239,10 +239,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
          formData.append('deletedImagesNames', JSON.stringify(deletedImages));
       }
 
-      if (
-         promotionalPrice > 0 ||
-         promotionalPrice !== foundShoes?.promotionalPrice
-      ) {
+      if (promotionalPrice !== foundShoes?.promotionalPrice) {
          formData.append('promotionalPrice', String(promotionalPrice));
       }
       newAdditionImages.forEach(({ img }) => {
@@ -325,7 +322,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                                     src={
                                        file
                                           ? URL.createObjectURL(file)
-                                          : `${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/images/${foundShoes.img}.webp`
+                                          : `${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/images/${foundShoes.id}/${foundShoes.img}.webp`
                                     }
                                     alt='Взуття'
                                  />
@@ -344,7 +341,7 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
                               >
                                  <div className='edit-shoes-modal__img-container'>
                                     <img
-                                       src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/images/${img}.webp`}
+                                       src={`${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/images/${foundShoes.id}/${img}.webp`}
                                        alt='Взуття'
                                     />
                                  </div>
