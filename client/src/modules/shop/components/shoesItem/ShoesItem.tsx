@@ -23,7 +23,7 @@ export const ShoesItem: React.FC<ShoesItemType> = ({ shoes }) => {
          onClick={() => navigate(RoutesEnum.SHOES + '/' + shoes.id)}
       >
          <div className='shoes-item__img-container'>
-            {shoes.promotionalPrice && (
+            {!!shoes.promotionalPrice && (
                <div className='shoes-item__discount-tag'>
                   -
                   {Math.round(
@@ -45,7 +45,7 @@ export const ShoesItem: React.FC<ShoesItemType> = ({ shoes }) => {
             />
             {isImgLoading && <div className='skeleton-item__image'></div>}
             <div className='shoes-item__tags'>
-               {shoes.promotionalPrice && (
+               {!!shoes.promotionalPrice && (
                   <div className='shoes-item__tag shoes-item__tag--promotional'>
                      Розпродаж
                   </div>
@@ -63,12 +63,12 @@ export const ShoesItem: React.FC<ShoesItemType> = ({ shoes }) => {
             <div className='shoes-item__price-container'>
                <div className='shoes-item__price'>
                   <p className='preview-shoes-item-price-text'>
-                     {shoes.promotionalPrice
+                     {!!shoes.promotionalPrice
                         ? shoes.promotionalPrice
                         : shoes.price}{' '}
                      грн
                   </p>
-                  {shoes.promotionalPrice && (
+                  {!!shoes.promotionalPrice && (
                      <span className='shoes-item__promo-price'>
                         {shoes.price} грн
                      </span>
