@@ -20,7 +20,7 @@ class fileUploadService {
       const blobStream = blob.createWriteStream({
          resumable: true,
          metadata: {
-            cacheControl: 'no-cache',
+            cacheControl: 'public, max-age=31536000, immutable',
          },
       });
       const bufferedFile = await file.toBuffer();
