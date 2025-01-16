@@ -212,6 +212,7 @@ export const Shop: React.FC = () => {
                      contactType: 'customer service',
                      areaServed: 'UA',
                   },
+                  telephone: '+380964668757',
                   priceRange: '500-4000 UAH',
                   alternateName: [
                      'Перлинка дитяче взуття',

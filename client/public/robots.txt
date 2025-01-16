@@ -1,3 +1,21 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Disallow: /admin
+Disallow: /admin-orders
+Disallow: /profile
+Disallow: /forgot-password
+Disallow: /forgot-form
+
+Allow: / 
+Allow: /login
+Allow: /registration
+Allow: /shoes
+Allow: /shoes/*
+Allow: /contact
+Allow: /payment-and-delivery
+Allow: /return-and-exchange
+Allow: /discount
+Allow: /my-orders
+Allow: /privacy
+Allow: /basket
+Allow: /checkout
