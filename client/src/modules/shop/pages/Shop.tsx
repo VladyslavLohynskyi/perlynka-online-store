@@ -184,18 +184,41 @@ export const Shop: React.FC = () => {
                {JSON.stringify({
                   '@context': 'https://schema.org',
                   '@type': 'Store',
-                  name: 'Інтернет-магазин взуття для дітей та підлітків',
+                  name: 'Перлинка',
+                  department: 'Дитяче взуття',
                   description:
-                     'Купуйте стильне та зручне взуття для дітей та підлітків в нашому магазині. Великий асортимент моделей та знижки на популярні товари.',
+                     'Дитяче взуття у Львові. Купуйте онлайн якісне та стильне взуття для дітей та підлітків. Великий асортимент моделей та знижки на популярні товари.',
                   url: process.env.REACT_APP_BACKEND_URL,
                   logo: `${GOOGLE_CLOUD_STORAGE_BASE_URL}/${GOOGLE_CLOUD_BUCKET_NAME}/utils/logo.png`,
                   sameAs: ['https://www.instagram.com/perlynka_shoes'],
                   openingHours: 'Tu-Su 09:00-19:00',
+                  address: {
+                     '@type': 'PostalAddress',
+                     addressLocality: 'Львів',
+                     streetAddress: 'вул. Щирецька 36',
+                     postalCode: '79000',
+                     addressRegion: 'Львівська область',
+                     addressCountry: 'UA',
+                  },
+                  geo: {
+                     '@type': 'GeoCoordinates',
+                     latitude: 49.811615,
+                     longitude: 23.974668,
+                  },
                   contactPoint: {
                      '@type': 'ContactPoint',
                      telephone: '+380964668757',
+                     email: 'perlynka.shoes.store@gmail.com',
                      contactType: 'customer service',
+                     areaServed: 'UA',
                   },
+                  priceRange: '500-4000 UAH',
+                  alternateName: [
+                     'Перлинка дитяче взуття',
+                     'Перлинка Львів',
+                     'Перлинка Взуття',
+                     'Перлинка Південний',
+                  ],
                })}
             </script>
          </Helmet>
