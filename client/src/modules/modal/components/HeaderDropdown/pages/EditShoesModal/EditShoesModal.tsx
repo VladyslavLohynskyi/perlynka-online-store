@@ -141,7 +141,8 @@ export const EditShoesModal: React.FC<EditShoesModalType> = ({ onClose }) => {
    };
 
    const handleChangeSize = (sizeId: number, count: number) => {
-      if (count > 0) {
+      console.log(sizeId, count);
+      if (count >= 0) {
          if (addSizes.find((el) => el.sizeId === sizeId)) {
             setAddSizes((prev) =>
                prev.map((el) => (el.sizeId === sizeId ? { ...el, count } : el)),

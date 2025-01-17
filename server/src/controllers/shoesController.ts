@@ -412,10 +412,16 @@ class shoesController {
                });
                if (shoesSize) {
                   if (shoesSize.count !== count) {
-                     await ShoesSize.update(
-                        { count },
-                        { where: { sizeId, shoId: shoes.id }, transaction },
-                     );
+                     if (count > 0) {
+                        await ShoesSize.update(
+                           { count },
+                           { where: { sizeId, shoId: shoes.id }, transaction },
+                        );
+                     } else {
+                        await ShoesSize.destroy({
+                           where: { shoId: shoes.id, sizeId },
+                        });
+                     }
                   }
                } else {
                   await ShoesSize.create(

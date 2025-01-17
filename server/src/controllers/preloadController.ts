@@ -14,7 +14,7 @@ class PreloadController {
             Type.findAll(),
             Color.findAll(),
             Season.findAll(),
-            Size.findAll(),
+            Size.findAll({ order: [['size', 'ASC']] }),
          ]);
          return res.json({
             brands,
