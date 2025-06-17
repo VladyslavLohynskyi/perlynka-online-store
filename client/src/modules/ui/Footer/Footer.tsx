@@ -123,7 +123,7 @@ export const Footer: React.FC = () => {
             <div className='horizontal-line footer__horizontal-line'> </div>
             <div className='footer__copyright-container'>
                <p className='label-text'>
-                  © 2024 магазин дитячого-підліткового взуття — "Перлинка"
+                  © 2025 магазин дитячого-підліткового взуття — "Перлинка"
                </p>
             </div>
          </footer>
